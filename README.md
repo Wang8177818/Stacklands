@@ -1,24 +1,51 @@
-# PTSD Template
+# Abstract
+---
+遊戲名稱 : StackLand
+組員 : 
+- 113590059 王立漢
+- 113590061 謝明宏
 
-This is a [PTSD](https://github.com/ntut-open-source-club/practical-tools-for-simple-design) framework template for students taking OOPL2024s.
+# Game Introdution
+---
+Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營** 的休閒遊戲。玩家透過拖曳、堆疊卡牌來建造村莊、收集資源、製作工具，並確保村民能獲得足夠食物以存活。
+遊戲目標在於收集食物防止餓死，並且收集資源打造裝備，並在最後打敗最終魔王贏得勝利。
 
-## Quick Start
+# Devlopment timeline
+---
+- Week 1 : 
+    - ✅️ 準備遊戲素材
+- Week 2 : 
+    - [ ] 準備遊戲素材
+    - [ ] 製作Menu
+- Week 3 : 
+    - [ ] 製作UI
+- Week 4 :
+    - [ ] 加入時間跑條
+    - [ ] 卡片模板
+    - [ ] 鼠標互動等等讓遊戲能基本運行
+- Week 5 : 
+    - [ ] 製作人物卡片
+    - [ ] 人物裝備系統
+    - [ ] 人物職業
+- Week 6 : 
+    - [ ] 製作資源卡片
+- Week 7 : 
+    - [ ] 製作特殊功能卡片 (建築，箱子 etc)
+- Week 8 :
+    - [ ] 製作裝備卡片
+    - [ ] 調適兼容人物卡
+- Week 9 : 
+    - [ ] 製作卡片互動 (戰鬥 etc)
+    - [ ] 製作攻擊系統
+- Week 9 : 製作事件
+- Week 10 : 
+    - [ ] 製作敵人卡片
+    - [ ] 製作基本怪物
+    - [ ] 實作怪物技能
+- Week 11 : 
+- Week 12 : 測試&改善
+- Week 13 : 測試&改善
+- Week 14 : 測試&改善
+- Week 15 : 測試&改善
+- Week 16 : 測試&改善
 
-1. Use this template to create a new repository
-   ![github screenshot](https://github.com/ntut-rick/ptsd-template/assets/126899559/ef62242f-03ed-481d-b858-12b730c09beb)
-
-2. Clone your repository
-
-   ```bash
-   git clone YOUR_GIT_URL --recursive
-   ```
-
-3. Build your project
-
-  > [!WARNING]
-  > Please build your project in `Debug` because our `Release` path is broken D:
-   
-   ```sh
-   cmake -DCMAKE_BUILD_TYPE=Debug -B build # -G Ninja
-   ```
-   better read [PTSD README](https://github.com/ntut-open-source-club/practical-tools-for-simple-design)
