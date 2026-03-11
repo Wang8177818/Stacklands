@@ -1,9 +1,11 @@
 set(SRC_FILES
     App.cpp
+    main.cpp
 )
 
 set(INCLUDE_FILES
     App.hpp
+    BackgroundImage.hpp
 )
 
 set(TEST_FILES

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(REPLACE_WITH_YOUR_PROJECT_NAME)
+project(Stacklands)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -35,6 +35,8 @@ add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
     ${SRC_FILES}
     ${HEADER_FILES}
+        include/BackgroundImage.hpp
+        include/Button.hpp
 )
 
 if(MSVC)
