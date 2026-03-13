@@ -12,7 +12,7 @@ void App::Start() {
     LOG_TRACE("Start");
 
     //===新增遊戲開始按鈕===
-    m_BtnStart = std::make_shared<MenuButton>(-560, -80, 20, 100, 50, "開始新遊戲", true);
+    m_BtnStart = std::make_shared<MenuButton>(-562, -80, 20, 100, 50, "開始新遊戲", true);
     for (auto& obj : m_BtnStart->GetGameObjects()) {
         m_Renderer.AddChild(obj);
     }

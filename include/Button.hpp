@@ -14,6 +14,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include "spdlog/fmt/bundled/compile.h"
+
 class MenuButton {
 public:
     // 建構子：設定按鈕的位置、大小、文字內容與資源路徑
@@ -31,6 +33,8 @@ public:
         m_DarkBg = std::make_shared<Util::GameObject>();
         m_DarkBg->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/dark_bg.png"));
         m_DarkBg->SetZIndex(5);
+        m_DarkBg->m_Transform.scale = {300, textsize*2};
+        m_DarkBg->m_Transform.translation = {-470, y};
 
         // 2. 建立文字
         m_Text = std::make_shared<Util::GameObject>();
