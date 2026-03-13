@@ -39,6 +39,7 @@ add_executable(${PROJECT_NAME}
         include/Button.hpp
         include/Card.hpp
         src/Card.cpp
+        include/CharacterCard.hpp
 )
 
 if(MSVC)
