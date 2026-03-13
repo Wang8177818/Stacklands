@@ -37,6 +37,8 @@ add_executable(${PROJECT_NAME}
     ${HEADER_FILES}
         include/BackgroundImage.hpp
         include/Button.hpp
+        include/Card.hpp
+        src/Card.cpp
 )
 
 if(MSVC)
