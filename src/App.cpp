@@ -10,6 +10,14 @@
 
 void App::Start() {
     LOG_TRACE("Start");
+
+    //===新增遊戲開始按鈕===
+    m_BtnStart = std::make_shared<MenuButton>(-560, -80, 20, 100, 50, "開始新遊戲", true);
+    for (auto& obj : m_BtnStart->GetGameObjects()) {
+        m_Renderer.AddChild(obj);
+    }
+    //===================
+
     auto Instance = Core::Context::GetInstance();
     float windowWidth = Instance->GetWindowWidth();
     float windowHeight = Instance->GetWindowHeight();
@@ -29,12 +37,26 @@ void App::MainMenu() {
     LOG_TRACE("MainMenu");
     m_Renderer.Update();
 
-    auto test = std::make_shared<Util::GameObject>();
-    auto testbutton = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/btnSeleted.png");
-    test->SetDrawable(testbutton);
-
     mousePos = Util::Input::GetCursorPosition();
-    //LOG_DEBUG("{} {}", mousePos.x, mousePos.y);
+    LOG_DEBUG("{} {}", mousePos.x, mousePos.y);
+
+    // 更新按鈕的 Hover 狀態
+    bool isStartHover = m_BtnStart->UpdateHover(mousePos);
+
+    // 如果滑鼠在按鈕上，且按下了左鍵
+    if (isStartHover && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        LOG_INFO("Start Button Clicked!");
+
+        // 1. 換成遊戲中的背景
+        auto newBg = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/testBackground.png");
+        m_MainMenuImage->SetDrawable(newBg);
+
+        // 2. 隱藏主選單的 UI
+        m_BtnStart->HideAll();
+
+        // 3. 進入遊戲更新迴圈
+        m_CurrentState = State::UPDATE;
+    }
 
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         auto newImage = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/testBackground.png");
