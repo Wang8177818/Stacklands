@@ -19,7 +19,7 @@
 class MenuButton {
 public:
     // 建構子：設定按鈕的位置、大小、文字內容與資源路徑
-    MenuButton(float x, float y, float textsize,float width, float height, const std::string& textStr, bool bold) {
+    MenuButton(float x, float y, float textsize,float width, float height, const std::string& textStr, bool bold, int words) {
         // 記錄原始座標與計算邊界
         m_OriginalX = x;
         m_OriginalY = y;
@@ -51,8 +51,8 @@ public:
         m_Underline = std::make_shared<Util::GameObject>();
         m_Underline->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/underline.png"));
         m_Underline->SetZIndex(6);
-        m_Underline->m_Transform.translation = glm::vec2(x - textsize/2.5, y - textsize/1.5);
-        m_Underline->m_Transform.scale = {textsize*5, 1};
+        m_Underline->m_Transform.translation = glm::vec2(x - textsize/3, y - textsize/1.5);
+        m_Underline->m_Transform.scale = {words*textsize, 1};
     }
 
     // 更新按鈕狀態，回傳 true 代表滑鼠正在上面
