@@ -86,7 +86,7 @@ void App::MainMenu() {
         auto greenBG = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/greenBG.png");
         m_MainMenuBG->SetDrawable(greenBG);
 
-        /*
+        /* aaa
         m_GameWhiteBG = std::make_shared<BackgroundImage>();
         auto whiteBG = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/whiteBG.png");
         m_GameWhiteBG->SetScale({5, 3});
