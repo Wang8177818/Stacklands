@@ -12,7 +12,7 @@ class BackgroundImage : public Util::GameObject {
 
 public:
     BackgroundImage() : GameObject(
-        std::make_unique<Util::Image>(RESOURCE_DIR"/Image/background/stacklandsMenu.png"), 0) {}
+        std::make_unique<Util::Image>(RESOURCE_DIR"/Image/background/stacklandsMenuBG.png"), 0) {}
 
     // ===== 新增這個函式來控制圖片大小 =====
     void SetScale(const glm::vec2& scale) {

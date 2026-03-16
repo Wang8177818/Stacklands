@@ -34,9 +34,26 @@ private:
     State m_CurrentState = State::START;
     Util::Renderer m_Renderer;
 
+    std::shared_ptr<BackgroundImage> m_MainMenuBG;
+    /*
+    std::shared_ptr<BackgroundImage> m_GameWhiteBG;
+    std::shared_ptr<BackgroundImage> m_GameBlackBG;
+    std::shared_ptr<BackgroundImage> m_GameLightGreenBG;
+    std::shared_ptr<BackgroundImage> m_GameDarkGreenBG;
+    */
+    std::shared_ptr<BackgroundImage> m_GameFieldImage;
     std::shared_ptr<BackgroundImage> m_MainMenuImage;
+    std::shared_ptr<BackgroundImage> m_DescriptionBarImage;
+    std::shared_ptr<BackgroundImage> m_resourseBarImage;
+    std::shared_ptr<BackgroundImage> m_timeBarImage;
+
     std::shared_ptr<MenuButton> m_BtnStart;
     std::shared_ptr<MenuButton> m_BtnExit;
+    std::shared_ptr<MenuButton> m_BtnOptions;
+    std::shared_ptr<MenuButton> m_BtnCardWiki;
+    std::shared_ptr<MenuButton> m_BtnMods;
+
+    float zoomSize = 0;
 };
 
 #endif
