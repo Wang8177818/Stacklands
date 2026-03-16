@@ -26,10 +26,12 @@ enum class CardType {
 
 class Card {
 public:
-    Card(float x, float y, const std::string& name, int sellValue, CardType type);
+    // 【新增】在最後面加入 scale 參數，並給予預設值 1.0f
+    Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale = 1.0f);
 
     // 虛擬解構子 (確保子類別被刪除時，記憶體能正確釋放)
     virtual ~Card() = default;
+
     //設定背景種類(黃、藍)
     void SetBackgroundImage(const std::string& imagePath);
     // 切換卡牌圖示
@@ -38,7 +40,6 @@ public:
     virtual void Update();
 
     // 當卡牌被疊上另一張卡時觸發
-    // 回傳 bool 代表這個堆疊是否被允許 (例如：食物不能疊在木頭上)
     virtual bool OnStacked(std::shared_ptr<Card> cardAbove);
 
     // 月底結算時觸發 (例如扣除食物、產生新卡牌等)
@@ -46,6 +47,7 @@ public:
 
     // 檢查滑鼠是否停留在這張卡牌上
     bool IsMouseHovering(glm::vec2 mousePos);
+    bool IsOverlapping(std::shared_ptr<Card> otherCard);
 
     // 拖曳控制
     void StartDragging(glm::vec2 mousePos);
@@ -55,11 +57,12 @@ public:
     int GetSellValue() const { return m_SellValue; }
     CardType GetType() const { return m_Type; }
 
-    // ==========================================
-    // 堆疊關係 (Linked List 結構)
-    // ==========================================
     void SetCardBelow(std::shared_ptr<Card> card) { m_CardBelow = card; }
     void SetCardAbove(std::shared_ptr<Card> card) { m_CardAbove = card; }
+
+    //取得疊在自己下方的卡片
+    std::shared_ptr<Card> GetCardBelow() const { return m_CardBelow; }
+
     std::shared_ptr<Card> GetCardAbove() const { return m_CardAbove; }
 
     // 取得所有負責顯示的 GameObject，交給 Renderer 繪製
@@ -74,9 +77,11 @@ protected:
     std::shared_ptr<Util::GameObject> m_Icon;
     std::shared_ptr<Util::GameObject> m_NameText;
 
+    // 座標與尺寸變數 (數值將在 cpp 的建構子中初始化)
     float m_X, m_Y;
-    float m_Width = 120.0f;  // 卡牌預設寬度
-    float m_Height = 180.0f; // 卡牌預設高度
+    float m_Scale;  // 記錄這張卡牌的縮放比例
+    float m_Width;  // 實際碰撞寬度
+    float m_Height; // 實際碰撞高度
 
     // 拖曳狀態
     bool m_IsDragging;
