@@ -8,25 +8,24 @@
 Card::Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale)
     : m_X(x), m_Y(y), m_Name(name), m_SellValue(sellValue), m_Type(type), m_Scale(scale), m_IsDragging(false)
 {
-    // 1. 建立底圖物件
+    //底圖
     m_Background = std::make_shared<Util::GameObject>();
     m_Background->SetZIndex(10); // 預設圖層高度
 
-    // 2. 建立圖示物件
+    //圖示
     m_Icon = std::make_shared<Util::GameObject>();
     m_Icon->SetZIndex(11); // 圖示要蓋在底圖上
 
-    // 3. 建立名稱文字物件
+    //名稱
     m_NameText = std::make_shared<Util::GameObject>();
 
-    // 【防護】確保字體大小為整數，且至少大於 10，避免引擎崩潰
+    //字體大小少大於18
     int fontSize = static_cast<int>(500 * m_Scale);
-    if (fontSize < 10) fontSize = 10;
-
+    if (fontSize < 18) fontSize = 18;
     m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, m_Name, Util::Color(0, 0, 0)));
-    m_NameText->SetZIndex(11); // 文字在最上層
+    m_NameText->SetZIndex(11);
 
-    // ===== 根據傳入的 scale 設定縮放 =====
+    //縮放
     glm::vec2 card_scale = {m_Scale, m_Scale};
     m_Background->m_Transform.scale = card_scale;
     m_Icon->m_Transform.scale = card_scale * glm::vec2{0.7f, 0.7f};
@@ -63,16 +62,19 @@ void Card::Update() {
 
         UpdateVisualPositions();
     }
+    // 吸附並跟隨
     else if (m_CardBelow != nullptr) {
-        // --- 【新增】沒有被拖曳，但底下有卡片：吸附並跟隨！ ---
-        // X 座標完全對齊底下的卡片
-        m_X = m_CardBelow->m_X;
-        // Y 座標往下偏移一點點 (例如卡牌高度的 15%)，這樣才看得到底下的卡
-        m_Y = m_CardBelow->m_Y - (m_Height * 0.15f);
+        // 1. 先算出「目標座標」(底卡的中心點往下偏移 10%)
+        float targetX = m_CardBelow->m_X;
+        float targetY = m_CardBelow->m_Y - (m_Height * 0.10f);
 
-        // 圖層自動比底下的卡高一層，確保不會被蓋住
-        int baseZ = 10; // 基礎 Z-Index
-        // 簡單的圖層遞增邏輯，如果需要更嚴謹未來可以再改
+        //移動延遲
+        float followSpeed = 0.3f;
+        m_X += (targetX - m_X) * followSpeed;
+        m_Y += (targetY - m_Y) * followSpeed;
+
+        // 3. 圖層調整
+        int baseZ = 10;
         m_Background->SetZIndex(m_CardBelow->m_Background->GetZIndex() + 3);
         m_Icon->SetZIndex(m_CardBelow->m_Icon->GetZIndex() + 3);
         m_NameText->SetZIndex(m_CardBelow->m_NameText->GetZIndex() + 3);

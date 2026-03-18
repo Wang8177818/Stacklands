@@ -155,8 +155,32 @@ void App::MainMenu() {
     }
 }
 
-void App::Update() {
-    m_Renderer.Update();
+void App::GameInit() { // 遊戲初始化
+
+    auto villager1 = std::make_shared<CharacterCard>(
+        -150, 0, "Villager", 3, RESOURCE_DIR"/Image/card/character/Villager.png",0.1f);
+    auto villager2 = std::make_shared<CharacterCard>(
+        150, 0, "Militia", 5, RESOURCE_DIR"/Image/card/character/Militia.png", 0.1f);
+
+    // 把卡片收編進我們的陣列裡
+    m_Cards.push_back(villager2);
+    m_Cards.push_back(villager1);
+
+    // 迴圈把所有卡片的 GameObject 交給 Renderer 畫出來
+    for (auto& card : m_Cards) {
+        for (auto& obj : card->GetGameObjects()) {
+            m_Renderer.AddChild(obj);
+        }
+    }
+
+    auto newImage = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/testBackground.png");
+    m_MainMenuImage->SetDrawable(newImage);
+
+    m_CurrentState = State::UPDATE;
+}
+
+void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
+    mousePos = Util::Input::GetCursorPosition();
 
     auto scroll = Util::Input::GetScrollDistance();
     if (Util::Input::IfScroll()) {
@@ -179,41 +203,7 @@ void App::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
         Util::Input::IfExit()) {
         m_CurrentState = State::END;
-    }
-    // if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
-    //     auto newImage = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/testBackground.png");
-    //     m_MainMenuImage->SetDrawable(newImage);
-    //     m_CurrentState = State::GAME_INIT;
-    // }
-    //IF 按下遊戲開始跳到Gameinit
-}
-
-void App::GameInit() { // 遊戲初始化
-
-    auto villager1 = std::make_shared<CharacterCard>(
-        -150, 0, "Villager", 3, RESOURCE_DIR"/Image/card/character/Villager.png",0.1f);
-    auto villager2 = std::make_shared<CharacterCard>(
-        150, 0, "Militia", 5, RESOURCE_DIR"/Image/card/character/Militia.png", 0.1f);
-
-    // 把卡片收編進我們的陣列裡
-    m_Cards.push_back(villager1);
-    m_Cards.push_back(villager2);
-
-    // 迴圈把所有卡片的 GameObject 交給 Renderer 畫出來
-    for (auto& card : m_Cards) {
-        for (auto& obj : card->GetGameObjects()) {
-            m_Renderer.AddChild(obj);
         }
-    }
-
-    auto newImage = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/testBackground.png");
-    m_MainMenuImage->SetDrawable(newImage);
-
-    m_CurrentState = State::UPDATE;
-}
-
-void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
-mousePos = Util::Input::GetCursorPosition();
 
     for (auto& card : m_Cards) {
         card->Update();
