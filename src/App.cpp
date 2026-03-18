@@ -156,15 +156,22 @@ void App::MainMenu() {
 }
 
 void App::GameInit() { // 遊戲初始化
-
+    float test_scale = 0.2f;
     auto villager1 = std::make_shared<CharacterCard>(
-        -150, 0, "Villager", 3, RESOURCE_DIR"/Image/card/character/Villager.png",0.1f);
+        -150, 0, "Villager", 3, RESOURCE_DIR"/Image/card/character/Villager.png",test_scale);
     auto villager2 = std::make_shared<CharacterCard>(
-        150, 0, "Militia", 5, RESOURCE_DIR"/Image/card/character/Militia.png", 0.1f);
+        150, 0, "Militia", 5, RESOURCE_DIR"/Image/card/character/Militia.png", test_scale);
+    auto villager3 = std::make_shared<CharacterCard>(
+        150, 0, "Baby", 5, RESOURCE_DIR"/Image/card/character/Baby.png", test_scale);
+    auto villager4 = std::make_shared<CharacterCard>(
+        150, 0, "Builder", 5, RESOURCE_DIR"/Image/card/character/Builder.png", test_scale);
 
     // 把卡片收編進我們的陣列裡
-    m_Cards.push_back(villager2);
     m_Cards.push_back(villager1);
+    m_Cards.push_back(villager2);
+    m_Cards.push_back(villager3);
+    m_Cards.push_back(villager4);
+
 
     // 迴圈把所有卡片的 GameObject 交給 Renderer 畫出來
     for (auto& card : m_Cards) {
@@ -172,9 +179,6 @@ void App::GameInit() { // 遊戲初始化
             m_Renderer.AddChild(obj);
         }
     }
-
-    auto newImage = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/testBackground.png");
-    m_MainMenuImage->SetDrawable(newImage);
 
     m_CurrentState = State::UPDATE;
 }
