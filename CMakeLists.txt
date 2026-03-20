@@ -40,6 +40,9 @@ add_executable(${PROJECT_NAME}
         include/Card.hpp
         src/Card.cpp
         include/CharacterCard.hpp
+        include/CardData.hpp
+        include/CardPack.hpp
+        src/CardPack.cpp
 )
 
 if(MSVC)

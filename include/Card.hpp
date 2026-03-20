@@ -21,7 +21,8 @@ enum class CardType {
     RESOURCE,   // 資源卡 (木頭、石頭等)
     CHARACTER,  // 人物卡 (村民、民兵等)
     BUILDING,   // 功能/建築卡 (箱子、房子等)
-    FOOD        // 食物卡 (漿果、蘋果等)
+    FOOD,       // 食物卡 (漿果、蘋果等)
+    PACK        // 卡包
 };
 
 class Card {
