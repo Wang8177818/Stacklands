@@ -128,14 +128,29 @@ void App::MainMenu() {
         m_DescriptionBarImage->SetDrawable(descriptionBar);
         m_DescriptionBarImage->SetScale({0.75, 0.75});
         m_DescriptionBarImage->m_Transform.translation = {-510, -240};
+        m_DescriptionBarImage->SetZIndex(99);
         m_Renderer.AddChild(m_DescriptionBarImage);
 
         m_resourseBarImage = std::make_shared<BackgroundImage>();
         auto resourseBar = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png");
         m_resourseBarImage->SetDrawable(resourseBar);
-        m_resourseBarImage->SetScale({0.75, 0.75});
-        m_resourseBarImage->m_Transform.translation = {510, 240};
+        m_resourseBarImage->SetScale({0.55, 0.75});
+        m_resourseBarImage->m_Transform.translation = {260, 335};
+        m_resourseBarImage->SetZIndex(99);
         m_Renderer.AddChild(m_resourseBarImage);
+
+        m_timeBarImage = std::make_shared<BackgroundImage>();
+        auto timeBar = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png");
+        m_timeBarImage->SetDrawable(timeBar);
+        m_timeBarImage->SetScale({0.75, 0.75});
+        m_timeBarImage->m_Transform.translation = {500, 335};
+        m_timeBarImage->SetZIndex(99);
+        m_Renderer.AddChild(m_timeBarImage);
+
+        m_play = std::make_shared<MenuButton>(615, 335, 0.06, 0.06, 20, 20, "/Image/button/play.png");
+        for (auto& obj : m_play->GetGameObjects()) {
+            m_Renderer.AddChild(obj);
+        }
 
         // 2. 隱藏主選單的 UI
         m_BtnStart->HideAll();
@@ -186,18 +201,59 @@ void App::GameInit() { // 遊戲初始化
 void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
     mousePos = Util::Input::GetCursorPosition();
 
-    auto scroll = Util::Input::GetScrollDistance();
+    // 1. 先確認玩家這一幀「有沒有」轉動滾輪
     if (Util::Input::IfScroll()) {
-        if (scroll.x > 0 && m_GameFieldImage->m_Transform.scale.x < 2) {
-            m_GameFieldImage->SetScale({m_GameFieldImage.get()->m_Transform.scale.x + 0.005, m_GameFieldImage.get()->m_Transform.scale.y + 0.005});
+
+        // 2. 取得滾動的數值
+        glm::vec2 scroll = Util::Input::GetScrollDistance();
+
+        // 3. 判斷方向並執行縮放 (記得讀取的是 X 軸)
+        if (scroll.y > 0) {
+            // 往上滾：放大地圖
+            LOG_DEBUG("往上滾！放大！");
+            if (m_GameFieldImage->m_Transform.scale.x < 2.0f) {
+                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x + 0.05f,
+                                            m_GameFieldImage->m_Transform.scale.y + 0.05f});
+            }
         }
-        if (scroll.x < 0 && m_GameFieldImage.get()->m_Transform.scale.x > 0.5) {
-            m_GameFieldImage->SetScale({m_GameFieldImage.get()->m_Transform.scale.x - 0.005, m_GameFieldImage.get()->m_Transform.scale.y - 0.005});
+        else if (scroll.y < 0) {
+            // 往下滾：縮小地圖
+            LOG_DEBUG("往下滾！縮小！");
+            if (m_GameFieldImage->m_Transform.scale.x > 0.5f) {
+                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x - 0.05f,
+                                            m_GameFieldImage->m_Transform.scale.y - 0.05f});
+            }
         }
     }
 
     if (Util::Input::IsKeyPressed(Util::Keycode::W)) {
         m_GameFieldImage->m_Transform.translation = {m_GameFieldImage.get()->m_Transform.translation.x, m_GameFieldImage.get()->m_Transform.translation.y - 1};
+    }
+    if (Util::Input::IsKeyPressed(Util::Keycode::S)) {
+        m_GameFieldImage->m_Transform.translation = {m_GameFieldImage.get()->m_Transform.translation.x, m_GameFieldImage.get()->m_Transform.translation.y + 1};
+    }
+    if (Util::Input::IsKeyPressed(Util::Keycode::A)) {
+        m_GameFieldImage->m_Transform.translation = {m_GameFieldImage.get()->m_Transform.translation.x + 1, m_GameFieldImage.get()->m_Transform.translation.y};
+    }
+    if (Util::Input::IsKeyPressed(Util::Keycode::D)) {
+        m_GameFieldImage->m_Transform.translation = {m_GameFieldImage.get()->m_Transform.translation.x - 1, m_GameFieldImage.get()->m_Transform.translation.y};
+    }
+
+    if (m_play->UpdateHover(mousePos) && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        switch (GetGameState()) {
+            case GameTime::NORMAL:
+                m_play->ChangeImage("/Image/button/fastforward.png");
+                m_GameTime = GameTime::FAST;
+                break;
+            case GameTime::FAST:
+                m_play->ChangeImage("/Image/button/pause.png");
+                m_GameTime = GameTime::PAUSE;
+                break;
+            case GameTime::PAUSE:
+                m_play->ChangeImage("/Image/button/play.png");
+                m_GameTime = GameTime::NORMAL;
+                break;
+        }
     }
 
     /*

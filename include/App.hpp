@@ -18,7 +18,15 @@ public:
         END,
     };
 
+    enum class GameTime {
+        NORMAL,
+        FAST,
+        PAUSE,
+    };
+
     State GetCurrentState() const { return m_CurrentState; }
+
+    GameTime GetGameState() const { return m_GameTime; }
 
     void Start();
 
@@ -36,6 +44,7 @@ public:
 private:
     void ValidTask();
     State m_CurrentState = State::START;
+    GameTime m_GameTime = GameTime::NORMAL;
     Util::Renderer m_Renderer;
 
     std::shared_ptr<BackgroundImage> m_MainMenuBG;
@@ -50,6 +59,10 @@ private:
     std::shared_ptr<BackgroundImage> m_DescriptionBarImage;
     std::shared_ptr<BackgroundImage> m_resourseBarImage;
     std::shared_ptr<BackgroundImage> m_timeBarImage;
+
+    std::shared_ptr<MenuButton> m_play;
+    std::shared_ptr<MenuButton> m_pause;
+    std::shared_ptr<MenuButton> m_fastplay;
 
     std::shared_ptr<MenuButton> m_BtnStart;
     std::shared_ptr<MenuButton> m_BtnExit;
