@@ -13,7 +13,7 @@
 void App::Start() {
     LOG_TRACE("Start");
 
-    //===新增Menu按鈕=== aaa
+    //===新增Menu按鈕===
     m_BtnStart = std::make_shared<MenuButton>(-562, -80, 20, 100, 20, "開始新遊戲", true, 5);
     for (auto& obj : m_BtnStart->GetGameObjects()) {
         m_Renderer.AddChild(obj);
@@ -120,7 +120,7 @@ void App::MainMenu() {
         m_GameFieldImage = std::make_shared<BackgroundImage>();
         auto gamefieldImage = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/gameField.png");
         m_GameFieldImage->SetDrawable(gamefieldImage);
-        m_GameFieldImage->SetScale({0.5, 0.5});
+        m_GameFieldImage->SetScale({0.7, 0.7});
         m_Renderer.AddChild(m_GameFieldImage);
 
         m_DescriptionBarImage = std::make_shared<BackgroundImage>();
@@ -128,7 +128,7 @@ void App::MainMenu() {
         m_DescriptionBarImage->SetDrawable(descriptionBar);
         m_DescriptionBarImage->SetScale({0.75, 0.75});
         m_DescriptionBarImage->m_Transform.translation = {-510, -240};
-        m_DescriptionBarImage->SetZIndex(99);
+        m_DescriptionBarImage->SetZIndex(98);
         m_Renderer.AddChild(m_DescriptionBarImage);
 
         m_resourseBarImage = std::make_shared<BackgroundImage>();
@@ -136,7 +136,7 @@ void App::MainMenu() {
         m_resourseBarImage->SetDrawable(resourseBar);
         m_resourseBarImage->SetScale({0.55, 0.75});
         m_resourseBarImage->m_Transform.translation = {260, 335};
-        m_resourseBarImage->SetZIndex(99);
+        m_resourseBarImage->SetZIndex(98);
         m_Renderer.AddChild(m_resourseBarImage);
 
         m_timeBarImage = std::make_shared<BackgroundImage>();
@@ -144,8 +144,23 @@ void App::MainMenu() {
         m_timeBarImage->SetDrawable(timeBar);
         m_timeBarImage->SetScale({0.75, 0.75});
         m_timeBarImage->m_Transform.translation = {500, 335};
-        m_timeBarImage->SetZIndex(99);
+        m_timeBarImage->SetZIndex(98);
         m_Renderer.AddChild(m_timeBarImage);
+
+        m_runTimeBarImage = std::make_shared<BackgroundImage>();
+        auto runtimeBar = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/dark_bg.png");
+        m_runTimeBarImage->SetDrawable(runtimeBar);
+        m_runTimeBarImage->SetPivot({-0.5,0});
+        m_runTimeBarImage->SetScale({0, 35});
+        m_runTimeBarImage->m_Transform.translation = {368, 335};
+        m_runTimeBarImage->SetZIndex(99);
+        m_Renderer.AddChild(m_runTimeBarImage);
+
+        m_pauseText = std::make_shared<Util::GameObject>();
+        m_pauseText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 50, "暫停。", Util::Color(0, 0, 0, 50)));
+        m_pauseText->SetVisible(false);
+        m_pauseText->SetZIndex(100);
+        m_Renderer.AddChild(m_pauseText);
 
         m_play = std::make_shared<MenuButton>(615, 335, 0.06, 0.06, 20, 20, "/Image/button/play.png");
         for (auto& obj : m_play->GetGameObjects()) {
@@ -171,7 +186,7 @@ void App::MainMenu() {
 }
 
 void App::GameInit() { // 遊戲初始化
-    float test_scale = 0.2f;
+    float test_scale = 0.05f;
     auto villager1 = std::make_shared<CharacterCard>(
         -150, 0, "Villager", 3, RESOURCE_DIR"/Image/card/character/Villager.png",test_scale);
     auto villager2 = std::make_shared<CharacterCard>(
@@ -198,30 +213,44 @@ void App::GameInit() { // 遊戲初始化
     m_CurrentState = State::UPDATE;
 }
 
-void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
+void App::Update() {
+    //遊戲內邏輯 寫這裡 暫停跳出去
     mousePos = Util::Input::GetCursorPosition();
+
+    switch (GetGameState()) {
+        case GameTime::NORMAL:
+            m_pauseText->SetVisible(false);
+            m_runTimeBarImage->SetScale({m_runTimeBarImage->GetScaledSize().x + 0.05, 35});
+            tick += 0.05;
+            break;
+        case GameTime::FAST:
+            m_runTimeBarImage->SetScale({m_runTimeBarImage->GetScaledSize().x + 0.15, 35});
+            tick += 0.15;
+            break;
+        case GameTime::PAUSE:
+            m_pauseText->SetVisible(true);
+            break;
+    }
 
     // 1. 先確認玩家這一幀「有沒有」轉動滾輪
     if (Util::Input::IfScroll()) {
-
         // 2. 取得滾動的數值
         glm::vec2 scroll = Util::Input::GetScrollDistance();
-
         // 3. 判斷方向並執行縮放 (記得讀取的是 X 軸)
         if (scroll.y > 0) {
             // 往上滾：放大地圖
             LOG_DEBUG("往上滾！放大！");
             if (m_GameFieldImage->m_Transform.scale.x < 2.0f) {
-                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x + 0.05f,
-                                            m_GameFieldImage->m_Transform.scale.y + 0.05f});
+                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x + 0.01f,
+                                            m_GameFieldImage->m_Transform.scale.y + 0.01f});
             }
         }
         else if (scroll.y < 0) {
             // 往下滾：縮小地圖
             LOG_DEBUG("往下滾！縮小！");
             if (m_GameFieldImage->m_Transform.scale.x > 0.5f) {
-                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x - 0.05f,
-                                            m_GameFieldImage->m_Transform.scale.y - 0.05f});
+                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x - 0.01f,
+                                            m_GameFieldImage->m_Transform.scale.y - 0.01f});
             }
         }
     }
@@ -255,15 +284,6 @@ void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
                 break;
         }
     }
-
-    /*
-     * Do not touch the code below as they serve the purpose for
-     * closing the window.
-     */
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
-        Util::Input::IfExit()) {
-        m_CurrentState = State::END;
-        }
 
     for (auto& card : m_Cards) {
         card->Update();
@@ -350,6 +370,10 @@ void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
 
     m_Renderer.Update();
 
+    /*
+     * Do not touch the code below as they serve the purpose for
+     * closing the window.
+     */
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) || Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }

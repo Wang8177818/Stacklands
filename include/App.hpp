@@ -40,7 +40,9 @@ public:
 
     glm::vec2 mousePos = Util::Input::GetCursorPosition();
     //鼠標位置
-
+    float tick = 0;
+    float month = 1;
+    //遊戲內時間
 private:
     void ValidTask();
     State m_CurrentState = State::START;
@@ -59,10 +61,9 @@ private:
     std::shared_ptr<BackgroundImage> m_DescriptionBarImage;
     std::shared_ptr<BackgroundImage> m_resourseBarImage;
     std::shared_ptr<BackgroundImage> m_timeBarImage;
+    std::shared_ptr<BackgroundImage> m_runTimeBarImage;
 
     std::shared_ptr<MenuButton> m_play;
-    std::shared_ptr<MenuButton> m_pause;
-    std::shared_ptr<MenuButton> m_fastplay;
 
     std::shared_ptr<MenuButton> m_BtnStart;
     std::shared_ptr<MenuButton> m_BtnExit;
@@ -70,7 +71,12 @@ private:
     std::shared_ptr<MenuButton> m_BtnCardWiki;
     std::shared_ptr<MenuButton> m_BtnMods;
 
-    float zoomSize = 0;
+    std::shared_ptr<Util::GameObject> m_pauseText;
+
+    //===滑鼠移動鏡頭===
+    bool m_IsDragging = false;           // 記錄是否正在拖曳
+    glm::vec2 m_LastMousePos = {0, 0};   // 記錄上一幀的滑鼠位置
+    //================
 
     // 所有卡片的陣列
     std::vector<std::shared_ptr<Card>> m_Cards;
