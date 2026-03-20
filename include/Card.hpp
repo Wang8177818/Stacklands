@@ -26,15 +26,12 @@ enum class CardType {
 
 class Card {
 public:
-    // 【新增】在最後面加入 scale 參數，並給予預設值 1.0f
     Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale = 1.0f);
 
-    // 虛擬解構子 (確保子類別被刪除時，記憶體能正確釋放)
     virtual ~Card() = default;
 
-    //設定背景種類(黃、藍)
     void SetBackgroundImage(const std::string& imagePath);
-    // 切換卡牌圖示
+
     void SetIconImage(const std::string& imagePath);
 
     virtual void Update();
@@ -51,7 +48,7 @@ public:
 
     // 拖曳控制
     void StartDragging(glm::vec2 mousePos);
-    void StopDragging();
+    virtual void StopDragging();
 
     // 取得卡牌屬性
     int GetSellValue() const { return m_SellValue; }
@@ -66,7 +63,7 @@ public:
     std::shared_ptr<Card> GetCardAbove() const { return m_CardAbove; }
 
     // 取得所有負責顯示的 GameObject，交給 Renderer 繪製
-    std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects();
+    virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects();
 
 protected:
     CardType m_Type;
@@ -92,7 +89,7 @@ protected:
     std::shared_ptr<Card> m_CardAbove = nullptr;
 
     // 更新 GameObject 實際座標的內部方法
-    void UpdateVisualPositions();
+    virtual void UpdateVisualPositions();
 };
 
 #endif //STACKLANDS_CARD_HPP
