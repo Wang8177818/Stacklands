@@ -21,7 +21,8 @@ enum class CardType {
     RESOURCE,   // 資源卡 (木頭、石頭等)
     CHARACTER,  // 人物卡 (村民、民兵等)
     BUILDING,   // 功能/建築卡 (箱子、房子等)
-    FOOD        // 食物卡 (漿果、蘋果等)
+    FOOD,       // 食物卡 (漿果、蘋果等)
+    PACK        // 卡包
 };
 
 class Card {
@@ -64,6 +65,8 @@ public:
 
     // 取得所有負責顯示的 GameObject，交給 Renderer 繪製
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects();
+    float GetX() const { return m_X; }
+    float GetY() const { return m_Y; }
 
 protected:
     CardType m_Type;
