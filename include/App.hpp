@@ -74,8 +74,8 @@ private:
     std::shared_ptr<Util::GameObject> m_pauseText;
 
     //===滑鼠移動鏡頭===
-    bool m_IsDragging = false;           // 記錄是否正在拖曳
-    glm::vec2 m_LastMousePos = {0, 0};   // 記錄上一幀的滑鼠位置
+    bool m_IsDraggingMap = false;        // 記錄是否正在拖曳地圖
+    glm::vec2 m_LastMousePos = {0, 0};   // 記錄滑鼠上一幀的位置
     //================
 
     // 所有卡片的陣列

@@ -74,7 +74,6 @@ protected:
     std::shared_ptr<Util::GameObject> m_Icon;
     std::shared_ptr<Util::GameObject> m_NameText;
 
-    // 座標與尺寸變數 (數值將在 cpp 的建構子中初始化)
     float m_X, m_Y;
     float m_Scale;  // 記錄這張卡牌的縮放比例
     float m_Width;  // 實際碰撞寬度
