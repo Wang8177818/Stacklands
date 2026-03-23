@@ -7,6 +7,10 @@
 #include "Util/Renderer.hpp" // 新增：引入渲染器 (畫布)
 #include "Button.hpp"
 #include "Card.hpp"
+#include <random>
+#include "Card.hpp"
+#include "CardPack.hpp"
+#include "CardManager.hpp"
 
 class App {
 public:
@@ -50,12 +54,6 @@ private:
     Util::Renderer m_Renderer;
 
     std::shared_ptr<BackgroundImage> m_MainMenuBG;
-    /*
-    std::shared_ptr<BackgroundImage> m_GameWhiteBG;
-    std::shared_ptr<BackgroundImage> m_GameBlackBG;
-    std::shared_ptr<BackgroundImage> m_GameLightGreenBG;
-    std::shared_ptr<BackgroundImage> m_GameDarkGreenBG;
-    */
     std::shared_ptr<BackgroundImage> m_GameFieldImage;
     std::shared_ptr<BackgroundImage> m_MainMenuImage;
     std::shared_ptr<BackgroundImage> m_DescriptionBarImage;
@@ -78,10 +76,9 @@ private:
     glm::vec2 m_LastMousePos = {0, 0};   // 記錄滑鼠上一幀的位置
     //================
 
-    // 所有卡片的陣列
-    std::vector<std::shared_ptr<Card>> m_Cards;
-    // 正在被滑鼠抓著」(如果沒抓東西就是 nullptr)
-    std::shared_ptr<Card> m_DraggingCard = nullptr;
+    // ===【核心瘦身】這行取代了原本一大串的卡片管理變數！===
+    std::unique_ptr<CardManager> m_CardManager;
 };
+
 
 #endif
