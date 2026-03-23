@@ -8,7 +8,7 @@
 #include "Button.hpp"
 #include "Core/Context.hpp"
 #include "Card.hpp"
-#include"CharacterCard.hpp"
+#include "CharacterCard.hpp"
 
 void App::Start() {
     LOG_TRACE("Start");
@@ -273,42 +273,9 @@ void App::Update() {
         }
     }
 
-    for (auto& card : m_Cards) {
-        card->Update();
-    }
-
     // ==========================================
     // 2. 判斷滑鼠「按下左鍵」：抓起卡片
     // ==========================================
-    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB) && m_DraggingCard == nullptr) {
-        std::shared_ptr<Card> targetToPick = nullptr;
-        int highestZ = -9999;
-
-        // 掃描所有卡片，找出滑鼠底下「圖層最高」的那一張
-        for (auto& card : m_Cards) {
-            if (card->IsMouseHovering(mousePos)) {
-                // 透過 GetGameObjects() 取得卡牌底圖目前的 Z-Index
-                int currentZ = card->GetGameObjects()[0]->GetZIndex();
-                if (currentZ > highestZ) {
-                    highestZ = currentZ;
-                    targetToPick = card; // 鎖定最高層的這張卡
-                }
-            }
-        }
-
-        // 如果有抓到卡片
-        if (targetToPick != nullptr) {
-            m_DraggingCard = targetToPick;
-
-            // 【斷開連結】如果這張卡原本疊在別人上面，拿起來時要分手
-            if (m_DraggingCard->GetCardBelow() != nullptr) {
-                m_DraggingCard->GetCardBelow()->SetCardAbove(nullptr);
-                m_DraggingCard->SetCardBelow(nullptr);
-            }
-
-            m_DraggingCard->StartDragging(mousePos);
-        }
-    }
 
     // ===【核心瘦身】把滑鼠座標丟給管理器，讓它自己去搞定所有卡牌互動！ ===
     m_CardManager->Update(mousePos);
