@@ -19,7 +19,7 @@ public:
         : Card(x, y, name, sellValue, CardType::CHARACTER, scale) {
 
         glm::vec2 card_scale = {m_Scale, m_Scale};
-        SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.jpg");
+        SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.png");
         SetIconImage(iconPath);
 
         // HP visaulize
@@ -100,6 +100,8 @@ public:
 protected:
     std::shared_ptr<Util::GameObject> m_HealthBg;
     std::shared_ptr<Util::GameObject> m_HealthText;
+    int health, attack;
+
 };
 
 #endif //STACKLANDS_CHARACTERCARD_HPP
