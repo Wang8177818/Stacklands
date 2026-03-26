@@ -64,9 +64,6 @@ void App::Start() {
     m_CardManager = std::make_unique<CardManager>(m_Renderer);
 
     m_CurrentState = State::MAIN_MENU;
-
-    // 使用當前時間初始化隨機產生器種子
-
 }
 
 void App::MainMenu() {

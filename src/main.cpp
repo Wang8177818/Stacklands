@@ -16,6 +16,10 @@ int main(int, char**) {
                 app.MainMenu();
                 break;
 
+            case App::State::GAME_INIT:
+                app.GameInit();
+                break;
+
             case App::State::UPDATE:
                 app.Update();
                 break;

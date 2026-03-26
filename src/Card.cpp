@@ -166,7 +166,7 @@ std::vector<std::shared_ptr<Util::GameObject>> Card::GetGameObjects() {
 }
 
 bool Card::OnStacked(std::shared_ptr<Card> /*cardAbove*/) {
-    return true; // 預設接受堆疊
+    return false; // 預設不接受堆疊
 }
 
 void Card::OnMonthEnd() {
