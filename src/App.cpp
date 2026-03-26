@@ -222,8 +222,26 @@ void App::GameInit(){
     m_CurrentState = State::UPDATE;
 }
 void App::Update() {
-    //遊戲內邏輯 寫這裡 暫停跳出去
     mousePos = Util::Input::GetCursorPosition();
+
+    // 【關鍵修改】加入 !m_IsDraggingCard 的判斷
+    // 如果玩家按住了右鍵 (或左鍵)，"且" 目前沒有在拖曳卡片，才移動地圖
+    if (Util::Input::IsKeyPressed(Util::Keycode::MOUSE_LB)) {
+
+        if (!m_IsDraggingMap) {
+            m_IsDraggingMap = true;
+            m_LastMousePos = mousePos;
+        } else {
+            glm::vec2 delta = mousePos - m_LastMousePos;
+            m_GameFieldImage->m_Transform.translation.x += delta.x;
+            m_GameFieldImage->m_Transform.translation.y += delta.y;
+            m_LastMousePos = mousePos;
+        }
+
+    } else {
+        // 如果沒按著右鍵，或是正在拖卡片，就停止地圖拖曳
+        m_IsDraggingMap = false;
+    }
 
     switch (GetGameState()) {
         case GameTime::NORMAL:
