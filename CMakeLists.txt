@@ -46,6 +46,7 @@ add_executable(${PROJECT_NAME}
         include/CardManager.hpp
         src/CardManager.cpp
         include/ResourceCard.hpp
+        include/CoinCard.hpp
 )
 
 if(MSVC)

@@ -14,6 +14,7 @@
 #include "Card.hpp"
 #include "CardData.hpp"
 #include "Util/Renderer.hpp"
+#include "CoinCard.hpp"
 
 class CardManager {
 public:

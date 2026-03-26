@@ -22,7 +22,8 @@ enum class CardType {
     CHARACTER,  // 人物卡 (村民、民兵等)
     BUILDING,   // 功能/建築卡 (箱子、房子等)
     FOOD,       // 食物卡 (漿果、蘋果等)
-    PACK        // 卡包
+    PACK,       // 卡包
+    COIN        // 金幣
 };
 
 class Card {
@@ -48,7 +49,7 @@ public:
     bool IsOverlapping(std::shared_ptr<Card> otherCard);
 
     // 拖曳控制
-    void StartDragging(glm::vec2 mousePos);
+    virtual void StartDragging(glm::vec2 mousePos);
     virtual void StopDragging();
 
     // 取得卡牌屬性

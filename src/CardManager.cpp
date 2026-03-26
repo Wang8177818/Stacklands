@@ -30,6 +30,8 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
         newCard = std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale, data.health, data.attack);
     }else if (data.type == CardType::RESOURCE){
         std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
+    }else if (data.type == CardType::COIN){
+        newCard = std::make_shared<CoinCard>(x, y, data.scale);
     }else {
         newCard = std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
     }
@@ -46,7 +48,16 @@ void CardManager::Update(glm::vec2 mousePos) {
     m_Cards.erase(std::remove_if(m_Cards.begin(), m_Cards.end(),
         [](const std::shared_ptr<Card>& card) {
             if (card->GetType() == CardType::PACK) {
-                return std::static_pointer_cast<CardPack>(card)->IsEmpty();
+                auto pack = std::static_pointer_cast<CardPack>(card);
+                if (pack->IsEmpty()) {
+
+                    for (auto& obj : pack->GetGameObjects()) {
+                        obj->SetVisible(false);
+                        obj->m_Transform.translation = glm::vec2(-9999, -9999);
+                    }
+
+                    return true;
+                }
             }
             return false;
         }), m_Cards.end());

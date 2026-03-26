@@ -10,12 +10,21 @@
 
 class ResourceCard : public Card {
 public:
-    // 建構子：跟一般卡片幾乎一樣，但我們可以在這裡指定專屬的資源卡底圖
     ResourceCard(float x, float y, const std::string& name, int sellValue, const std::string& iconPath, float scale = 1.0f)
         : Card(x, y, name, sellValue, CardType::RESOURCE, scale) {
 
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Resource.png");
         SetIconImage(iconPath);
+
+        int fontSize = static_cast<int>(500 * m_Scale);
+        if (fontSize < 22) fontSize = 22;
+
+        m_PriceText = std::make_shared<Util::GameObject>();
+
+        m_PriceText->SetDrawable(std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(sellValue), Util::Color(100, 111, 128)));
+        m_PriceText->m_Transform.scale = {m_Scale, m_Scale};
+        m_PriceText->SetZIndex(m_Background->GetZIndex() + 1);
 
         UpdateVisualPositions();
     }
@@ -24,7 +33,37 @@ public:
         return true;
     }
 
-    // 其他功能
+    virtual void UpdateVisualPositions() override {
+        Card::UpdateVisualPositions();
+
+        if (m_PriceText) {
+            float priceOffsetX = m_Width * -0.35f;
+            float priceOffsetY = m_Height * -0.3f;
+            m_PriceText->m_Transform.translation = glm::vec2(m_X + priceOffsetX ,m_Y + priceOffsetY);
+
+            m_PriceText->SetZIndex(m_Background->GetZIndex() + 1);
+        }
+    }
+
+    virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override {
+        std::vector<std::shared_ptr<Util::GameObject>> objs = Card::GetGameObjects();
+        // 把價格加進去清單
+        if (m_PriceText) objs.push_back(m_PriceText);
+        return objs;
+    }
+
+    virtual void StartDragging(glm::vec2 mousePos) override {
+        Card::StartDragging(mousePos);
+        if (m_PriceText) m_PriceText->SetZIndex(42);
+    }
+
+    virtual void StopDragging() override {
+        Card::StopDragging();
+        if (m_PriceText) m_PriceText->SetZIndex(m_Background->GetZIndex() + 1);
+    }
+
+protected:
+    std::shared_ptr<Util::GameObject> m_PriceText;
 };
 
 #endif //STACKLANDS_RESOURCECARD_HPP

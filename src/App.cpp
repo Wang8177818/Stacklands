@@ -9,6 +9,7 @@
 #include "Core/Context.hpp"
 #include "Card.hpp"
 #include "CharacterCard.hpp"
+#include "ResourceCard.hpp"
 
 void App::Start() {
     LOG_TRACE("Start");
@@ -189,27 +190,37 @@ void App::MainMenu() {
     }
 }
 
-void App::GameInit() {
-    float test_scale = 0.05f;
+void App::GameInit(){
+    float test_scale = 0.15f; //最終 0.05f
 
-    // 使用 Manager 統一加入卡片
-    auto villager1 = std::make_shared<CharacterCard>(-150, 0, "Villager", 3, RESOURCE_DIR"/Image/card/character/Villager.png", test_scale, 1, 1);
-    auto villager2 = std::make_shared<CharacterCard>(150, 0, "Militia", 5, RESOURCE_DIR"/Image/card/character/Militia.png", test_scale, 2, 1);
-    auto res = std::make_shared<CharacterCard>(100, 0, "Wood", 1, RESOURCE_DIR"/Image/card/resource/Wood.png", test_scale);
-    m_CardManager->AddCard(villager1);
-    m_CardManager->AddCard(villager2);
-    m_CardManager->AddCard(res);
+    // 村民
+    CardSpawnData villagerData = {"Villager", 3, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Villager.png", test_scale, 1};
+    m_CardManager->CreateCardFromData(-150, 0, villagerData);
 
+    // 民兵
+    CardSpawnData militiaData = {"Militia", 5, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Militia.png", test_scale, 2};
+    m_CardManager->CreateCardFromData(150, 0, militiaData);
+
+    // 木頭
+    CardSpawnData woodData = {"Wood", 1, CardType::RESOURCE, RESOURCE_DIR"/Image/card/resource/Wood.png", test_scale, 0};
+    m_CardManager->CreateCardFromData(100, 0, woodData);
+
+    // 金幣
+    CardSpawnData coinData = {"Coin", 1, CardType::COIN, "", test_scale, 0};
+    m_CardManager->CreateCardFromData(0, 0, coinData);
+    m_CardManager->CreateCardFromData(0, 100, coinData);
+
+
+    // Pack
     std::vector<CardSpawnData> pool;
     pool.push_back({"Baby", 5, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Baby.png", test_scale, 2});
     pool.push_back({"Builder", 5, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Builder.png", test_scale, 5});
 
-    auto startPack = std::make_shared<CardPack>(0, 150, "Starter Pack", 0, RESOURCE_DIR"/Image/card/Pack.png", test_scale, 5, pool);
+    auto startPack = std::make_shared<CardPack>(0, 150, "A New World", 0, RESOURCE_DIR"/Image/card/pack/Traveling-Cart.png", test_scale, 5, pool);
     m_CardManager->AddCard(startPack);
 
     m_CurrentState = State::UPDATE;
 }
-
 void App::Update() {
     //遊戲內邏輯 寫這裡 暫停跳出去
     mousePos = Util::Input::GetCursorPosition();
