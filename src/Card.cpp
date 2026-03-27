@@ -8,32 +8,31 @@
 Card::Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale)
     : m_X(x), m_Y(y), m_Name(name), m_SellValue(sellValue), m_Type(type), m_Scale(scale), m_IsDragging(false)
 {
-    // 1. 建立底圖物件
+    //底圖
     m_Background = std::make_shared<Util::GameObject>();
     m_Background->SetZIndex(10); // 預設圖層高度
 
-    // 2. 建立圖示物件
+    //圖示
     m_Icon = std::make_shared<Util::GameObject>();
     m_Icon->SetZIndex(11); // 圖示要蓋在底圖上
 
-    // 3. 建立名稱文字物件
+    //名稱
     m_NameText = std::make_shared<Util::GameObject>();
 
-    // 【防護】確保字體大小為整數，且至少大於 10，避免引擎崩潰
+    //字體大小少大於22
     int fontSize = static_cast<int>(500 * m_Scale);
-    if (fontSize < 10) fontSize = 10;
-
+    if (fontSize < 22) fontSize = 22;
     m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, m_Name, Util::Color(0, 0, 0)));
-    m_NameText->SetZIndex(11); // 文字在最上層
+    m_NameText->SetZIndex(11);
 
-    // ===== 根據傳入的 scale 設定縮放 =====
+    //縮放
     glm::vec2 card_scale = {m_Scale, m_Scale};
-    m_Background->m_Transform.scale = card_scale;
-    m_Icon->m_Transform.scale = card_scale * glm::vec2{0.7f, 0.7f};
+    m_Background->m_Transform.scale = card_scale * 2.0f;
+    m_Icon->m_Transform.scale = card_scale * 0.6f;
     m_NameText->m_Transform.scale = card_scale;
 
-    float baseWidth = 1200.0f;
-    float baseHeight = 1800.0f;
+    float baseWidth = 850.0f;
+    float baseHeight = 1250.0f;
 
     m_Width = baseWidth * m_Scale;
     m_Height = baseHeight * m_Scale;

@@ -1,0 +1,8 @@
+[
+  { "name": "Villager", "type": "CHARACTER", "iconPath": "/Image/card/character/Villager.png", "health": 15 },
+  { "name": "Militia" , "type": "CHARACTER", "iconPath": "/Image/card/character/Militia.png", "health": 2 },
+  { "name": "Baby"    , "type": "CHARACTER", "iconPath": "/Image/card/character/Baby.png", "health": 2 },
+  { "name": "Builder" , "type": "CHARACTER", "iconPath": "/Image/card/character/Builder.png", "health": 5 },
+  { "name": "Wood"    , "sellValue": 1, "type": "RESOURCE",  "iconPath": "/Image/card/resource/Wood.png"},
+  { "name": "Coin"    , "sellValue": 1, "type": "COIN"}
+]
