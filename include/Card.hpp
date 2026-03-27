@@ -83,8 +83,7 @@ public:
     void ScaleAroundPivot(float ratio, glm::vec2 pivot) {
         m_X = pivot.x + (m_X - pivot.x) * ratio;
         m_Y = pivot.y + (m_Y - pivot.y) * ratio;
-        m_Scale *= ratio;
-        UpdateVisualPositions();
+        SetScale(m_Scale * ratio); // 同步更新視覺縮放與碰撞尺寸
     }
 
 protected:
