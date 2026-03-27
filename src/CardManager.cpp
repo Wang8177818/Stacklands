@@ -20,6 +20,17 @@ CardType StringToCardType(const std::string& typeStr) {
     return CardType::BASIC;
 }
 
+bool CardManager::isDraggingCard() {
+    if (m_DraggingCard != nullptr) {
+        return true;
+    }
+    return false;
+}
+
+std::vector<std::shared_ptr<Card>> CardManager::GetAllCards() {
+    return m_Cards;
+}
+
 void CardManager::LoadCardDatabase(const std::string& filePath) {
     std::ifstream file(filePath);
     if (!file.is_open()) {

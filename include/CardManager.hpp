@@ -39,6 +39,12 @@ public:
     // 卡片工廠
     std::shared_ptr<Card> CreateCardFromData(float x, float y, const CardSpawnData& data);
 
+    // 取得所有卡片
+    std::vector<std::shared_ptr<Card>> GetAllCards();
+
+    // 是否正在拖曳卡片
+    bool isDraggingCard();
+
 private:
     Util::Renderer& m_Renderer; // 參考到 App 的 Renderer
 
