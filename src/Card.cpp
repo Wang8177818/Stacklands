@@ -165,6 +165,21 @@ std::vector<std::shared_ptr<Util::GameObject>> Card::GetGameObjects() {
     return objs;
 }
 
+void Card::SetScale(float scale) {
+    m_Scale = scale;
+    glm::vec2 card_scale = {m_Scale, m_Scale};
+    m_Background->m_Transform.scale = card_scale * 2.0f;
+    m_Icon->m_Transform.scale       = card_scale * 0.6f;
+    m_NameText->m_Transform.scale   = card_scale;
+
+    float baseWidth  = 850.0f;
+    float baseHeight = 1250.0f;
+    m_Width  = baseWidth  * m_Scale;
+    m_Height = baseHeight * m_Scale;
+
+    UpdateVisualPositions();
+}
+
 bool Card::OnStacked(std::shared_ptr<Card> /*cardAbove*/) {
     return false; // 預設不接受堆疊
 }
