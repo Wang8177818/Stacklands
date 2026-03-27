@@ -19,7 +19,6 @@ int main(int, char**) {
             case App::State::GAME_INIT:
                 app.GameInit();
                 break;
-
             case App::State::UPDATE:
                 app.Update();
                 break;

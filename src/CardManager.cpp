@@ -8,6 +8,103 @@
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
 #include <algorithm>
+#include <fstream>
+#include "Util/Logger.hpp"
+
+CardType StringToCardType(const std::string& typeStr) {
+    if (typeStr == "CHARACTER") return CardType::CHARACTER;
+    if (typeStr == "RESOURCE") return CardType::RESOURCE;
+    if (typeStr == "COIN") return CardType::COIN;
+    if (typeStr == "PACK") return CardType::PACK;
+    if (typeStr == "EQUIPMENT") return CardType::EQUIPMENT;
+    return CardType::BASIC;
+}
+
+void CardManager::LoadCardDatabase(const std::string& filePath) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        LOG_ERROR("無法開啟卡牌資料檔: {}", filePath);
+        return;
+    }
+
+    json j;
+    file >> j;
+
+    // 遍歷陣列，存入字典 (Key 是卡片名字，Value 是配方)
+    for (const auto& item : j) {
+        CardSpawnData data;
+        // 使用 .value() 加上預設值，就算 JSON 漏寫某個欄位也不會崩潰！
+        data.name      = item.value("name", "Unknown");
+        data.sellValue = item.value("sellValue", 0);
+        data.type      = StringToCardType(item.value("type", "BASIC"));
+
+        std::string rawPath = item.value("iconPath", "");
+        data.iconPath  = rawPath.empty() ? "" : RESOURCE_DIR + rawPath;
+
+        data.health    = item.value("health", 0); // resource 不用寫hp
+        data.scale     = 0.05f;
+
+        m_CardDatabase[data.name] = data;
+    }
+    LOG_INFO("成功載入 {} 種卡牌資料！", m_CardDatabase.size());
+}
+
+void CardManager::LoadPackDatabase(const std::string& filePath) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) return;
+
+    json j;
+    file >> j;
+
+    for (const auto& item : j) {
+        PackTemplate pack;
+        pack.name = item.value("name", "Unknown");
+        pack.sellValue = item.value("sellValue", 0);
+        pack.iconPath = RESOURCE_DIR + item["iconPath"].get<std::string>();
+        pack.totalCards = item["totalCards"];
+
+        for (const auto& cardName : item["pool"]) {
+            pack.pool.push_back(cardName);
+        }
+
+        m_PackDatabase[pack.name] = pack;
+    }
+    LOG_INFO("成功載入 {} 種卡包資料！", m_PackDatabase.size());
+}
+
+std::shared_ptr<Card> CardManager::SpawnCardByName(const std::string& name, float scale, float x, float y) {
+    if (m_CardDatabase.find(name) == m_CardDatabase.end()) {
+        LOG_ERROR("找不到卡牌: {}", name);
+        return nullptr;
+    }
+
+    CardSpawnData data = m_CardDatabase[name];
+    data.scale = scale; // 套用當前場景的縮放比例
+    return CreateCardFromData(x, y, data);
+}
+
+void CardManager::SpawnPackByName(const std::string& packName, float scale, float x, float y) {
+    if (m_PackDatabase.find(packName) == m_PackDatabase.end()) return;
+
+    PackTemplate tmpl = m_PackDatabase[packName];
+
+    // 把 pool 裡的「名字字串」轉換成真正的「CardSpawnData 配方」
+    std::vector<CardSpawnData> actualPool;
+    for (const auto& cardName : tmpl.pool) {
+        if (m_CardDatabase.count(cardName)) {
+            CardSpawnData poolData = m_CardDatabase[cardName];
+
+            poolData.scale = scale;
+
+            actualPool.push_back(poolData);
+        }
+    }
+
+    auto pack = std::make_shared<CardPack>(
+        x, y, tmpl.name, tmpl.sellValue, tmpl.iconPath, scale, tmpl.totalCards, actualPool);
+
+    AddCard(pack);
+}
 
 CardManager::CardManager(Util::Renderer& renderer) : m_Renderer(renderer) {
     m_RandomGenerator.seed(std::chrono::system_clock::now().time_since_epoch().count());
@@ -29,7 +126,7 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
     if (data.type == CardType::CHARACTER) {
         newCard = std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale, data.health, data.attack);
     }else if (data.type == CardType::RESOURCE){
-        std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
+        newCard = std::make_shared<ResourceCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
     }else if (data.type == CardType::COIN){
         newCard = std::make_shared<CoinCard>(x, y, data.scale);
     }else {

@@ -33,15 +33,10 @@ public:
         UpdateVisualPositions();
     }
 
-    // ==========================================
-    // 未來可以擴充的人物專屬功能
-    // ==========================================
-
     // 例如：被物品轉換職業 (村民 + 矛 = 民兵)
     void ChangeProfession(const std::string& newName, const std::string& newIconPath) {
         m_Name = newName;
         SetIconImage(newIconPath);
-        // 若有需要，也可以一併更新文字
         if (m_NameText) {
             m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(500 * m_Scale), m_Name, Util::Color(0, 0, 0)));
         }
@@ -49,17 +44,16 @@ public:
 
     // 月底被扣除飽食度的邏輯
     void OnMonthEnd() override {
-        // ... 實作村民需要吃食物的邏輯 ...
     }
 
     virtual void UpdateVisualPositions() override {
         Card::UpdateVisualPositions();
 
         if (m_HealthText) {
-            //卡牌中心 + 卡牌寬度*0.8/2, 卡牌中心 - 卡牌高度*0.8/2
-            float hpX = m_X + (m_Width / 2.0f) * 0.6f;
-            float hpY = m_Y - (m_Height / 2.0f) * 0.65f;
-            m_HealthText->m_Transform.translation = glm::vec2(hpX, hpY);
+            float healthOffsetX = m_Width * 0.34f;
+            float healthOffsetY = m_Height * -0.3f;
+            m_HealthText->m_Transform.translation = glm::vec2(m_X + healthOffsetX ,m_Y + healthOffsetY);
+
             m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
         }
     }
@@ -82,6 +76,7 @@ public:
 protected:
     std::shared_ptr<Util::GameObject> m_HealthText;
     int health, attack;
+    float attackSpeed = 1.0f;
 
 };
 

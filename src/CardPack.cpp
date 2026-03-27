@@ -12,7 +12,6 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
       m_CardsRemaining(totalCards), m_ContentPool(contents)
 {
     glm::vec2 card_scale = {m_Scale, m_Scale};
-
     SetBackgroundImage(RESOURCE_DIR"/Image/card/Pack.png");
     SetIconImage(iconPath);
 
@@ -36,22 +35,26 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
 
 std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
     if (m_CardsRemaining <= 0) return nullptr;
-
     m_CardsRemaining--;
 
-    // 更新文字顯示
     if (m_CountText) {
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
             RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(300 * m_Scale),
             std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
     }
 
-    // 實作您定義的「出現卡片可以訂」: 隨機選取卡池中的一個配方
-    // (這裡是簡單的平均機率隨機，未來可以優化權重系統)
-    int randomIndex = rand() % m_ContentPool.size();
+    auto dataToSpawn = std::make_shared<CardSpawnData>(m_ContentPool.back());
+    m_ContentPool.pop_back();
+
+    // 2. 更新右上角的數字為「剩下的卡片數量」
+    if (m_CountText) {
+        m_CountText->SetDrawable(std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(300 * m_Scale),
+            std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
+    }
 
     // 回傳一份資料配方的拷貝
-    return std::make_shared<CardSpawnData>(m_ContentPool[randomIndex]);
+    return dataToSpawn;
 }
 
 void CardPack::UpdateVisualPositions() {

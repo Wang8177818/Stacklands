@@ -17,13 +17,14 @@
 #include <glm/glm.hpp>
 
 enum class CardType {
-    BASIC,      // 基礎卡 (例如金幣)
+    BASIC,      // 空卡
     RESOURCE,   // 資源卡 (木頭、石頭等)
     CHARACTER,  // 人物卡 (村民、民兵等)
     BUILDING,   // 功能/建築卡 (箱子、房子等)
     FOOD,       // 食物卡 (漿果、蘋果等)
     PACK,       // 卡包
-    COIN        // 金幣
+    COIN,       // 金幣卡
+    EQUIPMENT   // 裝備卡
 };
 
 class Card {

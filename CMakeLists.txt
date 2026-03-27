@@ -47,6 +47,8 @@ add_executable(${PROJECT_NAME}
         src/CardManager.cpp
         include/ResourceCard.hpp
         include/CoinCard.hpp
+        include/nlohmann/json.hpp
+        include/EquipmentCard.hpp
 )
 
 if(MSVC)

@@ -15,6 +15,9 @@
 #include "CardData.hpp"
 #include "Util/Renderer.hpp"
 #include "CoinCard.hpp"
+#include  "ResourceCard.hpp"
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
 
 class CardManager {
 public:
@@ -27,6 +30,12 @@ public:
     // 把卡片加入管理清單，並同時交給 Renderer 渲染
     void AddCard(std::shared_ptr<Card> card);
 
+    // json
+    void LoadCardDatabase(const std::string& filePath);
+    void LoadPackDatabase(const std::string& filePath);
+
+    std::shared_ptr<Card> SpawnCardByName(const std::string& name, float scale, float x = 0.0f, float y = 0.0f);
+    void SpawnPackByName(const std::string& packName, float scale, float x = 0.0f, float y = 0.0f);
     // 卡片工廠
     std::shared_ptr<Card> CreateCardFromData(float x, float y, const CardSpawnData& data);
 
@@ -42,6 +51,18 @@ private:
     glm::vec2 m_ClickStartPos = {0, 0};
     std::chrono::time_point<std::chrono::steady_clock> m_LastClickTime;
     std::shared_ptr<Card> m_LastClickedCard = nullptr;
+
+    // 卡牌與卡包的資料庫字典
+    std::unordered_map<std::string, CardSpawnData> m_CardDatabase;
+
+    struct PackTemplate {
+        std::string name;
+        int sellValue;
+        std::string iconPath;
+        int totalCards;
+        std::vector<std::string> pool;
+    };
+    std::unordered_map<std::string, PackTemplate> m_PackDatabase;
 };
 
 #endif //STACKLANDS_CARDMANAGER_HPP

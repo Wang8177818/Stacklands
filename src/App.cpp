@@ -1,5 +1,4 @@
 #include "App.hpp"
-
 #include "Util/Image.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -190,31 +189,18 @@ void App::MainMenu() {
 void App::GameInit(){
     float test_scale = 0.15f; //最終 0.05f
 
-    // 村民
-    CardSpawnData villagerData = {"Villager", 3, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Villager.png", test_scale, 1};
-    m_CardManager->CreateCardFromData(-150, 0, villagerData);
-
-    // 民兵
-    CardSpawnData militiaData = {"Militia", 5, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Militia.png", test_scale, 2};
-    m_CardManager->CreateCardFromData(150, 0, militiaData);
-
-    // 木頭
-    CardSpawnData woodData = {"Wood", 1, CardType::RESOURCE, RESOURCE_DIR"/Image/card/resource/Wood.png", test_scale, 0};
-    m_CardManager->CreateCardFromData(100, 0, woodData);
-
-    // 金幣
-    CardSpawnData coinData = {"Coin", 1, CardType::COIN, "", test_scale, 0};
-    m_CardManager->CreateCardFromData(0, 0, coinData);
-    m_CardManager->CreateCardFromData(0, 100, coinData);
+    // 讀json
+    m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
+    m_CardManager->LoadPackDatabase(RESOURCE_DIR"/Data/Packs.json");
 
 
-    // Pack
-    std::vector<CardSpawnData> pool;
-    pool.push_back({"Baby", 5, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Baby.png", test_scale, 2});
-    pool.push_back({"Builder", 5, CardType::CHARACTER, RESOURCE_DIR"/Image/card/character/Builder.png", test_scale, 5});
+    m_CardManager->SpawnCardByName("Villager", test_scale);
+    m_CardManager->SpawnCardByName("Militia",  test_scale);
+    m_CardManager->SpawnCardByName("Wood",     test_scale);
+    m_CardManager->SpawnCardByName("Coin",     test_scale);
 
-    auto startPack = std::make_shared<CardPack>(0, 150, "A New World", 0, RESOURCE_DIR"/Image/card/pack/Traveling-Cart.png", test_scale, 5, pool);
-    m_CardManager->AddCard(startPack);
+    // 3. 生成卡包
+    m_CardManager->SpawnPackByName("A New World", test_scale);
 
     m_CurrentState = State::UPDATE;
 }
