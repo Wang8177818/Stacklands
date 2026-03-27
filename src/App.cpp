@@ -77,7 +77,7 @@ void App::Update() {
     auto playButton = m_UIManager->GetPlayButton();
 
     // ── 鏡頭移動 & 地圖縮放（完全委託給 EventManager）────
-    auto cards = m_CardManager->getAllCards();
+    auto cards = m_CardManager->GetAllCards();
     m_EventManager->Update(mousePos, m_CardManager->isDraggingCard(), cards);
 
     // ── 時間推進 ──────────────────────────────────────────
