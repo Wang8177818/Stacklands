@@ -1,0 +1,8 @@
+[
+  {
+    "name": "A New World",
+    "iconPath": "/Image/card/pack/Traveling-Cart.png",
+    "totalCards": 5,
+    "pool": ["Baby", "Builder", "Wood", "Wood", "Villager"]
+  }
+]

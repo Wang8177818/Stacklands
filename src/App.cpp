@@ -1,5 +1,4 @@
 #include "App.hpp"
-
 #include "Util/Image.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -9,6 +8,7 @@
 #include "Core/Context.hpp"
 #include "Card.hpp"
 #include "CharacterCard.hpp"
+#include "ResourceCard.hpp"
 
 void App::Start() {
     LOG_TRACE("Start");
@@ -60,6 +60,7 @@ void App::Start() {
     m_MainMenuImage->m_Transform.scale = {0.5, 0.5};
     m_Renderer.AddChild(m_MainMenuImage);
 
+    m_CardManager = std::make_unique<CardManager>(m_Renderer);
 
     m_CurrentState = State::MAIN_MENU;
 }
@@ -120,8 +121,7 @@ void App::MainMenu() {
         m_GameFieldImage = std::make_shared<BackgroundImage>();
         auto gamefieldImage = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/gameField.png");
         m_GameFieldImage->SetDrawable(gamefieldImage);
-        m_GameFieldImage->SetScale({0.5, 0.5});
-        m_GameFieldImage->SetZIndex(1);
+        m_GameFieldImage->SetScale({0.7, 0.7});
         m_Renderer.AddChild(m_GameFieldImage);
 
         m_DescriptionBarImage = std::make_shared<BackgroundImage>();
@@ -129,16 +129,44 @@ void App::MainMenu() {
         m_DescriptionBarImage->SetDrawable(descriptionBar);
         m_DescriptionBarImage->SetScale({0.75, 0.75});
         m_DescriptionBarImage->m_Transform.translation = {-510, -240};
-        m_DescriptionBarImage->SetZIndex(100);
+        m_DescriptionBarImage->SetZIndex(98);
         m_Renderer.AddChild(m_DescriptionBarImage);
 
         m_resourseBarImage = std::make_shared<BackgroundImage>();
         auto resourseBar = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png");
         m_resourseBarImage->SetDrawable(resourseBar);
-        m_resourseBarImage->SetScale({0.75, 0.75});
-        m_resourseBarImage->m_Transform.translation = {510, 240};
-        m_resourseBarImage->SetZIndex(100);
+        m_resourseBarImage->SetScale({0.55, 0.75});
+        m_resourseBarImage->m_Transform.translation = {260, 335};
+        m_resourseBarImage->SetZIndex(98);
         m_Renderer.AddChild(m_resourseBarImage);
+
+        m_timeBarImage = std::make_shared<BackgroundImage>();
+        auto timeBar = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png");
+        m_timeBarImage->SetDrawable(timeBar);
+        m_timeBarImage->SetScale({0.75, 0.75});
+        m_timeBarImage->m_Transform.translation = {500, 335};
+        m_timeBarImage->SetZIndex(98);
+        m_Renderer.AddChild(m_timeBarImage);
+
+        m_runTimeBarImage = std::make_shared<BackgroundImage>();
+        auto runtimeBar = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/dark_bg.png");
+        m_runTimeBarImage->SetDrawable(runtimeBar);
+        m_runTimeBarImage->SetPivot({-0.5,0});
+        m_runTimeBarImage->SetScale({0, 35});
+        m_runTimeBarImage->m_Transform.translation = {368, 335};
+        m_runTimeBarImage->SetZIndex(99);
+        m_Renderer.AddChild(m_runTimeBarImage);
+
+        m_pauseText = std::make_shared<Util::GameObject>();
+        m_pauseText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 50, "暫停。", Util::Color(0, 0, 0, 50)));
+        m_pauseText->SetVisible(false);
+        m_pauseText->SetZIndex(100);
+        m_Renderer.AddChild(m_pauseText);
+
+        m_play = std::make_shared<MenuButton>(615, 335, 0.06, 0.06, 20, 20, "/Image/button/play.png");
+        for (auto& obj : m_play->GetGameObjects()) {
+            m_Renderer.AddChild(obj);
+        }
 
         // 2. 隱藏主選單的 UI
         m_BtnStart->HideAll();
@@ -156,229 +184,113 @@ void App::MainMenu() {
         LOG_INFO("Exit Button Clicked!");
         m_CurrentState = State::END;
     }
-    //IF 按下遊戲開始跳到Gameinit
 }
 
-void App::GameInit() { // 遊戲初始化
-    float test_scale = 0.2f;
-    auto villager1 = std::make_shared<CharacterCard>(
-        -150, 0, "Villager", 3, RESOURCE_DIR"/Image/card/character/Villager.png",test_scale);
-    auto villager2 = std::make_shared<CharacterCard>(
-        150, 0, "Militia", 5, RESOURCE_DIR"/Image/card/character/Militia.png", test_scale);
-    auto villager3 = std::make_shared<CharacterCard>(
-        150, 0, "Baby", 5, RESOURCE_DIR"/Image/card/character/Baby.png", test_scale);
-    auto villager4 = std::make_shared<CharacterCard>(
-        150, 0, "Builder", 5, RESOURCE_DIR"/Image/card/character/Builder.png", test_scale);
+void App::GameInit(){
+    float test_scale = 0.15f; //最終 0.05f
 
-    // 把卡片收編進我們的陣列裡
-    m_Cards.push_back(villager1);
-    m_Cards.push_back(villager2);
-    m_Cards.push_back(villager3);
-    m_Cards.push_back(villager4);
+    // 讀json
+    m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
+    m_CardManager->LoadPackDatabase(RESOURCE_DIR"/Data/Packs.json");
 
 
-    // 迴圈把所有卡片的 GameObject 交給 Renderer 畫出來
-    for (auto& card : m_Cards) {
-        for (auto& obj : card->GetGameObjects()) {
-            m_Renderer.AddChild(obj);
-        }
-    }
+    m_CardManager->SpawnCardByName("Villager", test_scale);
+    m_CardManager->SpawnCardByName("Militia",  test_scale);
+    m_CardManager->SpawnCardByName("Wood",     test_scale);
+    m_CardManager->SpawnCardByName("Coin",     test_scale);
+
+    // 3. 生成卡包
+    m_CardManager->SpawnPackByName("A New World", test_scale);
 
     m_CurrentState = State::UPDATE;
 }
-
-void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
+void App::Update() {
     mousePos = Util::Input::GetCursorPosition();
 
-    mousePos = Util::Input::GetCursorPosition();
+    // 【關鍵修改】加入 !m_IsDraggingCard 的判斷
+    // 如果玩家按住了右鍵 (或左鍵)，"且" 目前沒有在拖曳卡片，才移動地圖
+    if (Util::Input::IsKeyPressed(Util::Keycode::MOUSE_LB)) {
 
-    for (auto& card : m_Cards) {
-        card->Update();
+        if (!m_IsDraggingMap) {
+            m_IsDraggingMap = true;
+            m_LastMousePos = mousePos;
+        } else {
+            glm::vec2 delta = mousePos - m_LastMousePos;
+            m_GameFieldImage->m_Transform.translation.x += delta.x;
+            m_GameFieldImage->m_Transform.translation.y += delta.y;
+            m_LastMousePos = mousePos;
+        }
+
+    } else {
+        // 如果沒按著右鍵，或是正在拖卡片，就停止地圖拖曳
+        m_IsDraggingMap = false;
     }
 
-    auto scroll = Util::Input::GetScrollDistance();
+    switch (GetGameState()) {
+        case GameTime::NORMAL:
+            m_pauseText->SetVisible(false);
+            m_runTimeBarImage->SetScale({m_runTimeBarImage->GetScaledSize().x + 0.05, 35});
+            tick += 0.05;
+            break;
+        case GameTime::FAST:
+            m_runTimeBarImage->SetScale({m_runTimeBarImage->GetScaledSize().x + 0.15, 35});
+            tick += 0.15;
+            break;
+        case GameTime::PAUSE:
+            m_pauseText->SetVisible(true);
+            break;
+    }
+
+    // 1. 先確認玩家這一幀「有沒有」轉動滾輪
     if (Util::Input::IfScroll()) {
-        if (scroll.x > 0 && m_GameFieldImage->m_Transform.scale.x < 2) {
-            m_GameFieldImage->SetScale({m_GameFieldImage.get()->m_Transform.scale.x + 0.005, m_GameFieldImage.get()->m_Transform.scale.y + 0.005});
+        // 2. 取得滾動的數值
+        glm::vec2 scroll = Util::Input::GetScrollDistance();
+        // 3. 判斷方向並執行縮放 (記得讀取的是 X 軸)
+        if (scroll.y > 0) {
+            // 往上滾：放大地圖
+            LOG_DEBUG("往上滾！放大！");
+            if (m_GameFieldImage->m_Transform.scale.x < 2.0f) {
+                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x + 0.01f,
+                                            m_GameFieldImage->m_Transform.scale.y + 0.01f});
+            }
         }
-        if (scroll.x < 0 && m_GameFieldImage.get()->m_Transform.scale.x > 0.5) {
-            m_GameFieldImage->SetScale({m_GameFieldImage.get()->m_Transform.scale.x - 0.005, m_GameFieldImage.get()->m_Transform.scale.y - 0.005});
+        else if (scroll.y < 0) {
+            // 往下滾：縮小地圖
+            LOG_DEBUG("往下滾！縮小！");
+            if (m_GameFieldImage->m_Transform.scale.x > 0.5f) {
+                m_GameFieldImage->SetScale({m_GameFieldImage->m_Transform.scale.x - 0.01f,
+                                            m_GameFieldImage->m_Transform.scale.y - 0.01f});
+            }
         }
     }
+    if (Util::Input::IsKeyPressed(Util::Keycode::W)) m_GameFieldImage->m_Transform.translation.y -= 1;
+    if (Util::Input::IsKeyPressed(Util::Keycode::S)) m_GameFieldImage->m_Transform.translation.y += 1;
+    if (Util::Input::IsKeyPressed(Util::Keycode::A)) m_GameFieldImage->m_Transform.translation.x += 1;
+    if (Util::Input::IsKeyPressed(Util::Keycode::D)) m_GameFieldImage->m_Transform.translation.x -= 1;
 
-    if (Util::Input::IsKeyPressed(Util::Keycode::W)) {
-        m_GameFieldImage->m_Transform.translation = {m_GameFieldImage.get()->m_Transform.translation.x, m_GameFieldImage.get()->m_Transform.translation.y - 1};
+    if (m_play->UpdateHover(mousePos) && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        switch (GetGameState()) {
+            case GameTime::NORMAL:
+                m_play->ChangeImage("/Image/button/fastforward.png");
+                m_GameTime = GameTime::FAST;
+                break;
+            case GameTime::FAST:
+                m_play->ChangeImage("/Image/button/pause.png");
+                m_GameTime = GameTime::PAUSE;
+                break;
+            case GameTime::PAUSE:
+                m_play->ChangeImage("/Image/button/play.png");
+                m_GameTime = GameTime::NORMAL;
+                break;
+        }
     }
 
     // ==========================================
     // 2. 判斷滑鼠「按下左鍵」：抓起卡片
     // ==========================================
-    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB) && m_DraggingCard == nullptr) {
-        std::shared_ptr<Card> targetToPick = nullptr;
-        int highestZ = -9999;
 
-        // 掃描所有卡片，找出滑鼠底下「圖層最高」的那一張
-        for (auto& card : m_Cards) {
-            if (card->IsMouseHovering(mousePos)) {
-                // 透過 GetGameObjects() 取得卡牌底圖目前的 Z-Index
-                int currentZ = card->GetGameObjects()[0]->GetZIndex();
-                if (currentZ > highestZ) {
-                    highestZ = currentZ;
-                    targetToPick = card; // 鎖定最高層的這張卡
-                }
-            }
-        }
-        // 如果有抓到卡片
-        if (targetToPick != nullptr) {
-            m_DraggingCard = targetToPick;
-
-            // 【斷開連結】如果這張卡原本疊在別人上面，拿起來時要分手
-            if (m_DraggingCard->GetCardBelow() != nullptr) {
-                m_DraggingCard->GetCardBelow()->SetCardAbove(nullptr);
-                m_DraggingCard->SetCardBelow(nullptr);
-            }
-
-            m_DraggingCard->StartDragging(mousePos);
-        }
-    }
-
-    // ==========================================
-    // 3. 判斷滑鼠「放開左鍵」：放下並嘗試堆疊
-    // ==========================================
-    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB) && m_DraggingCard != nullptr) {
-        m_DraggingCard->StopDragging();
-
-        // 尋找有沒有疊到其他卡片上
-        for (auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it) {
-            auto targetCard = *it;
-
-            // 確保不是自己，且兩張卡有重疊
-            if (targetCard != m_DraggingCard && m_DraggingCard->IsOverlapping(targetCard)) {
-
-                // 【新增防呆】檢查 targetCard 是不是已經疊在我自己身上了？
-                // 如果目標卡片是跟著我一起被拿起來的小弟，就不可以疊上去，否則會形成無限死結！
-                bool isSelfStack = false;
-                auto checkCard = m_DraggingCard->GetCardAbove();
-                while (checkCard != nullptr) {
-                    if (checkCard == targetCard) {
-                        isSelfStack = true;
-                        break;
-                    }
-                    checkCard = checkCard->GetCardAbove();
-                }
-
-                if (isSelfStack) {
-                    continue; // 這是自己人，跳過這張，繼續檢查下一張有沒有重疊
-                }
-
-                // 【關鍵】尋找該牌堆的「最頂層」卡片！
-                while (targetCard->GetCardAbove() != nullptr) {
-                    targetCard = targetCard->GetCardAbove();
-                }
-
-                // 互相綁定！
-                targetCard->SetCardAbove(m_DraggingCard);
-                m_DraggingCard->SetCardBelow(targetCard);
-
-                LOG_INFO("卡牌堆疊成功！");
-                break; // 疊到一張就夠了
-            }
-        }
-
-        m_DraggingCard = nullptr;
-    }
-
-    /*
-     * Do not touch the code below as they serve the purpose for
-     * closing the window.
-     */
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
-        Util::Input::IfExit()) {
-        m_CurrentState = State::END;
-        }
-
-    for (auto& card : m_Cards) {
-        card->Update();
-    }
-
-    // ==========================================
-    // 2. 判斷滑鼠「按下左鍵」：抓起卡片
-    // ==========================================
-    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB) && m_DraggingCard == nullptr) {
-        std::shared_ptr<Card> targetToPick = nullptr;
-        int highestZ = -9999;
-
-        // 掃描所有卡片，找出滑鼠底下「圖層最高」的那一張
-        for (auto& card : m_Cards) {
-            if (card->IsMouseHovering(mousePos)) {
-                // 透過 GetGameObjects() 取得卡牌底圖目前的 Z-Index
-                int currentZ = card->GetGameObjects()[0]->GetZIndex();
-                if (currentZ > highestZ) {
-                    highestZ = currentZ;
-                    targetToPick = card; // 鎖定最高層的這張卡
-                }
-            }
-        }
-
-        // 如果有抓到卡片
-        if (targetToPick != nullptr) {
-            m_DraggingCard = targetToPick;
-
-            // 【斷開連結】如果這張卡原本疊在別人上面，拿起來時要分手
-            if (m_DraggingCard->GetCardBelow() != nullptr) {
-                m_DraggingCard->GetCardBelow()->SetCardAbove(nullptr);
-                m_DraggingCard->SetCardBelow(nullptr);
-            }
-
-            m_DraggingCard->StartDragging(mousePos);
-        }
-    }
-
-    // ==========================================
-    // 3. 判斷滑鼠「放開左鍵」：放下並嘗試堆疊
-    // ==========================================
-    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB) && m_DraggingCard != nullptr) {
-        m_DraggingCard->StopDragging();
-
-        // 尋找有沒有疊到其他卡片上
-        for (auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it) {
-            auto targetCard = *it;
-
-            // 確保不是自己，且兩張卡有重疊
-            if (targetCard != m_DraggingCard && m_DraggingCard->IsOverlapping(targetCard)) {
-
-                // 【新增防呆】檢查 targetCard 是不是已經疊在我自己身上了？
-                // 如果目標卡片是跟著我一起被拿起來的小弟，就不可以疊上去，否則會形成無限死結！
-                bool isSelfStack = false;
-                auto checkCard = m_DraggingCard->GetCardAbove();
-                while (checkCard != nullptr) {
-                    if (checkCard == targetCard) {
-                        isSelfStack = true;
-                        break;
-                    }
-                    checkCard = checkCard->GetCardAbove();
-                }
-
-                if (isSelfStack) {
-                    continue; // 這是自己人，跳過這張，繼續檢查下一張有沒有重疊
-                }
-
-                // 【關鍵】尋找該牌堆的「最頂層」卡片！
-                while (targetCard->GetCardAbove() != nullptr) {
-                    targetCard = targetCard->GetCardAbove();
-                }
-
-                // 互相綁定！
-                targetCard->SetCardAbove(m_DraggingCard);
-                m_DraggingCard->SetCardBelow(targetCard);
-
-                LOG_INFO("卡牌堆疊成功！");
-                break; // 疊到一張就夠了
-            }
-        }
-
-        m_DraggingCard = nullptr;
-    }
+    // ===【核心瘦身】把滑鼠座標丟給管理器，讓它自己去搞定所有卡牌互動！ ===
+    m_CardManager->Update(mousePos);
 
     m_Renderer.Update();
 
@@ -387,6 +299,6 @@ void App::Update() { //遊戲內邏輯 寫這裡 暫停跳出去
     }
 }
 
-void App::End() { // NOLINT(this method will mutate members in the future)
+void App::End() {
     LOG_TRACE("End");
 }

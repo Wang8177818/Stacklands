@@ -17,12 +17,14 @@
 #include <glm/glm.hpp>
 
 enum class CardType {
-    BASIC,      // 基礎卡 (例如金幣)
+    BASIC,      // 空卡
     RESOURCE,   // 資源卡 (木頭、石頭等)
     CHARACTER,  // 人物卡 (村民、民兵等)
     BUILDING,   // 功能/建築卡 (箱子、房子等)
     FOOD,       // 食物卡 (漿果、蘋果等)
-    PACK        // 卡包
+    PACK,       // 卡包
+    COIN,       // 金幣卡
+    EQUIPMENT   // 裝備卡
 };
 
 class Card {
@@ -48,7 +50,7 @@ public:
     bool IsOverlapping(std::shared_ptr<Card> otherCard);
 
     // 拖曳控制
-    void StartDragging(glm::vec2 mousePos);
+    virtual void StartDragging(glm::vec2 mousePos);
     virtual void StopDragging();
 
     // 取得卡牌屬性
@@ -65,6 +67,8 @@ public:
 
     // 取得所有負責顯示的 GameObject，交給 Renderer 繪製
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects();
+    float GetX() const { return m_X; }
+    float GetY() const { return m_Y; }
 
 protected:
     CardType m_Type;
@@ -75,7 +79,6 @@ protected:
     std::shared_ptr<Util::GameObject> m_Icon;
     std::shared_ptr<Util::GameObject> m_NameText;
 
-    // 座標與尺寸變數 (數值將在 cpp 的建構子中初始化)
     float m_X, m_Y;
     float m_Scale;  // 記錄這張卡牌的縮放比例
     float m_Width;  // 實際碰撞寬度
