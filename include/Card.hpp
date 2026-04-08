@@ -79,6 +79,22 @@ public:
     float GetX() const { return m_X; }
     float GetY() const { return m_Y; }
 
+    void SetScale(float scale);
+
+    // EventManager 用：直接移動邏輯座標
+    void MoveBy(glm::vec2 delta) {
+        m_X += delta.x;
+        m_Y += delta.y;
+        UpdateVisualPositions();
+    }
+
+    // EventManager 用：以指定 pivot 為錨點縮放並重新定位
+    void ScaleAroundPivot(float ratio, glm::vec2 pivot) {
+        m_X = pivot.x + (m_X - pivot.x) * ratio;
+        m_Y = pivot.y + (m_Y - pivot.y) * ratio;
+        SetScale(m_Scale * ratio); // 同步更新視覺縮放與碰撞尺寸
+    }
+
 protected:
     CardType m_Type;
     std::string m_Name;
