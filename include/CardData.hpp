@@ -18,6 +18,7 @@ struct CardSpawnData {
     float scale;
     int health, attack; // 0 代表非人物卡
 
+    EquipSlot equipSlot = EquipSlot::NONE;
 };
 
 struct Recipe {

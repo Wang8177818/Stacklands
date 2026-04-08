@@ -20,6 +20,13 @@ CardType StringToCardType(const std::string& typeStr) {
     return CardType::BASIC;
 }
 
+EquipSlot StringToEquipSlot(const std::string& slotStr) {
+    if (slotStr == "HEAD") return EquipSlot::HEAD;
+    if (slotStr == "HAND") return EquipSlot::HAND;
+    if (slotStr == "BODY") return EquipSlot::BODY;
+    return EquipSlot::NONE;
+}
+
 bool CardManager::isDraggingCard() {
     if (m_DraggingCard != nullptr) {
         return true;
@@ -140,6 +147,8 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
         newCard = std::make_shared<ResourceCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
     }else if (data.type == CardType::COIN){
         newCard = std::make_shared<CoinCard>(x, y, data.scale);
+    }else if (data.type == CardType::EQUIPMENT) {
+        newCard = std::make_shared<EquipmentCard>(x, y, data.name, data.sellValue, data.iconPath, data.attack, data.health, data.equipSlot, data.scale);
     }else {
         newCard = std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
     }
