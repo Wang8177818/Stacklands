@@ -16,7 +16,7 @@ public:
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Resource.png");
         SetIconImage(iconPath);
 
-        int fontSize = static_cast<int>(500 * m_Scale);
+        int fontSize = static_cast<int>(1000 * m_Scale);
         if (fontSize < 22) fontSize = 22;
 
         m_PriceText = std::make_shared<Util::GameObject>();
@@ -37,7 +37,7 @@ public:
         Card::UpdateVisualPositions();
 
         if (m_PriceText) {
-            float priceOffsetX = m_Width * -0.35f;
+            float priceOffsetX = m_Width * -0.32f;
             float priceOffsetY = m_Height * -0.3f;
             m_PriceText->m_Transform.translation = glm::vec2(m_X + priceOffsetX ,m_Y + priceOffsetY);
 
