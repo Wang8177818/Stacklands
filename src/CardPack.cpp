@@ -17,12 +17,12 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
 
     m_CountText = std::make_shared<Util::GameObject>();
 
-    int nameSize = static_cast<int>(1000 * m_Scale);
+    int nameSize = static_cast<int>(3000 * m_Scale);
     if (nameSize < 22) nameSize = 22;
     m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", nameSize, m_Name, Util::Color(255, 255, 255  )));
 
 
-    int fontSize = static_cast<int>(1000 * m_Scale);
+    int fontSize = static_cast<int>(3000 * m_Scale);
     if (fontSize < 22) fontSize = 22;
 
     m_CountText->SetDrawable(std::make_shared<Util::Text>(
@@ -40,7 +40,7 @@ std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
 
     if (m_CountText) {
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(300 * m_Scale),
+            RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(900 * m_Scale),
             std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
     }
 
@@ -50,7 +50,7 @@ std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
     // 2. 更新右上角的數字為「剩下的卡片數量」
     if (m_CountText) {
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(300 * m_Scale),
+            RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(3000 * m_Scale),
             std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
     }
 
@@ -65,6 +65,7 @@ void CardPack::UpdateVisualPositions() {
         float iconOffsetX = m_Width * 0.08f;
         float iconOffsetY = m_Height * -0.05f;
         m_Icon->m_Transform.translation = glm::vec2(m_X + iconOffsetX ,m_Y + iconOffsetY);
+        m_Icon->m_Transform.scale = glm::vec2(m_Scale, m_Scale) * 0.6f * 2.0f; // 維持放大2倍
     }
 
     if (m_CountText) {
