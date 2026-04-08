@@ -1,0 +1,3612 @@
+[
+  {
+    "name": "Archer",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Archer.png"
+  },
+  {
+    "name": "Baby",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Baby.png",
+    "food": 1
+  },
+  {
+    "name": "Builder",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Builder.png",
+    "effect": "Twice as fast when crafting cards that require a villager"
+  },
+  {
+    "name": "City Advisor",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/City_Advisor.png"
+  },
+  {
+    "name": "Educated Worker",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Educated_Worker.png"
+  },
+  {
+    "name": "Explorer",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Explorer.png",
+    "effect": "Twice as fast when exploring Locations but 20% slower on everything else"
+  },
+  {
+    "name": "Fisher",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Fisher.png",
+    "effect": "Twice as fast when working on a Fishing Spot and catches Mackerels instead of Cods"
+  },
+  {
+    "name": "Friendly Pirate",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Friendly_Pirate.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 16,
+    "damage": 2,
+    "defense": 1,
+    "effect": "10% chance to Stun target"
+  },
+  {
+    "name": "Genius",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Genius.png"
+  },
+  {
+    "name": "Jester",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Jester.png"
+  },
+  {
+    "name": "Lumberjack",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Lumberjack.png",
+    "effect": "Twice as fast when working on a Lumber Camp, Apple Tree, or Tree"
+  },
+  {
+    "name": "Mage",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Mage.png"
+  },
+  {
+    "name": "Merchant",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Merchant.png"
+  },
+  {
+    "name": "Militia",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Militia.png"
+  },
+  {
+    "name": "Miner",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Miner.png",
+    "effect": "Twice as fast when working on a Gold Mine, Iron Mine, Rock, or Quarry"
+  },
+  {
+    "name": "Ninja",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Ninja.png"
+  },
+  {
+    "name": "Robot Genius",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Robot_Genius.png"
+  },
+  {
+    "name": "Robot Worker",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Robot_Worker.png"
+  },
+  {
+    "name": "Royal",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Royal.png"
+  },
+  {
+    "name": "Sniper",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Sniper.png",
+    "health": 12,
+    "combatLevel": 15,
+    "damage": 3,
+    "defense": 1
+  },
+  {
+    "name": "Soldier",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Soldier.png",
+    "health": 15,
+    "combatLevel": 16,
+    "damage": 2,
+    "defense": 2
+  },
+  {
+    "name": "Swordsman",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Swordsman.png"
+  },
+  {
+    "name": "Villager",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Villager.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Warrior",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Warrior.png"
+  },
+  {
+    "name": "Wizard",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Wizard.png"
+  },
+  {
+    "name": "Worker",
+    "type": "CHARACTER",
+    "iconPath": "/Image/card/character/Worker.png"
+  },
+  {
+    "name": "10$",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/10$.png"
+  },
+  {
+    "name": "100$",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/100$.png"
+  },
+  {
+    "name": "20$",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/20$.png"
+  },
+  {
+    "name": "50$",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/50$.png"
+  },
+  {
+    "name": "Artwork",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Artwork.png",
+    "sellValue": 40
+  },
+  {
+    "name": "Bone",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Bone.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Bottle of Water",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Bottle_of_Water.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Brick",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Brick.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Buck",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Buck.png"
+  },
+  {
+    "name": "Charcoal",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Charcoal.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Copper Bar",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Copper_Bar.png",
+    "sellValue": 40
+  },
+  {
+    "name": "Corpse",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Corpse.png"
+  },
+  {
+    "name": "Cotton",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Cotton.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Empty Bottle",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Empty_Bottle.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Euphoria",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Euphoria.png"
+  },
+  {
+    "name": "Fabric",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Fabric.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Flint",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Flint.png",
+    "sellValue": 2
+  },
+  {
+    "name": "Glass",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Glass.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Gold Bar",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Gold_Bar.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Gold Ore",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Gold_Ore.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Golden Goblet",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Golden_Goblet.png"
+  },
+  {
+    "name": "Goop",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Goop.png",
+    "sellValue": 0
+  },
+  {
+    "name": "Gravel",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Gravel.png"
+  },
+  {
+    "name": "Happiness",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Happiness.png"
+  },
+  {
+    "name": "Iron Bar",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Iron_Bar.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Iron Ore",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Iron_Ore.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Island Relic",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Island_Relic.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Key",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Key.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Lumber",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Lumber.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Magic Dust",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Magic_Dust.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Metal Scraps",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Metal_Scraps.png",
+    "sellValue": 20
+  },
+  {
+    "name": "Oil",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Oil.png",
+    "sellValue": 30
+  },
+  {
+    "name": "Old Tome",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Old_Tome.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Painting",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Painting.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Paper",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Paper.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Plank",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Plank.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Plastic",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Plastic.png",
+    "sellValue": 50
+  },
+  {
+    "name": "Poop",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Poop.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Rope",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Rope.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Sacred Chest",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Sacred_Chest.png"
+  },
+  {
+    "name": "Sacred Key",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Sacred_Key.png"
+  },
+  {
+    "name": "Sadness",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Sadness.png"
+  },
+  {
+    "name": "Sail",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Sail.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Sand",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Sand.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Sandstone",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Sandstone.png",
+    "sellValue": 2
+  },
+  {
+    "name": "Shell",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Shell.png"
+  },
+  {
+    "name": "Stick",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Stick.png",
+    "sellValue": 2
+  },
+  {
+    "name": "Stone",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Stone.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Toy",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Toy.png",
+    "sellValue": 50
+  },
+  {
+    "name": "Treasure Map",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Treasure_Map.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Wood",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Wood.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Fishing Rod",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Fishing_Rod.png",
+    "sellValue": 3,
+    "attack": 1
+  },
+  {
+    "name": "Axe",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Axe.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "-1",
+    "special": "10% chance to Bleed target"
+  },
+  {
+    "name": "Bear Claw",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Bear_Claw.png",
+    "sellValue": 5,
+    "attack": 1,
+    "slot": "Hand",
+    "attackSpeed": "+1",
+    "special": "*10% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Blowpipe",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Blowpipe.png",
+    "sellValue": 3,
+    "attack": 1,
+    "slot": "Hand",
+    "attackSpeed": "-1",
+    "special": "10% chance to Poison target"
+  },
+  {
+    "name": "Blunderbuss",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Blunderbuss.png",
+    "sellValue": 6,
+    "attack": 4,
+    "slot": "Hand",
+    "special": "*15% chance to Damage all enemies"
+  },
+  {
+    "name": "Bone Spear",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Bone_Spear.png",
+    "sellValue": 5,
+    "attack": 2,
+    "slot": "Hand",
+    "special": "10% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Bone Staff",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Bone_Staff.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "+1",
+    "special": "20% chance to Lifesteal from target"
+  },
+  {
+    "name": "Boomerang",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Boomerang.png",
+    "sellValue": 3,
+    "attack": 1,
+    "slot": "Hand",
+    "special": "15% chance to Damage all enemies"
+  },
+  {
+    "name": "Bow",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Bow.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "-1",
+    "special": "7% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Broken Bottle",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Broken_Bottle.png",
+    "sellValue": 1,
+    "attack": 1,
+    "slot": "Hand",
+    "special": "*10% chance to Bleed self"
+  },
+  {
+    "name": "Chainmail Armor",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Chainmail_Armor.png",
+    "sellValue": 5,
+    "defense": 2,
+    "slot": "Body"
+  },
+  {
+    "name": "Club",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Club.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "-1",
+    "special": "10% chance to Frenzy self for 10s"
+  },
+  {
+    "name": "Crab Scale Armor",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Crab_Scale_Armor.png",
+    "sellValue": 5,
+    "defense": 1,
+    "slot": "Body",
+    "special": "10% chance to Poison target"
+  },
+  {
+    "name": "Crossbow",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Crossbow.png",
+    "sellValue": 5,
+    "attack": 2,
+    "slot": "Hand",
+    "special": "15% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Dark Amulet",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Dark_Amulet.png",
+    "sellValue": 3,
+    "slot": "Head",
+    "special": "10% chance to do a Critical Hit on random enemy"
+  },
+  {
+    "name": "Demon Sword",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Demon_Sword.png",
+    "sellValue": 10,
+    "attack": 3,
+    "slot": "Hand",
+    "attackSpeed": "+2",
+    "special": "5% chance to Lifesteal from target"
+  },
+  {
+    "name": "Dragonscale Armor",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Dragonscale_Armor.png",
+    "sellValue": 5,
+    "defense": 2,
+    "slot": "Body",
+    "attackSpeed": "+1",
+    "special": "10% chance of making self anxious"
+  },
+  {
+    "name": "Fancy Dress",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Fancy_Dress.png",
+    "sellValue": 5,
+    "slot": "Body",
+    "attackSpeed": "+2"
+  },
+  {
+    "name": "Fire Cloak",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Fire_Cloak.png",
+    "sellValue": 8,
+    "attack": 1,
+    "defense": 2,
+    "slot": "Body",
+    "attackSpeed": "+1",
+    "special": "7% chance to do a Critical Hit on all enemies"
+  },
+  {
+    "name": "Forest Amulet",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Forest_Amulet.png",
+    "sellValue": 8,
+    "slot": "Head",
+    "attackSpeed": "+2",
+    "special": "10% chance to Heal friendly with lowest health by 2"
+  },
+  {
+    "name": "Frog Helmet",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Frog_Helmet.png",
+    "sellValue": 3,
+    "defense": 1,
+    "slot": "Head",
+    "attackSpeed": "+2"
+  },
+  {
+    "name": "Goblin Hat",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Goblin_Hat.png",
+    "sellValue": 3,
+    "defense": 1,
+    "slot": "Head",
+    "special": "5% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Golden Chestplate",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Golden_Chestplate.png",
+    "sellValue": 10,
+    "defense": 3,
+    "slot": "Body",
+    "special": "10% chance to Stun target for 5s"
+  },
+  {
+    "name": "Guard's Tunic",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Guard's_Tunic.png"
+  },
+  {
+    "name": "Hammer",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Hammer.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "special": "10% chance to Stun target for 5s"
+  },
+  {
+    "name": "Helmet",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Helmet.png",
+    "sellValue": 3,
+    "defense": 2,
+    "slot": "Head"
+  },
+  {
+    "name": "Horned Helmet",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Horned_Helmet.png",
+    "sellValue": 8,
+    "attack": 2,
+    "defense": 2,
+    "slot": "Head",
+    "special": "20% chance to Bleed target"
+  },
+  {
+    "name": "Iron Shield",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Iron_Shield.png",
+    "sellValue": 3,
+    "defense": 2,
+    "slot": "Body",
+    "special": "10% chance to Stun target for 5s"
+  },
+  {
+    "name": "Jester's Hat",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Jester's_Hat.png",
+    "sellValue": 5,
+    "defense": 1,
+    "slot": "Head",
+    "attackSpeed": "+2",
+    "special": "10% chance to Stun random enemy 10% chance to Poison random enemy 10% chance to Lifesteal from random enemy"
+  },
+  {
+    "name": "Kraken Tooth Axe",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Kraken_Tooth_Axe.png",
+    "sellValue": 8,
+    "attack": 2,
+    "defense": 1,
+    "slot": "Hand",
+    "special": "20% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Leather Tunic",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Leather_Tunic.png",
+    "sellValue": 3,
+    "defense": 1,
+    "slot": "Body"
+  },
+  {
+    "name": "Magic Blade",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Magic_Blade.png",
+    "sellValue": 5,
+    "attack": 1,
+    "slot": "Hand",
+    "attackSpeed": "+1",
+    "special": "20% chance to Frenzy random friendly for 10s"
+  },
+  {
+    "name": "Magic Broom",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Magic_Broom.png",
+    "sellValue": 10,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "+2",
+    "special": "15% chance to Heal all friendlies by 2"
+  },
+  {
+    "name": "Magic Ring",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Magic_Ring.png",
+    "sellValue": 3,
+    "attack": 1,
+    "slot": "Hand",
+    "special": "10% chance to make random friendly Invulnerable for 10s"
+  },
+  {
+    "name": "Magic Staff",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Magic_Staff.png",
+    "sellValue": 5,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "+1",
+    "special": "*15% chance to Heal friendly with lowest health by 2"
+  },
+  {
+    "name": "Magic Tome",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Magic_Tome.png",
+    "sellValue": 3,
+    "attack": 1,
+    "slot": "Hand",
+    "special": "*10% chance to Heal random friendly by 2"
+  },
+  {
+    "name": "Magic Wand",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Magic_Wand.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "special": "10% chance to Heal friendly with lowest health by 2"
+  },
+  {
+    "name": "Map",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Map.png",
+    "sellValue": 3,
+    "attack": -1,
+    "slot": "Hand"
+  },
+  {
+    "name": "Morning Star",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Morning_Star.png",
+    "sellValue": 4,
+    "attack": 3,
+    "defense": 1,
+    "slot": "Hand",
+    "attackSpeed": "-1",
+    "special": "15% chance to Stun random enemy for 5s"
+  },
+  {
+    "name": "Mountain Amulet",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Mountain_Amulet.png",
+    "sellValue": 8,
+    "attack": 2,
+    "slot": "Head",
+    "special": "10% chance to make random friendly Invulnerable for 10s"
+  },
+  {
+    "name": "Pickaxe",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Pickaxe.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "-1",
+    "special": "10% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Pirate Hat",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Pirate_Hat.png",
+    "sellValue": 5,
+    "defense": 1,
+    "slot": "Head",
+    "special": "20% chance to Stun target for 5s"
+  },
+  {
+    "name": "Pirate Sabre",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Pirate_Sabre.png",
+    "sellValue": 5,
+    "attack": 1,
+    "slot": "Hand",
+    "attackSpeed": "+2",
+    "special": "7% chance to make self Invulnerable for 10s"
+  },
+  {
+    "name": "Plague Mask",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Plague_Mask.png",
+    "sellValue": 3,
+    "attack": 2,
+    "defense": 2,
+    "slot": "Head"
+  },
+  {
+    "name": "Purple Socks",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Purple_Socks.png",
+    "sellValue": 5,
+    "slot": "Body",
+    "special": "10% chance to Heal Self"
+  },
+  {
+    "name": "Quiver",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Quiver.png",
+    "sellValue": 3,
+    "slot": "Body",
+    "attackSpeed": "+2",
+    "special": "10% chance to Bleed target"
+  },
+  {
+    "name": "Rabbit Hat",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Rabbit_Hat.png",
+    "sellValue": 3,
+    "defense": 1,
+    "slot": "Head",
+    "attackSpeed": "+1"
+  },
+  {
+    "name": "Rat Crown",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Rat_Crown.png",
+    "sellValue": 5,
+    "defense": 1,
+    "slot": "Head"
+  },
+  {
+    "name": "Royal Crown",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Royal_Crown.png"
+  },
+  {
+    "name": "Scythe",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Scythe.png"
+  },
+  {
+    "name": "Skull Helmet",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Skull_Helmet.png",
+    "sellValue": 8,
+    "attack": 2,
+    "defense": 2,
+    "slot": "Head",
+    "special": "10% chance to Lifesteal from target"
+  },
+  {
+    "name": "Slingshot",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Slingshot.png",
+    "sellValue": 5,
+    "attack": 1,
+    "slot": "Hand",
+    "attackSpeed": "+1",
+    "special": "25% chance to Damage random enemy"
+  },
+  {
+    "name": "Spear",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Spear.png",
+    "sellValue": 3,
+    "attack": 2,
+    "slot": "Hand",
+    "special": "5% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Spiked Plank",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Spiked_Plank.png",
+    "sellValue": 4,
+    "attack": 1,
+    "slot": "Hand",
+    "special": "7% chance to Bleed target"
+  },
+  {
+    "name": "Staff of Fear",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Staff_of_Fear.png",
+    "sellValue": 8,
+    "attack": 2,
+    "slot": "Hand",
+    "attackSpeed": "+1",
+    "special": "20% chance to Stun random enemy for 5s"
+  },
+  {
+    "name": "Sword",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Sword.png",
+    "sellValue": 3,
+    "attack": 1,
+    "slot": "Hand",
+    "attackSpeed": "+1",
+    "special": "10% chance to Bleed target"
+  },
+  {
+    "name": "Throwing Stars",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Throwing_Stars.png",
+    "sellValue": 5,
+    "attack": 1,
+    "slot": "Hand",
+    "attackSpeed": "+3"
+  },
+  {
+    "name": "Tiger Fur Coat",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Tiger_Fur_Coat.png",
+    "sellValue": 5,
+    "defense": 1,
+    "slot": "Body"
+  },
+  {
+    "name": "Winter Coat",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Winter_Coat.png",
+    "sellValue": 3,
+    "slot": "Body",
+    "special": "10% chance to Heal Self"
+  },
+  {
+    "name": "Wizard Robe",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Wizard_Robe.png",
+    "sellValue": 3,
+    "slot": "Body",
+    "special": "10% chance to make self Invulnerable for 10s"
+  },
+  {
+    "name": "Wolf Head",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Wolf_Head.png",
+    "sellValue": 5,
+    "defense": 2,
+    "slot": "Head",
+    "attackSpeed": "+1"
+  },
+  {
+    "name": "Wooden Shield",
+    "type": "EQUIPMENT",
+    "iconPath": "/Image/card/equipment/Wooden_Shield.png",
+    "sellValue": 3,
+    "attack": 1,
+    "defense": 1,
+    "slot": "Body"
+  },
+  {
+    "name": "Book",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Book.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Wool",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Wool.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Apple",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Apple.png",
+    "sellValue": 2,
+    "foodValue": 2
+  },
+  {
+    "name": "Banana",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Banana.png",
+    "sellValue": 1,
+    "foodValue": 1
+  },
+  {
+    "name": "Beer",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Beer.png"
+  },
+  {
+    "name": "Berry",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Berry.png",
+    "sellValue": 1,
+    "foodValue": 1
+  },
+  {
+    "name": "Bottle of Rum",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Bottle_of_Rum.png",
+    "sellValue": 3,
+    "foodValue": 2
+  },
+  {
+    "name": "Bread",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Bread.png"
+  },
+  {
+    "name": "Bread 2000",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Bread_2000.png",
+    "sellValue": 50
+  },
+  {
+    "name": "Cane Sugar",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Cane_Sugar.png",
+    "sellValue": 2,
+    "foodValue": 1
+  },
+  {
+    "name": "Carrot",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Carrot.png",
+    "sellValue": 2,
+    "foodValue": 2
+  },
+  {
+    "name": "Ceviche",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Ceviche.png",
+    "sellValue": 3,
+    "foodValue": 3
+  },
+  {
+    "name": "Chili Pepper",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Chili_Pepper.png",
+    "sellValue": 2,
+    "foodValue": 1
+  },
+  {
+    "name": "Cooked Crab",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Cooked_Crab.png",
+    "sellValue": 1,
+    "foodValue": 1
+  },
+  {
+    "name": "Cooked Meat",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Cooked_Meat.png",
+    "sellValue": 3,
+    "foodValue": 2
+  },
+  {
+    "name": "Dough",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Dough.png"
+  },
+  {
+    "name": "Egg",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Egg.png",
+    "sellValue": 1,
+    "foodValue": 0
+  },
+  {
+    "name": "Fish and Chips",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Fish_and_Chips.png"
+  },
+  {
+    "name": "Flour",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Flour.png"
+  },
+  {
+    "name": "French Fries",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/French_Fries.png"
+  },
+  {
+    "name": "Fried Fish",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Fried_Fish.png"
+  },
+  {
+    "name": "Fried Meat",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Fried_Meat.png"
+  },
+  {
+    "name": "Frittata",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Frittata.png",
+    "sellValue": 3,
+    "foodValue": 3
+  },
+  {
+    "name": "Fruit Salad",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Fruit_Salad.png",
+    "sellValue": 5,
+    "foodValue": 3
+  },
+  {
+    "name": "Grape",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Grape.png"
+  },
+  {
+    "name": "Grilled Fish",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Grilled_Fish.png",
+    "sellValue": 2,
+    "foodValue": 2
+  },
+  {
+    "name": "Herbal Tea",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Herbal_Tea.png"
+  },
+  {
+    "name": "Herbs",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Herbs.png"
+  },
+  {
+    "name": "Lime",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Lime.png",
+    "sellValue": 2,
+    "foodValue": 1
+  },
+  {
+    "name": "Milk",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Milk.png",
+    "sellValue": 1,
+    "foodValue": 1
+  },
+  {
+    "name": "Milkshake",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Milkshake.png",
+    "sellValue": 5,
+    "foodValue": 2
+  },
+  {
+    "name": "Muesli",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Muesli.png",
+    "sellValue": 30,
+    "foodValue": 4
+  },
+  {
+    "name": "Mushroom",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Mushroom.png",
+    "sellValue": 2,
+    "foodValue": 1
+  },
+  {
+    "name": "Olive",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Olive.png"
+  },
+  {
+    "name": "Olive Oil",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Olive_Oil.png"
+  },
+  {
+    "name": "Omelette",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Omelette.png",
+    "sellValue": 5,
+    "foodValue": 3
+  },
+  {
+    "name": "Onion",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Onion.png",
+    "sellValue": 2,
+    "foodValue": 1
+  },
+  {
+    "name": "Pancakes",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Pancakes.png"
+  },
+  {
+    "name": "Pizza",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Pizza.png"
+  },
+  {
+    "name": "Potato",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Potato.png",
+    "sellValue": 2,
+    "foodValue": 0
+  },
+  {
+    "name": "Raw Crab Meat",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Raw_Crab_Meat.png",
+    "sellValue": 2,
+    "foodValue": 0
+  },
+  {
+    "name": "Raw Fish",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Raw_Fish.png",
+    "sellValue": 2,
+    "foodValue": 1
+  },
+  {
+    "name": "Raw Meat",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Raw_Meat.png",
+    "sellValue": 3,
+    "foodValue": 0
+  },
+  {
+    "name": "Royal Banquet",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Royal_Banquet.png"
+  },
+  {
+    "name": "Seafood Stew",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Seafood_Stew.png",
+    "sellValue": 3,
+    "foodValue": 2
+  },
+  {
+    "name": "Seaweed",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Seaweed.png",
+    "sellValue": 1,
+    "foodValue": 1
+  },
+  {
+    "name": "Stew",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Stew.png",
+    "sellValue": 10,
+    "foodValue": 10
+  },
+  {
+    "name": "Sushi",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Sushi.png",
+    "sellValue": 2,
+    "foodValue": 2
+  },
+  {
+    "name": "Tamago Sushi",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Tamago_Sushi.png",
+    "sellValue": 2,
+    "foodValue": 4
+  },
+  {
+    "name": "Tomato",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Tomato.png"
+  },
+  {
+    "name": "Water",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Water.png",
+    "sellValue": 1,
+    "foodValue": 0
+  },
+  {
+    "name": "Wheat",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Wheat.png"
+  },
+  {
+    "name": "Wine",
+    "type": "FOOD",
+    "iconPath": "/Image/card/food/Wine.png"
+  },
+  {
+    "name": "Copper Ore",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Copper_Ore.png"
+  },
+  {
+    "name": "Electric Motor",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Electric_Motor.png",
+    "sellValue": 80
+  },
+  {
+    "name": "Factory Parts",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Factory_Parts.png",
+    "sellValue": 50
+  },
+  {
+    "name": "Altar",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Altar.png"
+  },
+  {
+    "name": "Animal Cage",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Animal_Cage.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Animal Pen",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Animal_Pen.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Apartment",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Apartment.png",
+    "sellValue": 60
+  },
+  {
+    "name": "Aquarium",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Aquarium.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Barracks",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Barracks.png"
+  },
+  {
+    "name": "Barrel",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Barrel.png"
+  },
+  {
+    "name": "Breeding Pen",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Breeding_Pen.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Brickyard",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Brickyard.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Burner Generator",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Burner_Generator.png"
+  },
+  {
+    "name": "Butchery",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Butchery.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Campfire",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Campfire.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Cathedral",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Cathedral.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Charity",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Charity.png",
+    "sellValue": 3
+  },
+  {
+    "name": "City Hall",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/City_Hall.png"
+  },
+  {
+    "name": "Coin Chest",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Coin_Chest.png",
+    "sellValue": 0
+  },
+  {
+    "name": "Composter",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Composter.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Copper Mine",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Copper_Mine.png",
+    "sellValue": 60
+  },
+  {
+    "name": "Crane",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Crane.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Distillery",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Distillery.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Dustbin",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Dustbin.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Electricity Pylon",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Electricity_Pylon.png",
+    "sellValue": 100
+  },
+  {
+    "name": "Energy Combiner",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Energy_Combiner.png",
+    "sellValue": 60
+  },
+  {
+    "name": "Energy Splitter",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Energy_Splitter.png",
+    "sellValue": 60
+  },
+  {
+    "name": "Export Center",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Export_Center.png",
+    "sellValue": 60
+  },
+  {
+    "name": "Factory",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Factory.png",
+    "sellValue": 60
+  },
+  {
+    "name": "Farm",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Farm.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Farmland",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Farmland.png",
+    "sellValue": 30
+  },
+  {
+    "name": "Filter Junction",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Filter_Junction.png",
+    "sellValue": 50
+  },
+  {
+    "name": "Fish Trap",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Fish_Trap.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Flour Mill",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Flour_Mill.png"
+  },
+  {
+    "name": "Fountain of Youth",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Fountain_of_Youth.png"
+  },
+  {
+    "name": "Frigate",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Frigate.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Garden",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Garden.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Gold Mine",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Gold_Mine.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Gravel Pit",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Gravel_Pit.png",
+    "sellValue": 30
+  },
+  {
+    "name": "Greenhouse",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Greenhouse.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Hamster Wheel",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Hamster_Wheel.png"
+  },
+  {
+    "name": "Hotpot",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Hotpot.png",
+    "sellValue": 5
+  },
+  {
+    "name": "House",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/House.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Hydroponic Farm",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Hydroponic_Farm.png",
+    "sellValue": 30
+  },
+  {
+    "name": "Industrial Smelter",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Industrial_Smelter.png"
+  },
+  {
+    "name": "Iron Mine",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Iron_Mine.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Junction",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Junction.png",
+    "sellValue": 50
+  },
+  {
+    "name": "Landfill",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Landfill.png",
+    "sellValue": 40
+  },
+  {
+    "name": "Lighthouse",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Lighthouse.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Lumber Camp",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Lumber_Camp.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Luxury Apartment",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Luxury_Apartment.png",
+    "sellValue": 60
+  },
+  {
+    "name": "Magic Glue",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Magic_Glue.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Market",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Market.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Mess Hall",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Mess_Hall.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Naming Stone",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Naming_Stone.png"
+  },
+  {
+    "name": "Nuclear Power Plant",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Nuclear_Power_Plant.png",
+    "sellValue": 200
+  },
+  {
+    "name": "Oil Power Plant",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Oil_Power_Plant.png",
+    "sellValue": 100
+  },
+  {
+    "name": "Oil Rig",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Oil_Rig.png",
+    "sellValue": 100
+  },
+  {
+    "name": "Outhouse",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Outhouse.png"
+  },
+  {
+    "name": "Oven",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Oven.png"
+  },
+  {
+    "name": "Petting Zoo",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Petting_Zoo.png"
+  },
+  {
+    "name": "Quarry",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Quarry.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Radar Station",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Radar_Station.png",
+    "sellValue": 100
+  },
+  {
+    "name": "Recycling Center",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Recycling_Center.png",
+    "sellValue": 40
+  },
+  {
+    "name": "Resource Chest",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Resource_Chest.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Resource Magnet",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Resource_Magnet.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Road Builder",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Road_Builder.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Robot Station",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Robot_Station.png",
+    "sellValue": 150
+  },
+  {
+    "name": "Rowboat",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Rowboat.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Sad Event",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Sad_Event.png"
+  },
+  {
+    "name": "Sand Quarry",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Sand_Quarry.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Sawmill",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Sawmill.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Septic Tank",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Septic_Tank.png"
+  },
+  {
+    "name": "Sewer",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Sewer.png"
+  },
+  {
+    "name": "Shack",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Shack.png",
+    "sellValue": 40
+  },
+  {
+    "name": "Shed",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Shed.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Shell Chest",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Shell_Chest.png",
+    "sellValue": 0
+  },
+  {
+    "name": "Sloop",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Sloop.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Smelter",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Smelter.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Smithy",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Smithy.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Stable Portal",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Stable_Portal.png",
+    "sellValue": 3
+  },
+  {
+    "name": "Stove",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Stove.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Tavern",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Tavern.png"
+  },
+  {
+    "name": "Tree Plantation",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Tree_Plantation.png",
+    "sellValue": 60
+  },
+  {
+    "name": "University",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/University.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Warehouse",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Warehouse.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Water Treatment Plant",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Water_Treatment_Plant.png",
+    "sellValue": 100
+  },
+  {
+    "name": "Water Wheel",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Water_Wheel.png"
+  },
+  {
+    "name": "Well",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Well.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Wind Turbine",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Wind_Turbine.png"
+  },
+  {
+    "name": "Wishing Well",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Wishing_Well.png",
+    "sellValue": 5
+  },
+  {
+    "name": "Bear",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Bear.png",
+    "health": 25,
+    "combatLevel": 22,
+    "damage": 3,
+    "defense": 2,
+    "effect": "10% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Dark Elf",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Dark_Elf.png",
+    "health": 15,
+    "combatLevel": 13,
+    "damage": 2,
+    "defense": 1,
+    "effect": "5% chance to Lifesteal from target"
+  },
+  {
+    "name": "Demon",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Demon.png",
+    "health": 299,
+    "combatLevel": 174,
+    "damage": 5,
+    "defense": 2,
+    "effect": "5% chance to Stun all enemies for 5s"
+  },
+  {
+    "name": "Demon Lord",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Demon_Lord.png",
+    "health": 666,
+    "combatLevel": 373,
+    "damage": 6,
+    "defense": 2,
+    "effect": "10% chance to Lifesteal from random enemy"
+  },
+  {
+    "name": "Demon of Sadness",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Demon_of_Sadness.png",
+    "health": 299,
+    "combatLevel": 168,
+    "damage": 5,
+    "defense": 3,
+    "effect": "5% chance to Stun all enemies"
+  },
+  {
+    "name": "Eel",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Eel.png",
+    "health": 6,
+    "combatLevel": 9,
+    "damage": 3,
+    "defense": 1
+  },
+  {
+    "name": "Elf",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Elf.png",
+    "health": 15,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 2
+  },
+  {
+    "name": "Elf Archer",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Elf_Archer.png",
+    "health": 15,
+    "combatLevel": 12,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Enchanted Shroom",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Enchanted_Shroom.png",
+    "health": 25,
+    "combatLevel": 21,
+    "damage": 3,
+    "defense": 2
+  },
+  {
+    "name": "Ent",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Ent.png",
+    "health": 30,
+    "combatLevel": 23,
+    "damage": 3,
+    "defense": 2
+  },
+  {
+    "name": "Feral Cat",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Feral_Cat.png",
+    "health": 9,
+    "combatLevel": 8,
+    "damage": 1,
+    "defense": 0,
+    "effect": "10% chance to Poison target"
+  },
+  {
+    "name": "Fiend",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Fiend.png",
+    "health": 7,
+    "combatLevel": 16,
+    "damage": 4,
+    "defense": 3,
+    "effect": "10% chance to Stun target"
+  },
+  {
+    "name": "Frog Man",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Frog_Man.png",
+    "health": 15,
+    "combatLevel": 12,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Ghost",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Ghost.png",
+    "health": 12,
+    "combatLevel": 12,
+    "damage": 3,
+    "defense": 1
+  },
+  {
+    "name": "Ghoul",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Ghoul.png",
+    "health": 5,
+    "combatLevel": 7,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Giant Rat",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Giant_Rat.png",
+    "health": 20,
+    "combatLevel": 19,
+    "damage": 3,
+    "defense": 1
+  },
+  {
+    "name": "Giant Snail",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Giant_Snail.png",
+    "health": 14,
+    "combatLevel": 19,
+    "damage": 4,
+    "defense": 2
+  },
+  {
+    "name": "Goblin",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Goblin.png",
+    "health": 10,
+    "combatLevel": 8,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Goblin Archer",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Goblin_Archer.png",
+    "health": 7,
+    "combatLevel": 8,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Goblin Shaman",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Goblin_Shaman.png",
+    "health": 15,
+    "combatLevel": 12,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Kraken",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Kraken.png",
+    "health": 250,
+    "combatLevel": 150,
+    "damage": 5,
+    "defense": 2,
+    "effect": "20% chance to Stun all enemies for 5s"
+  },
+  {
+    "name": "Merman",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Merman.png",
+    "health": 21,
+    "combatLevel": 17,
+    "damage": 3,
+    "defense": 1
+  },
+  {
+    "name": "Mimic",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Mimic.png",
+    "health": 18,
+    "combatLevel": 13,
+    "damage": 1,
+    "defense": 1
+  },
+  {
+    "name": "Momma Crab",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Momma_Crab.png",
+    "health": 100,
+    "combatLevel": 67,
+    "damage": 2,
+    "defense": 2,
+    "effect": "20% chance to Stun target for 5s"
+  },
+  {
+    "name": "Mosquito",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Mosquito.png",
+    "health": 6,
+    "combatLevel": 7,
+    "damage": 3,
+    "defense": 0
+  },
+  {
+    "name": "Ogre",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Ogre.png",
+    "health": 30,
+    "combatLevel": 20,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Orc Wizard",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Orc_Wizard.png",
+    "health": 15,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 2
+  },
+  {
+    "name": "Pirate",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Pirate.png",
+    "health": 15,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "effect": "10% chance to Stun target for 5s"
+  },
+  {
+    "name": "Pirate Boat",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Pirate_Boat.png"
+  },
+  {
+    "name": "Rare Portal",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Rare_Portal.png"
+  },
+  {
+    "name": "Rat",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Rat.png",
+    "health": 5,
+    "combatLevel": 6,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Seagull",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Seagull.png",
+    "health": 6,
+    "combatLevel": 7,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Shark",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Shark.png",
+    "health": 15,
+    "combatLevel": 20,
+    "damage": 3,
+    "defense": 2,
+    "effect": "10% chance to Bleed target"
+  },
+  {
+    "name": "Skeleton",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Skeleton.png",
+    "health": 12,
+    "combatLevel": 12,
+    "damage": 2,
+    "defense": 1,
+    "effect": "5% chance to do a Critical Hit on target"
+  },
+  {
+    "name": "Slime",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Slime.png",
+    "health": 15,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Small Slime",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Small_Slime.png",
+    "health": 4,
+    "combatLevel": 4,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Snake",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Snake.png",
+    "health": 9,
+    "combatLevel": 15,
+    "damage": 2,
+    "defense": 0,
+    "effect": "30% chance to Poison target"
+  },
+  {
+    "name": "Strange Portal",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Strange_Portal.png"
+  },
+  {
+    "name": "Tentacle",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Tentacle.png",
+    "health": 50,
+    "combatLevel": 43,
+    "damage": 4,
+    "defense": 1,
+    "effect": "20% chance to Stun target for 5s"
+  },
+  {
+    "name": "Tiger",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Tiger.png",
+    "health": 15,
+    "combatLevel": 22,
+    "damage": 2,
+    "defense": 2,
+    "effect": "20% chance to Stun target for 5s"
+  },
+  {
+    "name": "Wicked Witch",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Wicked_Witch.png",
+    "health": 300,
+    "combatLevel": 160,
+    "damage": 3,
+    "defense": 2
+  },
+  {
+    "name": "Wolf",
+    "type": "MONSTER",
+    "iconPath": "/Image/card/monster/Wolf.png",
+    "health": 20,
+    "combatLevel": 18,
+    "damage": 2,
+    "defense": 2
+  },
+  {
+    "name": "Chicken",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Chicken.png",
+    "health": 5,
+    "combatLevel": 6,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Cow",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Cow.png",
+    "health": 5,
+    "combatLevel": 9,
+    "damage": 2,
+    "defense": 1,
+    "effect": "10% chance to Stun target for 5s"
+  },
+  {
+    "name": "Crab",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Crab.png",
+    "health": 5,
+    "combatLevel": 8,
+    "damage": 2,
+    "defense": 0,
+    "effect": "10% chance to make self Invulnerable for 10s"
+  },
+  {
+    "name": "Monkey",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Monkey.png",
+    "health": 6,
+    "combatLevel": 5,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Parrot",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Parrot.png",
+    "health": 5,
+    "combatLevel": 6,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Rabbit",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Rabbit.png",
+    "health": 5,
+    "combatLevel": 8,
+    "damage": 2,
+    "defense": 0,
+    "effect": "10% chance to Frenzy self for 10s"
+  },
+  {
+    "name": "Cod",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Cod.png",
+    "health": 3,
+    "combatLevel": 4,
+    "damage": 2,
+    "defense": 0
+  },
+  {
+    "name": "Mackerel",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Mackerel.png",
+    "health": 4,
+    "combatLevel": 9,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "Tuna",
+    "type": "CREATURE",
+    "iconPath": "/Image/card/creature/Tuna.png",
+    "health": 6,
+    "combatLevel": 8,
+    "damage": 2,
+    "defense": 1
+  },
+  {
+    "name": "A New World",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/A_New_World.png"
+  },
+  {
+    "name": "Advanced Archipelago",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Advanced_Archipelago.png"
+  },
+  {
+    "name": "Advanced Automation",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Advanced_Automation.png"
+  },
+  {
+    "name": "Black Gold",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Black_Gold.png"
+  },
+  {
+    "name": "Cities Pack",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Cities_Pack.png"
+  },
+  {
+    "name": "Curious Cuisine",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Curious_Cuisine.png"
+  },
+  {
+    "name": "Department of Defense",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Department_of_Defense.png"
+  },
+  {
+    "name": "Enclave Explorers",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Enclave_Explorers.png"
+  },
+  {
+    "name": "Explorers",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Explorers.png"
+  },
+  {
+    "name": "Fresh Isle",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Fresh_Isle.png"
+  },
+  {
+    "name": "Grilling and Brewing",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Grilling_and_Brewing.png"
+  },
+  {
+    "name": "Humble Beginnings",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Humble_Beginnings.png"
+  },
+  {
+    "name": "Impressive Industry",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Impressive_Industry.png"
+  },
+  {
+    "name": "Island Insights",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Island_Insights.png"
+  },
+  {
+    "name": "Island of Ideas",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Island_of_Ideas.png"
+  },
+  {
+    "name": "Logic and Reason",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Logic_and_Reason.png"
+  },
+  {
+    "name": "Major Metals",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Major_Metals.png"
+  },
+  {
+    "name": "Modern Solutions",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Modern_Solutions.png"
+  },
+  {
+    "name": "New Weaponry",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/New_Weaponry.png"
+  },
+  {
+    "name": "Noble Creatures",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Noble_Creatures.png"
+  },
+  {
+    "name": "On The Shore",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/On_The_Shore.png"
+  },
+  {
+    "name": "Order and Structure",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Order_and_Structure.png"
+  },
+  {
+    "name": "Precious Resources",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Precious_Resources.png"
+  },
+  {
+    "name": "Reap & Sow",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Reap_&_Sow.png"
+  },
+  {
+    "name": "Seeking Wisdom",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/Seeking_Wisdom.png"
+  },
+  {
+    "name": "The Armory",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/The_Armory.png"
+  },
+  {
+    "name": "The Island?",
+    "type": "PACK",
+    "iconPath": "/Image/card/pack/The_Island?.png"
+  },
+  {
+    "name": "Idea: Altar",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Altar.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Animal Cage",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Animal_Cage.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Animal Pen",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Animal_Pen.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Apartment",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Apartment.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Aquarium",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Aquarium.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Attack Helicopter",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Attack_Helicopter.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Axe",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Axe.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Barracks",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Barracks.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Barrel",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Barrel.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Beer",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Beer.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Blunderbuss",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Blunderbuss.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Bone Spear",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Bone_Spear.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Bone Staff",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Bone_Staff.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Book",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Book.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Boomerang",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Boomerang.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Bottle of Rum",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Bottle_of_Rum.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Bow",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Bow.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Bread",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Bread.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Bread 2000",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Bread_2000.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Breeding Pen",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Breeding_Pen.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Brick",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Brick.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Brickyard",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Brickyard.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Broken Bottle",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Broken_Bottle.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Burner Generator",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Burner_Generator.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Butchery",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Butchery.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Campfire",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Campfire.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Cathedral",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Cathedral.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Cement",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Cement.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Ceviche",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Ceviche.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Chainmail Armor",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Chainmail_Armor.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Charcoal",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Charcoal.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Charity",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Charity.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Cheese",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Cheese.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Chicken",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Chicken.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: City Hall",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_City_Hall.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Club",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Club.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Coin",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Coin.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Coin Chest",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Coin_Chest.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Composter",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Composter.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Cooked Meat",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Cooked_Meat.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Crane",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Crane.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Crossbow",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Crossbow.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Distillery",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Distillery.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Dough",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Dough.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Dustbin",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Dustbin.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Empty Bottle",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Empty_Bottle.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Energy Combiner",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Energy_Combiner.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Euphoria",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Euphoria.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Fabric",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fabric.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Factory",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Factory.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Factory Parts",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Factory_Parts.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Fancy Dress",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fancy_Dress.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Farm",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Farm.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Farmland",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Farmland.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Fighter Jet",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fighter_Jet.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Filter Junction",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Filter_Junction.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Fish and Chips",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fish_and_Chips.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Fish Trap",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fish_Trap.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Fishing Rod",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fishing_Rod.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Flour",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Flour.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Flour Mill",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Flour_Mill.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Food Warehouse",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Food_Warehouse.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Forest Amulet",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Forest_Amulet.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Fountain of Youth",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fountain_of_Youth.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: French Fries",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_French_Fries.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Fried Fish",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fried_Fish.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Fried Meat",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fried_Meat.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Frigate",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Frigate.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Frittata",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Frittata.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Fruit Salad",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Fruit_Salad.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Garden",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Garden.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Glass",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Glass.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Gold Bar",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Gold_Bar.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Gold Mine",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Gold_Mine.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Golden Chestplate",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Golden_Chestplate.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Grape Pulp",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Grape_Pulp.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Greenhouse",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Greenhouse.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Growth",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Growth.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Hammer",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Hammer.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Hamster Wheel",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Hamster_Wheel.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Happiness",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Happiness.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Herbal Tea",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Herbal_Tea.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Hotpot",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Hotpot.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: House",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_House.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Industrial Smelter",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Industrial_Smelter.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Iron Bar",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Iron_Bar.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Iron Mine",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Iron_Mine.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Iron Shield",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Iron_Shield.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Jester's Hat",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Jester's_Hat.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Junction",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Junction.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Landfill",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Landfill.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Lift Curse",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Lift_Curse.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Lighthouse",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Lighthouse.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Lumber Camp",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Lumber_Camp.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Luxury Apartment",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Luxury_Apartment.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Magic Blade",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Magic_Blade.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Magic Glue",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Magic_Glue.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Magic Ring",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Magic_Ring.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Magic Staff",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Magic_Staff.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Magic Tome",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Magic_Tome.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Magic Wand",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Magic_Wand.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Market",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Market.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Mess Hall",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Mess_Hall.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Metal Scraps",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Metal_Scraps.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Milkshake",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Milkshake.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Mountain Amulet",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Mountain_Amulet.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Muesli",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Muesli.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Naming Stone",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Naming_Stone.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Offspring",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Offspring.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Olive Oil",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Olive_Oil.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Olive Pulp",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Olive_Pulp.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Omelette",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Omelette.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Outhouse",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Outhouse.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Oven",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Oven.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Painting",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Painting.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Pancakes",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Pancakes.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Paper",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Paper.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Petting Zoo",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Petting_Zoo.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Pickaxe",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Pickaxe.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Pizza",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Pizza.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Plague Mask",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Plague_Mask.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Plank",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Plank.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Purple Socks",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Purple_Socks.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Quarry",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Quarry.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Radar Station",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Radar_Station.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Recruiting",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Recruiting.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Resource Chest",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Resource_Chest.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Resource Magnet",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Resource_Magnet.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Road Builder",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Road_Builder.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Robot Soldier",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Robot_Soldier.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Robot Station",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Robot_Station.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Robot Worker",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Robot_Worker.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Rope",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Rope.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Rowboat",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Rowboat.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Royal Banquet",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Royal_Banquet.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sacred Key",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sacred_Key.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sail",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sail.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sand Quarry",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sand_Quarry.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sandstone",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sandstone.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sawmill",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sawmill.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Scythe",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Scythe.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Seafood Stew",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Seafood_Stew.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Septic Tank",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Septic_Tank.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Sewer",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sewer.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Shack",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Shack.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Shed",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Shed.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Shell Chest",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Shell_Chest.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Slingshot",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Slingshot.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sloop",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sloop.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Smelter",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Smelter.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sniper",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sniper.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Spear",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Spear.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Spiked Plank",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Spiked_Plank.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Stable Portal",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Stable_Portal.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Stew",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Stew.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Stick",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Stick.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Storage Container",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Storage_Container.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Stove",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Stove.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sushi",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sushi.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Sword",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Sword.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Tamago Sushi",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Tamago_Sushi.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Tank",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Tank.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Tavern",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Tavern.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Temple",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Temple.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Throwing Stars",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Throwing_Stars.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Tomatoes",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Tomatoes.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: University",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_University.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: War Ship",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_War_Ship.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Warehouse",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Warehouse.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Water Wheel",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Water_Wheel.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Well",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Well.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Wind Turbine",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Wind_Turbine.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Idea: Wine",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Wine.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Winter Coat",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Winter_Coat.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Wishing Well",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Wishing_Well.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Wizard Robe",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Wizard_Robe.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea: Wooden Shield",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:_Wooden_Shield.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Idea:Animal Pen",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Idea:Animal_Pen.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Landmark: Art Gallery",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Landmark:_Art_Gallery.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Landmark: Cinema",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Landmark:_Cinema.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Landmark: City Park",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Landmark:_City_Park.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Landmark: Stadium",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Landmark:_Stadium.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Landmark: Villager Statue",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Landmark:_Villager_Statue.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Rumor: Combat",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumor:_Combat.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Rumor: Dark Forest",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumor:_Dark_Forest.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Rumor: Eel Bait",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumor:_Eel_Bait.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Rumor: Shark Bait",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumor:_Shark_Bait.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Rumor: The Island",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumor:_The_Island.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Rumor: Tuna Bait",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumor:_Tuna_Bait.png",
+    "sellValue": 1
+  },
+  {
+    "name": "Rumour: Eureka!",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumour:_Eureka!.png"
+  },
+  {
+    "name": "Rumour: Extraction",
+    "type": "IDEA",
+    "iconPath": "/Image/card/idea/Rumour:_Extraction.png",
+    "sellValue": 10
+  },
+  {
+    "name": "Coin",
+    "type": "COIN",
+    "iconPath": "/Image/card/resource/Coin.png"
+  }
+]
