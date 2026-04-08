@@ -27,6 +27,17 @@ EquipSlot StringToEquipSlot(const std::string& slotStr) {
     return EquipSlot::NONE;
 }
 
+bool CardManager::isDraggingCard() {
+    if (m_DraggingCard != nullptr) {
+        return true;
+    }
+    return false;
+}
+
+std::vector<std::shared_ptr<Card>> CardManager::GetAllCards() {
+    return m_Cards;
+}
+
 void CardManager::LoadCardDatabase(const std::string& filePath) {
     std::ifstream file(filePath);
     if (!file.is_open()) {
@@ -40,14 +51,16 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
     // 遍歷陣列，存入字典 (Key 是卡片名字，Value 是配方)
     for (const auto& item : j) {
         CardSpawnData data;
+        // 使用 .value() 加上預設值，就算 JSON 漏寫某個欄位也不會崩潰！
         data.name      = item.value("name", "Unknown");
         data.sellValue = item.value("sellValue", 0);
         data.type      = StringToCardType(item.value("type", "BASIC"));
+
         std::string rawPath = item.value("iconPath", "");
         data.iconPath  = rawPath.empty() ? "" : RESOURCE_DIR + rawPath;
+
         data.health    = item.value("health", 0); // resource 不用寫hp
         data.scale     = 0.05f;
-        data.equipSlot = StringToEquipSlot(item.value("equipSlot", "NONE"));
 
         m_CardDatabase[data.name] = data;
     }
@@ -93,6 +106,7 @@ void CardManager::SpawnPackByName(const std::string& packName, float scale, floa
 
     PackTemplate tmpl = m_PackDatabase[packName];
 
+    // 把 pool 裡的「名字字串」轉換成真正的「CardSpawnData 配方」
     std::vector<CardSpawnData> actualPool;
     for (const auto& cardName : tmpl.pool) {
         if (m_CardDatabase.count(cardName)) {
