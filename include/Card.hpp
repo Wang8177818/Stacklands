@@ -27,11 +27,20 @@ enum class CardType {
     EQUIPMENT   // 裝備卡
 };
 
+enum class EquipSlot {
+    NONE,
+    HEAD,
+    HAND,
+    BODY
+};
+
 class Card {
 public:
     Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale = 1.0f);
 
     virtual ~Card() = default;
+
+    std::string GetName() const { return m_Name; }
 
     void SetBackgroundImage(const std::string& imagePath);
 
