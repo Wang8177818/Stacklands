@@ -112,7 +112,7 @@ void CardManager::SpawnPackByName(const std::string& packName, float scale, floa
     }
 
     auto pack = std::make_shared<CardPack>(
-        x, y, tmpl.name, tmpl.sellValue, tmpl.iconPath, scale, tmpl.totalCards, actualPool);
+        x, y, tmpl.name, tmpl.sellValue, tmpl.iconPath, scale * 0.6, tmpl.totalCards, actualPool);
 
     AddCard(pack);
 }

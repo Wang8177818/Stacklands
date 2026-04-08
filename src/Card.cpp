@@ -18,9 +18,9 @@ Card::Card(float x, float y, const std::string& name, int sellValue, CardType ty
 
     //名稱
     m_NameText = std::make_shared<Util::GameObject>();
-
+    
     //字體大小少大於22
-    int fontSize = static_cast<int>(500 * m_Scale);
+    int fontSize = static_cast<int>(1000 * m_Scale);
     if (fontSize < 22) fontSize = 22;
     m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, m_Name, Util::Color(0, 0, 0)));
     m_NameText->SetZIndex(11);
