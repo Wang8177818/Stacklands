@@ -52,18 +52,18 @@ void App::MainMenu() {
 
 // ─────────────────────────────────────────────────────────────
 void App::GameInit() {
-    float test_scale = 0.15f;
+    float basic_scale = 0.1f;
 
     // 讀 json
     m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
     m_CardManager->LoadPackDatabase(RESOURCE_DIR"/Data/Packs.json");
 
-    m_CardManager->SpawnCardByName("Villager", test_scale);
-    m_CardManager->SpawnCardByName("Militia",  test_scale);
-    m_CardManager->SpawnCardByName("Wood",     test_scale);
-    m_CardManager->SpawnCardByName("Coin",     test_scale);
+    m_CardManager->SpawnCardByName("Villager", basic_scale);
+    m_CardManager->SpawnCardByName("Militia",  basic_scale);
+    m_CardManager->SpawnCardByName("Wood",     basic_scale);
+    m_CardManager->SpawnCardByName("Coin",     basic_scale);
 
-    m_CardManager->SpawnPackByName("A New World", test_scale);
+    m_CardManager->SpawnPackByName("A New World", basic_scale);
 
     m_CurrentState = State::UPDATE;
 }

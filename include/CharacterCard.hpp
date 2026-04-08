@@ -23,7 +23,7 @@ public:
         SetIconImage(iconPath);
 
         m_HealthText = std::make_shared<Util::GameObject>();
-        int fontSize = static_cast<int>(500 * m_Scale);
+        int fontSize = static_cast<int>(1000 * m_Scale);
         if (fontSize < 22) fontSize = 22;
 
         m_HealthText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(health), Util::Color(255, 255, 255)));
