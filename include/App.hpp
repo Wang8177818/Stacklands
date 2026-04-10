@@ -23,14 +23,7 @@ public:
         END,
     };
 
-    enum class GameTime {
-        NORMAL,
-        FAST,
-        PAUSE,
-    };
-
     State    GetCurrentState() const { return m_CurrentState; }
-    GameTime GetGameState()    const { return m_GameTime; }
 
     void Start();
     void MainMenu();
@@ -39,12 +32,9 @@ public:
     void End();
 
     glm::vec2 mousePos = Util::Input::GetCursorPosition();
-    float tick  = 0;
-    float month = 1;
 
 private:
     State    m_CurrentState = State::START;
-    GameTime m_GameTime     = GameTime::NORMAL;
 
     Util::Renderer m_Renderer;
 

@@ -21,6 +21,7 @@ public:
         OPTIONS,
         CARD_WIKI,
         MODS,
+        CONTINUE,
     };
 
     UIManager(Util::Renderer& renderer);
@@ -32,6 +33,7 @@ public:
 
     // 每幀呼叫；處理 Hover 動畫並回傳被點擊的事件
     MenuEvent UpdateMenu(glm::vec2 mousePos);
+    MenuEvent UpdatePauseMenu(glm::vec2 mousePos);
 
     // 進入遊戲時，隱藏所有選單物件並建立遊戲 UI
     void TransitionToGame();
@@ -49,18 +51,36 @@ public:
     // 取得播放/快進/暫停按鈕
     std::shared_ptr<MenuButton> GetPlayButton() const { return m_PlayButton; }
 
+    // 取得暫停選單
+    std::shared_ptr<BackgroundImage> GetPauseMenu() const { return m_PauseMenuImage; }
+
+    // 取得描述欄
+    std::shared_ptr<BackgroundImage> GetDescriptionBar() const { return m_DescriptionBarImage; }
+
+    // 取得資訊欄
+    std::shared_ptr<BackgroundImage> GetResourseBar() const { return m_ResourceBarImage; }
+
+    // 取得時間欄
+    std::shared_ptr<BackgroundImage> GetTimeBar() const { return m_TimeBarImage; }
+
+    // 取得暫停選單:繼續
+    std::shared_ptr<MenuButton> GetContinueButton() const { return m_Continue; }
+
 private:
     Util::Renderer& m_Renderer;
 
     // ── 選單資源 ──────────────────────────────────────────
     std::shared_ptr<BackgroundImage> m_MainMenuBG;
     std::shared_ptr<BackgroundImage> m_MainMenuImage;
+    std::shared_ptr<BackgroundImage> m_PauseMenuImage;
 
     std::shared_ptr<MenuButton> m_BtnStart;
     std::shared_ptr<MenuButton> m_BtnExit;
     std::shared_ptr<MenuButton> m_BtnOptions;
     std::shared_ptr<MenuButton> m_BtnCardWiki;
     std::shared_ptr<MenuButton> m_BtnMods;
+
+    std::shared_ptr<MenuButton> m_Continue;
 
     // ── 遊戲 UI 資源 ─────────────────────────────────────
     std::shared_ptr<BackgroundImage> m_GameFieldImage;
