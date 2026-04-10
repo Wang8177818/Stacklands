@@ -11,9 +11,22 @@
 #include <glm/glm.hpp>
 #include "BackgroundImage.hpp"
 #include "Card.hpp"
+#include "UIManager.hpp"
 
 class EventManager {
 public:
+
+    enum class GameTime {
+        NORMAL,
+        FAST,
+        PAUSE,
+    };
+
+    float tick  = 0;
+    float month = 1;
+
+    GameTime GetGameState() const { return m_GameTime; }
+
     // ── 縮放邊界常數 ──────────────────────────────────────
     static constexpr float ZOOM_MIN      = 0.5f;
     static constexpr float ZOOM_MAX      = 2.0f;
@@ -24,6 +37,9 @@ public:
 
     // 綁定需要跟著移動/縮放的場景背景圖
     void SetGameField(std::shared_ptr<BackgroundImage> gameField);
+
+    // 綁定 UIManager（不擁有，只借用）
+    void SetUIManager(UIManager* uiManager) { m_UIManager = uiManager; }
 
     // 每幀呼叫
     // mousePos        — 當前滑鼠座標
@@ -46,13 +62,23 @@ private:
     void HandleWASD(std::vector<std::shared_ptr<Card>>& cards);
 
     // 移動所有物件（背景 + 卡片）
-    void MoveAll(glm::vec2 delta,
-                 std::vector<std::shared_ptr<Card>>& cards);
+    void MoveAll(glm::vec2 delta, std::vector<std::shared_ptr<Card>>& cards);
+
+    // 切換遊戲時間速度
+    void SwitchGameState();
+
+    // 暫停選單
+    void ESCMenu();
+    bool is_Pausing = false;
 
     std::shared_ptr<BackgroundImage> m_GameField;
 
     bool      m_IsDraggingMap = false;
     glm::vec2 m_LastMousePos  = {0.f, 0.f};
+
+    GameTime m_GameTime = GameTime::NORMAL;
+
+    UIManager* m_UIManager = nullptr;
 };
 
 #endif //STACKLANDS_EVENTMANAGER_HPP
