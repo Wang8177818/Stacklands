@@ -5,7 +5,7 @@
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
 #include "CharacterCard.hpp"
-#include "ResourceCard.hpp"
+#include "Sellslot.hpp"
 
 // ─────────────────────────────────────────────────────────────
 void App::Start() {
@@ -14,6 +14,7 @@ void App::Start() {
     m_UIManager    = std::make_unique<UIManager>(m_Renderer);
     m_CardManager  = std::make_unique<CardManager>(m_Renderer);
     m_EventManager = std::make_unique<EventManager>();
+    m_SellSlot     = std::make_shared<SellSlot>(-300, 175);
 
     m_UIManager->InitMenu();
 
@@ -52,8 +53,11 @@ void App::MainMenu() {
 
 // ─────────────────────────────────────────────────────────────
 void App::GameInit() {
-    float basic_scale = 0.1f;
-
+    for (auto& obj : m_SellSlot->GetGameObjects()) {
+        m_Renderer.AddChild(obj);
+    }
+    m_Renderer.Update();
+    float basic_scale = 0.1f;// 在App.hpp 要改大小去那邊改
     // 讀 json
     m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
     m_CardManager->LoadPackDatabase(RESOURCE_DIR"/Data/Packs.json");
@@ -64,8 +68,9 @@ void App::GameInit() {
     m_CardManager->SpawnCardByName("Coin",     basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
-
+    m_CardManager->SpawnPackByName("Seeking Wisdom", basic_scale);
     m_CurrentState = State::UPDATE;
+
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -78,6 +83,7 @@ void App::Update() {
 
     // ── 鏡頭移動 & 地圖縮放（完全委託給 EventManager）────
     auto cards = m_CardManager->GetAllCards();
+    cards.push_back(m_SellSlot);
     m_EventManager->Update(mousePos, m_CardManager->isDraggingCard(), cards);
 
     // ── 時間推進 ──────────────────────────────────────────
@@ -116,6 +122,16 @@ void App::Update() {
 
     // ── 卡片更新 ──────────────────────────────────────────
     m_CardManager->Update(mousePos);
+    int sellPrice = m_SellSlot->GetTotalPrice();
+    if (sellPrice != 0)
+    {
+        float basic_scale = 0.1f;
+        do
+        {
+            m_CardManager->SpawnCardByName("Coin", basic_scale);
+            sellPrice -= 1;
+        }while (sellPrice >= 0);
+    }
 
     m_Renderer.Update();
 

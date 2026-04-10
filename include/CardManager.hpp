@@ -29,6 +29,7 @@ public:
 
     // 把卡片加入管理清單，並同時交給 Renderer 渲染
     void AddCard(std::shared_ptr<Card> card);
+    void RemoveCard(std::shared_ptr<Card> target);
 
     // json
     void LoadCardDatabase(const std::string& filePath);

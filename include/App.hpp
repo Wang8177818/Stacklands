@@ -12,6 +12,7 @@
 #include "CardManager.hpp"
 #include "UIManager.hpp"
 #include "EventManager.hpp"
+#include "Sellslot.hpp"
 
 class App {
 public:
@@ -43,6 +44,7 @@ public:
     float month = 1;
 
 private:
+    float basic_scale = 0.1f;
     State    m_CurrentState = State::START;
     GameTime m_GameTime     = GameTime::NORMAL;
 
@@ -52,6 +54,8 @@ private:
     std::unique_ptr<CardManager>  m_CardManager;
     std::unique_ptr<UIManager>    m_UIManager;
     std::unique_ptr<EventManager> m_EventManager;
+    std::shared_ptr<SellSlot> m_SellSlot;
+
 };
 
 #endif
