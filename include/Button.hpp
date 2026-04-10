@@ -27,7 +27,7 @@ public:
         // ... (保留您原本建立 m_DarkBg, m_Text, m_Underline 的程式碼) ...
         m_DarkBg = std::make_shared<Util::GameObject>();
         m_DarkBg->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/dark_bg.png"));
-        m_DarkBg->SetZIndex(5);
+        m_DarkBg->SetZIndex(99);
         m_DarkBg->m_Transform.scale = {300, textsize*2};
         m_DarkBg->m_Transform.translation = {-470, y};
 
@@ -37,12 +37,12 @@ public:
         } else {
             m_Text->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", textsize, textStr, Util::Color(0, 0, 0)));
         }
-        m_Text->SetZIndex(6);
+        m_Text->SetZIndex(100);
         m_Text->m_Transform.translation = glm::vec2(x, y);
 
         m_Underline = std::make_shared<Util::GameObject>();
         m_Underline->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/underline.png"));
-        m_Underline->SetZIndex(6);
+        m_Underline->SetZIndex(100);
         m_Underline->m_Transform.translation = glm::vec2(x - textsize/3, y - textsize/1.5);
         m_Underline->m_Transform.scale = {words*textsize, 1};
     }
@@ -86,14 +86,31 @@ public:
         return isHover;
     }
 
-    // 切換場景時隱藏
+    // 隱藏
     void HideAll() {
         if (!m_IsImageButton) {
+            /*
             m_DarkBg->m_Transform.translation = glm::vec2(m_OriginalX, -9999);
             m_Text->m_Transform.translation = glm::vec2(m_OriginalX, -9999);
             m_Underline->m_Transform.translation = glm::vec2(m_OriginalX, -9999);
+            */
+            m_DarkBg->SetVisible(false);
+            m_Text->SetVisible(false);
+            m_Underline->SetVisible(false);
         } else {
-            m_Image->m_Transform.translation = glm::vec2(m_OriginalX, -9999);
+            //m_Image->m_Transform.translation = glm::vec2(m_OriginalX, -9999);
+            m_Image->SetVisible(false);
+        }
+    }
+
+    // 顯示
+    void ShowAll() {
+        if (!m_IsImageButton) {
+            m_DarkBg->SetVisible(true);
+            m_Text->SetVisible(true);
+            m_Underline->SetVisible(true);
+        } else {
+            m_Image->SetVisible(true);
         }
     }
 
