@@ -21,6 +21,8 @@ void EventManager::Update(glm::vec2 mousePos,
     HandlePan(mousePos, isDraggingCard, cards);
     HandleZoom(cards);
     HandleWASD(cards);
+    SwitchGameState();
+    ESCMenu();
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -92,11 +94,115 @@ void EventManager::HandleWASD(std::vector<std::shared_ptr<Card>>& cards) {
 // ─────────────────────────────────────────────────────────────
 // 同時移動背景圖與所有卡片（Pan / WASD 共用）
 // 卡片透過 MoveBy() 修改 m_X, m_Y，而非直接動 GameObject translation。
-void EventManager::MoveAll(glm::vec2 delta,
-                             std::vector<std::shared_ptr<Card>>& cards) {
+void EventManager::MoveAll(glm::vec2 delta, std::vector<std::shared_ptr<Card>>& cards) {
     m_GameField->m_Transform.translation += delta;
 
     for (auto& card : cards) {
         card->MoveBy(delta);
+    }
+}
+
+void EventManager::SwitchGameState() {
+    if (!m_UIManager) return;
+
+    auto mousePos = Util::Input::GetCursorPosition();
+
+    auto runTimeBar = m_UIManager->GetRunTimeBar();
+    auto pauseText  = m_UIManager->GetPauseText();
+    auto playButton = m_UIManager->GetPlayButton();
+
+    // ── 播放/快進/暫停按鈕 ────────────────────────────────
+    if (playButton->UpdateHover(mousePos) && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        switch (GetGameState()) {
+            case GameTime::NORMAL:
+                playButton->ChangeImage("/Image/button/fastforward.png");
+                m_GameTime = GameTime::FAST;
+                break;
+            case GameTime::FAST:
+                playButton->ChangeImage("/Image/button/pause.png");
+                m_GameTime = GameTime::PAUSE;
+                break;
+            case GameTime::PAUSE:
+                playButton->ChangeImage("/Image/button/play.png");
+                m_GameTime = GameTime::NORMAL;
+                break;
+        }
+    }
+
+    switch (GetGameState()) {
+        case GameTime::NORMAL:
+            pauseText->SetVisible(false);
+            runTimeBar->SetScale({runTimeBar->GetScaledSize().x + 0.05f, 35.f});
+            tick += 0.05f;
+            break;
+        case GameTime::FAST:
+            runTimeBar->SetScale({runTimeBar->GetScaledSize().x + 0.15f, 35.f});
+            tick += 0.15f;
+            break;
+        case GameTime::PAUSE:
+            if (!is_Pausing) {
+                pauseText->SetVisible(true);
+            }
+
+            break;
+    }
+}
+
+void EventManager::ESCMenu() {
+    auto mousePos = Util::Input::GetCursorPosition();
+    auto PauseMenu = m_UIManager->GetPauseMenu();
+    auto DescriptionBar = m_UIManager->GetDescriptionBar();
+    auto runTimeBar = m_UIManager->GetRunTimeBar();
+    auto playButton = m_UIManager->GetPlayButton();
+    auto resourseBar = m_UIManager->GetResourseBar();
+    auto timeBar = m_UIManager->GetTimeBar();
+    auto continueButton = m_UIManager->GetContinueButton();
+
+    // 進入暫停選單後開始更新按鈕
+    if (is_Pausing) {
+        auto event = m_UIManager->UpdatePauseMenu(mousePos);
+
+        switch (event) {
+            case UIManager::MenuEvent::CONTINUE:
+                m_GameTime = GameTime::NORMAL;
+                is_Pausing = false;
+
+                PauseMenu->SetVisible(false);
+                continueButton->HideAll();
+
+                DescriptionBar->SetVisible(true);
+                runTimeBar->SetVisible(true);
+                resourseBar->SetVisible(true);
+                timeBar->SetVisible(true);
+                playButton->ShowAll();
+        }
+    }
+
+    if (Util::Input::IsKeyDown(Util::Keycode::ESCAPE)) {
+        if (!is_Pausing) {
+            m_GameTime = GameTime::PAUSE;
+            is_Pausing = true;
+
+            PauseMenu->SetVisible(true);
+            continueButton->ShowAll();
+
+            DescriptionBar->SetVisible(false);
+            runTimeBar->SetVisible(false);
+            resourseBar->SetVisible(false);
+            timeBar->SetVisible(false);
+            playButton->HideAll();
+        } else {
+            m_GameTime = GameTime::NORMAL;
+            is_Pausing = false;
+
+            PauseMenu->SetVisible(false);
+            continueButton->HideAll();
+
+            DescriptionBar->SetVisible(true);
+            runTimeBar->SetVisible(true);
+            resourseBar->SetVisible(true);
+            timeBar->SetVisible(true);
+            playButton->ShowAll();
+        }
     }
 }

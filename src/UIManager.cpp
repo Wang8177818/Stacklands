@@ -4,6 +4,7 @@
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Core/Context.hpp"
+#include "App.hpp"
 
 // ─────────────────────────────────────────────────────────────
 UIManager::UIManager(Util::Renderer& renderer) : m_Renderer(renderer) {}
@@ -30,11 +31,18 @@ void UIManager::InitMenu() {
     m_Renderer.AddChild(m_MainMenuBG);
 
     m_MainMenuImage = std::make_shared<BackgroundImage>();
-    m_MainMenuImage->SetDrawable(std::make_shared<Util::Image>(
-        RESOURCE_DIR"/Image/background/stacklandsMenuMain.png"));
+    m_MainMenuImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/stacklandsMenuMain.png"));
     m_MainMenuImage->m_Transform.translation = glm::vec2(-470, -110);
-    m_MainMenuImage->m_Transform.scale       = {0.5f, 0.5f};
+    m_MainMenuImage->m_Transform.scale= {0.5f, 0.5f};
     m_Renderer.AddChild(m_MainMenuImage);
+
+    m_PauseMenuImage = std::make_shared<BackgroundImage>();
+    m_PauseMenuImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/pauseMenu.png"));
+    m_PauseMenuImage->m_Transform.translation = glm::vec2(-470, -190);
+    m_PauseMenuImage->m_Transform.scale= {0.5f, 0.5f};
+    m_PauseMenuImage->SetZIndex(98);
+    m_PauseMenuImage->SetVisible(false);
+    m_Renderer.AddChild(m_PauseMenuImage);
 
     // ── 選單按鈕 ──────────────────────────────────────────
     m_BtnStart    = std::make_shared<MenuButton>(-562, -80,  20, 100, 20, "開始新遊戲", true, 5);
@@ -43,11 +51,15 @@ void UIManager::InitMenu() {
     m_BtnCardWiki = std::make_shared<MenuButton>(-572, -160, 20,  80, 20, "卡片百科",   true, 4);
     m_BtnMods     = std::make_shared<MenuButton>(-592, -240, 20,  40, 20, "模組",       true, 2);
 
+    m_Continue    = std::make_shared<MenuButton>(-592, -120, 20,  40, 20, "繼續",       true, 2);
+    m_Continue->HideAll();
+
     AddButtonToRenderer(m_BtnStart);
     AddButtonToRenderer(m_BtnExit);
     AddButtonToRenderer(m_BtnOptions);
     AddButtonToRenderer(m_BtnCardWiki);
     AddButtonToRenderer(m_BtnMods);
+    AddButtonToRenderer(m_Continue);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -64,6 +76,15 @@ UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
         if (isOptionsHover)  return MenuEvent::OPTIONS;
         if (isCardWikiHover) return MenuEvent::CARD_WIKI;
         if (isModsHover)     return MenuEvent::MODS;
+    }
+    return MenuEvent::NONE;
+}
+
+UIManager::MenuEvent UIManager::UpdatePauseMenu(glm::vec2 mousePos) {
+    bool isContinueHover = m_Continue   ->UpdateHover(mousePos);
+
+    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        if (isContinueHover) return MenuEvent::CONTINUE;
     }
     return MenuEvent::NONE;
 }
