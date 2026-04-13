@@ -5,7 +5,7 @@
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
 #include "CharacterCard.hpp"
-#include "ResourceCard.hpp"
+#include "Sellslot.hpp"
 
 // ─────────────────────────────────────────────────────────────
 void App::Start() {
@@ -14,6 +14,7 @@ void App::Start() {
     m_UIManager    = std::make_unique<UIManager>(m_Renderer);
     m_CardManager  = std::make_unique<CardManager>(m_Renderer);
     m_EventManager = std::make_unique<EventManager>();
+    m_SellSlot     = std::make_shared<SellSlot>(-250, 210);
 
     m_UIManager->InitMenu();
 
@@ -53,8 +54,9 @@ void App::MainMenu() {
 
 // ─────────────────────────────────────────────────────────────
 void App::GameInit() {
-    float basic_scale = 0.1f;
-
+    //卡牌大小去App.hpp調basic_scale
+    m_CardManager->AddCard(m_SellSlot);
+    m_Renderer.Update();
     // 讀 json
     m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
     m_CardManager->LoadPackDatabase(RESOURCE_DIR"/Data/Packs.json");
@@ -65,7 +67,7 @@ void App::GameInit() {
     m_CardManager->SpawnCardByName("Coin",     basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
-
+    m_CardManager->SpawnPackByName("Seeking Wisdom", basic_scale);
     m_CurrentState = State::UPDATE;
 }
 
@@ -79,6 +81,21 @@ void App::Update() {
 
     // ── 卡片更新 ──────────────────────────────────────────
     m_CardManager->Update(mousePos);
+    int sellPrice = m_SellSlot->GetTotalPrice();
+    if (sellPrice > 0) {
+        // 生成第一枚 Coin 作為堆疊底部
+        auto topCoin = m_CardManager->SpawnCardByName("Coin", basic_scale);
+        for (int i = 1; i < sellPrice; i++) {
+            auto newCoin = m_CardManager->SpawnCardByName("Coin", basic_scale);
+            topCoin->SetCardAbove(newCoin);
+            newCoin->SetCardBelow(topCoin);
+            topCoin = newCoin;
+        }
+        auto soldCards = m_SellSlot->PopAllCards();
+        for (auto& card : soldCards) {
+            m_CardManager->RemoveCard(card);
+        }
+    }
 
     m_Renderer.Update();
 

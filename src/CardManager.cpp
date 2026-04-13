@@ -138,6 +138,20 @@ void CardManager::AddCard(std::shared_ptr<Card> card) {
     }
 }
 
+void CardManager::RemoveCard(std::shared_ptr<Card> target) {
+    m_Cards.erase(std::remove_if(m_Cards.begin(), m_Cards.end(),
+        [&](const std::shared_ptr<Card>& card) {
+            if (card == target) {
+                for (auto& obj : card->GetGameObjects()) {
+                    obj->SetVisible(false);
+                    obj->m_Transform.translation = glm::vec2(-9999, -9999);
+                }
+                return true;
+            }
+            return false;
+        }), m_Cards.end());
+}
+
 std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const CardSpawnData& data) {
     std::shared_ptr<Card> newCard = nullptr;
 
@@ -229,7 +243,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                             float spawnX = m_DraggingCard->GetX() + distOffset(m_RandomGenerator);
                             float spawnY = m_DraggingCard->GetY() - 80.0f + distOffset(m_RandomGenerator);
 
-                            // 直接呼叫工廠，它內部已經寫好 AddCard 自動加入了！
+                            // 直接呼叫工廠，它內部已經寫好 AddCard 自動加入
                             CreateCardFromData(spawnX, spawnY, *dataToSpawn);
                         }
                     }

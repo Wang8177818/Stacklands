@@ -12,6 +12,7 @@
 #include "CardManager.hpp"
 #include "UIManager.hpp"
 #include "EventManager.hpp"
+#include "Sellslot.hpp"
 
 class App {
 public:
@@ -34,6 +35,7 @@ public:
     glm::vec2 mousePos = Util::Input::GetCursorPosition();
 
 private:
+    float basic_scale = 0.05f;
     State    m_CurrentState = State::START;
 
     Util::Renderer m_Renderer;
@@ -42,6 +44,8 @@ private:
     std::unique_ptr<CardManager>  m_CardManager;
     std::unique_ptr<UIManager>    m_UIManager;
     std::unique_ptr<EventManager> m_EventManager;
+    std::shared_ptr<SellSlot> m_SellSlot;
+
 };
 
 #endif
