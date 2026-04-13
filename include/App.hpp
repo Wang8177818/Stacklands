@@ -44,7 +44,7 @@ public:
     float month = 1;
 
 private:
-    float basic_scale = 0.1f;
+    float basic_scale = 0.05f;
     State    m_CurrentState = State::START;
     GameTime m_GameTime     = GameTime::NORMAL;
 

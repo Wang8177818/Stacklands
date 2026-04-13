@@ -14,7 +14,7 @@ void App::Start() {
     m_UIManager    = std::make_unique<UIManager>(m_Renderer);
     m_CardManager  = std::make_unique<CardManager>(m_Renderer);
     m_EventManager = std::make_unique<EventManager>();
-    m_SellSlot     = std::make_shared<SellSlot>(-300, 175);
+    m_SellSlot     = std::make_shared<SellSlot>(-250, 210);
 
     m_UIManager->InitMenu();
 
@@ -53,11 +53,9 @@ void App::MainMenu() {
 
 // ─────────────────────────────────────────────────────────────
 void App::GameInit() {
-    for (auto& obj : m_SellSlot->GetGameObjects()) {
-        m_Renderer.AddChild(obj);
-    }
+    //卡牌大小去App.hpp調basic_scale
+    m_CardManager->AddCard(m_SellSlot);
     m_Renderer.Update();
-    float basic_scale = 0.1f;// 在App.hpp 要改大小去那邊改
     // 讀 json
     m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
     m_CardManager->LoadPackDatabase(RESOURCE_DIR"/Data/Packs.json");
@@ -83,18 +81,17 @@ void App::Update() {
 
     // ── 鏡頭移動 & 地圖縮放（完全委託給 EventManager）────
     auto cards = m_CardManager->GetAllCards();
-    cards.push_back(m_SellSlot);
     m_EventManager->Update(mousePos, m_CardManager->isDraggingCard(), cards);
 
     // ── 時間推進 ──────────────────────────────────────────
     switch (GetGameState()) {
         case GameTime::NORMAL:
             pauseText->SetVisible(false);
-            runTimeBar->SetScale({runTimeBar->GetScaledSize().x + 0.05f, 35.f});
+            runTimeBar->SetScale({runTimeBar->m_Transform.scale.x + 0.05f, 35.f});
             tick += 0.05f;
             break;
         case GameTime::FAST:
-            runTimeBar->SetScale({runTimeBar->GetScaledSize().x + 0.15f, 35.f});
+            runTimeBar->SetScale({runTimeBar->m_Transform.scale.x + 0.15f, 35.f});
             tick += 0.15f;
             break;
         case GameTime::PAUSE:
@@ -120,17 +117,22 @@ void App::Update() {
         }
     }
 
-    // ── 卡片更新 ──────────────────────────────────────────
+    // 卡片更新
     m_CardManager->Update(mousePos);
     int sellPrice = m_SellSlot->GetTotalPrice();
-    if (sellPrice != 0)
-    {
-        float basic_scale = 0.1f;
-        do
-        {
-            m_CardManager->SpawnCardByName("Coin", basic_scale);
-            sellPrice -= 1;
-        }while (sellPrice >= 0);
+    if (sellPrice > 0) {
+        // 生成第一枚 Coin 作為堆疊底部
+        auto topCoin = m_CardManager->SpawnCardByName("Coin", basic_scale);
+        for (int i = 1; i < sellPrice; i++) {
+            auto newCoin = m_CardManager->SpawnCardByName("Coin", basic_scale);
+            topCoin->SetCardAbove(newCoin);
+            newCoin->SetCardBelow(topCoin);
+            topCoin = newCoin;
+        }
+        auto soldCards = m_SellSlot->PopAllCards();
+        for (auto& card : soldCards) {
+            m_CardManager->RemoveCard(card);
+        }
     }
 
     m_Renderer.Update();
