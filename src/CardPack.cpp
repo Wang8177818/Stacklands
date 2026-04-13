@@ -47,14 +47,14 @@ std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
     auto dataToSpawn = std::make_shared<CardSpawnData>(m_ContentPool.back());
     m_ContentPool.pop_back();
 
-    // 2. 更新右上角的數字為「剩下的卡片數量」
+    // 2. 更新右上角的數字
     if (m_CountText) {
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
             RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(3000 * m_Scale),
             std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
     }
 
-    // 回傳一份資料配方的拷貝
+    // 回傳一份資料配方
     return dataToSpawn;
 }
 
@@ -65,7 +65,7 @@ void CardPack::UpdateVisualPositions() {
         float iconOffsetX = m_Width * 0.08f;
         float iconOffsetY = m_Height * -0.05f;
         m_Icon->m_Transform.translation = glm::vec2(m_X + iconOffsetX ,m_Y + iconOffsetY);
-        m_Icon->m_Transform.scale = glm::vec2(m_Scale, m_Scale) * 0.6f * 2.0f; // 維持放大2倍
+        m_Icon->m_Transform.scale = glm::vec2(m_Scale, m_Scale) * 0.6f * 2.0f;
     }
 
     if (m_CountText) {

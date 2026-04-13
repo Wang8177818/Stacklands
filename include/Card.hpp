@@ -55,7 +55,7 @@ public:
     virtual void OnMonthEnd();
 
     // 檢查滑鼠是否停留在這張卡牌上
-    bool IsMouseHovering(glm::vec2 mousePos);
+    virtual bool IsMouseHovering(glm::vec2 mousePos);
     bool IsOverlapping(std::shared_ptr<Card> otherCard);
 
     // 拖曳控制
