@@ -2,12 +2,14 @@
 // Created by m0938 on 2026/3/20.
 //
 #include "CardManager.hpp"
+#include "RecipeManager.hpp"
 #include "CharacterCard.hpp"
 #include "CardPack.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include "Util/Logger.hpp"
 
@@ -65,6 +67,14 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
         m_CardDatabase[data.name] = data;
     }
     LOG_INFO("成功載入 {} 種卡牌資料！", m_CardDatabase.size());
+}
+
+void CardManager::LoadProfessionRecipes(const std::string& filePath) {
+    m_RecipeManager.LoadProfessionRecipes(filePath);
+}
+
+void CardManager::LoadCraftingRecipes(const std::string& filePath) {
+    m_RecipeManager.LoadCraftingRecipes(filePath);
 }
 
 void CardManager::LoadPackDatabase(const std::string& filePath) {
@@ -174,6 +184,15 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
     return newCard;
 }
 
+// 判斷兩張卡是否屬於同一個堆疊（互為上下關係）
+static bool InSameStack(const std::shared_ptr<Card>& a, const std::shared_ptr<Card>& b) {
+    auto cur = a;
+    while (cur) { if (cur == b) return true; cur = cur->GetCardAbove(); }
+    cur = a->GetCardBelow();
+    while (cur) { if (cur == b) return true; cur = cur->GetCardBelow(); }
+    return false;
+}
+
 void CardManager::Update(glm::vec2 mousePos) {
     // 1. 清理空卡包
     m_Cards.erase(std::remove_if(m_Cards.begin(), m_Cards.end(),
@@ -243,7 +262,8 @@ void CardManager::Update(glm::vec2 mousePos) {
                             float spawnX = m_DraggingCard->GetX() + distOffset(m_RandomGenerator);
                             float spawnY = m_DraggingCard->GetY() - 80.0f + distOffset(m_RandomGenerator);
 
-                            // 直接呼叫工廠，它內部已經寫好 AddCard 自動加入
+                            // 套用當前縮放倍率，確保新卡片大小與場景一致
+                            dataToSpawn->scale *= m_ZoomRatio;
                             CreateCardFromData(spawnX, spawnY, *dataToSpawn);
                         }
                     }
@@ -275,18 +295,173 @@ void CardManager::Update(glm::vec2 mousePos) {
                     while (targetCard->GetCardAbove() != nullptr) {
                         targetCard = targetCard->GetCardAbove();
                     }
-
+                    // 若無法堆疊則 移動到旁邊
                     if (targetCard->OnStacked(m_DraggingCard) == false) {
+                        float dx = m_DraggingCard->GetX() - targetCard->GetX();
+                        float dy = m_DraggingCard->GetY() - targetCard->GetY();
+                        float overlapX = (m_DraggingCard->GetWidth()  + targetCard->GetWidth())  * 0.5f - std::abs(dx);
+                        float overlapY = (m_DraggingCard->GetHeight() + targetCard->GetHeight()) * 0.5f - std::abs(dy);
+
+                        if (overlapX > 0 && overlapY > 0) {
+                            if (overlapX <= overlapY) {
+                                // 沿 X 軸推開（重疊較少的方向）
+                                m_DraggingCard->MoveBy({dx >= 0.f ? overlapX : -overlapX, 0.f});
+                            } else {
+                                // 沿 Y 軸推開
+                                m_DraggingCard->MoveBy({0.f, dy >= 0.f ? overlapY : -overlapY});
+                            }
+                        }
                         break;
                     }
 
+                    // ── 裝備卡放到角色卡：消耗裝備並處理轉職 ────────
+                    if (m_DraggingCard->GetType() == CardType::EQUIPMENT &&
+                        targetCard->GetType() == CardType::CHARACTER) {
+
+                        auto equip    = std::static_pointer_cast<EquipmentCard>(m_DraggingCard);
+                        auto charCard = std::static_pointer_cast<CharacterCard>(targetCard);
+                        const std::string equipName = equip->GetName();
+
+                        std::string outputName = m_RecipeManager.CheckProfession(equipName);
+
+                        if (!outputName.empty()) {
+                            // ── 觸發轉職 ──────────────────────────────────
+                            float spawnX     = charCard->GetX();
+                            float spawnY     = charCard->GetY();
+                            float spawnScale = charCard->GetScale();
+
+                            // 繼承舊角色插槽，將 HAND 改為本次觸發裝備
+                            auto newSlots = charCard->GetEquipNames();
+                            const std::string& oldHand =
+                                newSlots[static_cast<int>(EquipSlot::HAND)];
+
+                            // 若舊 HAND 有裝備名稱，在旁邊重新生成實體卡
+                            if (!oldHand.empty()) {
+                                std::uniform_real_distribution<float> dist(-80.f, 80.f);
+                                SpawnCardByName(oldHand, spawnScale,
+                                                spawnX + dist(m_RandomGenerator),
+                                                spawnY + dist(m_RandomGenerator));
+                            }
+                            newSlots[static_cast<int>(EquipSlot::HAND)] = equipName;
+
+                            // 刪除觸發裝備實體卡與舊角色卡
+                            auto dragging = m_DraggingCard;
+                            m_DraggingCard = nullptr;
+                            RemoveCard(dragging);
+                            RemoveCard(std::static_pointer_cast<Card>(charCard));
+
+                            // 生成新職業卡並設定插槽
+                            auto newCardBase = SpawnCardByName(outputName, spawnScale, spawnX, spawnY);
+                            if (newCardBase && newCardBase->GetType() == CardType::CHARACTER) {
+                                std::static_pointer_cast<CharacterCard>(newCardBase)
+                                    ->SetEquipNames(newSlots);
+                            }
+                        } else {
+                            // ── 非轉職：插槽已佔用則推開，否則儲存並刪除實體卡 ──
+                            const std::string& existing =
+                                charCard->GetEquipName(equip->GetEquipSlot());
+                            if (!existing.empty()) {
+                                // 插槽已有裝備，推開
+                                float dx = m_DraggingCard->GetX() - charCard->GetX();
+                                float dy = m_DraggingCard->GetY() - charCard->GetY();
+                                float overlapX = (m_DraggingCard->GetWidth()  + charCard->GetWidth())  * 0.5f - std::abs(dx);
+                                float overlapY = (m_DraggingCard->GetHeight() + charCard->GetHeight()) * 0.5f - std::abs(dy);
+                                if (overlapX > 0 && overlapY > 0) {
+                                    if (overlapX <= overlapY)
+                                        m_DraggingCard->MoveBy({dx >= 0.f ? overlapX : -overlapX, 0.f});
+                                    else
+                                        m_DraggingCard->MoveBy({0.f, dy >= 0.f ? overlapY : -overlapY});
+                                }
+                            } else {
+                                charCard->StoreEquipment(equip->GetEquipSlot(), equipName);
+                                auto dragging = m_DraggingCard;
+                                m_DraggingCard = nullptr;
+                                RemoveCard(dragging);
+                            }
+                        }
+                        break;
+                    }
+
+                    // ── 一般堆疊（非裝備→角色）────────────────────────
                     targetCard->SetCardAbove(m_DraggingCard);
                     m_DraggingCard->SetCardBelow(targetCard);
+
+                    // 堆疊完成後檢查合成配方
+                    {
+                        auto stackBot = m_DraggingCard;
+                        while (stackBot->GetCardBelow()) stackBot = stackBot->GetCardBelow();
+
+                        std::string craftOutput = m_RecipeManager.CheckCrafting(stackBot);
+                        if (!craftOutput.empty()) {
+                            float spawnX     = stackBot->GetX();
+                            float spawnY     = stackBot->GetY();
+                            float spawnScale = stackBot->GetScale();
+
+                            // 分類：CHARACTER / BUILDING 保留，其餘消耗
+                            std::vector<std::shared_ptr<Card>> toDelete;
+                            std::vector<std::shared_ptr<Card>> toKeep;
+                            for (auto cur = stackBot; cur; cur = cur->GetCardAbove()) {
+                                if (cur->GetType() == CardType::CHARACTER ||
+                                    cur->GetType() == CardType::BUILDING)
+                                    toKeep.push_back(cur);
+                                else
+                                    toDelete.push_back(cur);
+                            }
+
+                            // 全部先斷鏈
+                            for (auto cur = stackBot; cur; ) {
+                                auto next = cur->GetCardAbove();
+                                cur->SetCardAbove(nullptr);
+                                cur->SetCardBelow(nullptr);
+                                cur = next;
+                            }
+
+                            m_DraggingCard = nullptr;
+                            for (auto& c : toDelete) RemoveCard(c);
+                            // toKeep 留在 m_Cards，由分離系統推開
+
+                            SpawnCardByName(craftOutput, spawnScale, spawnX, spawnY);
+                        }
+                    }
                     break;
                 }
             }
         }
 
-        m_DraggingCard = nullptr;
+        if (m_DraggingCard) m_DraggingCard = nullptr;
+    }
+
+    // 每幀分離重疊的非堆疊卡片 (除部分物件in m_Cards)
+    for (size_t i = 0; i < m_Cards.size(); i++) {
+        auto& cardA = m_Cards[i];
+        // 跳過 INTERACT type
+        if (cardA->GetType() == CardType::INTERACT) continue;
+        // 跳過正在拖曳的卡片及其整個堆疊
+        if (m_DraggingCard && InSameStack(cardA, m_DraggingCard)) continue;
+
+        for (size_t j = i + 1; j < m_Cards.size(); j++) {
+            auto& cardB = m_Cards[j];
+            if (cardB->GetType() == CardType::INTERACT) continue;
+            if (m_DraggingCard && InSameStack(cardB, m_DraggingCard)) continue;
+            if (InSameStack(cardA, cardB)) continue;
+
+            float dx = cardA->GetX() - cardB->GetX();
+            float dy = cardA->GetY() - cardB->GetY();
+            float overlapX = (cardA->GetWidth()  + cardB->GetWidth())  * 0.5f - std::abs(dx);
+            float overlapY = (cardA->GetHeight() + cardB->GetHeight()) * 0.5f - std::abs(dy);
+
+            if (overlapX <= 0 || overlapY <= 0) continue;
+
+            // 沿重疊較小的軸各推開一半
+            if (overlapX <= overlapY) {
+                float push = overlapX * 0.5f;
+                cardA->MoveBy({dx >= 0.f ?  push : -push, 0.f});
+                cardB->MoveBy({dx >= 0.f ? -push :  push, 0.f});
+            } else {
+                float push = overlapY * 0.5f;
+                cardA->MoveBy({0.f, dy >= 0.f ?  push : -push});
+                cardB->MoveBy({0.f, dy >= 0.f ? -push :  push});
+            }
+        }
     }
 }

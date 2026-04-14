@@ -30,6 +30,7 @@ public:
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override;
     virtual void UpdateVisualPositions() override;
 
+    virtual void SetScale(float scale) override;
     virtual void StartDragging(glm::vec2 mousePos) override;
     virtual void StopDragging() override;
 

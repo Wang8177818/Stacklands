@@ -16,8 +16,7 @@ public:
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Resource.png");
         SetIconImage(iconPath);
 
-        int fontSize = static_cast<int>(1000 * m_Scale);
-        if (fontSize < 22) fontSize = 22;
+        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
 
         m_PriceText = std::make_shared<Util::GameObject>();
 

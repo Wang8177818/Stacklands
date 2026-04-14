@@ -12,11 +12,23 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
 
 遊戲示範連結 : https://youtu.be/au7YlQecD4c?si=xV3quaz0hVEGTKs7
 
+# DID (howhowdy2)
+---
+4/14
+EventManager + GetZoomRatio
+CardManager + GetZoomRatio
+Card + GetWidth GetHeight
+
+Fix the card gen size prob after Zoom
+Fix the text size prob when Zooming
+Make Card move when it cant stack or be stacked
++ RecipeManager to manage the recipe
++ Profession change
++ Craft System
 # TODO (howhowdy2)
 ---
-3/27
-- 物品販賣格 
-- 卡包卡片生成位置
+4/14
+BuildingCard
 
 # Devlopment timeline
 ---
@@ -33,10 +45,10 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
     - [X] 卡包機制
 - Week 5 : 
     - [X] 製作人物卡片
-    - [ ] 人物裝備系統
-    - [ ] 人物職業
+    - [X] 人物裝備系統
+    - [X] 人物職業
 - Week 6 : 
-    - [ ] 製作資源卡片
+    - [X] 製作資源卡片
 - Week 7 : 
     - [ ] 製作特殊功能卡片 (建築，箱子 etc)
 - Week 8 :
@@ -45,10 +57,10 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
 	- [ ] 製作裝備卡片
 	- [ ] 調適兼容人物卡
 - Week 10 :
-	- [ ] 卡包實作
+	- [X] 卡包實作
 	- [ ] 製作動物卡片
 - Week 11 :
-	- [ ] 製作系統
+	- [X] 製作系統
 - Week 12 : 
     - [ ] 製作敵人卡片
     - [ ] 製作基本怪物
@@ -58,7 +70,7 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
     - [ ] 製作攻擊系統
 - Week 14 :
 	- [ ] 製作UI
-	- [ ] 加入時間跑條
+	- [X] 加入時間跑條
 	- [ ] 每日結算機制
 - Week 15 :
 	- [ ] FInal Boss Fight

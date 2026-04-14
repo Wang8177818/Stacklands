@@ -3,6 +3,7 @@
 //
 
 #include "Card.hpp"
+#include <algorithm>
 
 // 在建構子接收 scale 參數，並存入 m_Scale
 Card::Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale)
@@ -18,10 +19,7 @@ Card::Card(float x, float y, const std::string& name, int sellValue, CardType ty
 
     //名稱
     m_NameText = std::make_shared<Util::GameObject>();
-    
-    //字體大小少大於22
-    int fontSize = static_cast<int>(1000 * m_Scale);
-    if (fontSize < 22) fontSize = 22;
+    int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
     m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, m_Name, Util::Color(0, 0, 0)));
     m_NameText->SetZIndex(11);
 
@@ -171,6 +169,13 @@ void Card::SetScale(float scale) {
     m_Background->m_Transform.scale = card_scale * 2.0f;
     m_Icon->m_Transform.scale       = card_scale * 0.6f;
     m_NameText->m_Transform.scale   = card_scale;
+
+    // 重建文字以維持與卡牌大小成固定比例
+    if (m_NameText) {
+        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
+        m_NameText->SetDrawable(std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjh.ttc", fontSize, m_Name, Util::Color(0, 0, 0)));
+    }
 
     float baseWidth  = 850.0f;
     float baseHeight = 1250.0f;

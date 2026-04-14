@@ -1,0 +1,54 @@
+[
+  {
+    "inputs": ["Bow", "Crossbow"],
+    "output": "Archer"
+  },
+  {
+    "inputs": ["Hammer", "Spiked Plank"],
+    "output": "Builder"
+  },
+  {
+    "inputs": ["Map"],
+    "output": "Explorer"
+  },
+  {
+    "inputs": ["Fishing Rod"],
+    "output": "Fisher"
+  },
+  {
+    "inputs": ["Jester's Hat"],
+    "output": "Jester"
+  },
+  {
+    "inputs": ["Axe"],
+    "output": "Lumberjack"
+  },
+  {
+    "inputs": ["Bone Staff", "Magic Blade", "Magic Broom", "Magic Ring", "Magic Tome", "Staff of Fear"],
+    "output": "Mage"
+  },
+  {
+    "inputs": ["Spear", "Bone Spear", "Kraken Tooth Axe", "Boomerang", "Blowpipe", "Blunderbuss", "Slingshot"],
+    "output": "Militia"
+  },
+  {
+    "inputs": ["Pickaxe"],
+    "output": "Miner"
+  },
+  {
+    "inputs": ["Throwing Stars"],
+    "output": "Ninja"
+  },
+  {
+    "inputs": ["Sword", "Demon Sword", "Pirate Sabre"],
+    "output": "Swordsman"
+  },
+  {
+    "inputs": ["Broken Bottle", "Bear Claw", "Club", "Morning Star"],
+    "output": "Warrior"
+  },
+  {
+    "inputs": ["Magic Staff", "Magic Wand"],
+    "output": "Wizard"
+  }
+]

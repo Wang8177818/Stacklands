@@ -23,6 +23,7 @@ public:
              const std::string& name = "Sell",
              int sellValue = 0,
              float scale = 0.05f) : Card(x, y, name, sellValue, CardType::CHARACTER, scale){
+        this->m_Type = CardType::INTERACT;
 
         m_Background = std::make_shared<Util::GameObject>(
         std::make_unique<Util::Image>(RESOURCE_DIR"/Image/card/Sellslot.png"), 1);

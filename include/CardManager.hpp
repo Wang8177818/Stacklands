@@ -17,6 +17,7 @@
 #include "CoinCard.hpp"
 #include  "ResourceCard.hpp"
 #include "nlohmann/json.hpp"
+#include "RecipeManager.hpp"
 using json = nlohmann::json;
 
 class CardManager {
@@ -34,6 +35,8 @@ public:
     // json
     void LoadCardDatabase(const std::string& filePath);
     void LoadPackDatabase(const std::string& filePath);
+    void LoadProfessionRecipes(const std::string& filePath);
+    void LoadCraftingRecipes(const std::string& filePath);
 
     std::shared_ptr<Card> SpawnCardByName(const std::string& name, float scale, float x = 0.0f, float y = 0.0f);
     void SpawnPackByName(const std::string& packName, float scale, float x = 0.0f, float y = 0.0f);
@@ -45,6 +48,9 @@ public:
 
     // 是否正在拖曳卡片
     bool isDraggingCard();
+
+    // 同步當前縮放倍率（由 App 每幀呼叫）
+    void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 
 private:
     Util::Renderer& m_Renderer; // 參考到 App 的 Renderer
@@ -58,6 +64,9 @@ private:
     glm::vec2 m_ClickStartPos = {0, 0};
     std::chrono::time_point<std::chrono::steady_clock> m_LastClickTime;
     std::shared_ptr<Card> m_LastClickedCard = nullptr;
+
+    float m_ZoomRatio = 1.0f; // 當前累積縮放倍率，用於卡包開出卡片時套用正確大小
+    RecipeManager m_RecipeManager;
 
     // 卡牌與卡包的資料庫字典
     std::unordered_map<std::string, CardSpawnData> m_CardDatabase;

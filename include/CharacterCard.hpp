@@ -6,6 +6,9 @@
 #define STACKLANDS_CHARACTERCARD_HPP
 
 #pragma once
+#include <array>
+#include <string>
+#include <algorithm>
 #include "Card.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Text.hpp"
@@ -14,131 +17,101 @@
 
 class CharacterCard : public Card {
 public:
-    CharacterCard(float x, float y, const std::string& name, int sellValue, const std::string& iconPath, float scale, int health = 1, int attack = 1)
-        : Card(x, y, name, sellValue, CardType::CHARACTER, scale) {
-
-        glm::vec2 card_scale = {m_Scale, m_Scale};
+    CharacterCard(float x, float y, const std::string& name, int sellValue,
+                  const std::string& iconPath, float scale, int health = 1, int attack = 1)
+        : Card(x, y, name, sellValue, CardType::CHARACTER, scale),
+          health(health), attack(attack)
+    {
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.png");
         SetIconImage(iconPath);
 
         m_HealthText = std::make_shared<Util::GameObject>();
-        int fontSize = static_cast<int>(1000 * m_Scale);
-        if (fontSize < 22) fontSize = 22;
-
-        m_HealthText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(health), Util::Color(255, 255, 255)));
-        m_HealthText->m_Transform.scale = card_scale;
+        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
+        m_HealthText->SetDrawable(std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
+            std::to_string(health), Util::Color(255, 255, 255)));
+        m_HealthText->m_Transform.scale = {m_Scale, m_Scale};
         m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
 
         UpdateVisualPositions();
     }
 
-    // 例如：被物品轉換職業 (村民 + 矛 = 民兵)
-    void ChangeProfession(const std::string& newName, const std::string& newIconPath) {
-        m_Name = newName;
-        SetIconImage(newIconPath);
-        if (m_NameText) {
-            m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(500 * m_Scale), m_Name, Util::Color(0, 0, 0)));
-        }
+    // ── 裝備槽（存名稱字串，空字串 = 未裝備）────────────────────
+    // 索引 = (int)EquipSlot：[0=NONE不用, 1=HEAD, 2=HAND, 3=BODY]
+
+    // 儲存裝備名稱到對應插槽
+    void StoreEquipment(EquipSlot slot, const std::string& name) {
+        m_EquipNames[static_cast<int>(slot)] = name;
     }
 
-    // 月底被扣除飽食度的邏輯
-    void OnMonthEnd() override {
+    // 取得某插槽的裝備名稱（空字串 = 未裝備）
+    const std::string& GetEquipName(EquipSlot slot) const {
+        return m_EquipNames[static_cast<int>(slot)];
     }
 
-    virtual void UpdateVisualPositions() override {
-        Card::UpdateVisualPositions(); // 排底圖
+    // 取得全部插槽（轉職時整批轉移用）
+    const std::array<std::string, 4>& GetEquipNames() const {
+        return m_EquipNames;
+    }
 
-        // === 【轉職邏輯】檢查手部裝備 ===
-        std::string displayProfession = m_Name;
-        auto current = m_CardAbove;
-        while (current != nullptr) {
-            if (current->GetType() == CardType::EQUIPMENT) {
-                auto equip = std::static_pointer_cast<EquipmentCard>(current);
-                if (equip->GetEquipSlot() == EquipSlot::HAND) {
-                    // 根據拿什麼武器決定職業名稱！
-                    if (equip->GetName() == "Sword") displayProfession = "Swordsman";
-                    else if (equip->GetName() == "Spear") displayProfession = "Militia";
-                    else if (equip->GetName() == "Magic Staff") displayProfession = "Mage";
-                    else displayProfession = m_Name + " (" + equip->GetName() + ")"; // 預設組合名
-                }
-            }
-            current = current->GetCardAbove();
-        }
+    // 整批設定插槽（轉職後寫入新角色用）
+    void SetEquipNames(const std::array<std::string, 4>& names) {
+        m_EquipNames = names;
+    }
 
-        // 強制更新卡片名稱 UI
-        if (m_NameText) {
-            int fontSize = static_cast<int>(500 * m_Scale);
-            if (fontSize < 22) fontSize = 22;
-            m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, displayProfession, Util::Color(0, 0, 0)));
-
-            // 重新計算文字置中 (從 Card.cpp 抄過來的)
-            float textOffsetY = m_Height * 0.35;
-            float textWidth = m_NameText->GetScaledSize().x;
-            float padding = m_Width * 0.1f;
-            float textX = (m_X - m_Width / 2.0f) + (textWidth / 2.0f) + padding;
-            m_NameText->m_Transform.translation = glm::vec2(textX, m_Y + textOffsetY);
-            m_NameText->SetZIndex(m_Background->GetZIndex() + 2);
-        }
-
+    // ── 縮放（同步重建 HealthText 字體）────────────────────────
+    void SetScale(float scale) override {
+        Card::SetScale(scale);
         if (m_HealthText) {
-            float healthOffsetX = m_Width * 0.34f;
-            float healthOffsetY = m_Height * -0.3f;
-            m_HealthText->m_Transform.translation = glm::vec2(m_X + healthOffsetX ,m_Y + healthOffsetY);
+            int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
+            m_HealthText->SetDrawable(std::make_shared<Util::Text>(
+                RESOURCE_DIR"/Font/msjh.ttc", fontSize,
+                std::to_string(health), Util::Color(255, 255, 255)));
+            m_HealthText->m_Transform.scale = {m_Scale, m_Scale};
+        }
+    }
 
+    // ── 月底結算 ──────────────────────────────────────────────
+    void OnMonthEnd() override {}
+
+    // ── 視覺更新 ──────────────────────────────────────────────
+    virtual void UpdateVisualPositions() override {
+        Card::UpdateVisualPositions();
+        if (m_HealthText) {
+            m_HealthText->m_Transform.translation =
+                glm::vec2(m_X + m_Width * 0.34f, m_Y + m_Height * -0.3f);
             m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
         }
     }
 
-    virtual void StopDragging() override{
+    virtual void StopDragging() override {
         Card::StopDragging();
-        m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
-    };
+        if (m_HealthText) m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
+    }
 
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override {
-        std::vector<std::shared_ptr<Util::GameObject>> objs = Card::GetGameObjects();
+        auto objs = Card::GetGameObjects();
         if (m_HealthText) objs.push_back(m_HealthText);
         return objs;
     }
 
+    // ── 堆疊規則 ──────────────────────────────────────────────
+    // 只接受裝備卡；插槽衝突檢查由 CardManager 在消耗前處理
     bool OnStacked(std::shared_ptr<Card> cardAbove) override {
-        if (cardAbove->GetType() == CardType::EQUIPMENT) {
-            auto incomingEquip = std::static_pointer_cast<EquipmentCard>(cardAbove);
-
-            // 往上掃描，看看自己頭上是不是已經有同部位的裝備了
-            auto checkNode = m_CardAbove;
-            while (checkNode != nullptr) {
-                if (checkNode->GetType() == CardType::EQUIPMENT) {
-                    auto existingEquip = std::static_pointer_cast<EquipmentCard>(checkNode);
-                    if (existingEquip->GetEquipSlot() == incomingEquip->GetEquipSlot()) {
-                        return false;
-                    }
-                }
-                checkNode = checkNode->GetCardAbove();
-            }
-            return true;
-        }
-        return false;
+        return cardAbove->GetType() == CardType::EQUIPMENT;
     }
 
-    int GetTotalAttack() {
-        int totalAtk = attack;
-        auto current = m_CardAbove;
-        while (current != nullptr) {
-            if (current->GetType() == CardType::EQUIPMENT) {
-                totalAtk += std::static_pointer_cast<EquipmentCard>(current)->GetBonusAttack();
-            }
-            current = current->GetCardAbove();
-        }
-        return totalAtk;
-    }
-
-
+    // ── 基礎攻擊力 ────────────────────────────────────────────
+    int GetBaseAttack() const { return attack; }
 
 protected:
     std::shared_ptr<Util::GameObject> m_HealthText;
-    int health, attack;
+    int   health = 1;
+    int   attack = 1;
     float attackSpeed = 1.0f;
 
+    // 裝備插槽（存名稱，空字串 = 空槽）
+    std::array<std::string, 4> m_EquipNames = {"", "", "", ""};
 };
 
 #endif //STACKLANDS_CHARACTERCARD_HPP
