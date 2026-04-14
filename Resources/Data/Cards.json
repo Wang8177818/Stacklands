@@ -1067,7 +1067,7 @@
   },
   {
     "name": "Berry Bush",
-    "type": "RESOURCE",
+    "type": "STRUCTURE",
     "iconPath": "/Image/card/resource/Bush.png",
     "sellValue": 1
   },
@@ -1444,7 +1444,7 @@
   },
   {
     "name": "City Hall",
-    "type": "BUILDING",
+    "type": "STRUCTURE",
     "iconPath": "/Image/card/building/City_Hall.png"
   },
   {
