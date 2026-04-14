@@ -18,6 +18,8 @@
 #include  "ResourceCard.hpp"
 #include "nlohmann/json.hpp"
 #include "RecipeManager.hpp"
+#include  "BuildingCard.hpp"
+#include  "StructureCard.hpp"
 using json = nlohmann::json;
 
 class CardManager {

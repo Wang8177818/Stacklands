@@ -25,10 +25,13 @@ Make Card move when it cant stack or be stacked
 + RecipeManager to manage the recipe
 + Profession change
 + Craft System
+
++ BuildingCard
++ StructureCard
 # TODO (howhowdy2)
 ---
 4/14
-BuildingCard
+Gathering
 
 # Devlopment timeline
 ---

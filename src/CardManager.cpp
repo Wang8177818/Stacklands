@@ -19,6 +19,8 @@ CardType StringToCardType(const std::string& typeStr) {
     if (typeStr == "COIN") return CardType::COIN;
     if (typeStr == "PACK") return CardType::PACK;
     if (typeStr == "EQUIPMENT") return CardType::EQUIPMENT;
+    if (typeStr == "BUILDING") return CardType::BUILDING;
+    if (typeStr == "STRUCTURE") return CardType::STRUCTURE;
     return CardType::BASIC;
 }
 
@@ -173,6 +175,10 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
         newCard = std::make_shared<CoinCard>(x, y, data.scale);
     }else if (data.type == CardType::EQUIPMENT) {
         newCard = std::make_shared<EquipmentCard>(x, y, data.name, data.sellValue, data.iconPath, data.attack, data.health, data.equipSlot, data.scale);
+    }else if (data.type == CardType::BUILDING) {
+        newCard = std::make_shared<BuildingCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
+    }else if (data.type == CardType::STRUCTURE) {
+        newCard = std::make_shared<StructureCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
     }else {
         newCard = std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
     }
