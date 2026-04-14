@@ -60,11 +60,15 @@ void App::GameInit() {
     // 讀 json
     m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
     m_CardManager->LoadPackDatabase(RESOURCE_DIR"/Data/Packs.json");
+    m_CardManager->LoadProfessionRecipes(RESOURCE_DIR"/Data/Profession.json");
+    m_CardManager->LoadCraftingRecipes(RESOURCE_DIR"/Data/Recipe.json");
 
     m_CardManager->SpawnCardByName("Villager", basic_scale);
     m_CardManager->SpawnCardByName("Militia",  basic_scale);
     m_CardManager->SpawnCardByName("Wood",     basic_scale);
     m_CardManager->SpawnCardByName("Coin",     basic_scale);
+    m_CardManager->SpawnCardByName("Hammer",   basic_scale);
+    m_CardManager->SpawnCardByName("Map",      basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CardManager->SpawnPackByName("Seeking Wisdom", basic_scale);
@@ -80,13 +84,15 @@ void App::Update() {
     m_EventManager->Update(mousePos, m_CardManager->isDraggingCard(), cards);
 
     // ── 卡片更新 ──────────────────────────────────────────
+    m_CardManager->SetZoomRatio(m_EventManager->GetZoomRatio());
     m_CardManager->Update(mousePos);
     int sellPrice = m_SellSlot->GetTotalPrice();
     if (sellPrice > 0) {
+        float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
         // 生成第一枚 Coin 作為堆疊底部
-        auto topCoin = m_CardManager->SpawnCardByName("Coin", basic_scale);
+        auto topCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);
         for (int i = 1; i < sellPrice; i++) {
-            auto newCoin = m_CardManager->SpawnCardByName("Coin", basic_scale);
+            auto newCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);
             topCoin->SetCardAbove(newCoin);
             newCoin->SetCardBelow(topCoin);
             topCoin = newCoin;

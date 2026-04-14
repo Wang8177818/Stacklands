@@ -24,7 +24,8 @@ enum class CardType {
     FOOD,       // 食物卡 (漿果、蘋果等)
     PACK,       // 卡包
     COIN,       // 金幣卡
-    EQUIPMENT   // 裝備卡
+    EQUIPMENT,  // 裝備卡
+    INTERACT    // SellSlot BuySlot
 };
 
 enum class EquipSlot {
@@ -76,10 +77,13 @@ public:
 
     // 取得所有負責顯示的 GameObject，交給 Renderer 繪製
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects();
-    float GetX() const { return m_X; }
-    float GetY() const { return m_Y; }
+    float GetX()      const { return m_X; }
+    float GetY()      const { return m_Y; }
+    float GetWidth()  const { return m_Width; }
+    float GetHeight() const { return m_Height; }
+    float GetScale()  const { return m_Scale; }
 
-    void SetScale(float scale);
+    virtual void SetScale(float scale);
 
     // EventManager 用：直接移動邏輯座標
     void MoveBy(glm::vec2 delta) {

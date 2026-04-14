@@ -5,6 +5,7 @@ set(SRC_FILES
     CardPack.cpp
     UIManager.cpp
     EventManager.cpp
+    RecipeManager.cpp
     main.cpp
 )
 
@@ -21,6 +22,7 @@ set(INCLUDE_FILES
     ResourceCard.hpp
     UIManager.hpp
     EventManager.hpp
+    RecipeManager.hpp
 )
 
 set(TEST_FILES

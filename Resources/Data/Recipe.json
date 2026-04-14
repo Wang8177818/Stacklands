@@ -1,0 +1,2095 @@
+[
+  {
+    "inputs": [
+      "Brick",
+      "Brick",
+      "Stone",
+      "Stone",
+      "Mage"
+    ],
+    "output": "Altar",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Stick",
+      "Stick",
+      "Villager"
+    ],
+    "output": "Animal Cage",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Plank",
+      "Wood",
+      "Wood",
+      "Iron Bar",
+      "Villager"
+    ],
+    "output": "Animal Pen",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Animal Cage",
+      "Animal Cage",
+      "Animal Cage"
+    ],
+    "output": "Animal Pen"
+  },
+  {
+    "inputs": [
+      "Apple",
+      "Poop"
+    ],
+    "output": "Apple Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Apple",
+      "Soil"
+    ],
+    "output": "Apple Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Apple",
+      "Garden"
+    ],
+    "output": "Apple Tree",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Apple",
+      "Farm"
+    ],
+    "output": "Apple Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Apple",
+      "Greenhouse"
+    ],
+    "output": "Apple Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Glass",
+      "Glass",
+      "Iron Bar",
+      "Villager"
+    ],
+    "output": "Aquarium",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Banana",
+      "Poop"
+    ],
+    "output": "Banana Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Banana",
+      "Soil"
+    ],
+    "output": "Banana Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Banana",
+      "Garden"
+    ],
+    "output": "Banana Tree",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Banana",
+      "Farm"
+    ],
+    "output": "Banana Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Banana",
+      "Greenhouse"
+    ],
+    "output": "Banana Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Plank",
+      "Plank",
+      "Villager"
+    ],
+    "output": "Barrel",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Berry",
+      "Poop"
+    ],
+    "output": "Berry Bush",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Berry",
+      "Soil"
+    ],
+    "output": "Berry Bush",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Berry",
+      "Garden"
+    ],
+    "output": "Berry Bush",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Berry",
+      "Farm"
+    ],
+    "output": "Berry Bush",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Berry",
+      "Greenhouse"
+    ],
+    "output": "Berry Bush",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Animal Pen",
+      "Magic Dust",
+      "Magic Dust"
+    ],
+    "output": "Breeding Pen",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Iron Bar",
+      "Wood",
+      "Villager"
+    ],
+    "output": "Brickyard",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Raw Meat",
+      "Plank",
+      "Plank",
+      "Iron Bar",
+      "Villager"
+    ],
+    "output": "Butchery",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Flint",
+      "Stick"
+    ],
+    "output": "Campfire",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Gold Bar",
+      "Gold Bar",
+      "Gold Bar",
+      "Gold Bar",
+      "Glass",
+      "Glass",
+      "Glass",
+      "Glass",
+      "Glass",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Villager",
+      "Villager",
+      "Villager",
+      "Villager",
+      "Villager"
+    ],
+    "output": "Cathedral",
+    "time": 180.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Coin",
+      "Villager"
+    ],
+    "output": "Charity",
+    "time": 70.0
+  },
+  {
+    "inputs": [
+      "Coin",
+      "Wood",
+      "Wood"
+    ],
+    "output": "Coin Chest",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Poop",
+      "Poop",
+      "Plank",
+      "Brick",
+      "Villager"
+    ],
+    "output": "Composter",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Cotton",
+      "Poop"
+    ],
+    "output": "Cotton Plant",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Cotton",
+      "Soil"
+    ],
+    "output": "Cotton Plant",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Cotton",
+      "Garden"
+    ],
+    "output": "Cotton Plant",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Cotton",
+      "Farm"
+    ],
+    "output": "Cotton Plant",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Cotton",
+      "Greenhouse"
+    ],
+    "output": "Cotton Plant",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Plank",
+      "Stick",
+      "Magic Dust"
+    ],
+    "output": "Crane",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Stove",
+      "Iron Bar",
+      "Plank",
+      "Villager"
+    ],
+    "output": "Distillery",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Goop",
+      "Villager"
+    ],
+    "output": "Dustbin",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Soil",
+      "Brick",
+      "Brick",
+      "Plank",
+      "Plank",
+      "Villager"
+    ],
+    "output": "Farm",
+    "time": 40.0
+  },
+  {
+    "inputs": [
+      "Fishing Spot",
+      "Stone",
+      "Rope"
+    ],
+    "output": "Fish Trap",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Stone",
+      "Wood",
+      "Rope",
+      "Villager"
+    ],
+    "output": "Flour Mill",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Spring",
+      "Magic Dust",
+      "Young Villager",
+      "Villager",
+      "Old Villager"
+    ],
+    "output": "Fountain of Youth",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Sail",
+      "Sail",
+      "Sail",
+      "Villager",
+      "Villager"
+    ],
+    "output": "Frigate",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Soil",
+      "Wood",
+      "Wood",
+      "Stone",
+      "Stone",
+      "Villager"
+    ],
+    "output": "Garden",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Flint",
+      "Gold Ore",
+      "Wood",
+      "Stone",
+      "Villager"
+    ],
+    "output": "Gold Mine",
+    "time": 45.0
+  },
+  {
+    "inputs": [
+      "Grape",
+      "Poop"
+    ],
+    "output": "Grape Vine",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Grape",
+      "Soil"
+    ],
+    "output": "Grape Vine",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Grape",
+      "Garden"
+    ],
+    "output": "Grape Vine",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Grape",
+      "Farm"
+    ],
+    "output": "Grape Vine",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Grape",
+      "Greenhouse"
+    ],
+    "output": "Grape Vine",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Iron Bar",
+      "Glass",
+      "Glass",
+      "Soil",
+      "Villager"
+    ],
+    "output": "Greenhouse",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Iron Bar",
+      "Glass",
+      "Glass",
+      "Garden",
+      "Villager"
+    ],
+    "output": "Greenhouse",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Iron Bar",
+      "Glass",
+      "Glass",
+      "Farm",
+      "Villager"
+    ],
+    "output": "Greenhouse",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Campfire",
+      "Iron Bar",
+      "Iron Bar",
+      "Villager"
+    ],
+    "output": "Hotpot",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Stove",
+      "Iron Bar",
+      "Iron Bar",
+      "Villager"
+    ],
+    "output": "Hotpot",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Stone",
+      "Wood",
+      "Wood",
+      "Villager"
+    ],
+    "output": "House",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Flint",
+      "Flint",
+      "Wood",
+      "Stone",
+      "Villager"
+    ],
+    "output": "Iron Mine",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Brick",
+      "Glass",
+      "Campfire",
+      "Villager"
+    ],
+    "output": "Lighthouse",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Wood",
+      "Wood",
+      "Stone",
+      "Villager"
+    ],
+    "output": "Lumber Camp",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Magic Dust",
+      "Charcoal"
+    ],
+    "output": "Magic Glue",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Coin",
+      "Coin",
+      "Coin",
+      "Plank",
+      "Brick",
+      "Villager"
+    ],
+    "output": "Market",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Shell",
+      "Shell",
+      "Shell",
+      "Plank",
+      "Brick",
+      "Villager"
+    ],
+    "output": "Market",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Iron Bar",
+      "Campfire"
+    ],
+    "output": "Mess Hall",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Flint",
+      "Stone",
+      "Villager"
+    ],
+    "output": "Naming Stone",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Olive",
+      "Poop"
+    ],
+    "output": "Olive Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Olive",
+      "Soil"
+    ],
+    "output": "Olive Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Olive",
+      "Garden"
+    ],
+    "output": "Olive Tree",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Olive",
+      "Farm"
+    ],
+    "output": "Olive Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Olive",
+      "Greenhouse"
+    ],
+    "output": "Olive Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Poop",
+      "Villager"
+    ],
+    "output": "Outhouse",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Campfire",
+      "Brick",
+      "Villager"
+    ],
+    "output": "Oven",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Animal Pen",
+      "Soil"
+    ],
+    "output": "Petting Zoo",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Stone",
+      "Stone",
+      "Stone",
+      "Wood",
+      "Villager"
+    ],
+    "output": "Quarry",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Plank",
+      "Iron Bar",
+      "Flint"
+    ],
+    "output": "Resource Chest",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Magic Dust",
+      "Villager"
+    ],
+    "output": "Resource Magnet",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Plank"
+    ],
+    "output": "Rowboat",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Sand",
+      "Flint",
+      "Wood",
+      "Villager"
+    ],
+    "output": "Sand Quarry",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Stone",
+      "Iron Bar",
+      "Villager"
+    ],
+    "output": "Sawmill",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Brick",
+      "Poop"
+    ],
+    "output": "Sewer",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Stone",
+      "Wood",
+      "Stick",
+      "Villager"
+    ],
+    "output": "Shed",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Shell",
+      "Wood",
+      "Wood"
+    ],
+    "output": "Shell Chest",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Sail",
+      "Plank",
+      "Plank",
+      "Villager"
+    ],
+    "output": "Sloop",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Flint",
+      "Flint",
+      "Brick",
+      "Brick",
+      "Plank",
+      "Villager"
+    ],
+    "output": "Smelter",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Iron Bar",
+      "Brick",
+      "Brick",
+      "Villager"
+    ],
+    "output": "Smithy",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Brick",
+      "Magic Dust",
+      "Magic Dust",
+      "Villager"
+    ],
+    "output": "Stable Portal"
+  },
+  {
+    "inputs": [
+      "Flint",
+      "Brick",
+      "Iron Bar",
+      "Villager"
+    ],
+    "output": "Stove",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Cane Sugar",
+      "Poop"
+    ],
+    "output": "Sugar Cane",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Cane Sugar",
+      "Soil"
+    ],
+    "output": "Sugar Cane",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Cane Sugar",
+      "Garden"
+    ],
+    "output": "Sugar Cane",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Cane Sugar",
+      "Farm"
+    ],
+    "output": "Sugar Cane",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Cane Sugar",
+      "Greenhouse"
+    ],
+    "output": "Sugar Cane",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Happiness",
+      "Plank",
+      "Plank",
+      "Villager"
+    ],
+    "output": "Tavern",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Plank",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Iron Bar",
+      "Iron Bar",
+      "Iron Bar",
+      "Villager",
+      "Villager",
+      "Villager"
+    ],
+    "output": "Temple",
+    "time": 180.0
+  },
+  {
+    "inputs": [
+      "Tomato",
+      "Poop"
+    ],
+    "output": "Tomato Plant",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Tomato",
+      "Soil"
+    ],
+    "output": "Tomato Plant",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Tomato",
+      "Garden"
+    ],
+    "output": "Tomato Plant",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Tomato",
+      "Farm"
+    ],
+    "output": "Tomato Plant",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Tomato",
+      "Greenhouse"
+    ],
+    "output": "Tomato Plant",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Poop"
+    ],
+    "output": "Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Soil"
+    ],
+    "output": "Tree",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Garden"
+    ],
+    "output": "Tree",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Farm"
+    ],
+    "output": "Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Greenhouse"
+    ],
+    "output": "Tree",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Mage"
+    ],
+    "output": "University",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Brick",
+      "Brick",
+      "Brick",
+      "Wizard"
+    ],
+    "output": "University",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Stone",
+      "Villager"
+    ],
+    "output": "Warehouse",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Water",
+      "Brick",
+      "Brick",
+      "Villager"
+    ],
+    "output": "Well",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Brick",
+      "Brick",
+      "Bottle of Water",
+      "Magic Dust",
+      "Magic Dust",
+      "Villager"
+    ],
+    "output": "Wishing Well",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "House",
+      "Villager",
+      "Villager"
+    ],
+    "output": "Baby",
+    "time": 20.0
+  },
+  {
+    "inputs": [
+      "Feral Cat",
+      "Milk"
+    ],
+    "output": "Cat"
+  },
+  {
+    "inputs": [
+      "Cat",
+      "Cat",
+      "House"
+    ],
+    "output": "Cat",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Wolf",
+      "Bone"
+    ],
+    "output": "Dog"
+  },
+  {
+    "inputs": [
+      "Dog",
+      "Dog",
+      "House"
+    ],
+    "output": "Dog",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Pirate",
+      "Parrot"
+    ],
+    "output": "Friendly Pirate"
+  },
+  {
+    "inputs": [
+      "House",
+      "Cat",
+      "Cat"
+    ],
+    "output": "Kitten"
+  },
+  {
+    "inputs": [
+      "House",
+      "Dog",
+      "Dog"
+    ],
+    "output": "Puppy"
+  },
+  {
+    "inputs": [
+      "Monkey",
+      "Banana"
+    ],
+    "output": "Trained Monkey",
+    "time": 1.0
+  },
+  {
+    "inputs": [
+      "House",
+      "Baby"
+    ],
+    "output": "Villager",
+    "time": 240.0
+  },
+  {
+    "inputs": [
+      "House",
+      "Villager",
+      "Villager"
+    ],
+    "output": "Young Villager"
+  },
+  {
+    "inputs": [
+      "Paper",
+      "Paper",
+      "Paper"
+    ],
+    "output": "Book"
+  },
+  {
+    "inputs": [
+      "Stone",
+      "Stone",
+      "Stone",
+      "Villager"
+    ],
+    "output": "Brick",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Stone",
+      "Stone",
+      "Brickyard"
+    ],
+    "output": "Brick",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Campfire"
+    ],
+    "output": "Charcoal",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Stove"
+    ],
+    "output": "Charcoal",
+    "time": 3.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Wood",
+      "Smelter"
+    ],
+    "output": "Coin",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Glass",
+      "Glass",
+      "Campfire"
+    ],
+    "output": "Empty Bottle",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Glass",
+      "Glass",
+      "Stove"
+    ],
+    "output": "Empty Bottle",
+    "time": 3.0
+  },
+  {
+    "inputs": [
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Happiness",
+      "Villager",
+      "Villager",
+      "Villager"
+    ],
+    "output": "Euphoria"
+  },
+  {
+    "inputs": [
+      "Cotton",
+      "Cotton",
+      "Cotton",
+      "Cotton",
+      "Villager"
+    ],
+    "output": "Fabric",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Wool",
+      "Wool",
+      "Wool",
+      "Wool",
+      "Villager"
+    ],
+    "output": "Fabric",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Sand",
+      "Smelter"
+    ],
+    "output": "Glass",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Gold Ore",
+      "Smelter"
+    ],
+    "output": "Gold Bar",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Book",
+      "Villager"
+    ],
+    "output": "Happiness",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Coin",
+      "Villager"
+    ],
+    "output": "Happiness",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Coin",
+      "Charity"
+    ],
+    "output": "Happiness",
+    "time": 70.0
+  },
+  {
+    "inputs": [
+      "Food",
+      "Tavern"
+    ],
+    "output": "Happiness",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Animal",
+      "Petting Zoo"
+    ],
+    "output": "Happiness",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Iron Ore",
+      "Wood",
+      "Smelter"
+    ],
+    "output": "Iron Bar",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Metal Scraps",
+      "Metal Scraps",
+      "Metal Scraps",
+      "Worker"
+    ],
+    "output": "Iron Bar",
+    "time": 20.0
+  },
+  {
+    "inputs": [
+      "Iron Ore",
+      "Industrial Smelter"
+    ],
+    "output": "Iron Bar",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Paper",
+      "Paper",
+      "Plank",
+      "Plank",
+      "Charcoal",
+      "Villager"
+    ],
+    "output": "Painting",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Water"
+    ],
+    "output": "Paper",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Wood",
+      "Wood",
+      "Villager"
+    ],
+    "output": "Plank",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Wood",
+      "Sawmill"
+    ],
+    "output": "Plank",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Cotton",
+      "Cotton",
+      "Villager"
+    ],
+    "output": "Rope",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Wool",
+      "Wool",
+      "Villager"
+    ],
+    "output": "Rope",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Gold Bar",
+      "Gold Bar",
+      "Glass",
+      "Glass",
+      "Glass",
+      "Smelter"
+    ],
+    "output": "Sacred Key",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Fabric",
+      "Rope",
+      "Villager"
+    ],
+    "output": "Sail",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Sand",
+      "Sand",
+      "Villager"
+    ],
+    "output": "Sandstone",
+    "time": 5.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Villager"
+    ],
+    "output": "Stick",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Cane Sugar",
+      "Bottle of Water",
+      "Distillery"
+    ],
+    "output": "Bottle of Rum",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Empty Bottle",
+      "Spring"
+    ],
+    "output": "Bottle of Water",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Empty Bottle",
+      "Water"
+    ],
+    "output": "Bottle of Water",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Lime",
+      "Raw Fish"
+    ],
+    "output": "Ceviche",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Raw Crab Meat",
+      "Campfire"
+    ],
+    "output": "Cooked Crab",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Raw Crab Meat",
+      "Stove"
+    ],
+    "output": "Cooked Crab",
+    "time": 18.0
+  },
+  {
+    "inputs": [
+      "Raw Meat",
+      "Campfire"
+    ],
+    "output": "Cooked Meat",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Raw Meat",
+      "Stove"
+    ],
+    "output": "Cooked Meat",
+    "time": 18.0
+  },
+  {
+    "inputs": [
+      "Flour",
+      "Flour",
+      "Water"
+    ],
+    "output": "Dough",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "French Fries",
+      "Fried Fish"
+    ],
+    "output": "Fish and Chips",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Wheat",
+      "Villager"
+    ],
+    "output": "Flour",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Potato",
+      "Olive Oil",
+      "Campfire"
+    ],
+    "output": "French Fries",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Potato",
+      "Olive Oil",
+      "Stove"
+    ],
+    "output": "French Fries",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Raw Fish",
+      "Olive Oil",
+      "Campfire"
+    ],
+    "output": "Fried Fish",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Raw Fish",
+      "Olive Oil",
+      "Stove"
+    ],
+    "output": "Fried Fish",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Raw Meat",
+      "Olive Oil",
+      "Campfire"
+    ],
+    "output": "Fried Meat",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Raw Meat",
+      "Olive Oil",
+      "Stove"
+    ],
+    "output": "Fried Meat",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Egg",
+      "Potato",
+      "Campfire"
+    ],
+    "output": "Frittata",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Egg",
+      "Potato",
+      "Stove"
+    ],
+    "output": "Frittata",
+    "time": 18.0
+  },
+  {
+    "inputs": [
+      "Apple",
+      "Berry"
+    ],
+    "output": "Fruit Salad",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Apple",
+      "Grape"
+    ],
+    "output": "Fruit Salad",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Grape",
+      "Grape",
+      "Villager"
+    ],
+    "output": "Grape Pulp",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Raw Fish",
+      "Campfire"
+    ],
+    "output": "Grilled Fish",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Raw Fish",
+      "Stove"
+    ],
+    "output": "Grilled Fish",
+    "time": 18.0
+  },
+  {
+    "inputs": [
+      "Herbs",
+      "Water",
+      "Campfire"
+    ],
+    "output": "Herbal Tea",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Herbs",
+      "Water",
+      "Stove"
+    ],
+    "output": "Herbal Tea",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Milk",
+      "Berry"
+    ],
+    "output": "Milkshake"
+  },
+  {
+    "inputs": [
+      "Milk",
+      "Grape"
+    ],
+    "output": "Milkshake"
+  },
+  {
+    "inputs": [
+      "Olive",
+      "Olive",
+      "Villager"
+    ],
+    "output": "Olive Pulp",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Egg",
+      "Egg",
+      "Campfire"
+    ],
+    "output": "Omelette",
+    "time": 90.0
+  },
+  {
+    "inputs": [
+      "Egg",
+      "Egg",
+      "Stove"
+    ],
+    "output": "Omelette",
+    "time": 27.0
+  },
+  {
+    "inputs": [
+      "Egg",
+      "Milk",
+      "Flour",
+      "Campfire"
+    ],
+    "output": "Pancakes",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Fruit Salad",
+      "Wine",
+      "Fried Meat"
+    ],
+    "output": "Royal Banquet",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Raw Crab Meat",
+      "Raw Fish",
+      "Chili Pepper",
+      "Campfire"
+    ],
+    "output": "Seafood Stew",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Raw Crab Meat",
+      "Raw Fish",
+      "Chili Pepper",
+      "Stove"
+    ],
+    "output": "Seafood Stew",
+    "time": 18.0
+  },
+  {
+    "inputs": [
+      "Raw Meat",
+      "Carrot",
+      "Onion",
+      "Potato",
+      "Campfire"
+    ],
+    "output": "Stew",
+    "time": 120.0
+  },
+  {
+    "inputs": [
+      "Raw Meat",
+      "Carrot",
+      "Onion",
+      "Potato",
+      "Stove"
+    ],
+    "output": "Stew",
+    "time": 36.0
+  },
+  {
+    "inputs": [
+      "Raw Fish",
+      "Seaweed"
+    ],
+    "output": "Sushi",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Omelette",
+      "Seaweed"
+    ],
+    "output": "Tamago Sushi",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Grape Pulp",
+      "Barrel"
+    ],
+    "output": "Wine",
+    "time": 60.0
+  },
+  {
+    "inputs": [
+      "Corpse",
+      "Corpse"
+    ],
+    "output": "Graveyard",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Stick",
+      "Wood"
+    ],
+    "output": "Axe",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Iron Bar",
+      "Plank",
+      "Flint",
+      "Smithy"
+    ],
+    "output": "Blunderbuss",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Spear",
+      "Bone",
+      "Bone"
+    ],
+    "output": "Bone Spear",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Magic Staff",
+      "Bone",
+      "Gold Bar",
+      "Smithy"
+    ],
+    "output": "Bone Staff",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Plank",
+      "Plank",
+      "Smithy"
+    ],
+    "output": "Boomerang",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Rope",
+      "Plank",
+      "Wood"
+    ],
+    "output": "Bow",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Empty Bottle",
+      "Stone"
+    ],
+    "output": "Broken Bottle",
+    "time": 0.5
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Iron Bar",
+      "Smithy"
+    ],
+    "output": "Chainmail Armor",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Wood",
+      "Stick"
+    ],
+    "output": "Club",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Rope",
+      "Plank",
+      "Wood",
+      "Iron Bar",
+      "Smithy"
+    ],
+    "output": "Crossbow",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Wool",
+      "Wool",
+      "Rope",
+      "Stick",
+      "Stick"
+    ],
+    "output": "Fancy Dress"
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Rope"
+    ],
+    "output": "Fishing Rod",
+    "time": 10.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Gold Bar",
+      "Magic Dust",
+      "Wood",
+      "Smithy"
+    ],
+    "output": "Forest Amulet",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Gold Bar",
+      "Smithy"
+    ],
+    "output": "Golden Chestplate",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Stick",
+      "Stone"
+    ],
+    "output": "Hammer",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Plank",
+      "Smithy"
+    ],
+    "output": "Iron Shield",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Wool",
+      "Wool",
+      "Gold Bar"
+    ],
+    "output": "Jester's Hat",
+    "time": 30.0
+  },
+  {
+    "inputs": [
+      "Magic Dust",
+      "Magic Dust",
+      "Sword",
+      "Smithy"
+    ],
+    "output": "Magic Blade",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Magic Dust",
+      "Coin",
+      "Coin",
+      "Smithy"
+    ],
+    "output": "Magic Ring",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Magic Dust",
+      "Wood",
+      "Smithy"
+    ],
+    "output": "Magic Staff",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Magic Dust",
+      "Map",
+      "Smithy"
+    ],
+    "output": "Magic Tome",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Magic Dust",
+      "Stick"
+    ],
+    "output": "Magic Wand",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Gold Bar",
+      "Gold Bar",
+      "Magic Dust",
+      "Stone",
+      "Smithy"
+    ],
+    "output": "Mountain Amulet",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Stick",
+      "Flint"
+    ],
+    "output": "Pickaxe",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Wool",
+      "Wool",
+      "Herbs",
+      "Herbs",
+      "Herbs",
+      "Villager"
+    ],
+    "output": "Plague Mask"
+  },
+  {
+    "inputs": [
+      "Wool",
+      "Wool",
+      "Grape",
+      "Villager"
+    ],
+    "output": "Purple Socks"
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Iron Bar",
+      "Flint",
+      "Stick",
+      "Villager"
+    ],
+    "output": "Scythe"
+  },
+  {
+    "inputs": [
+      "Stick",
+      "Stick",
+      "Stone"
+    ],
+    "output": "Slingshot",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Wood",
+      "Stick",
+      "Stick"
+    ],
+    "output": "Spear",
+    "time": 20.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Flint"
+    ],
+    "output": "Spiked Plank",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Stick",
+      "Stick"
+    ],
+    "output": "Sword",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Iron Bar",
+      "Iron Bar",
+      "Iron Bar",
+      "Smithy"
+    ],
+    "output": "Throwing Stars",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Wool",
+      "Wool",
+      "Rope"
+    ],
+    "output": "Winter Coat"
+  },
+  {
+    "inputs": [
+      "Fabric",
+      "Rope",
+      "Smithy"
+    ],
+    "output": "Wizard Robe",
+    "time": 15.0
+  },
+  {
+    "inputs": [
+      "Plank",
+      "Stick"
+    ],
+    "output": "Wooden Shield",
+    "time": 15.0
+  }
+]

@@ -4,6 +4,7 @@
 
 #include "CardPack.hpp"
 #include "Util/Text.hpp"
+#include <algorithm>
 
 CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
                    const std::string& iconPath, float scale, int totalCards,
@@ -17,16 +18,13 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
 
     m_CountText = std::make_shared<Util::GameObject>();
 
-    int nameSize = static_cast<int>(3000 * m_Scale);
-    if (nameSize < 22) nameSize = 22;
-    m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", nameSize, m_Name, Util::Color(255, 255, 255  )));
+    int nameSize = std::max(1, static_cast<int>(3000 * m_Scale));
+    m_NameText->SetDrawable(std::make_shared<Util::Text>(
+        RESOURCE_DIR"/Font/msjh.ttc", nameSize, m_Name, Util::Color(255, 255, 255)));
 
-
-    int fontSize = static_cast<int>(3000 * m_Scale);
-    if (fontSize < 22) fontSize = 22;
-
+    int fontSize = std::max(1, static_cast<int>(3000 * m_Scale));
     m_CountText->SetDrawable(std::make_shared<Util::Text>(
-        RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(m_CardsRemaining), Util::Color(1, 1, 1))); // 白色文字
+        RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
     m_CountText->SetZIndex(m_Background->GetZIndex() + 1);
     m_CountText->m_Transform.scale = card_scale;
 
@@ -38,19 +36,13 @@ std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
     m_CardsRemaining--;
 
 
-    if (m_CountText) {
-        m_CountText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(900 * m_Scale),
-            std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
-    }
-
     auto dataToSpawn = std::make_shared<CardSpawnData>(m_ContentPool.back());
     m_ContentPool.pop_back();
 
-    // 2. 更新右上角的數字
     if (m_CountText) {
+        int fontSize = std::max(1, static_cast<int>(3000 * m_Scale));
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", static_cast<int>(3000 * m_Scale),
+            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
             std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
     }
 
@@ -104,5 +96,17 @@ void CardPack::StopDragging() {
 
     if (m_CountText) {
         m_CountText->SetZIndex(m_Background->GetZIndex() + 1);
+    }
+}
+
+void CardPack::SetScale(float scale) {
+    Card::SetScale(scale); // 同步更新 NameText
+
+    if (m_CountText) {
+        int fontSize = std::max(1, static_cast<int>(3000 * m_Scale));
+        m_CountText->SetDrawable(std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
+            std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
+        m_CountText->m_Transform.scale = {m_Scale, m_Scale};
     }
 }
