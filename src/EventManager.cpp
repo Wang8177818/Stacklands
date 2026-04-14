@@ -6,6 +6,7 @@
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
+#include "Util/Time.hpp"
 
 // ─────────────────────────────────────────────────────────────
 void EventManager::SetGameField(std::shared_ptr<BackgroundImage> gameField) {
@@ -129,23 +130,26 @@ void EventManager::SwitchGameState() {
         }
     }
 
-    switch (GetGameState()) {
+    if (tick < 120000) {
+        switch (GetGameState()) {
         case GameTime::NORMAL:
             pauseText->SetVisible(false);
-            runTimeBar->SetScale({runTimeBar->GetScaledSize().x + 0.05f, 35.f});
-            tick += 0.05f;
+            runTimeBar->SetScale({tick * 265/120000, 35.f});
+            tick += Util::Time::GetDeltaTimeMs();
+
             break;
         case GameTime::FAST:
-            runTimeBar->SetScale({runTimeBar->GetScaledSize().x + 0.15f, 35.f});
-            tick += 0.15f;
+            runTimeBar->SetScale({tick * 265/120000, 35.f});
+            tick += Util::Time::GetDeltaTimeMs()*2;
             break;
         case GameTime::PAUSE:
             if (!is_Pausing) {
                 pauseText->SetVisible(true);
             }
-
             break;
+        }
     }
+
 }
 
 void EventManager::ESCMenu() {

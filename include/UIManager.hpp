@@ -63,6 +63,9 @@ public:
     // 取得時間欄
     std::shared_ptr<BackgroundImage> GetTimeBar() const { return m_TimeBarImage; }
 
+    // 取得月份
+    std::shared_ptr<Util::GameObject> GetMonth() const { return m_Month; }
+
     // 取得暫停選單:繼續
     std::shared_ptr<MenuButton> GetContinueButton() const { return m_Continue; }
 
@@ -90,6 +93,8 @@ private:
     std::shared_ptr<BackgroundImage> m_RunTimeBarImage;
     std::shared_ptr<Util::GameObject> m_PauseText;
     std::shared_ptr<MenuButton>       m_PlayButton;
+
+    std::shared_ptr<Util::GameObject> m_Month;
 
     // 內部輔助：把一個 MenuButton 的所有 GameObject 加入 Renderer
     void AddButtonToRenderer(std::shared_ptr<MenuButton> btn);
