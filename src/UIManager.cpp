@@ -139,18 +139,24 @@ void UIManager::TransitionToGame() {
 
     // ── 進度條 ────────────────────────────────────────────
     m_RunTimeBarImage = std::make_shared<BackgroundImage>();
-    m_RunTimeBarImage->SetDrawable(
-        std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/dark_bg.png"));
+    m_RunTimeBarImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/darker_bg.png"));
     m_RunTimeBarImage->SetPivot({-0.5f, 0.f});
     m_RunTimeBarImage->SetScale({0.f, 35.f});
     m_RunTimeBarImage->m_Transform.translation = {368.f, 335.f};
     m_RunTimeBarImage->SetZIndex(99);
     m_Renderer.AddChild(m_RunTimeBarImage);
 
+    // ── 月份 ────────────────────────────────────────────
+    m_Month = std::make_shared<Util::GameObject>();
+    m_Month->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "1月", Util::Color(0, 0, 0)));
+    m_Month->m_Transform.translation = glm::vec2(395, 335);
+    m_Month->m_Transform.scale= {0.5f, 0.5f};
+    m_Month->SetZIndex(100);
+    m_Renderer.AddChild(m_Month);
+
     // ── 暫停文字 ──────────────────────────────────────────
     m_PauseText = std::make_shared<Util::GameObject>();
-    m_PauseText->SetDrawable(std::make_shared<Util::Text>(
-        RESOURCE_DIR"/Font/msjhbd.ttc", 50, "暫停。", Util::Color(0, 0, 0, 50)));
+    m_PauseText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 50, "暫停。", Util::Color(0, 0, 0, 50)));
     m_PauseText->SetVisible(false);
     m_PauseText->SetZIndex(100);
     m_Renderer.AddChild(m_PauseText);
