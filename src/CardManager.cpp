@@ -21,6 +21,7 @@ CardType StringToCardType(const std::string& typeStr) {
     if (typeStr == "EQUIPMENT") return CardType::EQUIPMENT;
     if (typeStr == "BUILDING") return CardType::BUILDING;
     if (typeStr == "STRUCTURE") return CardType::STRUCTURE;
+    if (typeStr == "FOOD") return CardType::FOOD;
     return CardType::BASIC;
 }
 
@@ -52,10 +53,9 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
     json j;
     file >> j;
 
-    // 遍歷陣列，存入字典 (Key 是卡片名字，Value 是配方)
+    // 遍歷陣列
     for (const auto& item : j) {
         CardSpawnData data;
-        // 使用 .value() 加上預設值，就算 JSON 漏寫某個欄位也不會崩潰！
         data.name      = item.value("name", "Unknown");
         data.sellValue = item.value("sellValue", 0);
         data.type      = StringToCardType(item.value("type", "BASIC"));
@@ -63,8 +63,20 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
         std::string rawPath = item.value("iconPath", "");
         data.iconPath  = rawPath.empty() ? "" : RESOURCE_DIR + rawPath;
 
-        data.health    = item.value("health", 0); // resource 不用寫hp
-        data.scale     = 0.05f;
+        data.health         = item.value("health", 0);
+        data.nutritionValue = item.value("nutritionValue", 0);
+        data.scale          = 0.05f;
+
+        // 結構卡專用欄位
+        data.resourceCount = item.value("resourceCount", 0);
+        if (item.contains("spawnCards")) {
+            for (const auto& entry : item["spawnCards"]) {
+                std::string cardName = entry.value("name", "");
+                int weight           = entry.value("weight", 1);
+                if (!cardName.empty())
+                    data.spawnCards.push_back({cardName, weight});
+            }
+        }
 
         m_CardDatabase[data.name] = data;
     }
@@ -177,8 +189,12 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
         newCard = std::make_shared<EquipmentCard>(x, y, data.name, data.sellValue, data.iconPath, data.attack, data.health, data.equipSlot, data.scale);
     }else if (data.type == CardType::BUILDING) {
         newCard = std::make_shared<BuildingCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
+    }else if (data.type == CardType::FOOD) {
+        newCard = std::make_shared<FoodCard>(x, y, data.name, data.sellValue, data.iconPath,
+                                             data.nutritionValue, data.scale);
     }else if (data.type == CardType::STRUCTURE) {
-        newCard = std::make_shared<StructureCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
+        newCard = std::make_shared<StructureCard>(x, y, data.name, data.sellValue, data.iconPath,
+                                                  data.resourceCount, data.spawnCards, data.scale);
     }else {
         newCard = std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
     }
@@ -320,7 +336,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                         break;
                     }
 
-                    // ── 裝備卡放到角色卡：消耗裝備並處理轉職 ────────
+                    // 角色轉職
                     if (m_DraggingCard->GetType() == CardType::EQUIPMENT &&
                         targetCard->GetType() == CardType::CHARACTER) {
 
@@ -331,7 +347,6 @@ void CardManager::Update(glm::vec2 mousePos) {
                         std::string outputName = m_RecipeManager.CheckProfession(equipName);
 
                         if (!outputName.empty()) {
-                            // ── 觸發轉職 ──────────────────────────────────
                             float spawnX     = charCard->GetX();
                             float spawnY     = charCard->GetY();
                             float spawnScale = charCard->GetScale();
@@ -341,7 +356,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                             const std::string& oldHand =
                                 newSlots[static_cast<int>(EquipSlot::HAND)];
 
-                            // 若舊 HAND 有裝備名稱，在旁邊重新生成實體卡
+                            // 若HAND有裝備 在旁邊重新生成 (換下來)
                             if (!oldHand.empty()) {
                                 std::uniform_real_distribution<float> dist(-80.f, 80.f);
                                 SpawnCardByName(oldHand, spawnScale,
@@ -350,24 +365,22 @@ void CardManager::Update(glm::vec2 mousePos) {
                             }
                             newSlots[static_cast<int>(EquipSlot::HAND)] = equipName;
 
-                            // 刪除觸發裝備實體卡與舊角色卡
                             auto dragging = m_DraggingCard;
                             m_DraggingCard = nullptr;
                             RemoveCard(dragging);
                             RemoveCard(std::static_pointer_cast<Card>(charCard));
 
-                            // 生成新職業卡並設定插槽
+                            // 生成新角色卡並設定插槽
                             auto newCardBase = SpawnCardByName(outputName, spawnScale, spawnX, spawnY);
                             if (newCardBase && newCardBase->GetType() == CardType::CHARACTER) {
                                 std::static_pointer_cast<CharacterCard>(newCardBase)
                                     ->SetEquipNames(newSlots);
                             }
                         } else {
-                            // ── 非轉職：插槽已佔用則推開，否則儲存並刪除實體卡 ──
+                            // 插槽已佔用則推開
                             const std::string& existing =
                                 charCard->GetEquipName(equip->GetEquipSlot());
                             if (!existing.empty()) {
-                                // 插槽已有裝備，推開
                                 float dx = m_DraggingCard->GetX() - charCard->GetX();
                                 float dy = m_DraggingCard->GetY() - charCard->GetY();
                                 float overlapX = (m_DraggingCard->GetWidth()  + charCard->GetWidth())  * 0.5f - std::abs(dx);
@@ -388,7 +401,27 @@ void CardManager::Update(glm::vec2 mousePos) {
                         break;
                     }
 
-                    // ── 一般堆疊（非裝備→角色）────────────────────────
+                    // Gather
+                    if (targetCard->GetType() == CardType::STRUCTURE &&
+                        m_DraggingCard->GetType() == CardType::CHARACTER) {
+
+                        auto structure  = std::static_pointer_cast<StructureCard>(targetCard);
+                        std::string spawnName = structure->Gather(m_RandomGenerator);
+
+                        std::uniform_real_distribution<float> distOffset(-60.0f, 60.0f);
+                        if (!spawnName.empty()) {
+                            SpawnCardByName(spawnName, m_DraggingCard->GetScale(),
+                                            structure->GetX() + distOffset(m_RandomGenerator),
+                                            structure->GetY() + distOffset(m_RandomGenerator));
+                        }
+
+                        if (structure->IsExhausted()) {
+                            RemoveCard(std::static_pointer_cast<Card>(structure));
+                        }
+                        break; // 不進行堆疊，角色卡留在原位
+                    }
+
+                    // 般堆疊
                     targetCard->SetCardAbove(m_DraggingCard);
                     m_DraggingCard->SetCardBelow(targetCard);
 
@@ -403,7 +436,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                             float spawnY     = stackBot->GetY();
                             float spawnScale = stackBot->GetScale();
 
-                            // 分類：CHARACTER / BUILDING 保留，其餘消耗
+                            // CHARACTER / BUILDING保留 其餘消耗
                             std::vector<std::shared_ptr<Card>> toDelete;
                             std::vector<std::shared_ptr<Card>> toKeep;
                             for (auto cur = stackBot; cur; cur = cur->GetCardAbove()) {
@@ -424,7 +457,6 @@ void CardManager::Update(glm::vec2 mousePos) {
 
                             m_DraggingCard = nullptr;
                             for (auto& c : toDelete) RemoveCard(c);
-                            // toKeep 留在 m_Cards，由分離系統推開
 
                             SpawnCardByName(craftOutput, spawnScale, spawnX, spawnY);
                         }
@@ -437,7 +469,7 @@ void CardManager::Update(glm::vec2 mousePos) {
         if (m_DraggingCard) m_DraggingCard = nullptr;
     }
 
-    // 每幀分離重疊的非堆疊卡片 (除部分物件in m_Cards)
+    // 每幀偵測推擠
     for (size_t i = 0; i < m_Cards.size(); i++) {
         auto& cardA = m_Cards[i];
         // 跳過 INTERACT type
@@ -458,7 +490,6 @@ void CardManager::Update(glm::vec2 mousePos) {
 
             if (overlapX <= 0 || overlapY <= 0) continue;
 
-            // 沿重疊較小的軸各推開一半
             if (overlapX <= overlapY) {
                 float push = overlapX * 0.5f;
                 cardA->MoveBy({dx >= 0.f ?  push : -push, 0.f});
