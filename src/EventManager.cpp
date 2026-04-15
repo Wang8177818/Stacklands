@@ -3,6 +3,8 @@
 //
 
 #include "EventManager.hpp"
+
+#include "../PTSD/example/include/App.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -164,6 +166,8 @@ void EventManager::ESCMenu() {
     auto resourseBar = m_UIManager->GetResourseBar();
     auto timeBar = m_UIManager->GetTimeBar();
     auto continueButton = m_UIManager->GetContinueButton();
+    auto returnToMenuButton = m_UIManager->GetReturnToMenuButton();
+    auto month = m_UIManager->GetMonth();
 
     // 進入暫停選單後開始更新按鈕
     if (is_Pausing) {
@@ -182,6 +186,10 @@ void EventManager::ESCMenu() {
                 resourseBar->SetVisible(true);
                 timeBar->SetVisible(true);
                 playButton->ShowAll();
+                break;
+            case UIManager::MenuEvent::BACKTOMENU:
+                m_RequestExit = true;
+                break;
         }
     }
 
@@ -192,11 +200,13 @@ void EventManager::ESCMenu() {
 
             PauseMenu->SetVisible(true);
             continueButton->ShowAll();
+            returnToMenuButton->ShowAll();
 
             DescriptionBar->SetVisible(false);
             runTimeBar->SetVisible(false);
             resourseBar->SetVisible(false);
             timeBar->SetVisible(false);
+            month->SetVisible(false);
             playButton->HideAll();
         } else {
             m_GameTime = GameTime::NORMAL;
@@ -204,11 +214,13 @@ void EventManager::ESCMenu() {
 
             PauseMenu->SetVisible(false);
             continueButton->HideAll();
+            returnToMenuButton->HideAll();
 
             DescriptionBar->SetVisible(true);
             runTimeBar->SetVisible(true);
             resourseBar->SetVisible(true);
             timeBar->SetVisible(true);
+            month->SetVisible(true);
             playButton->ShowAll();
         }
     }

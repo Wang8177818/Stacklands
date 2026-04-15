@@ -22,6 +22,7 @@ public:
         CARD_WIKI,
         MODS,
         CONTINUE,
+        BACKTOMENU,
     };
 
     UIManager(Util::Renderer& renderer);
@@ -69,6 +70,9 @@ public:
     // 取得暫停選單:繼續
     std::shared_ptr<MenuButton> GetContinueButton() const { return m_Continue; }
 
+    // 取的返回選單
+    std::shared_ptr<MenuButton> GetReturnToMenuButton() const { return m_ReturnToMenu; }
+
 private:
     Util::Renderer& m_Renderer;
 
@@ -84,6 +88,7 @@ private:
     std::shared_ptr<MenuButton> m_BtnMods;
 
     std::shared_ptr<MenuButton> m_Continue;
+    std::shared_ptr<MenuButton> m_ReturnToMenu;
 
     // ── 遊戲 UI 資源 ─────────────────────────────────────
     std::shared_ptr<BackgroundImage> m_GameFieldImage;

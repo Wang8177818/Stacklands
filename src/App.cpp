@@ -105,11 +105,10 @@ void App::Update() {
 
     m_Renderer.Update();
 
-    /*
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) || Util::Input::IfExit()) {
+
+    if (m_EventManager->IsRequestingExit() || Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }
-    */
 }
 
 // ─────────────────────────────────────────────────────────────
