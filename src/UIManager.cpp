@@ -54,12 +54,16 @@ void UIManager::InitMenu() {
     m_Continue    = std::make_shared<MenuButton>(-592, -120, 20,  40, 20, "繼續",       true, 2);
     m_Continue->HideAll();
 
+    m_ReturnToMenu = std::make_shared<MenuButton>(-574, -310, 20,  80, 20, "返回選單",       true, 4);
+    m_ReturnToMenu->HideAll();
+
     AddButtonToRenderer(m_BtnStart);
     AddButtonToRenderer(m_BtnExit);
     AddButtonToRenderer(m_BtnOptions);
     AddButtonToRenderer(m_BtnCardWiki);
     AddButtonToRenderer(m_BtnMods);
     AddButtonToRenderer(m_Continue);
+    AddButtonToRenderer(m_ReturnToMenu);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -82,9 +86,11 @@ UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
 
 UIManager::MenuEvent UIManager::UpdatePauseMenu(glm::vec2 mousePos) {
     bool isContinueHover = m_Continue   ->UpdateHover(mousePos);
+    bool isReturnToMenuButtonHover = m_ReturnToMenu->UpdateHover(mousePos);
 
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         if (isContinueHover) return MenuEvent::CONTINUE;
+        if (isReturnToMenuButtonHover) return MenuEvent::BACKTOMENU;
     }
     return MenuEvent::NONE;
 }
