@@ -20,6 +20,7 @@
 #include "RecipeManager.hpp"
 #include  "BuildingCard.hpp"
 #include  "StructureCard.hpp"
+#include  "FoodCard.hpp"
 using json = nlohmann::json;
 
 class CardManager {

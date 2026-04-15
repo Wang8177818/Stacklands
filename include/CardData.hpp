@@ -19,6 +19,13 @@ struct CardSpawnData {
     int health, attack; // 0 代表非人物卡
 
     EquipSlot equipSlot = EquipSlot::NONE;
+
+    // 食物卡專用
+    int nutritionValue = 0;
+
+    // 結構卡專用：可採集次數與採集後依權重生成的卡片清單
+    int resourceCount = 0;
+    std::vector<std::pair<std::string, int>> spawnCards; // {卡片名稱, 權重}
 };
 
 struct Recipe {
