@@ -14,21 +14,14 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
 
 # DID (howhowdy2)
 ---
-4/14
-EventManager + GetZoomRatio
-CardManager + GetZoomRatio
-Card + GetWidth GetHeight
-
-Fix the card gen size prob after Zoom
-Fix the text size prob when Zooming
-Make Card move when it cant stack or be stacked
-+ RecipeManager to manage the recipe
-+ Profession change
-+ Craft System
+4/15
++ FoodCard
+Fix StructureCard
 # TODO (howhowdy2)
 ---
-4/14
-BuildingCard
+4/15
+Weapon bonus
+Structure Func
 
 # Devlopment timeline
 ---
@@ -55,7 +48,7 @@ BuildingCard
     - [ ] 測試&改善目前BUG
 - Week 9 : 
 	- [ ] 製作裝備卡片
-	- [ ] 調適兼容人物卡
+	- [X] 調適兼容人物卡
 - Week 10 :
 	- [X] 卡包實作
 	- [ ] 製作動物卡片

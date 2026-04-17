@@ -1026,14 +1026,14 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/Apple.png",
     "sellValue": 2,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Banana",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Banaan.png",
     "sellValue": 1,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Beer",
@@ -1045,14 +1045,14 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/Berry_2.png",
     "sellValue": 1,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Bottle of Rum",
     "type": "FOOD",
     "iconPath": "/Image/card/food/BottleOfRum.png",
     "sellValue": 3,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Bread",
@@ -1067,51 +1067,55 @@
   },
   {
     "name": "Berry Bush",
-    "type": "RESOURCE",
+    "type": "STRUCTURE",
     "iconPath": "/Image/card/resource/Bush.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "resourceCount": 5,
+    "spawnCards": [
+      { "name": "Berry", "weight": 100 }
+    ]
   },
   {
     "name": "Cane Sugar",
     "type": "FOOD",
     "iconPath": "/Image/card/food/CaneSugar.png",
     "sellValue": 2,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Carrot",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Carrot.png",
     "sellValue": 2,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Ceviche",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Ceviche.png",
     "sellValue": 3,
-    "foodValue": 3
+    "nutritionValue": 3
   },
   {
     "name": "Chili Pepper",
     "type": "FOOD",
     "iconPath": "/Image/card/food/ChilliPepper.png",
     "sellValue": 2,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Cooked Crab",
     "type": "FOOD",
     "iconPath": "/Image/card/food/CookedCrabMeat.png",
     "sellValue": 1,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Cooked Meat",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Cooked-Meat.png",
     "sellValue": 3,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Dough",
@@ -1123,7 +1127,7 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/egg.png",
     "sellValue": 1,
-    "foodValue": 0
+    "nutritionValue": 0
   },
   {
     "name": "Fish and Chips",
@@ -1155,14 +1159,14 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/Fritatta.png",
     "sellValue": 3,
-    "foodValue": 3
+    "nutritionValue": 3
   },
   {
     "name": "Fruit Salad",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Fruit-Salad.png",
     "sellValue": 5,
-    "foodValue": 3
+    "nutritionValue": 3
   },
   {
     "name": "Grape",
@@ -1174,7 +1178,7 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/GrilledFish.png",
     "sellValue": 2,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Herbal Tea",
@@ -1191,35 +1195,35 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/Lime.png",
     "sellValue": 2,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Milk",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Milk.png",
     "sellValue": 1,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Milkshake",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Milkshake.png",
     "sellValue": 5,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Muesli",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Muesli.png",
     "sellValue": 30,
-    "foodValue": 4
+    "nutritionValue": 4
   },
   {
     "name": "Mushroom",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Mushroom.png",
     "sellValue": 2,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Olive",
@@ -1236,14 +1240,14 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/Omelette.png",
     "sellValue": 5,
-    "foodValue": 3
+    "nutritionValue": 3
   },
   {
     "name": "Onion",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Onions.png",
     "sellValue": 2,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Pancakes",
@@ -1260,28 +1264,28 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/Potato.png",
     "sellValue": 2,
-    "foodValue": 0
+    "nutritionValue": 0
   },
   {
     "name": "Raw Crab Meat",
     "type": "FOOD",
     "iconPath": "/Image/card/food/RawCrabMeat.png",
     "sellValue": 2,
-    "foodValue": 0
+    "nutritionValue": 0
   },
   {
     "name": "Raw Fish",
     "type": "FOOD",
     "iconPath": "/Image/card/food/RawFish.png",
     "sellValue": 2,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Raw Meat",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Raw-Meat.png",
     "sellValue": 3,
-    "foodValue": 0
+    "nutritionValue": 0
   },
   {
     "name": "Royal Banquet",
@@ -1293,35 +1297,35 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/FishStew.png",
     "sellValue": 3,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Seaweed",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Seaweed.png",
     "sellValue": 1,
-    "foodValue": 1
+    "nutritionValue": 1
   },
   {
     "name": "Stew",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Stew.png",
     "sellValue": 10,
-    "foodValue": 10
+    "nutritionValue": 10
   },
   {
     "name": "Sushi",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Sushi.png",
     "sellValue": 2,
-    "foodValue": 2
+    "nutritionValue": 2
   },
   {
     "name": "Tamago Sushi",
     "type": "FOOD",
     "iconPath": "/Image/card/food/TamagoSushi.png",
     "sellValue": 2,
-    "foodValue": 4
+    "nutritionValue": 4
   },
   {
     "name": "Tomato",
@@ -1333,7 +1337,7 @@
     "type": "FOOD",
     "iconPath": "/Image/card/food/water.png",
     "sellValue": 1,
-    "foodValue": 0
+    "nutritionValue": 0
   },
   {
     "name": "Wheat",
@@ -1444,7 +1448,7 @@
   },
   {
     "name": "City Hall",
-    "type": "BUILDING",
+    "type": "STRUCTURE",
     "iconPath": "/Image/card/building/City_Hall.png"
   },
   {
@@ -3620,5 +3624,29 @@
     "name": "Coin",
     "type": "COIN",
     "iconPath": "/Image/card/resource/Coin.png"
+  },
+  {
+    "name": "Tree",
+    "type": "STRUCTURE",
+    "iconPath": "/Image/card/resource/Tree.png",
+    "sellValue": 1,
+    "resourceCount": 5,
+    "spawnCards": [
+      { "name": "Wood", "weight": 80 },
+      { "name": "Stick", "weight": 10 },
+      { "name": "Apple", "weight": 10 }
+    ]
+  },
+  {
+    "name": "Rock",
+    "type": "STRUCTURE",
+    "iconPath": "/Image/card/resource/Rock.png",
+    "sellValue": 1,
+    "resourceCount": 5,
+    "spawnCards": [
+      { "name": "Stone", "weight": 85 },
+      { "name": "Flint", "weight": 10 },
+      { "name": "Coin", "weight": 5 }
+    ]
   }
 ]
