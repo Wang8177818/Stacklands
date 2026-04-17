@@ -13,19 +13,14 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
       m_CardsRemaining(totalCards), m_ContentPool(contents)
 {
     glm::vec2 card_scale = {m_Scale, m_Scale};
-    SetBackgroundImage(RESOURCE_DIR"/Image/card/Pack.png");
-    SetIconImage(iconPath);
+    SetBackgroundImage(iconPath);
 
     m_CountText = std::make_shared<Util::GameObject>();
-
-    int nameSize = std::max(1, static_cast<int>(3000 * m_Scale));
-    m_NameText->SetDrawable(std::make_shared<Util::Text>(
-        RESOURCE_DIR"/Font/msjh.ttc", nameSize, m_Name, Util::Color(255, 255, 255)));
 
     int fontSize = std::max(1, static_cast<int>(3000 * m_Scale));
     m_CountText->SetDrawable(std::make_shared<Util::Text>(
         RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
-    m_CountText->SetZIndex(m_Background->GetZIndex() + 1);
+    m_CountText->SetZIndex(m_Background->GetZIndex() + 2);
     m_CountText->m_Transform.scale = card_scale;
 
     UpdateVisualPositions();
@@ -53,12 +48,6 @@ std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
 void CardPack::UpdateVisualPositions() {
     // 基礎排版
     Card::UpdateVisualPositions();
-    if (m_Icon){
-        float iconOffsetX = m_Width * 0.08f;
-        float iconOffsetY = m_Height * -0.05f;
-        m_Icon->m_Transform.translation = glm::vec2(m_X + iconOffsetX ,m_Y + iconOffsetY);
-        m_Icon->m_Transform.scale = glm::vec2(m_Scale, m_Scale) * 0.6f * 2.0f;
-    }
 
     if (m_CountText) {
         float countOffsetX = m_Width * -0.7f;
@@ -67,9 +56,7 @@ void CardPack::UpdateVisualPositions() {
     }
 
     if (m_NameText){
-        float nameOffsetX = m_Width * 0.08f;
-        float nameOffsetY = m_Height * -0.5f;
-        m_NameText->m_Transform.translation = glm::vec2(m_X + nameOffsetX ,m_Y + nameOffsetY);
+        m_NameText->SetVisible(false);
     }
 }
 

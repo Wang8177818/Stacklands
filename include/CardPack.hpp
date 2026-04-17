@@ -13,14 +13,13 @@
 
 class CardPack : public Card {
 public:
-    // 建構子接收：基本卡片參數 + 總張數 + 卡池內容清單
     CardPack(float x, float y, const std::string& name, int sellValue,
              const std::string& iconPath, float scale, int totalCards,
              std::vector<CardSpawnData> contents);
 
     virtual ~CardPack() = default;
 
-    // 嘗試抽出一張卡牌資料 (若抽完回傳 nullptr)
+    // 抽一張卡
     std::shared_ptr<CardSpawnData> SpawnNext();
 
     // 檢查卡包是否已經空了
@@ -37,8 +36,8 @@ public:
 
 protected:
     int m_CardsRemaining;
-    std::vector<CardSpawnData> m_ContentPool; // 這個包裡的內容配方
-    std::shared_ptr<Util::GameObject> m_CountText; // 右上角的剩餘張數文字
+    std::vector<CardSpawnData> m_ContentPool; // 內容配方
+    std::shared_ptr<Util::GameObject> m_CountText; // 卡片剩餘數
 };
 
 #endif //STACKLANDS_CARDPACK_HPP
