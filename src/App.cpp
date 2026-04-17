@@ -71,7 +71,9 @@ void App::GameInit() {
     m_CardManager->SpawnCardByName("Plank",     basic_scale);
     m_CardManager->SpawnCardByName("Flint",     basic_scale);
     m_CardManager->SpawnCardByName("Iron Bar",     basic_scale);
-    m_CardManager->SpawnCardByName("Hammer",   basic_scale);
+    m_CardManager->SpawnCardByName("Chainmail Armor",   basic_scale);
+    m_CardManager->SpawnCardByName("Crab Scale Armor",   basic_scale);
+    m_CardManager->SpawnCardByName("Bear Claw",   basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;
@@ -91,7 +93,7 @@ void App::Update() {
     int sellPrice = m_SellSlot->GetTotalPrice();
     if (sellPrice > 0) {
         float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
-        // 生成第一枚 Coin 作為堆疊底部
+        // 生成一Coin作為堆疊底部
         auto topCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);
         for (int i = 1; i < sellPrice; i++) {
             auto newCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);

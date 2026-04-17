@@ -81,7 +81,7 @@ void Card::Update() {
 }
 
 bool Card::IsMouseHovering(glm::vec2 mousePos) {
-    // 計算卡牌的四個邊界
+    // 計算卡牌邊界
     float left = m_X - m_Width / 2;
     float right = m_X + m_Width / 2;
     float top = m_Y + m_Height / 2;
@@ -108,7 +108,7 @@ bool Card::IsOverlapping(std::shared_ptr<Card> otherCard) {
     float t2 = otherCard->m_Y + otherCard->m_Height / 2 - padding;
     float b2 = otherCard->m_Y - otherCard->m_Height / 2 + padding;
 
-    // 如果沒有在上下左右的外部，就是重疊了！
+    // AABB
     return !(l1 > r2 || r1 < l2 || t1 < b2 || b1 > t2);
 }
 

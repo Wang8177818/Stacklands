@@ -67,7 +67,7 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
         data.nutritionValue = item.value("nutritionValue", 0);
         data.scale          = 0.05f;
 
-        // 結構卡專用欄位
+        // 結構卡用
         data.resourceCount = item.value("resourceCount", 0);
         if (item.contains("spawnCards")) {
             for (const auto& entry : item["spawnCards"]) {
@@ -180,7 +180,7 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
     std::shared_ptr<Card> newCard = nullptr;
 
     if (data.type == CardType::CHARACTER) {
-        newCard = std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale, data.health, data.attack);
+        newCard = std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale, data.health, data.attack, data.defense, data.attackSpeed, data.hitChance, data.food);
     }else if (data.type == CardType::RESOURCE){
         newCard = std::make_shared<ResourceCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
     }else if (data.type == CardType::COIN){

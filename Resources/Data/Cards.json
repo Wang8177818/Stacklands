@@ -2,40 +2,64 @@
   {
     "name": "Archer",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Archer.png"
+    "iconPath": "/Image/card/character/Archer.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68
   },
   {
     "name": "Baby",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Baby.png",
-    "food": 1
+    "health": 1,
+    "food": 1,
+    "combatLevel": 0,
+    "damage": 0,
+    "defense": 0,
+    "attackSpeed": 0,
+    "hitChance": 0
   },
   {
     "name": "Builder",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Builder.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "effect": "Twice as fast when crafting cards that require a villager"
-  },
-  {
-    "name": "City Advisor",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/City_Advisor.png"
-  },
-  {
-    "name": "Educated Worker",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Educated_Worker.png"
   },
   {
     "name": "Explorer",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Explorer.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "effect": "Twice as fast when exploring Locations but 20% slower on everything else"
   },
   {
     "name": "Fisher",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Fisherman.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "effect": "Twice as fast when working on a Fishing Spot and catches Mackerels instead of Cods"
   },
   {
@@ -47,87 +71,118 @@
     "combatLevel": 16,
     "damage": 2,
     "defense": 1,
+    "attackSpeed": 2.9,
     "effect": "10% chance to Stun target"
-  },
-  {
-    "name": "Genius",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Genius.png"
   },
   {
     "name": "Jester",
     "type": "CHARACTER",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "iconPath": "/Image/card/character/Jester.png"
   },
   {
     "name": "Lumberjack",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Lumberjack.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "effect": "Twice as fast when working on a Lumber Camp, Apple Tree, or Tree"
   },
   {
     "name": "Mage",
     "type": "CHARACTER",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "iconPath": "/Image/card/character/Mage.png"
   },
   {
     "name": "Merchant",
     "type": "CHARACTER",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "iconPath": "/Image/card/character/Merchant.png"
   },
   {
     "name": "Militia",
     "type": "CHARACTER",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "iconPath": "/Image/card/character/Militia.png"
   },
   {
     "name": "Miner",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Miner.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68,
     "effect": "Twice as fast when working on a Gold Mine, Iron Mine, Rock, or Quarry"
   },
   {
     "name": "Ninja",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Ninja.png"
-  },
-  {
-    "name": "Robot Genius",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Robot_Genius.png"
-  },
-  {
-    "name": "Robot Worker",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Robot_Worker.png"
+    "iconPath": "/Image/card/character/Ninja.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68
   },
   {
     "name": "Royal",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Royal.png"
-  },
-  {
-    "name": "Sniper",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Sniper.png",
-    "health": 12,
-    "combatLevel": 15,
-    "damage": 3,
-    "defense": 1
-  },
-  {
-    "name": "Soldier",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Soldier.png",
+    "iconPath": "/Image/card/character/Royal.png",
     "health": 15,
-    "combatLevel": 16,
+    "food": 2,
+    "combatLevel": 14,
     "damage": 2,
-    "defense": 2
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68
   },
   {
     "name": "Swordsman",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Swordman.png"
+    "iconPath": "/Image/card/character/Swordman.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68
   },
   {
     "name": "Villager",
@@ -137,42 +192,33 @@
     "food": 2,
     "combatLevel": 14,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68
   },
   {
     "name": "Warrior",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Warrior.png"
+    "iconPath": "/Image/card/character/Warrior.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68
   },
   {
     "name": "Wizard",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Wizard.png"
-  },
-  {
-    "name": "Worker",
-    "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Worker.png"
-  },
-  {
-    "name": "10$",
-    "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/10$.png"
-  },
-  {
-    "name": "100$",
-    "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/100$.png"
-  },
-  {
-    "name": "20$",
-    "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/20$.png"
-  },
-  {
-    "name": "50$",
-    "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/50$.png"
+    "iconPath": "/Image/card/character/Wizard.png",
+    "health": 15,
+    "food": 2,
+    "combatLevel": 14,
+    "damage": 2,
+    "defense": 1,
+    "attackSpeed": 2.9,
+    "hitChance": 0.68
   },
   {
     "name": "Artwork",
@@ -466,7 +512,7 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "-1",
+    "attackSpeed": -1,
     "special": "10% chance to Bleed target"
   },
   {
@@ -475,8 +521,9 @@
     "iconPath": "/Image/card/equipment/BearClaw.png",
     "sellValue": 5,
     "attack": 1,
+    "health": 5,
     "slot": "Hand",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "*10% chance to do a Critical Hit on target"
   },
   {
@@ -485,8 +532,9 @@
     "iconPath": "/Image/card/equipment/Blowpipe.png",
     "sellValue": 3,
     "attack": 1,
+    "hitChance": 1,
     "slot": "Hand",
-    "attackSpeed": "-1",
+    "attackSpeed": -1,
     "special": "10% chance to Poison target"
   },
   {
@@ -495,6 +543,7 @@
     "iconPath": "/Image/card/equipment/Blunderbuss.png",
     "sellValue": 6,
     "attack": 4,
+    "hitChance": -1,
     "slot": "Hand",
     "special": "*15% chance to Damage all enemies"
   },
@@ -504,6 +553,7 @@
     "iconPath": "/Image/card/equipment/BoneSpear.png",
     "sellValue": 5,
     "attack": 2,
+    "hitChance": 1,
     "slot": "Hand",
     "special": "10% chance to do a Critical Hit on target"
   },
@@ -514,7 +564,7 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "20% chance to Lifesteal from target"
   },
   {
@@ -533,7 +583,7 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "-1",
+    "attackSpeed": -1,
     "special": "7% chance to do a Critical Hit on target"
   },
   {
@@ -560,7 +610,7 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "-1",
+    "attackSpeed": -1,
     "special": "10% chance to Frenzy self for 10s"
   },
   {
@@ -596,7 +646,7 @@
     "sellValue": 10,
     "attack": 3,
     "slot": "Hand",
-    "attackSpeed": "+2",
+    "attackSpeed": 2,
     "special": "5% chance to Lifesteal from target"
   },
   {
@@ -606,7 +656,7 @@
     "sellValue": 5,
     "defense": 2,
     "slot": "Body",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "10% chance of making self anxious"
   },
   {
@@ -615,7 +665,7 @@
     "iconPath": "/Image/card/equipment/Fancy_Dress.png",
     "sellValue": 5,
     "slot": "Body",
-    "attackSpeed": "+2"
+    "attackSpeed": 2
   },
   {
     "name": "Fire Cloak",
@@ -625,7 +675,7 @@
     "attack": 1,
     "defense": 2,
     "slot": "Body",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "7% chance to do a Critical Hit on all enemies"
   },
   {
@@ -634,7 +684,7 @@
     "iconPath": "/Image/card/equipment/ForestAmulet.png",
     "sellValue": 8,
     "slot": "Head",
-    "attackSpeed": "+2",
+    "attackSpeed": 2,
     "special": "10% chance to Heal friendly with lowest health by 2"
   },
   {
@@ -644,7 +694,7 @@
     "sellValue": 3,
     "defense": 1,
     "slot": "Head",
-    "attackSpeed": "+2"
+    "attackSpeed": 2
   },
   {
     "name": "Goblin Hat",
@@ -712,7 +762,7 @@
     "sellValue": 5,
     "defense": 1,
     "slot": "Head",
-    "attackSpeed": "+2",
+    "attackSpeed": 2,
     "special": "10% chance to Stun random enemy 10% chance to Poison random enemy 10% chance to Lifesteal from random enemy"
   },
   {
@@ -740,7 +790,7 @@
     "sellValue": 5,
     "attack": 1,
     "slot": "Hand",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "20% chance to Frenzy random friendly for 10s"
   },
   {
@@ -750,7 +800,7 @@
     "sellValue": 10,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "+2",
+    "attackSpeed": 2,
     "special": "15% chance to Heal all friendlies by 2"
   },
   {
@@ -769,7 +819,7 @@
     "sellValue": 5,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "*15% chance to Heal friendly with lowest health by 2"
   },
   {
@@ -806,7 +856,7 @@
     "attack": 3,
     "defense": 1,
     "slot": "Hand",
-    "attackSpeed": "-1",
+    "attackSpeed": -1,
     "special": "15% chance to Stun random enemy for 5s"
   },
   {
@@ -825,7 +875,7 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "-1",
+    "attackSpeed": -1,
     "special": "10% chance to do a Critical Hit on target"
   },
   {
@@ -844,7 +894,7 @@
     "sellValue": 5,
     "attack": 1,
     "slot": "Hand",
-    "attackSpeed": "+2",
+    "attackSpeed": 2,
     "special": "7% chance to make self Invulnerable for 10s"
   },
   {
@@ -870,7 +920,7 @@
     "iconPath": "/Image/card/equipment/Quiver.png",
     "sellValue": 3,
     "slot": "Body",
-    "attackSpeed": "+2",
+    "attackSpeed": 2,
     "special": "10% chance to Bleed target"
   },
   {
@@ -880,7 +930,7 @@
     "sellValue": 3,
     "defense": 1,
     "slot": "Head",
-    "attackSpeed": "+1"
+    "attackSpeed": 1
   },
   {
     "name": "Rat Crown",
@@ -917,7 +967,7 @@
     "sellValue": 5,
     "attack": 1,
     "slot": "Hand",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "25% chance to Damage random enemy"
   },
   {
@@ -945,7 +995,7 @@
     "sellValue": 8,
     "attack": 2,
     "slot": "Hand",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "20% chance to Stun random enemy for 5s"
   },
   {
@@ -955,7 +1005,7 @@
     "sellValue": 3,
     "attack": 1,
     "slot": "Hand",
-    "attackSpeed": "+1",
+    "attackSpeed": 1,
     "special": "10% chance to Bleed target"
   },
   {
@@ -965,7 +1015,7 @@
     "sellValue": 5,
     "attack": 1,
     "slot": "Hand",
-    "attackSpeed": "+3"
+    "attackSpeed": 3
   },
   {
     "name": "Tiger Fur Coat",
@@ -998,7 +1048,7 @@
     "sellValue": 5,
     "defense": 2,
     "slot": "Head",
-    "attackSpeed": "+1"
+    "attackSpeed": 1
   },
   {
     "name": "Wooden Shield",
@@ -1072,7 +1122,10 @@
     "sellValue": 1,
     "resourceCount": 5,
     "spawnCards": [
-      { "name": "Berry", "weight": 100 }
+      {
+        "name": "Berry",
+        "weight": 100
+      }
     ]
   },
   {
@@ -3632,9 +3685,18 @@
     "sellValue": 1,
     "resourceCount": 5,
     "spawnCards": [
-      { "name": "Wood", "weight": 80 },
-      { "name": "Stick", "weight": 10 },
-      { "name": "Apple", "weight": 10 }
+      {
+        "name": "Wood",
+        "weight": 80
+      },
+      {
+        "name": "Stick",
+        "weight": 10
+      },
+      {
+        "name": "Apple",
+        "weight": 10
+      }
     ]
   },
   {
@@ -3644,9 +3706,18 @@
     "sellValue": 1,
     "resourceCount": 5,
     "spawnCards": [
-      { "name": "Stone", "weight": 85 },
-      { "name": "Flint", "weight": 10 },
-      { "name": "Coin", "weight": 5 }
+      {
+        "name": "Stone",
+        "weight": 85
+      },
+      {
+        "name": "Flint",
+        "weight": 10
+      },
+      {
+        "name": "Coin",
+        "weight": 5
+      }
     ]
   }
 ]
