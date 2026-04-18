@@ -56,10 +56,31 @@ public:
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 
 private:
+    // 延遲採集任務（角色堆疊在結構卡上，等待 timeLeftMs 後生成卡片再分離）
+    struct PendingGather {
+        std::weak_ptr<Card> character;
+        std::weak_ptr<Card> structure;
+        bool exhausted = false;
+        std::string spawnName;
+        float spawnX, spawnY, spawnScale;
+        float timeLeftMs = 10000.0f;
+    };
+
+    // 延遲合成任務（配方匹配後等待 timeLeftMs 再消耗材料生成成品）
+    struct PendingCraft {
+        std::weak_ptr<Card> stackBottom;
+        std::vector<std::weak_ptr<Card>> allCards;
+        std::string outputName;
+        float spawnX, spawnY, spawnScale;
+        float timeLeftMs;
+    };
+
     Util::Renderer& m_Renderer; // 參考到 App 的 Renderer
 
     std::vector<std::shared_ptr<Card>> m_Cards;
     std::shared_ptr<Card> m_DraggingCard = nullptr;
+    std::vector<PendingGather> m_PendingGathers;
+    std::vector<PendingCraft>  m_PendingCrafts;
 
     std::mt19937 m_RandomGenerator;
 

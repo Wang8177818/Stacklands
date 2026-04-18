@@ -8,6 +8,7 @@
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
+#include "Util/Time.hpp"
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -26,9 +27,9 @@ CardType StringToCardType(const std::string& typeStr) {
 }
 
 EquipSlot StringToEquipSlot(const std::string& slotStr) {
-    if (slotStr == "HEAD") return EquipSlot::HEAD;
-    if (slotStr == "HAND") return EquipSlot::HAND;
-    if (slotStr == "BODY") return EquipSlot::BODY;
+    if (slotStr == "HEAD" || slotStr == "Head") return EquipSlot::HEAD;
+    if (slotStr == "HAND" || slotStr == "Hand") return EquipSlot::HAND;
+    if (slotStr == "BODY" || slotStr == "Body") return EquipSlot::BODY;
     return EquipSlot::NONE;
 }
 
@@ -64,8 +65,16 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
         data.iconPath  = rawPath.empty() ? "" : RESOURCE_DIR + rawPath;
 
         data.health         = item.value("health", 0);
+        data.attack         = item.value("damage", 0) != 0 ? item.value("damage", 0) : item.value("attack", 0);
+        data.defense        = item.value("defense", 0);
+        data.attackSpeed    = item.value("attackSpeed", 0.0f);
+        data.hitChance      = item.value("hitChance", 0.0f);
+        data.time      = item.value("time", 0.0f);
         data.nutritionValue = item.value("nutritionValue", 0);
         data.scale          = 0.05f;
+
+        if (item.contains("slot"))
+            data.equipSlot = StringToEquipSlot(item.value("slot", ""));
 
         // 結構卡用
         data.resourceCount = item.value("resourceCount", 0);
@@ -186,7 +195,7 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
     }else if (data.type == CardType::COIN){
         newCard = std::make_shared<CoinCard>(x, y, data.scale);
     }else if (data.type == CardType::EQUIPMENT) {
-        newCard = std::make_shared<EquipmentCard>(x, y, data.name, data.sellValue, data.iconPath, data.attack, data.health, data.equipSlot, data.scale);
+        newCard = std::make_shared<EquipmentCard>(x, y, data.name, data.sellValue, data.iconPath, data.attack, data.health, data.defense, data.attackSpeed, data.hitChance, data.equipSlot, data.scale);
     }else if (data.type == CardType::BUILDING) {
         newCard = std::make_shared<BuildingCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
     }else if (data.type == CardType::FOOD) {
@@ -237,6 +246,69 @@ void CardManager::Update(glm::vec2 mousePos) {
     // 2. 更新卡片動畫與跟隨
     for (auto& card : m_Cards) {
         card->Update();
+    }
+
+    // 計時任務
+    {
+        float dtMs = static_cast<float>(Util::Time::GetDeltaTimeMs());
+
+        // 採集等待
+        for (auto it = m_PendingGathers.begin(); it != m_PendingGathers.end(); ) {
+            it->timeLeftMs -= dtMs;
+            if (it->timeLeftMs <= 0.0f) {
+                // 角色與結構分離
+                if (auto st = it->structure.lock()) st->SetCardAbove(nullptr);
+                if (auto ch = it->character.lock())  ch->SetCardBelow(nullptr);
+                // 結構耗盡則移除
+                if (it->exhausted) {
+                    if (auto st = it->structure.lock())
+                        RemoveCard(st);
+                }
+                // 生成採集到的卡片
+                if (!it->spawnName.empty()) {
+                    std::uniform_real_distribution<float> distOff(-60.f, 60.f);
+                    SpawnCardByName(it->spawnName, it->spawnScale,
+                                    it->spawnX + distOff(m_RandomGenerator),
+                                    it->spawnY + distOff(m_RandomGenerator));
+                }
+                it = m_PendingGathers.erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        // 合成等待
+        for (auto it = m_PendingCrafts.begin(); it != m_PendingCrafts.end(); ) {
+            auto bottom = it->stackBottom.lock();
+            if (!bottom) { it = m_PendingCrafts.erase(it); continue; }
+
+            it->timeLeftMs -= dtMs;
+            if (it->timeLeftMs <= 0.0f) {
+                // 驗證配方仍然成立
+                float verifyTime = 0.0f;
+                if (m_RecipeManager.CheckCrafting(bottom, verifyTime) != it->outputName) {
+                    it = m_PendingCrafts.erase(it);
+                    continue;
+                }
+                float sx = bottom->GetX(), sy = bottom->GetY(), ss = bottom->GetScale();
+                std::vector<std::shared_ptr<Card>> toDelete;
+                for (auto cur = bottom; cur; cur = cur->GetCardAbove()) {
+                    if (cur->GetType() != CardType::CHARACTER && cur->GetType() != CardType::BUILDING)
+                        toDelete.push_back(cur);
+                }
+                for (auto cur = bottom; cur; ) {
+                    auto next = cur->GetCardAbove();
+                    cur->SetCardAbove(nullptr);
+                    cur->SetCardBelow(nullptr);
+                    cur = next;
+                }
+                for (auto& c : toDelete) RemoveCard(c);
+                SpawnCardByName(it->outputName, ss, sx, sy);
+                it = m_PendingCrafts.erase(it);
+            } else {
+                ++it;
+            }
+        }
     }
 
     // 3. 按下左鍵：抓取
@@ -352,9 +424,9 @@ void CardManager::Update(glm::vec2 mousePos) {
                             float spawnScale = charCard->GetScale();
 
                             // 繼承舊角色插槽，將 HAND 改為本次觸發裝備
-                            auto newSlots = charCard->GetEquipNames();
+                            auto newSlots = charCard->GetAllEquipData();
                             const std::string& oldHand =
-                                newSlots[static_cast<int>(EquipSlot::HAND)];
+                                newSlots[static_cast<int>(EquipSlot::HAND)].name;
 
                             // 若HAND有裝備 在旁邊重新生成 (換下來)
                             if (!oldHand.empty()) {
@@ -363,7 +435,14 @@ void CardManager::Update(glm::vec2 mousePos) {
                                                 spawnX + dist(m_RandomGenerator),
                                                 spawnY + dist(m_RandomGenerator));
                             }
-                            newSlots[static_cast<int>(EquipSlot::HAND)] = equipName;
+                            newSlots[static_cast<int>(EquipSlot::HAND)] = {
+                                equipName,
+                                equip->GetBonusAttack(),
+                                equip->GetBonusHealth(),
+                                equip->GetBonusDefense(),
+                                equip->GetBonusAttackSpeed(),
+                                equip->GetBonusHitChance()
+                            };
 
                             auto dragging = m_DraggingCard;
                             m_DraggingCard = nullptr;
@@ -374,91 +453,84 @@ void CardManager::Update(glm::vec2 mousePos) {
                             auto newCardBase = SpawnCardByName(outputName, spawnScale, spawnX, spawnY);
                             if (newCardBase && newCardBase->GetType() == CardType::CHARACTER) {
                                 std::static_pointer_cast<CharacterCard>(newCardBase)
-                                    ->SetEquipNames(newSlots);
+                                    ->SetAllEquipData(newSlots);
                             }
                         } else {
-                            // 插槽已佔用則推開
+                            // 插槽已佔用則換下舊裝備並裝上新裝備
                             const std::string& existing =
                                 charCard->GetEquipName(equip->GetEquipSlot());
                             if (!existing.empty()) {
-                                float dx = m_DraggingCard->GetX() - charCard->GetX();
-                                float dy = m_DraggingCard->GetY() - charCard->GetY();
-                                float overlapX = (m_DraggingCard->GetWidth()  + charCard->GetWidth())  * 0.5f - std::abs(dx);
-                                float overlapY = (m_DraggingCard->GetHeight() + charCard->GetHeight()) * 0.5f - std::abs(dy);
-                                if (overlapX > 0 && overlapY > 0) {
-                                    if (overlapX <= overlapY)
-                                        m_DraggingCard->MoveBy({dx >= 0.f ? overlapX : -overlapX, 0.f});
-                                    else
-                                        m_DraggingCard->MoveBy({0.f, dy >= 0.f ? overlapY : -overlapY});
-                                }
-                            } else {
-                                charCard->StoreEquipment(equip->GetEquipSlot(), equipName);
-                                auto dragging = m_DraggingCard;
-                                m_DraggingCard = nullptr;
-                                RemoveCard(dragging);
+                                std::uniform_real_distribution<float> dist(-80.f, 80.f);
+                                SpawnCardByName(existing, m_DraggingCard->GetScale(),
+                                                charCard->GetX() + dist(m_RandomGenerator),
+                                                charCard->GetY() + dist(m_RandomGenerator));
                             }
+                            charCard->StoreEquipment(equip->GetEquipSlot(), equipName,
+                                                     equip->GetBonusAttack(),
+                                                     equip->GetBonusHealth(),
+                                                     equip->GetBonusDefense(),
+                                                     equip->GetBonusAttackSpeed(),
+                                                     equip->GetBonusHitChance());
+                            auto dragging = m_DraggingCard;
+                            m_DraggingCard = nullptr;
+                            RemoveCard(dragging);
                         }
                         break;
                     }
 
-                    // Gather
+                    // Gather（採集：角色堆疊在結構卡上，等待 10s 後分離並生成資源卡）
                     if (targetCard->GetType() == CardType::STRUCTURE &&
                         m_DraggingCard->GetType() == CardType::CHARACTER) {
 
-                        auto structure  = std::static_pointer_cast<StructureCard>(targetCard);
+                        auto structure = std::static_pointer_cast<StructureCard>(targetCard);
                         std::string spawnName = structure->Gather(m_RandomGenerator);
 
-                        std::uniform_real_distribution<float> distOffset(-60.0f, 60.0f);
-                        if (!spawnName.empty()) {
-                            SpawnCardByName(spawnName, m_DraggingCard->GetScale(),
-                                            structure->GetX() + distOffset(m_RandomGenerator),
-                                            structure->GetY() + distOffset(m_RandomGenerator));
-                        }
+                        // 將角色堆疊在結構卡上方
+                        targetCard->SetCardAbove(m_DraggingCard);
+                        m_DraggingCard->SetCardBelow(targetCard);
 
-                        if (structure->IsExhausted()) {
-                            RemoveCard(std::static_pointer_cast<Card>(structure));
-                        }
-                        break; // 不進行堆疊，角色卡留在原位
+                        PendingGather pg;
+                        pg.character  = m_DraggingCard;
+                        pg.structure  = targetCard;
+                        pg.exhausted  = structure->IsExhausted();
+                        pg.spawnName  = spawnName;
+                        pg.spawnX     = structure->GetX();
+                        pg.spawnY     = structure->GetY();
+                        pg.spawnScale = m_DraggingCard->GetScale();
+                        pg.timeLeftMs = 10000.0f;
+                        m_PendingGathers.push_back(pg);
+                        break;
                     }
 
                     // 般堆疊
                     targetCard->SetCardAbove(m_DraggingCard);
                     m_DraggingCard->SetCardBelow(targetCard);
 
-                    // 堆疊完成後檢查合成配方
+                    // 堆疊完成後檢查合成配方，符合則建立延遲合成任務
                     {
                         auto stackBot = m_DraggingCard;
                         while (stackBot->GetCardBelow()) stackBot = stackBot->GetCardBelow();
 
-                        std::string craftOutput = m_RecipeManager.CheckCrafting(stackBot);
+                        float craftTime = 10.0f;
+                        std::string craftOutput = m_RecipeManager.CheckCrafting(stackBot, craftTime);
                         if (!craftOutput.empty()) {
-                            float spawnX     = stackBot->GetX();
-                            float spawnY     = stackBot->GetY();
-                            float spawnScale = stackBot->GetScale();
-
-                            // CHARACTER / BUILDING保留 其餘消耗
-                            std::vector<std::shared_ptr<Card>> toDelete;
-                            std::vector<std::shared_ptr<Card>> toKeep;
-                            for (auto cur = stackBot; cur; cur = cur->GetCardAbove()) {
-                                if (cur->GetType() == CardType::CHARACTER ||
-                                    cur->GetType() == CardType::BUILDING)
-                                    toKeep.push_back(cur);
-                                else
-                                    toDelete.push_back(cur);
+                            // 避免同一堆疊重複排隊
+                            bool alreadyPending = false;
+                            for (const auto& pc : m_PendingCrafts) {
+                                if (pc.stackBottom.lock() == stackBot) { alreadyPending = true; break; }
                             }
-
-                            // 全部先斷鏈
-                            for (auto cur = stackBot; cur; ) {
-                                auto next = cur->GetCardAbove();
-                                cur->SetCardAbove(nullptr);
-                                cur->SetCardBelow(nullptr);
-                                cur = next;
+                            if (!alreadyPending) {
+                                PendingCraft pc;
+                                pc.stackBottom = stackBot;
+                                for (auto cur = stackBot; cur; cur = cur->GetCardAbove())
+                                    pc.allCards.push_back(cur);
+                                pc.outputName  = craftOutput;
+                                pc.spawnX      = stackBot->GetX();
+                                pc.spawnY      = stackBot->GetY();
+                                pc.spawnScale  = stackBot->GetScale();
+                                pc.timeLeftMs  = craftTime * 1000.0f;
+                                m_PendingCrafts.push_back(pc);
                             }
-
-                            m_DraggingCard = nullptr;
-                            for (auto& c : toDelete) RemoveCard(c);
-
-                            SpawnCardByName(craftOutput, spawnScale, spawnX, spawnY);
                         }
                     }
                     break;

@@ -11,10 +11,12 @@
 class EquipmentCard : public Card {
 public:
     EquipmentCard(float x, float y, const std::string& name, int sellValue,
-                  const std::string& iconPath, int bonusAtk, int bonusHp,
+                  const std::string& iconPath, int bonusAtk, int bonusHp, int bonusDef,
+                  float bonusAtkSpd, float bonusHitChance,
                   EquipSlot slot, float scale = 1.0f)
         : Card(x, y, name, sellValue, CardType::EQUIPMENT, scale),
-          m_BonusAttack(bonusAtk), m_BonusHealth(bonusHp), m_Slot(slot)
+          m_BonusAttack(bonusAtk), m_BonusHealth(bonusHp), m_BonusDefense(bonusDef),
+          m_BonusAttackSpeed(bonusAtkSpd), m_BonusHitChance(bonusHitChance), m_Slot(slot)
     {
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Equipment.png");
         SetIconImage(iconPath);
@@ -42,11 +44,13 @@ public:
         }
     }
 
-    int GetBonusAttack() const { return m_BonusAttack; }
-    int GetBonusHealth() const { return m_BonusHealth; }
+    int   GetBonusAttack() const { return m_BonusAttack; }
+    int   GetBonusHealth() const { return m_BonusHealth; }
+    int   GetBonusDefense() const { return m_BonusDefense; }
+    float GetBonusAttackSpeed() const { return m_BonusAttackSpeed; }
+    float GetBonusHitChance() const { return m_BonusHitChance; }
     EquipSlot GetEquipSlot() const { return m_Slot; }
 
-    // 裝備卡已消耗進角色卡插槽，不接受任何卡片堆疊在其上
     bool OnStacked(std::shared_ptr<Card> /*cardAbove*/) override {
         return false;
     }
@@ -68,8 +72,11 @@ public:
     }
 
 protected:
-    int m_BonusAttack;
-    int m_BonusHealth;
+    int   m_BonusAttack;
+    int   m_BonusHealth;
+    int   m_BonusDefense;
+    float m_BonusAttackSpeed;
+    float m_BonusHitChance;
     EquipSlot m_Slot;
 
     std::shared_ptr<Util::GameObject> m_PriceText;

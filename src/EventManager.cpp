@@ -78,7 +78,7 @@ void EventManager::HandleZoom(std::vector<std::shared_ptr<Card>>& cards) {
     // 記錄累積縮放倍率 讓後續生成的新卡片能以正確大小出現
     m_ZoomRatio *= ratio;
 
-    LOG_DEBUG("Zoom {} -> {:.3f}", (scroll.y > 0 ? "in " : "out"), newScale);
+    // LOG_DEBUG("Zoom {} -> {:.3f}", (scroll.y > 0 ? "in " : "out"), newScale);
 }
 
 // ─────────────────────────────────────────────────────────────

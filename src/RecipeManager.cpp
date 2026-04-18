@@ -95,21 +95,24 @@ void RecipeManager::LoadCraftingRecipes(const std::string& filePath) {
                 recipe.inputs.push_back(name);
         }
         std::sort(recipe.inputs.begin(), recipe.inputs.end());
+        recipe.time = item.value("time", 10.0f);
         m_CraftingRecipes.push_back(recipe);
     }
     LOG_INFO("載入 {} 條合成配方", m_CraftingRecipes.size());
 }
 
 // ─────────────────────────────────────────────────────────────
-std::string RecipeManager::CheckCrafting(std::shared_ptr<Card> stackBottom) const {
-    // 收集堆疊中所有卡片名稱並排序
+std::string RecipeManager::CheckCrafting(std::shared_ptr<Card> stackBottom, float& outTime) const {
     std::vector<std::string> stackNames;
     for (auto cur = stackBottom; cur; cur = cur->GetCardAbove())
         stackNames.push_back(cur->GetName());
     std::sort(stackNames.begin(), stackNames.end());
 
     for (const auto& recipe : m_CraftingRecipes) {
-        if (recipe.inputs == stackNames) return recipe.output;
+        if (recipe.inputs == stackNames) {
+            outTime = recipe.time;
+            return recipe.output;
+        }
     }
     return "";
 }

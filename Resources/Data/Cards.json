@@ -1126,7 +1126,8 @@
         "name": "Berry",
         "weight": 100
       }
-    ]
+    ],
+    "time": 10.0
   },
   {
     "name": "Cane Sugar",
@@ -3697,7 +3698,8 @@
         "name": "Apple",
         "weight": 10
       }
-    ]
+    ],
+    "time": 10.0
   },
   {
     "name": "Rock",
@@ -3718,6 +3720,7 @@
         "name": "Coin",
         "weight": 5
       }
-    ]
+    ],
+    "time": 10.0
   }
 ]
