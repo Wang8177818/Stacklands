@@ -21,6 +21,7 @@ struct ProfessionRecipe {
 struct CraftingRecipe {
     std::vector<std::string> inputs; // 已展開並排序（"2x Wood" → {"Wood","Wood"}）
     std::string output;
+    float time = 10.0f;  // 合成等待秒數
 };
 
 class RecipeManager {
@@ -32,8 +33,8 @@ public:
     std::string CheckProfession(const std::string& equipName) const;
 
     // 傳入堆疊底部，檢查整個堆疊是否符合合成配方
-    // 回傳符合的 output；不符合則回傳空字串
-    std::string CheckCrafting(std::shared_ptr<Card> stackBottom) const;
+    // 回傳符合的 output（不符合則空字串），並透過 outTime 回傳等待秒數
+    std::string CheckCrafting(std::shared_ptr<Card> stackBottom, float& outTime) const;
 
 private:
     // 解析 "2x Wood"、"1 Villager"、"Wood" → (count, name)

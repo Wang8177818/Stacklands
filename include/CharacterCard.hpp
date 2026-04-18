@@ -15,12 +15,24 @@
 #include "Util/Image.hpp"
 #include "EquipmentCard.hpp"
 
+struct EquipSlotData {
+    std::string name;
+    int   bonusAtk      = 0;
+    int   bonusHp       = 0;
+    int   bonusDef      = 0;
+    float bonusAtkSpd   = 0.0f;
+    float bonusHitChance = 0.0f;
+};
+
 class CharacterCard : public Card {
 public:
     CharacterCard(float x, float y, const std::string& name, int sellValue, const std::string& iconPath, float scale,
                   int health, int attack, int defense, float attackSpeed, float hitChance, int food)
         : Card(x, y, name, sellValue, CardType::CHARACTER, scale),
-          health(health), attack(attack)
+          baseHealth(health), baseAttack(attack), baseDefense(defense),
+          baseAttackSpeed(attackSpeed), baseHitChance(hitChance), food(food),
+          health(health), attack(attack), defense(defense),
+          attackSpeed(attackSpeed), hitChance(hitChance)
     {
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.png");
         SetIconImage(iconPath);
@@ -29,31 +41,68 @@ public:
         int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
         m_HealthText->SetDrawable(std::make_shared<Util::Text>(
             RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-            std::to_string(baseHealth), Util::Color(255, 255, 255)));
+            std::to_string(health), Util::Color(255, 255, 255)));
         m_HealthText->m_Transform.scale = {m_Scale, m_Scale};
         m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
 
         UpdateVisualPositions();
     }
 
-    // 裝備槽
-    // (int)EquipSlot：[0=NONE, 1=HEAD, 2=HAND, 3=BODY]
+    // 儲存裝備到對應插槽
+    void StoreEquipment(EquipSlot slot, const std::string& name,
+                        int bonusAtk, int bonusHp, int bonusDef,
+                        float bonusAtkSpd, float bonusHitChance) {
+        auto& data        = m_Equips[static_cast<int>(slot)];
+        data.name         = name;
+        data.bonusAtk     = bonusAtk;
+        data.bonusHp      = bonusHp;
+        data.bonusDef     = bonusDef;
+        data.bonusAtkSpd  = bonusAtkSpd;
+        data.bonusHitChance = bonusHitChance;
+        RecalculateStats();
+    }
 
-    // 儲存裝備名稱到對應插槽
-    void StoreEquipment(EquipSlot slot, const std::string& name) {
-        m_EquipNames[static_cast<int>(slot)] = name;
+    void ClearEquipment(EquipSlot slot) {
+        m_Equips[static_cast<int>(slot)] = {};
+        RecalculateStats();
     }
 
     const std::string& GetEquipName(EquipSlot slot) const {
-        return m_EquipNames[static_cast<int>(slot)];
+        return m_Equips[static_cast<int>(slot)].name;
     }
-    // get All
-    const std::array<std::string, 4>& GetEquipNames() const {
-        return m_EquipNames;
+
+    const EquipSlotData& GetEquipSlotData(EquipSlot slot) const {
+        return m_Equips[static_cast<int>(slot)];
     }
-    // set All
-    void SetEquipNames(const std::array<std::string, 4>& names) {
-        m_EquipNames = names;
+
+    const std::array<EquipSlotData, 4>& GetAllEquipData() const {
+        return m_Equips;
+    }
+
+    void SetAllEquipData(const std::array<EquipSlotData, 4>& data) {
+        m_Equips = data;
+        RecalculateStats();
+    }
+
+    void RecalculateStats() {
+        int   totalAtk    = baseAttack;
+        int   totalHp     = baseHealth;
+        int   totalDef    = baseDefense;
+        float totalAtkSpd = baseAttackSpeed;
+        float totalHit    = baseHitChance;
+        for (const auto& e : m_Equips) {
+            totalAtk    += e.bonusAtk;
+            totalHp     += e.bonusHp;
+            totalDef    += e.bonusDef;
+            totalAtkSpd += e.bonusAtkSpd;
+            totalHit    += e.bonusHitChance;
+        }
+        attack      = totalAtk;
+        health      = totalHp;
+        defense     = totalDef;
+        attackSpeed = totalAtkSpd;
+        hitChance   = totalHit;
+        UpdateVisualPositions();
     }
 
     void SetScale(float scale) override {
@@ -75,7 +124,6 @@ public:
             m_HealthText->m_Transform.translation =
                 glm::vec2(m_X + m_Width * 0.34f, m_Y + m_Height * -0.3f);
             m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
-            // hp Change
             int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
             m_HealthText->SetDrawable(std::make_shared<Util::Text>(
             RESOURCE_DIR"/Font/msjh.ttc", fontSize,
@@ -107,25 +155,22 @@ public:
     int GetbaseDefense() const { return baseDefense; }
     int GetDefense() const { return defense; }
 
-
-
 protected:
     std::shared_ptr<Util::GameObject> m_HealthText;
-    int   baseHealth = 15;
-    int   baseAttack = 2;
-    int   baseDefense = 1;
-    float baseAttackSpeed = 2.9f;
-    float baseHitChance = 0.68f;
-    int   food = 2;
+    int   baseHealth;
+    int   baseAttack;
+    int   baseDefense;
+    float baseAttackSpeed;
+    float baseHitChance;
+    int   food;
 
-    int   health = baseHealth;
-    int   attack = baseAttack;
-    int   defense = baseDefense;
-    float attackSpeed = baseAttackSpeed;
-    float hitChance = baseHitChance;
+    int   health;
+    int   attack;
+    int   defense;
+    float attackSpeed;
+    float hitChance;
 
-
-    std::array<std::string, 4> m_EquipNames = {"", "", "", ""};
+    std::array<EquipSlotData, 4> m_Equips;
 };
 
 #endif //STACKLANDS_CHARACTERCARD_HPP

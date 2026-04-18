@@ -14,14 +14,16 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
 
 # DID (howhowdy2)
 ---
-4/15
-+ FoodCard
-Fix StructureCard
+4/17  
+Weapon bonus  
+Fix EquipmentCard  
+Fix CardPack 
+
 # TODO (howhowdy2)
 ---
-4/15
-Weapon bonus
-Structure Func
+4/17
+Structure Func  
+
 
 # Devlopment timeline
 ---
@@ -47,7 +49,7 @@ Structure Func
 - Week 8 :
     - [ ] 測試&改善目前BUG
 - Week 9 : 
-	- [ ] 製作裝備卡片
+	- [X] 製作裝備卡片
 	- [X] 調適兼容人物卡
 - Week 10 :
 	- [X] 卡包實作

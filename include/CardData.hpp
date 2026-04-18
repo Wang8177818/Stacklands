@@ -9,7 +9,7 @@
 #include <string>
 #include "Card.hpp"
 
-// 這個結構用來儲存生成一張卡片所需的「所有配方」
+// 生成卡片所需的資料
 struct CardSpawnData {
     std::string name;
     int sellValue;
@@ -23,8 +23,9 @@ struct CardSpawnData {
     // 食物卡專用
     int nutritionValue = 0;
 
-    // 結構卡專用：可採集次數與採集後依權重生成的卡片清單
+    // 結構卡專用：
     int resourceCount = 0;
+    float time = 10.0f;
     std::vector<std::pair<std::string, int>> spawnCards; // {卡片名稱, 權重}
 };
 
