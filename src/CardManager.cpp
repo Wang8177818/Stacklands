@@ -2,6 +2,7 @@
 // Created by m0938 on 2026/3/20.
 //
 #include "CardManager.hpp"
+#include "CardFactory.hpp"
 #include "RecipeManager.hpp"
 #include "CharacterCard.hpp"
 #include "CardPack.hpp"
@@ -186,32 +187,8 @@ void CardManager::RemoveCard(std::shared_ptr<Card> target) {
 }
 
 std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const CardSpawnData& data) {
-    std::shared_ptr<Card> newCard = nullptr;
-
-    if (data.type == CardType::CHARACTER) {
-        newCard = std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale, data.health, data.attack, data.defense, data.attackSpeed, data.hitChance, data.food);
-    }else if (data.type == CardType::RESOURCE){
-        newCard = std::make_shared<ResourceCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
-    }else if (data.type == CardType::COIN){
-        newCard = std::make_shared<CoinCard>(x, y, data.scale);
-    }else if (data.type == CardType::EQUIPMENT) {
-        newCard = std::make_shared<EquipmentCard>(x, y, data.name, data.sellValue, data.iconPath, data.attack, data.health, data.defense, data.attackSpeed, data.hitChance, data.equipSlot, data.scale);
-    }else if (data.type == CardType::BUILDING) {
-        newCard = std::make_shared<BuildingCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
-    }else if (data.type == CardType::FOOD) {
-        newCard = std::make_shared<FoodCard>(x, y, data.name, data.sellValue, data.iconPath,
-                                             data.nutritionValue, data.scale);
-    }else if (data.type == CardType::STRUCTURE) {
-        newCard = std::make_shared<StructureCard>(x, y, data.name, data.sellValue, data.iconPath,
-                                                  data.resourceCount, data.spawnCards, data.scale);
-    }else {
-        newCard = std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
-    }
-
-    // 建立完成後自動加入管理陣列並渲染
-    if (newCard) {
-        AddCard(newCard);
-    }
+    auto newCard = CardFactory::Create(x, y, data);
+    if (newCard) AddCard(newCard);
     return newCard;
 }
 
@@ -497,7 +474,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                         pg.spawnX     = structure->GetX();
                         pg.spawnY     = structure->GetY();
                         pg.spawnScale = m_DraggingCard->GetScale();
-                        pg.timeLeftMs = 10000.0f;
+                        pg.timeLeftMs = GameConstants::GATHER_TIME_MS;
                         m_PendingGathers.push_back(pg);
                         break;
                     }

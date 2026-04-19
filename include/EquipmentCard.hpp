@@ -21,13 +21,7 @@ public:
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Equipment.png");
         SetIconImage(iconPath);
 
-        m_PriceText = std::make_shared<Util::GameObject>();
-
-        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-        m_PriceText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(sellValue), Util::Color(102, 102, 102)));
-        m_PriceText->m_Transform.scale = {m_Scale, m_Scale};
-        m_PriceText->SetZIndex(m_Background->GetZIndex() + 1);
+        m_PriceText = InitLabelText(std::to_string(sellValue), Util::Color(102, 102, 102));
 
         UpdateVisualPositions();
     }
@@ -36,23 +30,27 @@ public:
         Card::UpdateVisualPositions();
 
         if (m_PriceText) {
-            float priceOffsetX = m_Width * -0.32f;
-            float priceOffsetY = m_Height * -0.3f;
-            m_PriceText->m_Transform.translation = glm::vec2(m_X + priceOffsetX ,m_Y + priceOffsetY);
-
+            m_PriceText->m_Transform.translation = glm::vec2(
+                m_X + m_Width  * GameConstants::PRICE_OFFSET_X,
+                m_Y + m_Height * GameConstants::PRICE_OFFSET_Y);
             m_PriceText->SetZIndex(m_Background->GetZIndex() + 1);
         }
     }
 
-    int   GetBonusAttack() const { return m_BonusAttack; }
-    int   GetBonusHealth() const { return m_BonusHealth; }
-    int   GetBonusDefense() const { return m_BonusDefense; }
-    float GetBonusAttackSpeed() const { return m_BonusAttackSpeed; }
-    float GetBonusHitChance() const { return m_BonusHitChance; }
-    EquipSlot GetEquipSlot() const { return m_Slot; }
+    int   GetBonusAttack()       const { return m_BonusAttack; }
+    int   GetBonusHealth()       const { return m_BonusHealth; }
+    int   GetBonusDefense()      const { return m_BonusDefense; }
+    float GetBonusAttackSpeed()  const { return m_BonusAttackSpeed; }
+    float GetBonusHitChance()    const { return m_BonusHitChance; }
+    EquipSlot GetEquipSlot()     const { return m_Slot; }
 
     bool OnStacked(std::shared_ptr<Card> /*cardAbove*/) override {
         return false;
+    }
+
+    void SetScale(float scale) override {
+        Card::SetScale(scale);
+        if (m_PriceText) RebuildLabelText(m_PriceText, std::to_string(m_SellValue), Util::Color(100, 111, 128));
     }
 
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override {
@@ -63,7 +61,7 @@ public:
 
     virtual void StartDragging(glm::vec2 mousePos) override {
         Card::StartDragging(mousePos);
-        if (m_PriceText) m_PriceText->SetZIndex(42);
+        if (m_PriceText) m_PriceText->SetZIndex(GameConstants::Z_DRAG_EXTRA);
     }
 
     virtual void StopDragging() override {

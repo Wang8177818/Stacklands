@@ -8,19 +8,15 @@
 #pragma once
 #include <array>
 #include <string>
-#include <algorithm>
 #include "Card.hpp"
-#include "Util/GameObject.hpp"
-#include "Util/Text.hpp"
-#include "Util/Image.hpp"
 #include "EquipmentCard.hpp"
 
 struct EquipSlotData {
     std::string name;
-    int   bonusAtk      = 0;
-    int   bonusHp       = 0;
-    int   bonusDef      = 0;
-    float bonusAtkSpd   = 0.0f;
+    int   bonusAtk       = 0;
+    int   bonusHp        = 0;
+    int   bonusDef       = 0;
+    float bonusAtkSpd    = 0.0f;
     float bonusHitChance = 0.0f;
 };
 
@@ -37,13 +33,7 @@ public:
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.png");
         SetIconImage(iconPath);
 
-        m_HealthText = std::make_shared<Util::GameObject>();
-        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-        m_HealthText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-            std::to_string(health), Util::Color(255, 255, 255)));
-        m_HealthText->m_Transform.scale = {m_Scale, m_Scale};
-        m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
+        m_HealthText = InitLabelText(std::to_string(health), Util::Color(255, 255, 255));
 
         UpdateVisualPositions();
     }
@@ -52,12 +42,12 @@ public:
     void StoreEquipment(EquipSlot slot, const std::string& name,
                         int bonusAtk, int bonusHp, int bonusDef,
                         float bonusAtkSpd, float bonusHitChance) {
-        auto& data        = m_Equips[static_cast<int>(slot)];
-        data.name         = name;
-        data.bonusAtk     = bonusAtk;
-        data.bonusHp      = bonusHp;
-        data.bonusDef     = bonusDef;
-        data.bonusAtkSpd  = bonusAtkSpd;
+        auto& data          = m_Equips[static_cast<int>(slot)];
+        data.name           = name;
+        data.bonusAtk       = bonusAtk;
+        data.bonusHp        = bonusHp;
+        data.bonusDef       = bonusDef;
+        data.bonusAtkSpd    = bonusAtkSpd;
         data.bonusHitChance = bonusHitChance;
         RecalculateStats();
     }
@@ -107,13 +97,7 @@ public:
 
     void SetScale(float scale) override {
         Card::SetScale(scale);
-        if (m_HealthText) {
-            int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-            m_HealthText->SetDrawable(std::make_shared<Util::Text>(
-                RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-                std::to_string(health), Util::Color(255, 255, 255)));
-            m_HealthText->m_Transform.scale = {m_Scale, m_Scale};
-        }
+        if (m_HealthText) RebuildLabelText(m_HealthText, std::to_string(health), Util::Color(255, 255, 255));
     }
 
     void OnMonthEnd() override {}
@@ -121,13 +105,11 @@ public:
     virtual void UpdateVisualPositions() override {
         Card::UpdateVisualPositions();
         if (m_HealthText) {
-            m_HealthText->m_Transform.translation =
-                glm::vec2(m_X + m_Width * 0.34f, m_Y + m_Height * -0.3f);
+            m_HealthText->m_Transform.translation = glm::vec2(
+                m_X + m_Width  * GameConstants::HEALTH_OFFSET_X,
+                m_Y + m_Height * GameConstants::PRICE_OFFSET_Y);
             m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
-            int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-            m_HealthText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-            std::to_string(health), Util::Color(255, 255, 255)));
+            RebuildLabelText(m_HealthText, std::to_string(health), Util::Color(255, 255, 255));
         }
     }
 
@@ -146,14 +128,14 @@ public:
         return cardAbove->GetType() == CardType::EQUIPMENT;
     }
 
-    int GetbaseAttack() const { return baseAttack; }
-    int GetAttack() const { return attack; }
+    int GetbaseAttack()  const { return baseAttack; }
+    int GetAttack()      const { return attack; }
 
-    int GetbaseHealth() const { return baseHealth; }
-    int GetHealth() const { return health; }
+    int GetbaseHealth()  const { return baseHealth; }
+    int GetHealth()      const { return health; }
 
     int GetbaseDefense() const { return baseDefense; }
-    int GetDefense() const { return defense; }
+    int GetDefense()     const { return defense; }
 
 protected:
     std::shared_ptr<Util::GameObject> m_HealthText;

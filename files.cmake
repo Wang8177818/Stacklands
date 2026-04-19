@@ -1,6 +1,7 @@
 set(SRC_FILES
     App.cpp
     Card.cpp
+    CardFactory.cpp
     CardManager.cpp
     CardPack.cpp
     UIManager.cpp
@@ -14,11 +15,13 @@ set(INCLUDE_FILES
     BackgroundImage.hpp
     Button.hpp
     Card.hpp
+    CardFactory.hpp
     CharacterCard.hpp
     CardData.hpp
     CardManager.hpp
     CardPack.hpp
     CoinCard.hpp
+    GameConstants.hpp
     ResourceCard.hpp
     UIManager.hpp
     EventManager.hpp
