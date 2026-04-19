@@ -3,6 +3,7 @@
 //
 
 #include "EventManager.hpp"
+#include "GameConstants.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -133,16 +134,15 @@ void EventManager::SwitchGameState() {
         }
     }
 
-    if (tick < 120000) {
+    if (tick < GameConstants::MONTH_DURATION_MS) {
         switch (GetGameState()) {
         case GameTime::NORMAL:
             pauseText->SetVisible(false);
-            runTimeBar->SetScale({tick * 265/120000, 35.f});
+            runTimeBar->SetScale({tick * GameConstants::PROGRESS_BAR_WIDTH / GameConstants::MONTH_DURATION_MS, 35.f});
             tick += Util::Time::GetDeltaTimeMs();
-
             break;
         case GameTime::FAST:
-            runTimeBar->SetScale({tick * 265/120000, 35.f});
+            runTimeBar->SetScale({tick * GameConstants::PROGRESS_BAR_WIDTH / GameConstants::MONTH_DURATION_MS, 35.f});
             tick += Util::Time::GetDeltaTimeMs()*2;
             break;
         case GameTime::PAUSE:

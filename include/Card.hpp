@@ -7,9 +7,11 @@
 
 #pragma once
 
+#include "GameConstants.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include "Util/Text.hpp"
+#include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include <memory>
 #include <string>
@@ -78,6 +80,7 @@ public:
 
     // 取得所有負責顯示的 GameObject，交給 Renderer 繪製
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects();
+
     float GetX()      const { return m_X; }
     float GetY()      const { return m_Y; }
     float GetWidth()  const { return m_Width; }
@@ -124,6 +127,14 @@ protected:
 
     // 更新 GameObject 實際座標的內部方法
     virtual void UpdateVisualPositions();
+
+    // 建立一個文字 GameObject（自動設定字體、縮放、Z 層）
+    std::shared_ptr<Util::GameObject> InitLabelText(
+        const std::string& text, const Util::Color& color, int zOffset = 1);
+
+    // 重建已有 GameObject 的文字 Drawable（縮放改變後呼叫）
+    void RebuildLabelText(std::shared_ptr<Util::GameObject>& obj,
+                          const std::string& text, const Util::Color& color);
 };
 
 #endif //STACKLANDS_CARD_HPP
