@@ -42,7 +42,9 @@ public:
 
     virtual ~Card() = default;
 
-    std::string GetName() const { return m_Name; }
+    std::string GetName()        const { return m_Name; }
+    std::string GetDescription() const { return m_Description; }
+    void SetDescription(const std::string& desc) { m_Description = desc; }
 
     void SetBackgroundImage(const std::string& imagePath);
 
@@ -55,6 +57,9 @@ public:
 
     // 月底結算時觸發 (例如扣除食物、產生新卡牌等)
     virtual void OnMonthEnd();
+
+    // 卡片被販賣時觸發
+    virtual void OnSold() {}
 
     // 檢查滑鼠是否停留在這張卡牌上
     virtual bool IsMouseHovering(glm::vec2 mousePos);
@@ -103,6 +108,7 @@ public:
 protected:
     CardType m_Type;
     std::string m_Name;
+    std::string m_Description;
     int m_SellValue;
 
     std::shared_ptr<Util::GameObject> m_Background;

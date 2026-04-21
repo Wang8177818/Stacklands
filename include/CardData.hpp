@@ -16,7 +16,9 @@ struct CardSpawnData {
     CardType type;
     std::string iconPath;
     float scale;
-    int health, attack; // 0 代表非人物卡
+    int health, attack;        // 0 代表非人物卡
+    int foodConsumption = 0;   // 每月消耗食物數（人物卡專用）
+    std::string description;   // 卡片敘述文字
 
     EquipSlot equipSlot = EquipSlot::NONE;
 
