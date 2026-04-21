@@ -11,6 +11,9 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
+
+#include "WarehouseCard.hpp"
+
 #include "Util/Logger.hpp"
 
 CardType StringToCardType(const std::string& typeStr) {
@@ -63,8 +66,10 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
         std::string rawPath = item.value("iconPath", "");
         data.iconPath  = rawPath.empty() ? "" : RESOURCE_DIR + rawPath;
 
-        data.health         = item.value("health", 0);
-        data.nutritionValue = item.value("nutritionValue", 0);
+        data.health           = item.value("health", 0);
+        data.nutritionValue   = item.value("nutritionValue", 0);
+        data.foodConsumption  = item.value("food", 0);
+        data.description      = item.value("description", "");
         data.scale          = 0.05f;
 
         // 結構卡專用欄位
@@ -180,7 +185,7 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
     std::shared_ptr<Card> newCard = nullptr;
 
     if (data.type == CardType::CHARACTER) {
-        newCard = std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale, data.health, data.attack);
+        newCard = std::make_shared<CharacterCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale, data.health, data.attack, data.foodConsumption);
     }else if (data.type == CardType::RESOURCE){
         newCard = std::make_shared<ResourceCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
     }else if (data.type == CardType::COIN){
@@ -188,7 +193,10 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
     }else if (data.type == CardType::EQUIPMENT) {
         newCard = std::make_shared<EquipmentCard>(x, y, data.name, data.sellValue, data.iconPath, data.attack, data.health, data.equipSlot, data.scale);
     }else if (data.type == CardType::BUILDING) {
-        newCard = std::make_shared<BuildingCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
+        if (data.name == "Warehouse")
+            newCard = std::make_shared<WarehouseCard>(x, y, data.sellValue, data.iconPath, data.scale, m_MaxCardCount);
+        else
+            newCard = std::make_shared<BuildingCard>(x, y, data.name, data.sellValue, data.iconPath, data.scale);
     }else if (data.type == CardType::FOOD) {
         newCard = std::make_shared<FoodCard>(x, y, data.name, data.sellValue, data.iconPath,
                                              data.nutritionValue, data.scale);
@@ -198,6 +206,10 @@ std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const Ca
     }else {
         newCard = std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
     }
+
+    // 設定敘述文字
+    if (newCard && !data.description.empty())
+        newCard->SetDescription(data.description);
 
     // 建立完成後自動加入管理陣列並渲染
     if (newCard) {

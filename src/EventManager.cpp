@@ -3,6 +3,8 @@
 //
 
 #include "EventManager.hpp"
+
+#include "../PTSD/example/include/App.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -151,6 +153,10 @@ void EventManager::SwitchGameState() {
             }
             break;
         }
+    } else {
+        tick = 0;
+        month += 1;
+        m_UIManager->UpdateMonth(month);
     }
 
 }
@@ -164,6 +170,16 @@ void EventManager::ESCMenu() {
     auto resourseBar = m_UIManager->GetResourseBar();
     auto timeBar = m_UIManager->GetTimeBar();
     auto continueButton = m_UIManager->GetContinueButton();
+    auto returnToMenuButton = m_UIManager->GetReturnToMenuButton();
+    auto month = m_UIManager->GetMonth();
+    auto cardIcon = m_UIManager->GetCardIcon();
+    auto cardCount = m_UIManager->GetCardCount();
+    auto coinCount = m_UIManager->GetCoinCount();
+    auto coinIcon = m_UIManager->GetCoinIcon();
+    auto foodCount = m_UIManager->GetFoodCount();
+    auto foodIcon = m_UIManager->GetFoodIcon();
+    auto descriptionName = m_UIManager->GetDescriptionName();
+    auto descriptionText = m_UIManager->GetDescriptionText();
 
     // 進入暫停選單後開始更新按鈕
     if (is_Pausing) {
@@ -182,6 +198,10 @@ void EventManager::ESCMenu() {
                 resourseBar->SetVisible(true);
                 timeBar->SetVisible(true);
                 playButton->ShowAll();
+                break;
+            case UIManager::MenuEvent::BACKTOMENU:
+                m_RequestExit = true;
+                break;
         }
     }
 
@@ -192,23 +212,41 @@ void EventManager::ESCMenu() {
 
             PauseMenu->SetVisible(true);
             continueButton->ShowAll();
+            returnToMenuButton->ShowAll();
 
             DescriptionBar->SetVisible(false);
             runTimeBar->SetVisible(false);
             resourseBar->SetVisible(false);
             timeBar->SetVisible(false);
+            month->SetVisible(false);
             playButton->HideAll();
+            cardIcon->SetVisible(false);
+            cardCount->SetVisible(false);
+            coinIcon->SetVisible(false);
+            coinCount->SetVisible(false);
+            foodIcon->SetVisible(false);
+            foodCount->SetVisible(false);
+            descriptionName->SetVisible(false);
+            descriptionText->SetVisible(false);
         } else {
             m_GameTime = GameTime::NORMAL;
             is_Pausing = false;
 
             PauseMenu->SetVisible(false);
             continueButton->HideAll();
+            returnToMenuButton->HideAll();
 
             DescriptionBar->SetVisible(true);
             runTimeBar->SetVisible(true);
             resourseBar->SetVisible(true);
             timeBar->SetVisible(true);
+            month->SetVisible(true);
+            cardIcon->SetVisible(true);
+            cardCount->SetVisible(true);
+            coinIcon->SetVisible(true);
+            coinCount->SetVisible(true);
+            foodIcon->SetVisible(true);
+            foodCount->SetVisible(true);
             playButton->ShowAll();
         }
     }
