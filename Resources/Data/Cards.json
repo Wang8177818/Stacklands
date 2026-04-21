@@ -2,41 +2,48 @@
   {
     "name": "Archer",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Archer.png"
+    "iconPath": "/Image/card/character/Archer.png",
+    "description": "Afraid to get too close"
   },
   {
     "name": "Baby",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Baby.png",
-    "food": 1
+    "food": 1,
+    "description": "A young'un. Needs a House to grow up in."
   },
   {
     "name": "Builder",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Builder.png",
-    "effect": "Twice as fast when crafting cards that require a villager"
+    "effect": "Twice as fast when crafting cards that require a villager",
+    "description": "Way faster at Building"
   },
   {
     "name": "City Advisor",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/City_Advisor.png"
+    "iconPath": "/Image/card/character/City_Advisor.png",
+    "description": "Advises you in the ways of the city"
   },
   {
     "name": "Educated Worker",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Educated_Worker.png"
+    "iconPath": "/Image/card/character/Educated_Worker.png",
+    "description": "Work smarter, not harder"
   },
   {
     "name": "Explorer",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Explorer.png",
-    "effect": "Twice as fast when exploring Locations but 20% slower on everything else"
+    "effect": "Twice as fast when exploring Locations but 20% slower on everything else",
+    "description": "Very fast at exploring Locations, but slightly slower at other tasks"
   },
   {
     "name": "Fisher",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Fisherman.png",
-    "effect": "Twice as fast when working on a Fishing Spot and catches Mackerels instead of Cods"
+    "effect": "Twice as fast when working on a Fishing Spot and catches Mackerels instead of Cods",
+    "description": "An expert at fishing. Fish fear him"
   },
   {
     "name": "Friendly Pirate",
@@ -47,49 +54,58 @@
     "combatLevel": 16,
     "damage": 2,
     "defense": 1,
-    "effect": "10% chance to Stun target"
+    "effect": "10% chance to Stun target",
+    "description": "It has joined your side"
   },
   {
     "name": "Genius",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Genius.png"
+    "iconPath": "/Image/card/character/Genius.png",
+    "description": "Rumored to have an IQ of 538"
   },
   {
     "name": "Jester",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Jester.png"
+    "iconPath": "/Image/card/character/Jester.png",
+    "description": "Fun at parties"
   },
   {
     "name": "Lumberjack",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Lumberjack.png",
-    "effect": "Twice as fast when working on a Lumber Camp, Apple Tree, or Tree"
+    "effect": "Twice as fast when working on a Lumber Camp, Apple Tree, or Tree",
+    "description": "Way faster at harvesting Wood"
   },
   {
     "name": "Mage",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Mage.png"
+    "iconPath": "/Image/card/character/Mage.png",
+    "description": "A post-grad Wizard"
   },
   {
     "name": "Merchant",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Merchant.png"
+    "iconPath": "/Image/card/character/Merchant.png",
+    "description": "Selling a Dragon Egg for 100 Coins!"
   },
   {
     "name": "Militia",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Militia.png"
+    "iconPath": "/Image/card/character/Militia.png",
+    "description": "A villager that's ready to rumble."
   },
   {
     "name": "Miner",
     "type": "CHARACTER",
     "iconPath": "/Image/card/character/Miner.png",
-    "effect": "Twice as fast when working on a Gold Mine, Iron Mine, Rock, or Quarry"
+    "effect": "Twice as fast when working on a Gold Mine, Iron Mine, Rock, or Quarry",
+    "description": "Way faster at harvesting Rock, Gold & Iron"
   },
   {
     "name": "Ninja",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Ninja.png"
+    "iconPath": "/Image/card/character/Ninja.png",
+    "description": "Silent and deadly"
   },
   {
     "name": "Robot Genius",
@@ -99,12 +115,14 @@
   {
     "name": "Robot Worker",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Robot_Worker.png"
+    "iconPath": "/Image/card/character/Robot_Worker.png",
+    "description": "A Worker made of metal - doesn't need Food"
   },
   {
     "name": "Royal",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Royal.png"
+    "iconPath": "/Image/card/character/Royal.png",
+    "description": "A spoiled brat"
   },
   {
     "name": "Sniper",
@@ -113,7 +131,8 @@
     "health": 12,
     "combatLevel": 15,
     "damage": 3,
-    "defense": 1
+    "defense": 1,
+    "description": "Farsighted soldiers"
   },
   {
     "name": "Soldier",
@@ -122,12 +141,14 @@
     "health": 15,
     "combatLevel": 16,
     "damage": 2,
-    "defense": 2
+    "defense": 2,
+    "description": "Fights to keep the city safe!"
   },
   {
     "name": "Swordsman",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Swordman.png"
+    "iconPath": "/Image/card/character/Swordman.png",
+    "description": "A villager that's ready to fight!"
   },
   {
     "name": "Villager",
@@ -137,327 +158,384 @@
     "food": 2,
     "combatLevel": 14,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "A hard-working pioneer"
   },
   {
     "name": "Warrior",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Warrior.png"
+    "iconPath": "/Image/card/character/Warrior.png",
+    "description": "A Villager who goes to the gym"
   },
   {
     "name": "Wizard",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Wizard.png"
+    "iconPath": "/Image/card/character/Wizard.png",
+    "description": "A Villager with glitter"
   },
   {
     "name": "Worker",
     "type": "CHARACTER",
-    "iconPath": "/Image/card/character/Worker.png"
+    "iconPath": "/Image/card/character/Worker.png",
+    "description": "Working 9 to 5"
   },
   {
     "name": "10$",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/10$.png"
+    "iconPath": "/Image/card/resource/10$.png",
+    "description": "A tenner"
   },
   {
     "name": "100$",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/100$.png"
+    "iconPath": "/Image/card/resource/100$.png",
+    "description": "To the moon!"
   },
   {
     "name": "20$",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/20$.png"
+    "iconPath": "/Image/card/resource/20$.png",
+    "description": "Twenty buckaroos"
   },
   {
     "name": "50$",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/50$.png"
+    "iconPath": "/Image/card/resource/50$.png",
+    "description": "More than 50 cent"
   },
   {
     "name": "Artwork",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Artwork.png",
-    "sellValue": 40
+    "sellValue": 40,
+    "description": "The next Van Gogh?"
   },
   {
     "name": "Bone",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Bone.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Fact: a skeleton consists of many of these"
   },
   {
     "name": "Bottle of Water",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/WaterBottle.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A transparent bottle filled with transparent liquid"
   },
   {
     "name": "Brick",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Brick.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A strong building material"
   },
   {
     "name": "Buck",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/Buck.png"
+    "iconPath": "/Image/card/resource/Buck.png",
+    "description": "Twenty buckaroos"
   },
   {
     "name": "Charcoal",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/charcoal.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Functions as an antidote for Snake Poison"
   },
   {
     "name": "Copper Bar",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Copper_Bar.png",
-    "sellValue": 40
+    "sellValue": 40,
+    "description": "Used for making advanced buildings"
   },
   {
     "name": "Corpse",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/Corpse.png"
+    "iconPath": "/Image/card/resource/Corpse.png",
+    "description": "A dead human"
   },
   {
     "name": "Cotton",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Cotton.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Nature's wool"
   },
   {
     "name": "Empty Bottle",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/EmptyBottle.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Made of Glass. Can be refilled!"
   },
   {
     "name": "Euphoria",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/Euphoria.png"
+    "iconPath": "/Image/card/resource/Euphoria.png",
+    "description": "A feeling or state of intense excitement and happiness"
   },
   {
     "name": "Fabric",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Fabric.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Fibres. together. strong."
   },
   {
     "name": "Flint",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Flint.png",
-    "sellValue": 2
+    "sellValue": 2,
+    "description": "Used to start fires"
   },
   {
     "name": "Glass",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Glass.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A transparent resource"
   },
   {
     "name": "Gold Bar",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Goldbar.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "A very shiny, very valuable material"
   },
   {
     "name": "Gold Ore",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Goldore.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Can be turned in Gold Bars"
   },
   {
     "name": "Golden Goblet",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/GoldenGoblet.png"
+    "iconPath": "/Image/card/resource/GoldenGoblet.png",
+    "description": "A mysterious artifact"
   },
   {
     "name": "Goop",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Goop.png",
-    "sellValue": 0
+    "sellValue": 0,
+    "description": "Smush, sludge, gunk: it's spoilt food"
   },
   {
     "name": "Gravel",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/Gravel.png"
+    "iconPath": "/Image/card/resource/Gravel.png",
+    "description": "Coarse sand"
   },
   {
     "name": "Happiness",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/Happiness.png"
+    "iconPath": "/Image/card/resource/Happiness.png",
+    "description": "A single unit of Happiness. It keeps Villagers happy"
   },
   {
     "name": "Iron Bar",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Iron bar.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "A shiny, valuable material"
   },
   {
     "name": "Iron Ore",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Iron Ore.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Can be turned into Iron Bars"
   },
   {
     "name": "Island Relic",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/IslandRelic.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Bring it to a Cathedral"
   },
   {
     "name": "Key",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Key.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "I wonder what it's for.."
   },
   {
     "name": "Lumber",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Lumber.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "An essential building material"
   },
   {
     "name": "Magic Dust",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/MagicDust.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "It looks like glitter"
   },
   {
     "name": "Metal Scraps",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Metal_Scraps.png",
-    "sellValue": 20
+    "sellValue": 20,
+    "description": "Rusty bits of metal"
   },
   {
     "name": "Oil",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Oil.png",
-    "sellValue": 30
+    "sellValue": 30,
+    "description": "Nasty dinosaur goop"
   },
   {
     "name": "Old Tome",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/OldTome.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A book with some Idea in it"
   },
   {
     "name": "Painting",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Painting.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "A drawing of a French Villager"
   },
   {
     "name": "Paper",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Paper.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Wet wood, thinly-sliced"
   },
   {
     "name": "Plank",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Plank.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A strong building material"
   },
   {
     "name": "Plastic",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Plastic.png",
-    "sellValue": 50
+    "sellValue": 50,
+    "description": "Will be everywhere before you even know it"
   },
   {
     "name": "Poop",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Poop.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It looks stinky"
   },
   {
     "name": "Rock",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Rock.png",
-    "sellValue": 0
+    "sellValue": 0,
+    "description": "It looks sturdy, yet punchable"
   },
   {
     "name": "Rope",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Rope.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Long and fibrous"
   },
   {
     "name": "Sacred Chest",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/SacredChest.png"
+    "iconPath": "/Image/card/resource/SacredChest.png",
+    "description": "It needs a Sacred Key to be opened."
   },
   {
     "name": "Sacred Key",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/SacredKey.png"
+    "iconPath": "/Image/card/resource/SacredKey.png",
+    "description": "Forged with Glass and Gold. Used for opening the Sacred Chest."
   },
   {
     "name": "Sadness",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/Sadness.png"
+    "iconPath": "/Image/card/resource/Sadness.png",
+    "description": "Makes Villagers sad. You need 1 extra Happiness for every Sadness card you have."
   },
   {
     "name": "Sail",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Sail.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Used for making boats"
   },
   {
     "name": "Sand",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Sand.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "The main ingredient for a nice beach"
   },
   {
     "name": "Sandstone",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Sandstone.png",
-    "sellValue": 2
+    "sellValue": 2,
+    "description": "An alternative to Stone. Can be used for anything Stone is needed for."
   },
   {
     "name": "Shell",
     "type": "RESOURCE",
-    "iconPath": "/Image/card/resource/Shell.png"
+    "iconPath": "/Image/card/resource/Shell.png",
+    "description": "The main currency on the Island"
   },
   {
     "name": "Stick",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Stick.png",
-    "sellValue": 2
+    "sellValue": 2,
+    "description": "What's brown and sticky?"
   },
   {
     "name": "Stone",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Stone.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A simple resource"
   },
   {
     "name": "Toy",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Toy.png",
-    "sellValue": 50
+    "sellValue": 50,
+    "description": "Lightyears ahead of the competition"
   },
   {
     "name": "Treasure Map",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/TreasureMap.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "X marks the spot. Needs to be searched with a Villager"
   },
   {
     "name": "Wood",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/Wood.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A simple resource"
   },
   {
     "name": "Fishing Rod",
     "type": "EQUIPMENT",
     "iconPath": "/Image/card/equipment/Fishing-rod.png",
     "sellValue": 3,
-    "attack": 1
+    "attack": 1,
+    "description": "Give it to a Villager to turn them into a Fisher"
   },
   {
     "name": "Axe",
@@ -467,7 +545,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "-1",
-    "special": "10% chance to Bleed target"
+    "special": "10% chance to Bleed target",
+    "description": "For chopping wood and monsters"
   },
   {
     "name": "Bear Claw",
@@ -477,7 +556,8 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": "+1",
-    "special": "*10% chance to do a Critical Hit on target"
+    "special": "*10% chance to do a Critical Hit on target",
+    "description": "Cheap Wolverine knockoff"
   },
   {
     "name": "Blowpipe",
@@ -487,7 +567,8 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": "-1",
-    "special": "10% chance to Poison target"
+    "special": "10% chance to Poison target",
+    "description": "Blow as hard as you can"
   },
   {
     "name": "Blunderbuss",
@@ -496,7 +577,8 @@
     "sellValue": 6,
     "attack": 4,
     "slot": "Hand",
-    "special": "*15% chance to Damage all enemies"
+    "special": "*15% chance to Damage all enemies",
+    "description": "Watch out! Could blow up in your own face"
   },
   {
     "name": "Bone Spear",
@@ -505,7 +587,8 @@
     "sellValue": 5,
     "attack": 2,
     "slot": "Hand",
-    "special": "10% chance to do a Critical Hit on target"
+    "special": "10% chance to do a Critical Hit on target",
+    "description": "Intimidating version of a regular Spear"
   },
   {
     "name": "Bone Staff",
@@ -515,7 +598,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "+1",
-    "special": "20% chance to Lifesteal from target"
+    "special": "20% chance to Lifesteal from target",
+    "description": "A bone with special abilities"
   },
   {
     "name": "Boomerang",
@@ -524,7 +608,8 @@
     "sellValue": 3,
     "attack": 1,
     "slot": "Hand",
-    "special": "15% chance to Damage all enemies"
+    "special": "15% chance to Damage all enemies",
+    "description": "Always comes back to you"
   },
   {
     "name": "Bow",
@@ -534,7 +619,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "-1",
-    "special": "7% chance to do a Critical Hit on target"
+    "special": "7% chance to do a Critical Hit on target",
+    "description": "Makes you feel like Robin Hood"
   },
   {
     "name": "Broken Bottle",
@@ -543,7 +629,8 @@
     "sellValue": 1,
     "attack": 1,
     "slot": "Hand",
-    "special": "*10% chance to Bleed self"
+    "special": "*10% chance to Bleed self",
+    "description": "Cut out for the job"
   },
   {
     "name": "Chainmail Armor",
@@ -551,7 +638,8 @@
     "iconPath": "/Image/card/equipment/Chainmail.png",
     "sellValue": 5,
     "defense": 2,
-    "slot": "Body"
+    "slot": "Body",
+    "description": "A medieval era classic"
   },
   {
     "name": "Club",
@@ -561,7 +649,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "-1",
-    "special": "10% chance to Frenzy self for 10s"
+    "special": "10% chance to Frenzy self for 10s",
+    "description": "Not used for playing baseball"
   },
   {
     "name": "Crab Scale Armor",
@@ -570,7 +659,8 @@
     "sellValue": 5,
     "defense": 1,
     "slot": "Body",
-    "special": "10% chance to Poison target"
+    "special": "10% chance to Poison target",
+    "description": "The scales are impenetrable"
   },
   {
     "name": "Crossbow",
@@ -579,7 +669,8 @@
     "sellValue": 5,
     "attack": 2,
     "slot": "Hand",
-    "special": "15% chance to do a Critical Hit on target"
+    "special": "15% chance to do a Critical Hit on target",
+    "description": "A gun for arrows"
   },
   {
     "name": "Dark Amulet",
@@ -587,7 +678,8 @@
     "iconPath": "/Image/card/equipment/DarkAmulet.png",
     "sellValue": 3,
     "slot": "Head",
-    "special": "10% chance to do a Critical Hit on random enemy"
+    "special": "10% chance to do a Critical Hit on random enemy",
+    "description": "Its dark force makes you stronger"
   },
   {
     "name": "Demon Sword",
@@ -597,7 +689,8 @@
     "attack": 3,
     "slot": "Hand",
     "attackSpeed": "+2",
-    "special": "5% chance to Lifesteal from target"
+    "special": "5% chance to Lifesteal from target",
+    "description": "An excellent blade used by the Demon himself"
   },
   {
     "name": "Dragonscale Armor",
@@ -607,7 +700,8 @@
     "defense": 2,
     "slot": "Body",
     "attackSpeed": "+1",
-    "special": "10% chance of making self anxious"
+    "special": "10% chance of making self anxious",
+    "description": "A nice piece of armor, but at what cost..."
   },
   {
     "name": "Fancy Dress",
@@ -615,7 +709,8 @@
     "iconPath": "/Image/card/equipment/Fancy_Dress.png",
     "sellValue": 5,
     "slot": "Body",
-    "attackSpeed": "+2"
+    "attackSpeed": "+2",
+    "description": "A dress to impress"
   },
   {
     "name": "Fire Cloak",
@@ -626,7 +721,8 @@
     "defense": 2,
     "slot": "Body",
     "attackSpeed": "+1",
-    "special": "7% chance to do a Critical Hit on all enemies"
+    "special": "7% chance to do a Critical Hit on all enemies",
+    "description": "It's lit"
   },
   {
     "name": "Forest Amulet",
@@ -635,7 +731,8 @@
     "sellValue": 8,
     "slot": "Head",
     "attackSpeed": "+2",
-    "special": "10% chance to Heal friendly with lowest health by 2"
+    "special": "10% chance to Heal friendly with lowest health by 2",
+    "description": "You feel the healing power of nature running through you"
   },
   {
     "name": "Frog Helmet",
@@ -644,7 +741,8 @@
     "sellValue": 3,
     "defense": 1,
     "slot": "Head",
-    "attackSpeed": "+2"
+    "attackSpeed": "+2",
+    "description": "Grants you frog powers"
   },
   {
     "name": "Goblin Hat",
@@ -653,7 +751,8 @@
     "sellValue": 3,
     "defense": 1,
     "slot": "Head",
-    "special": "5% chance to do a Critical Hit on target"
+    "special": "5% chance to do a Critical Hit on target",
+    "description": "Goblin fashion is outdated"
   },
   {
     "name": "Golden Chestplate",
@@ -662,12 +761,14 @@
     "sellValue": 10,
     "defense": 3,
     "slot": "Body",
-    "special": "10% chance to Stun target for 5s"
+    "special": "10% chance to Stun target for 5s",
+    "description": "Slightly overdressed for the event"
   },
   {
     "name": "Guard's Tunic",
     "type": "EQUIPMENT",
-    "iconPath": "/Image/card/equipment/Guard's_Tunic.png"
+    "iconPath": "/Image/card/equipment/Guard's_Tunic.png",
+    "description": "Looking fancy on the battlefield"
   },
   {
     "name": "Hammer",
@@ -676,7 +777,8 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "special": "10% chance to Stun target for 5s"
+    "special": "10% chance to Stun target for 5s",
+    "description": "Slow and blunt but packs a punch"
   },
   {
     "name": "Helmet",
@@ -684,7 +786,8 @@
     "iconPath": "/Image/card/equipment/Helm.png",
     "sellValue": 3,
     "defense": 2,
-    "slot": "Head"
+    "slot": "Head",
+    "description": "It goes on top of your head. Great for cycling"
   },
   {
     "name": "Horned Helmet",
@@ -694,7 +797,8 @@
     "attack": 2,
     "defense": 2,
     "slot": "Head",
-    "special": "20% chance to Bleed target"
+    "special": "20% chance to Bleed target",
+    "description": "Useful for strong headbuts"
   },
   {
     "name": "Iron Shield",
@@ -703,7 +807,8 @@
     "sellValue": 3,
     "defense": 2,
     "slot": "Body",
-    "special": "10% chance to Stun target for 5s"
+    "special": "10% chance to Stun target for 5s",
+    "description": "A strong defense against hard blows"
   },
   {
     "name": "Jester's Hat",
@@ -713,7 +818,8 @@
     "defense": 1,
     "slot": "Head",
     "attackSpeed": "+2",
-    "special": "10% chance to Stun random enemy 10% chance to Poison random enemy 10% chance to Lifesteal from random enemy"
+    "special": "10% chance to Stun random enemy 10% chance to Poison random enemy 10% chance to Lifesteal from random enemy",
+    "description": "Makes you look like a clown"
   },
   {
     "name": "Kraken Tooth Axe",
@@ -723,7 +829,8 @@
     "attack": 2,
     "defense": 1,
     "slot": "Hand",
-    "special": "20% chance to do a Critical Hit on target"
+    "special": "20% chance to do a Critical Hit on target",
+    "description": "Left for the tooth fairy, you took it instead"
   },
   {
     "name": "Leather Tunic",
@@ -731,7 +838,8 @@
     "iconPath": "/Image/card/equipment/Leathertunic.png",
     "sellValue": 3,
     "defense": 1,
-    "slot": "Body"
+    "slot": "Body",
+    "description": "Armor made from the finest leather"
   },
   {
     "name": "Magic Blade",
@@ -741,7 +849,8 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": "+1",
-    "special": "20% chance to Frenzy random friendly for 10s"
+    "special": "20% chance to Frenzy random friendly for 10s",
+    "description": "An ordinary sword that glitters"
   },
   {
     "name": "Magic Broom",
@@ -751,7 +860,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "+2",
-    "special": "15% chance to Heal all friendlies by 2"
+    "special": "15% chance to Heal all friendlies by 2",
+    "description": "You took it from some Old Lady"
   },
   {
     "name": "Magic Ring",
@@ -760,7 +870,8 @@
     "sellValue": 3,
     "attack": 1,
     "slot": "Hand",
-    "special": "10% chance to make random friendly Invulnerable for 10s"
+    "special": "10% chance to make random friendly Invulnerable for 10s",
+    "description": "Once it slides on your finger it grants you magic powers"
   },
   {
     "name": "Magic Staff",
@@ -770,7 +881,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "+1",
-    "special": "*15% chance to Heal friendly with lowest health by 2"
+    "special": "*15% chance to Heal friendly with lowest health by 2",
+    "description": "A long, enchanted rod"
   },
   {
     "name": "Magic Tome",
@@ -779,7 +891,8 @@
     "sellValue": 3,
     "attack": 1,
     "slot": "Hand",
-    "special": "*10% chance to Heal random friendly by 2"
+    "special": "*10% chance to Heal random friendly by 2",
+    "description": "An old book with spells in it"
   },
   {
     "name": "Magic Wand",
@@ -788,7 +901,8 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "special": "10% chance to Heal friendly with lowest health by 2"
+    "special": "10% chance to Heal friendly with lowest health by 2",
+    "description": "A simple magic weapon"
   },
   {
     "name": "Map",
@@ -796,7 +910,8 @@
     "iconPath": "/Image/card/equipment/Map.png",
     "sellValue": 3,
     "attack": -1,
-    "slot": "Hand"
+    "slot": "Hand",
+    "description": "Use a Map to turn a Villager into an Explorer"
   },
   {
     "name": "Morning Star",
@@ -807,7 +922,8 @@
     "defense": 1,
     "slot": "Hand",
     "attackSpeed": "-1",
-    "special": "15% chance to Stun random enemy for 5s"
+    "special": "15% chance to Stun random enemy for 5s",
+    "description": "Spikes on a stick"
   },
   {
     "name": "Mountain Amulet",
@@ -816,7 +932,8 @@
     "sellValue": 8,
     "attack": 2,
     "slot": "Head",
-    "special": "10% chance to make random friendly Invulnerable for 10s"
+    "special": "10% chance to make random friendly Invulnerable for 10s",
+    "description": "It grounds you"
   },
   {
     "name": "Pickaxe",
@@ -826,7 +943,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "-1",
-    "special": "10% chance to do a Critical Hit on target"
+    "special": "10% chance to do a Critical Hit on target",
+    "description": "A stick with two pointy ends"
   },
   {
     "name": "Pirate Hat",
@@ -835,7 +953,8 @@
     "sellValue": 5,
     "defense": 1,
     "slot": "Head",
-    "special": "20% chance to Stun target for 5s"
+    "special": "20% chance to Stun target for 5s",
+    "description": "Useful for dress up parties"
   },
   {
     "name": "Pirate Sabre",
@@ -845,7 +964,8 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": "+2",
-    "special": "7% chance to make self Invulnerable for 10s"
+    "special": "7% chance to make self Invulnerable for 10s",
+    "description": "Designed for swashbucklers"
   },
   {
     "name": "Plague Mask",
@@ -854,7 +974,8 @@
     "sellValue": 3,
     "attack": 2,
     "defense": 2,
-    "slot": "Head"
+    "slot": "Head",
+    "description": "You can't get Sick"
   },
   {
     "name": "Purple Socks",
@@ -862,7 +983,8 @@
     "iconPath": "/Image/card/equipment/Purple_Socks.png",
     "sellValue": 5,
     "slot": "Body",
-    "special": "10% chance to Heal Self"
+    "special": "10% chance to Heal Self",
+    "description": "They have small cat paws on!"
   },
   {
     "name": "Quiver",
@@ -871,7 +993,8 @@
     "sellValue": 3,
     "slot": "Body",
     "attackSpeed": "+2",
-    "special": "10% chance to Bleed target"
+    "special": "10% chance to Bleed target",
+    "description": "Makes you more efficient"
   },
   {
     "name": "Rabbit Hat",
@@ -880,7 +1003,8 @@
     "sellValue": 3,
     "defense": 1,
     "slot": "Head",
-    "attackSpeed": "+1"
+    "attackSpeed": "+1",
+    "description": "It's adorable!"
   },
   {
     "name": "Rat Crown",
@@ -888,17 +1012,20 @@
     "iconPath": "/Image/card/equipment/RatKingCrown.png",
     "sellValue": 5,
     "defense": 1,
-    "slot": "Head"
+    "slot": "Head",
+    "description": "Turn into the King of the Rats"
   },
   {
     "name": "Royal Crown",
     "type": "EQUIPMENT",
-    "iconPath": "/Image/card/equipment/Royal_Crown.png"
+    "iconPath": "/Image/card/equipment/Royal_Crown.png",
+    "description": "Gives you strength and makes you greedy"
   },
   {
     "name": "Scythe",
     "type": "EQUIPMENT",
-    "iconPath": "/Image/card/equipment/Scythe.png"
+    "iconPath": "/Image/card/equipment/Scythe.png",
+    "description": "Useful for farming and chopping down monsters"
   },
   {
     "name": "Skull Helmet",
@@ -908,7 +1035,8 @@
     "attack": 2,
     "defense": 2,
     "slot": "Head",
-    "special": "10% chance to Lifesteal from target"
+    "special": "10% chance to Lifesteal from target",
+    "description": "Kinda messed up"
   },
   {
     "name": "Slingshot",
@@ -918,7 +1046,8 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": "+1",
-    "special": "25% chance to Damage random enemy"
+    "special": "25% chance to Damage random enemy",
+    "description": "Very inaccurately hurl rocks at enemies"
   },
   {
     "name": "Spear",
@@ -927,7 +1056,8 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "special": "5% chance to do a Critical Hit on target"
+    "special": "5% chance to do a Critical Hit on target",
+    "description": "Stick with a pointy end"
   },
   {
     "name": "Spiked Plank",
@@ -936,7 +1066,8 @@
     "sellValue": 4,
     "attack": 1,
     "slot": "Hand",
-    "special": "7% chance to Bleed target"
+    "special": "7% chance to Bleed target",
+    "description": "For tough construction workers"
   },
   {
     "name": "Staff of Fear",
@@ -946,7 +1077,8 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": "+1",
-    "special": "20% chance to Stun random enemy for 5s"
+    "special": "20% chance to Stun random enemy for 5s",
+    "description": "Very scary!!"
   },
   {
     "name": "Sword",
@@ -956,7 +1088,8 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": "+1",
-    "special": "10% chance to Bleed target"
+    "special": "10% chance to Bleed target",
+    "description": "An Iron Bar with a pointy end"
   },
   {
     "name": "Throwing Stars",
@@ -965,7 +1098,8 @@
     "sellValue": 5,
     "attack": 1,
     "slot": "Hand",
-    "attackSpeed": "+3"
+    "attackSpeed": "+3",
+    "description": "Fast and accurate, ninjas love them"
   },
   {
     "name": "Tiger Fur Coat",
@@ -973,7 +1107,8 @@
     "iconPath": "/Image/card/equipment/TigerFurCoat.png",
     "sellValue": 5,
     "defense": 1,
-    "slot": "Body"
+    "slot": "Body",
+    "description": "Trashy but at least it makes you feel strong"
   },
   {
     "name": "Winter Coat",
@@ -981,7 +1116,8 @@
     "iconPath": "/Image/card/equipment/Winter_Coat.png",
     "sellValue": 3,
     "slot": "Body",
-    "special": "10% chance to Heal Self"
+    "special": "10% chance to Heal Self",
+    "description": "Wonderful in winter"
   },
   {
     "name": "Wizard Robe",
@@ -989,7 +1125,8 @@
     "iconPath": "/Image/card/equipment/WizardRobe.png",
     "sellValue": 3,
     "slot": "Body",
-    "special": "10% chance to make self Invulnerable for 10s"
+    "special": "10% chance to make self Invulnerable for 10s",
+    "description": "It's like a magical snuggie"
   },
   {
     "name": "Wolf Head",
@@ -998,7 +1135,8 @@
     "sellValue": 5,
     "defense": 2,
     "slot": "Head",
-    "attackSpeed": "+1"
+    "attackSpeed": "+1",
+    "description": "Perfect for furries"
   },
   {
     "name": "Wooden Shield",
@@ -1007,63 +1145,73 @@
     "sellValue": 3,
     "attack": 1,
     "defense": 1,
-    "slot": "Body"
+    "slot": "Body",
+    "description": "A basic defense against hard blows"
   },
   {
     "name": "Book",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Book.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Videogames, but for nerds"
   },
   {
     "name": "Wool",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Wool.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A soft resource"
   },
   {
     "name": "Apple",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Apple.png",
     "sellValue": 2,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "Keeps doctors away"
   },
   {
     "name": "Banana",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Banaan.png",
     "sellValue": 1,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "Everyone's favorite yellow fruit"
   },
   {
     "name": "Beer",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Beer.png"
+    "iconPath": "/Image/card/food/Beer.png",
+    "description": "Water and wheat. Iconic duo"
   },
   {
     "name": "Berry",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Berry_2.png",
     "sellValue": 1,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "A simple food found in Berry Bushes"
   },
   {
     "name": "Bottle of Rum",
     "type": "FOOD",
     "iconPath": "/Image/card/food/BottleOfRum.png",
     "sellValue": 3,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "Be careful: gets Villagers drunk!"
   },
   {
     "name": "Bread",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Bread.png"
+    "iconPath": "/Image/card/food/Bread.png",
+    "description": "Who doesn't love it"
   },
   {
     "name": "Bread 2000",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Bread_2000.png",
-    "sellValue": 50
+    "sellValue": 50,
+    "description": "Bread: Reinvented"
   },
   {
     "name": "Berry Bush",
@@ -1072,808 +1220,947 @@
     "sellValue": 1,
     "resourceCount": 5,
     "spawnCards": [
-      { "name": "Berry", "weight": 100 }
-    ]
+      {
+        "name": "Berry",
+        "weight": 100
+      }
+    ],
+    "description": "A bush with delicious berries in it"
   },
   {
     "name": "Cane Sugar",
     "type": "FOOD",
     "iconPath": "/Image/card/food/CaneSugar.png",
     "sellValue": 2,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "Very sweet!"
   },
   {
     "name": "Carrot",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Carrot.png",
     "sellValue": 2,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "The crunchiest vegetable"
   },
   {
     "name": "Ceviche",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Ceviche.png",
     "sellValue": 3,
-    "nutritionValue": 3
+    "nutritionValue": 3,
+    "description": "Sour fish, what's not to like"
   },
   {
     "name": "Chili Pepper",
     "type": "FOOD",
     "iconPath": "/Image/card/food/ChilliPepper.png",
     "sellValue": 2,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "Nice and spicy"
   },
   {
     "name": "Cooked Crab",
     "type": "FOOD",
     "iconPath": "/Image/card/food/CookedCrabMeat.png",
     "sellValue": 1,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "It's fancy"
   },
   {
     "name": "Cooked Meat",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Cooked-Meat.png",
     "sellValue": 3,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "It's cooked medium rare"
   },
   {
     "name": "Dough",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Dough.png"
+    "iconPath": "/Image/card/food/Dough.png",
+    "description": "It passes the windowpane test"
   },
   {
     "name": "Egg",
     "type": "FOOD",
     "iconPath": "/Image/card/food/egg.png",
     "sellValue": 1,
-    "nutritionValue": 0
+    "nutritionValue": 0,
+    "description": "Can't be eaten raw: thanks salmonella"
   },
   {
     "name": "Fish and Chips",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Kibbeling.png"
+    "iconPath": "/Image/card/food/Kibbeling.png",
+    "description": "Not to be confused with Fish and Crisps"
   },
   {
     "name": "Flour",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Flour.png"
+    "iconPath": "/Image/card/food/Flour.png",
+    "description": "Sandy. The main ingredient for dough"
   },
   {
     "name": "French Fries",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/French_Fries.png"
+    "iconPath": "/Image/card/food/French_Fries.png",
+    "description": "Crispy Potato"
   },
   {
     "name": "Fried Fish",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Fried_Fish.png"
+    "iconPath": "/Image/card/food/Fried_Fish.png",
+    "description": "Browned nicely"
   },
   {
     "name": "Fried Meat",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Fried_Meat.png"
+    "iconPath": "/Image/card/food/Fried_Meat.png",
+    "description": "Crunchy on the outside"
   },
   {
     "name": "Frittata",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Fritatta.png",
     "sellValue": 3,
-    "nutritionValue": 3
+    "nutritionValue": 3,
+    "description": "Delicious and comes with a fork"
   },
   {
     "name": "Fruit Salad",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Fruit-Salad.png",
     "sellValue": 5,
-    "nutritionValue": 3
+    "nutritionValue": 3,
+    "description": "A classic ancient food"
   },
   {
     "name": "Grape",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Grape.png"
+    "iconPath": "/Image/card/food/Grape.png",
+    "description": "It's just a fancy berry"
   },
   {
     "name": "Grilled Fish",
     "type": "FOOD",
     "iconPath": "/Image/card/food/GrilledFish.png",
     "sellValue": 2,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "I can taste the grill marks"
   },
   {
     "name": "Herbal Tea",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Herbal_Tea.png"
+    "iconPath": "/Image/card/food/Herbal_Tea.png",
+    "description": "Makes you feel better"
   },
   {
     "name": "Herbs",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Herbs.png"
+    "iconPath": "/Image/card/food/Herbs.png",
+    "description": "Leaves with flavor"
   },
   {
     "name": "Lime",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Lime.png",
     "sellValue": 2,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "Round and sour"
   },
   {
     "name": "Milk",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Milk.png",
     "sellValue": 1,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "Fresh from the Cow"
   },
   {
     "name": "Milkshake",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Milkshake.png",
     "sellValue": 5,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "It's Berry flavoured"
   },
   {
     "name": "Muesli",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Muesli.png",
     "sellValue": 30,
-    "nutritionValue": 4
+    "nutritionValue": 4,
+    "description": "Grainy breakfast: the food of the future"
   },
   {
     "name": "Mushroom",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Mushroom.png",
     "sellValue": 2,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "An edible fungus"
   },
   {
     "name": "Olive",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Olive.png"
+    "iconPath": "/Image/card/food/Olive.png",
+    "description": "Mediterranean classic"
   },
   {
     "name": "Olive Oil",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Olive_Oil.png"
+    "iconPath": "/Image/card/food/Olive_Oil.png",
+    "description": "Tasty olive juice"
   },
   {
     "name": "Omelette",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Omelette.png",
     "sellValue": 5,
-    "nutritionValue": 3
+    "nutritionValue": 3,
+    "description": "Pépin would be proud"
   },
   {
     "name": "Onion",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Onions.png",
     "sellValue": 2,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "Can be eaten raw or can be cooked, whichever you prefer"
   },
   {
     "name": "Pancakes",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Pancakes.png"
+    "iconPath": "/Image/card/food/Pancakes.png",
+    "description": "A big stack!"
   },
   {
     "name": "Pizza",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Pizza.png"
+    "iconPath": "/Image/card/food/Pizza.png",
+    "description": "Hell yeah"
   },
   {
     "name": "Potato",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Potato.png",
     "sellValue": 2,
-    "nutritionValue": 0
+    "nutritionValue": 0,
+    "description": "Smooth and starchy, but should be cooked first"
   },
   {
     "name": "Raw Crab Meat",
     "type": "FOOD",
     "iconPath": "/Image/card/food/RawCrabMeat.png",
     "sellValue": 2,
-    "nutritionValue": 0
+    "nutritionValue": 0,
+    "description": "Should be cooked before consumption"
   },
   {
     "name": "Raw Fish",
     "type": "FOOD",
     "iconPath": "/Image/card/food/RawFish.png",
     "sellValue": 2,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "It's slippery"
   },
   {
     "name": "Raw Meat",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Raw-Meat.png",
     "sellValue": 3,
-    "nutritionValue": 0
+    "nutritionValue": 0,
+    "description": "Should be cooked first"
   },
   {
     "name": "Royal Banquet",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Royal_Banquet.png"
+    "iconPath": "/Image/card/food/Royal_Banquet.png",
+    "description": "Some very tasty foods combined"
   },
   {
     "name": "Seafood Stew",
     "type": "FOOD",
     "iconPath": "/Image/card/food/FishStew.png",
     "sellValue": 3,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "Delicious Island Stew"
   },
   {
     "name": "Seaweed",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Seaweed.png",
     "sellValue": 1,
-    "nutritionValue": 1
+    "nutritionValue": 1,
+    "description": "Salad of the sea"
   },
   {
     "name": "Stew",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Stew.png",
     "sellValue": 10,
-    "nutritionValue": 10
+    "nutritionValue": 10,
+    "description": "A hearty meal"
   },
   {
     "name": "Sushi",
     "type": "FOOD",
     "iconPath": "/Image/card/food/Sushi.png",
     "sellValue": 2,
-    "nutritionValue": 2
+    "nutritionValue": 2,
+    "description": "A delicious treat"
   },
   {
     "name": "Tamago Sushi",
     "type": "FOOD",
     "iconPath": "/Image/card/food/TamagoSushi.png",
     "sellValue": 2,
-    "nutritionValue": 4
+    "nutritionValue": 4,
+    "description": "Egg flavored sushi"
   },
   {
     "name": "Tomato",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Tomato.png"
+    "iconPath": "/Image/card/food/Tomato.png",
+    "description": "Red, round and fun to throw"
   },
   {
     "name": "Water",
     "type": "FOOD",
     "iconPath": "/Image/card/food/water.png",
     "sellValue": 1,
-    "nutritionValue": 0
+    "nutritionValue": 0,
+    "description": "Wet liquid"
   },
   {
     "name": "Wheat",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Wheat.png"
+    "iconPath": "/Image/card/food/Wheat.png",
+    "description": "It's grass for humans but heaven for animals"
   },
   {
     "name": "Wine",
     "type": "FOOD",
-    "iconPath": "/Image/card/food/Wine.png"
+    "iconPath": "/Image/card/food/Wine.png",
+    "description": "This grape juice is making me feel funny"
   },
   {
     "name": "Copper Ore",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Copper_Ore.png"
+    "iconPath": "/Image/card/building/Copper_Ore.png",
+    "description": "Orange looking rock"
   },
   {
     "name": "Electric Motor",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Electric_Motor.png",
-    "sellValue": 80
+    "sellValue": 80,
+    "description": "Spinning Magnets"
   },
   {
     "name": "Factory Parts",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/factory_parts.png",
-    "sellValue": 50
+    "sellValue": 50,
+    "description": "A small part of a big machine"
   },
   {
     "name": "Altar",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Altar.png"
+    "iconPath": "/Image/card/building/Altar.png",
+    "description": "Used for summoning spirits"
   },
   {
     "name": "Animal Cage",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Animal_Cage.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Can hold 1 Animal"
   },
   {
     "name": "Animal Pen",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/AnimalPen.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Can hold 5 Animals"
   },
   {
     "name": "Apartment",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Apartment.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "Houses 5 Workers for cheap"
   },
   {
     "name": "Aquarium",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Aquarium.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Can hold 5 Fish"
   },
   {
     "name": "Barracks",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Barracks.png"
+    "iconPath": "/Image/card/building/Barracks.png",
+    "description": "Military building that turns Workers into Soldiers and produces vehicles"
   },
   {
     "name": "Barrel",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Barrel.png"
+    "iconPath": "/Image/card/building/Barrel.png",
+    "description": "Turns wet mixtures into different wet mixtures"
   },
   {
     "name": "Breeding Pen",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/BreedingPen.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A pen for breeding Animals"
   },
   {
     "name": "Brickyard",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Brickyard.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Quickly turns Stone into Bricks"
   },
   {
     "name": "Burner Generator",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Burner_Generator.png"
+    "iconPath": "/Image/card/building/Burner_Generator.png",
+    "description": "Burns Lumber to generate energy"
   },
   {
     "name": "Butchery",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Butchery.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Sends animals on vacation"
   },
   {
     "name": "Campfire",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Campfire.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can be used to cook  - it looks warm & cozy"
   },
   {
     "name": "Cathedral",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Cathedral.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "An important place of worship. It needs a relic."
   },
   {
     "name": "Charity",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Charity.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Generate 1 Happiness for every 1 coin you give it"
   },
   {
     "name": "City Hall",
     "type": "STRUCTURE",
-    "iconPath": "/Image/card/building/City_Hall.png"
+    "iconPath": "/Image/card/building/City_Hall.png",
+    "description": "Increases card cap by 2 for every 10 Money given to it. Can also be used to rename workers."
   },
   {
     "name": "Coin Chest",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Coin-Chest.png",
-    "sellValue": 0
+    "sellValue": 0,
+    "description": "A chest that can hold Coins"
   },
   {
     "name": "Composter",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Composter.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Turns 5 Food into Soil"
   },
   {
     "name": "Copper Mine",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Copper_Mine.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "Specialized in mining Copper Ore"
   },
   {
     "name": "Crane",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Crane.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Lifts cards from one place to another"
   },
   {
     "name": "Distillery",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Destillery.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Used for making booze"
   },
   {
     "name": "Dustbin",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Dustbin.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Allows you to get rid of cards you don't want anymore"
   },
   {
     "name": "Electricity Pylon",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Electricity_Pylon.png",
-    "sellValue": 100
+    "sellValue": 100,
+    "description": "Brrrrzzzz. Used to organize energy cables."
   },
   {
     "name": "Energy Combiner",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Energy_Combiner.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "Combines 3x Low Voltage and turns it into 1x High Voltage"
   },
   {
     "name": "Energy Splitter",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Energy_Splitter.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "Splits 1x High Voltage into 4x Low Voltage"
   },
   {
     "name": "Export Center",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Export_Center.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "Exports resources that are placed on top of it"
   },
   {
     "name": "Factory",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Factory.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "The beating heart of the modern era"
   },
   {
     "name": "Farm",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Farm.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "An advanced building for growing Food"
   },
   {
     "name": "Farmland",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Farmland.png",
-    "sellValue": 30
+    "sellValue": 30,
+    "description": "Gives Grain when harvested"
   },
   {
     "name": "Filter Junction",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Filter_Junction.png",
-    "sellValue": 50
+    "sellValue": 50,
+    "description": "Drag a Card on top to set the filter. It will output the filtered card to the top road connection, and any others to the bottom"
   },
   {
     "name": "Fish Trap",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/FishTrap.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Needs a type of Food as bait"
   },
   {
     "name": "Flour Mill",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Flour_Mill.png"
+    "iconPath": "/Image/card/building/Flour_Mill.png",
+    "description": "Turns wheat into flour"
   },
   {
     "name": "Fountain of Youth",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Fountain_of_Youth.png"
+    "iconPath": "/Image/card/building/Fountain_of_Youth.png",
+    "description": "Lifts the Curse of Death"
   },
   {
     "name": "Frigate",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Frigate.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Can carry 25 cards. Needs a villager to start sailing. Can't carry buildings."
   },
   {
     "name": "Garden",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Garden.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "A simple building for growing Food"
   },
   {
     "name": "Gold Mine",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/GoldMine.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "An unlimited resource of Gold Ore"
   },
   {
     "name": "Gravel Pit",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Gravel_Pit.png",
-    "sellValue": 30
+    "sellValue": 30,
+    "description": "An infinite source of Gravel"
   },
   {
     "name": "Greenhouse",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Greenhouse.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A high-tech building for growing Food. Automatically replants crops."
   },
   {
     "name": "Hamster Wheel",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Hamster_Wheel.png"
+    "iconPath": "/Image/card/building/Hamster_Wheel.png",
+    "description": "Generates energy using labor"
   },
   {
     "name": "Hotpot",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Hotpot.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "A replenishable source of Food that your Villagers can eat from. Add Food and they will eat from it at the end of the Moon!"
   },
   {
     "name": "House",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/House.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A nice place to live"
   },
   {
     "name": "Hydroponic Farm",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Hydroponic_Farm.png",
-    "sellValue": 30
+    "sellValue": 30,
+    "description": "Uses Water to farm more efficiently"
   },
   {
     "name": "Industrial Smelter",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Industrial_Smelter.png"
+    "iconPath": "/Image/card/building/Industrial_Smelter.png",
+    "description": "Used for smelting ores"
   },
   {
     "name": "Iron Mine",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Iron_Mine.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "An unlimited resource of Iron"
   },
   {
     "name": "Junction",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Junction.png",
-    "sellValue": 50
+    "sellValue": 50,
+    "description": "Automatically redirects cards on top of it to its transport outputs. It cycles through the different outputs one by one"
   },
   {
     "name": "Landfill",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Landfill.png",
-    "sellValue": 40
+    "sellValue": 40,
+    "description": "Removes pollution from the city"
   },
   {
     "name": "Lighthouse",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Vuurtoren.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Increases board size past the Warehouse limit"
   },
   {
     "name": "Lumber Camp",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Lumbercamp.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "An unlimited source of Wood"
   },
   {
     "name": "Luxury Apartment",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Luxury_Apartment.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "Houses 8 Workers"
   },
   {
     "name": "Magic Glue",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/MagicGlue.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Sticks the stack on top of it to the board and prevents it from moving"
   },
   {
     "name": "Market",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Market.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Sell cards for more Coins than usual"
   },
   {
     "name": "Mess Hall",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Messhal.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Villagers will prioritize eating food that's on top of the Mess Hall."
   },
   {
     "name": "Naming Stone",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Naming_Stone.png"
+    "iconPath": "/Image/card/building/Naming_Stone.png",
+    "description": "No more forgetting who's who!"
   },
   {
     "name": "Nuclear Power Plant",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Nuclear_Power_Plant.png",
-    "sellValue": 200
+    "sellValue": 200,
+    "description": "Uses Uranium to generate Energy"
   },
   {
     "name": "Oil Power Plant",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Oil_Power_Plant.png",
-    "sellValue": 100
+    "sellValue": 100,
+    "description": "Generates energy from Oil"
   },
   {
     "name": "Oil Rig",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Oil_Rig.png",
-    "sellValue": 100
+    "sellValue": 100,
+    "description": "Uses energy to drill for Oil"
   },
   {
     "name": "Outhouse",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Outhouse.png"
+    "iconPath": "/Image/card/building/Outhouse.png",
+    "description": "Use it to get rid of poop"
   },
   {
     "name": "Oven",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Oven.png"
+    "iconPath": "/Image/card/building/Oven.png",
+    "description": "Used to bake all sorts of things"
   },
   {
     "name": "Petting Zoo",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Petting_Zoo.png"
+    "iconPath": "/Image/card/building/Petting_Zoo.png",
+    "description": "Generates happiness for every animal on top of it"
   },
   {
     "name": "Quarry",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Quarry.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "An unlimited resource of Stone"
   },
   {
     "name": "Radar Station",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Radar_Station.png",
-    "sellValue": 100
+    "sellValue": 100,
+    "description": "Detects attacks 3 moons before they happen"
   },
   {
     "name": "Recycling Center",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Recycling_Center.png",
-    "sellValue": 40
+    "sellValue": 40,
+    "description": "Removes pollution over time"
   },
   {
     "name": "Resource Chest",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Resource chest (outline).png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A Chest for storing Resources"
   },
   {
     "name": "Resource Magnet",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Magnet.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "This card magically pulls cards of the same kind towards it"
   },
   {
     "name": "Road Builder",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/road_builder.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A guild for road builders, allows you to build roads between cards."
   },
   {
     "name": "Robot Station",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Robot_Station.png",
-    "sellValue": 150
+    "sellValue": 150,
+    "description": "Houses Robot Workers"
   },
   {
     "name": "Rowboat",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/RowBoat.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A rowboat to cross to a desert island."
   },
   {
     "name": "Sad Event",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Sad_Event.png"
+    "iconPath": "/Image/card/building/Sad_Event.png",
+    "description": "Creates 1 Sadness for every 2 Villagers"
   },
   {
     "name": "Sand Quarry",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/SandQuarry.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "An unlimited resource of Sand"
   },
   {
     "name": "Sawmill",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Sawmill.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Quickly turns Wood into Planks"
   },
   {
     "name": "Septic Tank",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Septic_Tank.png"
+    "iconPath": "/Image/card/building/Septic_Tank.png",
+    "description": "Poop storage"
   },
   {
     "name": "Sewer",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/sewer.png"
+    "iconPath": "/Image/card/building/sewer.png",
+    "description": "Automatically attracts poop"
   },
   {
     "name": "Shack",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Shack.png",
-    "sellValue": 40
+    "sellValue": 40,
+    "description": "Barely liveable... Currently has [number] space(s)"
   },
   {
     "name": "Shed",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Shed.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "Increases your Card cap by 4"
   },
   {
     "name": "Shell Chest",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/ChellChest.png",
-    "sellValue": 0
+    "sellValue": 0,
+    "description": "A chest with that can hold Shells"
   },
   {
     "name": "Sloop",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Sloop.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Can carry 10 cards. Needs a Villager to start sailing. Can't carry buildings"
   },
   {
     "name": "Smelter",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Smelter.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Processes various materials by smelting them"
   },
   {
     "name": "Smithy",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Smithy.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A building used for creating better weapons"
   },
   {
     "name": "Stable Portal",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Stable_Portal.png",
-    "sellValue": 3
+    "sellValue": 3,
+    "description": "A permanent portal to The Dark Forest"
   },
   {
     "name": "Stove",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Stove.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Allows you to cook faster than with a Campfire"
   },
   {
     "name": "Tavern",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Tavern.png"
+    "iconPath": "/Image/card/building/Tavern.png",
+    "description": "Turns food into Happiness"
   },
   {
     "name": "Tree Plantation",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Tree_Plantation.png",
-    "sellValue": 60
+    "sellValue": 60,
+    "description": "An infinite source of lumber"
   },
   {
     "name": "University",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/University.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "A place of wisdom. Gives you a new idea every 50 Coins you gift them."
   },
   {
     "name": "Warehouse",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Warehouse.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "Increases your Card Cap by 14"
   },
   {
     "name": "Water Treatment Plant",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Water_Treatment_Plant.png",
-    "sellValue": 100
+    "sellValue": 100,
+    "description": "Converts sewage into Water"
   },
   {
     "name": "Water Wheel",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Water_Wheel.png"
+    "iconPath": "/Image/card/building/Water_Wheel.png",
+    "description": "Generates energy from Water"
   },
   {
     "name": "Well",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/Well.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "An infinite source of Water"
   },
   {
     "name": "Wind Turbine",
     "type": "BUILDING",
-    "iconPath": "/Image/card/building/Wind_Turbine.png"
+    "iconPath": "/Image/card/building/Wind_Turbine.png",
+    "description": "Automatically generates energy"
   },
   {
     "name": "Wishing Well",
     "type": "BUILDING",
     "iconPath": "/Image/card/building/WishingWell.png",
-    "sellValue": 5
+    "sellValue": 5,
+    "description": "It gives you a wish for every 100 coins."
   },
   {
     "name": "Bear",
@@ -1883,7 +2170,8 @@
     "combatLevel": 22,
     "damage": 3,
     "defense": 2,
-    "effect": "10% chance to do a Critical Hit on target"
+    "effect": "10% chance to do a Critical Hit on target",
+    "description": "Soft yet dangerous"
   },
   {
     "name": "Dark Elf",
@@ -1893,7 +2181,8 @@
     "combatLevel": 13,
     "damage": 2,
     "defense": 1,
-    "effect": "5% chance to Lifesteal from target"
+    "effect": "5% chance to Lifesteal from target",
+    "description": "Emo version of a regular Elf"
   },
   {
     "name": "Demon",
@@ -1903,7 +2192,8 @@
     "combatLevel": 174,
     "damage": 5,
     "defense": 2,
-    "effect": "5% chance to Stun all enemies for 5s"
+    "effect": "5% chance to Stun all enemies for 5s",
+    "description": "The Final Boss"
   },
   {
     "name": "Demon Lord",
@@ -1913,7 +2203,8 @@
     "combatLevel": 373,
     "damage": 6,
     "defense": 2,
-    "effect": "10% chance to Lifesteal from random enemy"
+    "effect": "10% chance to Lifesteal from random enemy",
+    "description": "The final, final boss!"
   },
   {
     "name": "Demon of Sadness",
@@ -1923,7 +2214,8 @@
     "combatLevel": 168,
     "damage": 5,
     "defense": 3,
-    "effect": "5% chance to Stun all enemies"
+    "effect": "5% chance to Stun all enemies",
+    "description": "it was created by your Villagers' sadness"
   },
   {
     "name": "Eel",
@@ -1932,7 +2224,8 @@
     "health": 6,
     "combatLevel": 9,
     "damage": 3,
-    "defense": 1
+    "defense": 1,
+    "description": "Electric sea snake"
   },
   {
     "name": "Elf",
@@ -1941,7 +2234,8 @@
     "health": 15,
     "combatLevel": 14,
     "damage": 2,
-    "defense": 2
+    "defense": 2,
+    "description": "Does not work for Santa Claus anymore"
   },
   {
     "name": "Elf Archer",
@@ -1950,7 +2244,8 @@
     "health": 15,
     "combatLevel": 12,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "Elves are the best archers"
   },
   {
     "name": "Enchanted Shroom",
@@ -1959,7 +2254,8 @@
     "health": 25,
     "combatLevel": 21,
     "damage": 3,
-    "defense": 2
+    "defense": 2,
+    "description": "It's a magic shroom"
   },
   {
     "name": "Ent",
@@ -1968,7 +2264,8 @@
     "health": 30,
     "combatLevel": 23,
     "damage": 3,
-    "defense": 2
+    "defense": 2,
+    "description": "A talking and walking tree"
   },
   {
     "name": "Feral Cat",
@@ -1978,7 +2275,8 @@
     "combatLevel": 8,
     "damage": 1,
     "defense": 0,
-    "effect": "10% chance to Poison target"
+    "effect": "10% chance to Poison target",
+    "description": "Does it have rabies? Probably!"
   },
   {
     "name": "Fiend",
@@ -1988,7 +2286,8 @@
     "combatLevel": 16,
     "damage": 4,
     "defense": 3,
-    "effect": "10% chance to Stun target"
+    "effect": "10% chance to Stun target",
+    "description": "A large, demon-like creature"
   },
   {
     "name": "Frog Man",
@@ -1997,7 +2296,8 @@
     "health": 15,
     "combatLevel": 12,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "A man made of frogs"
   },
   {
     "name": "Ghost",
@@ -2006,7 +2306,8 @@
     "health": 12,
     "combatLevel": 12,
     "damage": 3,
-    "defense": 1
+    "defense": 1,
+    "description": "Only shows up on low quality photos"
   },
   {
     "name": "Ghoul",
@@ -2015,7 +2316,8 @@
     "health": 5,
     "combatLevel": 7,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "A haunted spirit"
   },
   {
     "name": "Giant Rat",
@@ -2024,7 +2326,8 @@
     "health": 20,
     "combatLevel": 19,
     "damage": 3,
-    "defense": 1
+    "defense": 1,
+    "description": "Big version of a small Rat"
   },
   {
     "name": "Giant Snail",
@@ -2033,7 +2336,8 @@
     "health": 14,
     "combatLevel": 19,
     "damage": 4,
-    "defense": 2
+    "defense": 2,
+    "description": "The French would go crazy for this one"
   },
   {
     "name": "Goblin",
@@ -2042,7 +2346,8 @@
     "health": 10,
     "combatLevel": 8,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "A monster with bad posture"
   },
   {
     "name": "Goblin Archer",
@@ -2051,7 +2356,8 @@
     "health": 7,
     "combatLevel": 8,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "A more talented regular Goblin"
   },
   {
     "name": "Goblin Shaman",
@@ -2060,7 +2366,8 @@
     "health": 15,
     "combatLevel": 12,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "Keeps the other Goblins happy"
   },
   {
     "name": "Kraken",
@@ -2070,7 +2377,8 @@
     "combatLevel": 150,
     "damage": 5,
     "defense": 2,
-    "effect": "20% chance to Stun all enemies for 5s"
+    "effect": "20% chance to Stun all enemies for 5s",
+    "description": "Mad that you took its relic"
   },
   {
     "name": "Merman",
@@ -2079,7 +2387,8 @@
     "health": 21,
     "combatLevel": 17,
     "damage": 3,
-    "defense": 1
+    "defense": 1,
+    "description": "Half man, half mer"
   },
   {
     "name": "Mimic",
@@ -2088,7 +2397,8 @@
     "health": 18,
     "combatLevel": 13,
     "damage": 1,
-    "defense": 1
+    "defense": 1,
+    "description": "It almost got me"
   },
   {
     "name": "Momma Crab",
@@ -2098,7 +2408,8 @@
     "combatLevel": 67,
     "damage": 2,
     "defense": 2,
-    "effect": "20% chance to Stun target for 5s"
+    "effect": "20% chance to Stun target for 5s",
+    "description": "Maybe you shouldn't have killed those Crabs?"
   },
   {
     "name": "Mosquito",
@@ -2107,7 +2418,8 @@
     "health": 6,
     "combatLevel": 7,
     "damage": 3,
-    "defense": 0
+    "defense": 0,
+    "description": "He even hates himself"
   },
   {
     "name": "Ogre",
@@ -2116,7 +2428,8 @@
     "health": 30,
     "combatLevel": 20,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "Big and chunky"
   },
   {
     "name": "Orc Wizard",
@@ -2125,7 +2438,8 @@
     "health": 15,
     "combatLevel": 14,
     "damage": 2,
-    "defense": 2
+    "defense": 2,
+    "description": "Mean and green"
   },
   {
     "name": "Pirate",
@@ -2135,17 +2449,20 @@
     "combatLevel": 14,
     "damage": 2,
     "defense": 1,
-    "effect": "10% chance to Stun target for 5s"
+    "effect": "10% chance to Stun target for 5s",
+    "description": "A burly angry seaman"
   },
   {
     "name": "Pirate Boat",
     "type": "MONSTER",
-    "iconPath": "/Image/card/monster/PirateBoat.png"
+    "iconPath": "/Image/card/monster/PirateBoat.png",
+    "description": "A boat full of Pirates"
   },
   {
     "name": "Rare Portal",
     "type": "MONSTER",
-    "iconPath": "/Image/card/monster/StrongPortal.png"
+    "iconPath": "/Image/card/monster/StrongPortal.png",
+    "description": "It looks threatening. I wonder if we can enter it?"
   },
   {
     "name": "Rat",
@@ -2154,7 +2471,8 @@
     "health": 5,
     "combatLevel": 6,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "Small version of a Giant Rat"
   },
   {
     "name": "Seagull",
@@ -2163,7 +2481,8 @@
     "health": 6,
     "combatLevel": 7,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "An angry bird"
   },
   {
     "name": "Shark",
@@ -2173,7 +2492,8 @@
     "combatLevel": 20,
     "damage": 3,
     "defense": 2,
-    "effect": "10% chance to Bleed target"
+    "effect": "10% chance to Bleed target",
+    "description": "A type of big angry fish"
   },
   {
     "name": "Skeleton",
@@ -2183,7 +2503,8 @@
     "combatLevel": 12,
     "damage": 2,
     "defense": 1,
-    "effect": "5% chance to do a Critical Hit on target"
+    "effect": "5% chance to do a Critical Hit on target",
+    "description": "A monster consisting of a set of bones"
   },
   {
     "name": "Slime",
@@ -2192,7 +2513,8 @@
     "health": 15,
     "combatLevel": 14,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "3 small slimes in a trench coat"
   },
   {
     "name": "Small Slime",
@@ -2201,7 +2523,8 @@
     "health": 4,
     "combatLevel": 4,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "A goodie-filled goo"
   },
   {
     "name": "Snake",
@@ -2211,12 +2534,14 @@
     "combatLevel": 15,
     "damage": 2,
     "defense": 0,
-    "effect": "30% chance to Poison target"
+    "effect": "30% chance to Poison target",
+    "description": "A slithering, poisonous creature"
   },
   {
     "name": "Strange Portal",
     "type": "MONSTER",
-    "iconPath": "/Image/card/monster/Portal.png"
+    "iconPath": "/Image/card/monster/Portal.png",
+    "description": "It looks threatening. I wonder if we can enter it?"
   },
   {
     "name": "Tentacle",
@@ -2226,7 +2551,8 @@
     "combatLevel": 43,
     "damage": 4,
     "defense": 1,
-    "effect": "20% chance to Stun target for 5s"
+    "effect": "20% chance to Stun target for 5s",
+    "description": "Wiggle wiggle wiggle"
   },
   {
     "name": "Tiger",
@@ -2236,7 +2562,8 @@
     "combatLevel": 22,
     "damage": 2,
     "defense": 2,
-    "effect": "20% chance to Stun target for 5s"
+    "effect": "20% chance to Stun target for 5s",
+    "description": "A very strong cat"
   },
   {
     "name": "Wicked Witch",
@@ -2245,7 +2572,8 @@
     "health": 300,
     "combatLevel": 160,
     "damage": 3,
-    "defense": 2
+    "defense": 2,
+    "description": "I liked her more when she was still a regular Old Lady"
   },
   {
     "name": "Wolf",
@@ -2254,7 +2582,8 @@
     "health": 20,
     "combatLevel": 18,
     "damage": 2,
-    "defense": 2
+    "defense": 2,
+    "description": "It looks vicious"
   },
   {
     "name": "Chicken",
@@ -2263,7 +2592,8 @@
     "health": 5,
     "combatLevel": 6,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "Alleged descendent of dinosaurs. I don't see it"
   },
   {
     "name": "Cow",
@@ -2273,7 +2603,8 @@
     "combatLevel": 9,
     "damage": 2,
     "defense": 1,
-    "effect": "10% chance to Stun target for 5s"
+    "effect": "10% chance to Stun target for 5s",
+    "description": "MOOOOOO!"
   },
   {
     "name": "Crab",
@@ -2283,7 +2614,8 @@
     "combatLevel": 8,
     "damage": 2,
     "defense": 0,
-    "effect": "10% chance to make self Invulnerable for 10s"
+    "effect": "10% chance to make self Invulnerable for 10s",
+    "description": "Why does everything evolve into crabs?"
   },
   {
     "name": "Monkey",
@@ -2292,7 +2624,8 @@
     "health": 6,
     "combatLevel": 5,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "Would really like a Banana"
   },
   {
     "name": "Parrot",
@@ -2301,7 +2634,8 @@
     "health": 5,
     "combatLevel": 6,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "Talks like a human, flies like a bird. Makes Pirates happy"
   },
   {
     "name": "Rabbit",
@@ -2311,7 +2645,8 @@
     "combatLevel": 8,
     "damage": 2,
     "defense": 0,
-    "effect": "10% chance to Frenzy self for 10s"
+    "effect": "10% chance to Frenzy self for 10s",
+    "description": "Fluffy poop machine"
   },
   {
     "name": "Cod",
@@ -2320,7 +2655,8 @@
     "health": 3,
     "combatLevel": 4,
     "damage": 2,
-    "defense": 0
+    "defense": 0,
+    "description": "Wet and slippery fish"
   },
   {
     "name": "Mackerel",
@@ -2329,7 +2665,8 @@
     "health": 4,
     "combatLevel": 9,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "Small fish"
   },
   {
     "name": "Tuna",
@@ -2338,7 +2675,8 @@
     "health": 6,
     "combatLevel": 8,
     "damage": 2,
-    "defense": 1
+    "defense": 1,
+    "description": "Chunky fish"
   },
   {
     "name": "A New World",
@@ -2479,31 +2817,36 @@
     "name": "Idea: Altar",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Altar.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Used for summoning Spirits"
   },
   {
     "name": "Idea: Animal Cage",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Animal_Cage.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can hold 1 Animal"
   },
   {
     "name": "Idea: Animal Pen",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Animal_Pen.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can hold 5 Animals"
   },
   {
     "name": "Idea: Apartment",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Apartment.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Houses 5 Workers for cheap"
   },
   {
     "name": "Idea: Aquarium",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Aquarium.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can hold 5 Fish"
   },
   {
     "name": "Idea: Attack Helicopter",
@@ -2515,73 +2858,85 @@
     "name": "Idea: Axe",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Axe.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "For chopping wood and monsters"
   },
   {
     "name": "Idea: Barracks",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Barracks.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Military building that turns Workers into Soldiers and produces vehicles"
   },
   {
     "name": "Idea: Barrel",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Barrel.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Turns wet mixtures into different wet mixtures"
   },
   {
     "name": "Idea: Beer",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Beer.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Water and wheat. Iconic duo."
   },
   {
     "name": "Idea: Blunderbuss",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Blunderbuss.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Watch out! Could blow up in your own face"
   },
   {
     "name": "Idea: Bone Spear",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bone_Spear.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Intimidating version of a regular Spear"
   },
   {
     "name": "Idea: Bone Staff",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bone_Staff.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A bone with special abilities"
   },
   {
     "name": "Idea: Book",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Book.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Videogames, but for nerds"
   },
   {
     "name": "Idea: Boomerang",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Boomerang.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Always comes back to you"
   },
   {
     "name": "Idea: Bottle of Rum",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bottle_of_Rum.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Be careful: gets Villagers drunk!"
   },
   {
     "name": "Idea: Bow",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bow.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Makes you feel like Robin Hood"
   },
   {
     "name": "Idea: Bread",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bread.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Who doesn't love it"
   },
   {
     "name": "Idea: Bread 2000",
@@ -2593,25 +2948,29 @@
     "name": "Idea: Breeding Pen",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Breeding_Pen.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A pen for breeding Animals"
   },
   {
     "name": "Idea: Brick",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Brick.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A strong building material"
   },
   {
     "name": "Idea: Brickyard",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Brickyard.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Quickly turns Stone into Bricks"
   },
   {
     "name": "Idea: Broken Bottle",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Broken_Bottle.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Cut out for the job"
   },
   {
     "name": "Idea: Burner Generator",
@@ -2623,133 +2982,155 @@
     "name": "Idea: Butchery",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Butchery.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Sends animals on vacation"
   },
   {
     "name": "Idea: Campfire",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Campfire.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can be used to cook  - it looks warm & cozy"
   },
   {
     "name": "Idea: Cathedral",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Cathedral.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An important place of worship. It needs a relic."
   },
   {
     "name": "Idea: Cement",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Cement.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "A wet mix for building structures"
   },
   {
     "name": "Idea: Ceviche",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Ceviche.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Sour fish, what's not to like"
   },
   {
     "name": "Idea: Chainmail Armor",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Chainmail_Armor.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A medieval era classic"
   },
   {
     "name": "Idea: Charcoal",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Charcoal.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Functions as an antidote for Snake Poison"
   },
   {
     "name": "Idea: Charity",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Charity.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Generates 1 Happiness for every 1 Coins you give it"
   },
   {
     "name": "Idea: Cheese",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Cheese.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It tastes like Gouda"
   },
   {
     "name": "Idea: Chicken",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Chicken.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Alleged descendent of dinosaurs. I don't see it"
   },
   {
     "name": "Idea: City Hall",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_City_Hall.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Increases card cap by 2 for every 10 Money given to it. Can also be used to rename workers."
   },
   {
     "name": "Idea: Club",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Club.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Not used for playing baseball"
   },
   {
     "name": "Idea: Coin",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Coin.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Humanity's best friend"
   },
   {
     "name": "Idea: Coin Chest",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Coin_Chest.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A chest that can hold Coins"
   },
   {
     "name": "Idea: Composter",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Composter.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Turns 5 Food into Soil"
   },
   {
     "name": "Idea: Cooked Meat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Cooked_Meat.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It's cooked medium rare"
   },
   {
     "name": "Idea: Crane",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Crane.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Lifts cards from one place to another"
   },
   {
     "name": "Idea: Crossbow",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Crossbow.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A gun for arrows"
   },
   {
     "name": "Idea: Distillery",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Distillery.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Used for making booze"
   },
   {
     "name": "Idea: Dough",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Dough.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It passes the windowpane test"
   },
   {
     "name": "Idea: Dustbin",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Dustbin.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Allows you to get rid of cards you don't want anymore"
   },
   {
     "name": "Idea: Empty Bottle",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Empty_Bottle.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Made of Glass. Can be refilled!"
   },
   {
     "name": "Idea: Energy Combiner",
@@ -2761,43 +3142,50 @@
     "name": "Idea: Euphoria",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Euphoria.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A feeling or state of intense excitement and happiness"
   },
   {
     "name": "Idea: Fabric",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fabric.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Fibres. together. strong."
   },
   {
     "name": "Idea: Factory",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Factory.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "The beating heart of the modern era"
   },
   {
     "name": "Idea: Factory Parts",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Factory_Parts.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "A small part of a big machine"
   },
   {
     "name": "Idea: Fancy Dress",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fancy_Dress.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A dress to impress"
   },
   {
     "name": "Idea: Farm",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Farm.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An advanced building for growing Food"
   },
   {
     "name": "Idea: Farmland",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Farmland.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Gives Grain when harvested"
   },
   {
     "name": "Idea: Fighter Jet",
@@ -2815,169 +3203,197 @@
     "name": "Idea: Fish and Chips",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fish_and_Chips.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Not to be confused with Fish and Crisps"
   },
   {
     "name": "Idea: Fish Trap",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fish_Trap.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Needs a type of Food as bait"
   },
   {
     "name": "Idea: Fishing Rod",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fishing_Rod.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Give it to a Villager to turn them into a Fisher"
   },
   {
     "name": "Idea: Flour",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Flour.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Sandy. The main ingredient for Dough"
   },
   {
     "name": "Idea: Flour Mill",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Flour_Mill.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Turns Wheat into Flour"
   },
   {
     "name": "Idea: Food Warehouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Food_Warehouse.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Stores Food"
   },
   {
     "name": "Idea: Forest Amulet",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Forest_Amulet.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "You feel the healing power of nature running through you"
   },
   {
     "name": "Idea: Fountain of Youth",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fountain_of_Youth.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Lifts the Curse of Death"
   },
   {
     "name": "Idea: French Fries",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_French_Fries.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Crispy Potato"
   },
   {
     "name": "Idea: Fried Fish",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fried_Fish.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Browned Nicely"
   },
   {
     "name": "Idea: Fried Meat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fried_Meat.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Crunchy on the outside"
   },
   {
     "name": "Idea: Frigate",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Frigate.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can carry 25 cards. Needs a villager to start sailing. Can't carry buildings."
   },
   {
     "name": "Idea: Frittata",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Frittata.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Delicious and comes with a fork"
   },
   {
     "name": "Idea: Fruit Salad",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fruit_Salad.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A classic ancient food"
   },
   {
     "name": "Idea: Garden",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Garden.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A simple building for growing Food"
   },
   {
     "name": "Idea: Glass",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Glass.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A transparent resource"
   },
   {
     "name": "Idea: Gold Bar",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Gold_Bar.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A very shiny, very valuable material"
   },
   {
     "name": "Idea: Gold Mine",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Gold_Mine.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An unlimited resource of Gold Ore"
   },
   {
     "name": "Idea: Golden Chestplate",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Golden_Chestplate.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Slightly overdressed for the event"
   },
   {
     "name": "Idea: Grape Pulp",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Grape_Pulp.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A slurry of Grapes"
   },
   {
     "name": "Idea: Greenhouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Greenhouse.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A high-tech building for growing Food. Automatically replants crops."
   },
   {
     "name": "Idea: Growth",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Growth.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A bush with delicious berries in it"
   },
   {
     "name": "Idea: Hammer",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Hammer.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Slow and blunt but packs a punch"
   },
   {
     "name": "Idea: Hamster Wheel",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Hamster_Wheel.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Generates energy using labor"
   },
   {
     "name": "Idea: Happiness",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Happiness.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A quick and dirty way of getting Happiness"
   },
   {
     "name": "Idea: Herbal Tea",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Herbal_Tea.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Makes you feel better"
   },
   {
     "name": "Idea: Hotpot",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Hotpot.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A replenishable source of Food that your Villagers can eat from. Add Food and they will eat from it at the end of the Moon!"
   },
   {
     "name": "Idea: House",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_House.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A nice place to live"
   },
   {
     "name": "Idea: Industrial Smelter",
@@ -2989,25 +3405,29 @@
     "name": "Idea: Iron Bar",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Iron_Bar.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A shiny, valuable material"
   },
   {
     "name": "Idea: Iron Mine",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Iron_Mine.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An unlimited resource of Iron"
   },
   {
     "name": "Idea: Iron Shield",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Iron_Shield.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A strong defense against hard blows"
   },
   {
     "name": "Idea: Jester's Hat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Jester's_Hat.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Makes you look like a clown"
   },
   {
     "name": "Idea: Junction",
@@ -3025,19 +3445,22 @@
     "name": "Idea: Lift Curse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Lift_Curse.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Lifts the Curse of Sadness"
   },
   {
     "name": "Idea: Lighthouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Lighthouse.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Increases the board size past the Warehouse limit"
   },
   {
     "name": "Idea: Lumber Camp",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Lumber_Camp.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An unlimited source of Wood"
   },
   {
     "name": "Idea: Luxury Apartment",
@@ -3049,49 +3472,57 @@
     "name": "Idea: Magic Blade",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Blade.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An ordinary sword that glitters"
   },
   {
     "name": "Idea: Magic Glue",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Glue.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Sticks the stack on top of it to the board and prevents it from moving"
   },
   {
     "name": "Idea: Magic Ring",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Ring.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Once it slides on your finger it grants you magic powers"
   },
   {
     "name": "Idea: Magic Staff",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Staff.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A long, enchanted rod"
   },
   {
     "name": "Idea: Magic Tome",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Tome.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An old book with spells in it"
   },
   {
     "name": "Idea: Magic Wand",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Wand.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A simple magic weapon"
   },
   {
     "name": "Idea: Market",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Market.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Sell cards for more Coins than usual"
   },
   {
     "name": "Idea: Mess Hall",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Mess_Hall.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Villagers will prioritize eating food that's on top of the Mess Hall."
   },
   {
     "name": "Idea: Metal Scraps",
@@ -3103,121 +3534,141 @@
     "name": "Idea: Milkshake",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Milkshake.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It's Berry flavoured"
   },
   {
     "name": "Idea: Mountain Amulet",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Mountain_Amulet.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It grounds you"
   },
   {
     "name": "Idea: Muesli",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Muesli.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Grainy breakfast: the food of the future"
   },
   {
     "name": "Idea: Naming Stone",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Naming_Stone.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "No more forgetting who's who!"
   },
   {
     "name": "Idea: Offspring",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Offspring.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A young'un. Needs a House to grow up in."
   },
   {
     "name": "Idea: Olive Oil",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Olive_Oil.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Tasty olive juice"
   },
   {
     "name": "Idea: Olive Pulp",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Olive_Pulp.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A slurry of olives"
   },
   {
     "name": "Idea: Omelette",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Omelette.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Pépin would be proud"
   },
   {
     "name": "Idea: Outhouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Outhouse.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Use it to get rid of Poop"
   },
   {
     "name": "Idea: Oven",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Oven.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Used to bake all sorts of things"
   },
   {
     "name": "Idea: Painting",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Painting.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A drawing of a French Villager"
   },
   {
     "name": "Idea: Pancakes",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Pancakes.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A big stack!"
   },
   {
     "name": "Idea: Paper",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Paper.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Wet wood, thinly-sliced"
   },
   {
     "name": "Idea: Petting Zoo",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Petting_Zoo.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Generates Happiness for every Animal on top of it"
   },
   {
     "name": "Idea: Pickaxe",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Pickaxe.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A stick with two pointy ends"
   },
   {
     "name": "Idea: Pizza",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Pizza.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Hell yeah"
   },
   {
     "name": "Idea: Plague Mask",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Plague_Mask.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "You can't get Sick"
   },
   {
     "name": "Idea: Plank",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Plank.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A strong building material"
   },
   {
     "name": "Idea: Purple Socks",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Purple_Socks.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "They have small cat paws on!"
   },
   {
     "name": "Idea: Quarry",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Quarry.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An unlimited resource of Stone"
   },
   {
     "name": "Idea: Radar Station",
@@ -3229,25 +3680,29 @@
     "name": "Idea: Recruiting",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Recruiting.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Place 20 Money on a Shack to recruit a Worker"
   },
   {
     "name": "Idea: Resource Chest",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Resource_Chest.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A Chest for storing Resources"
   },
   {
     "name": "Idea: Resource Magnet",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Resource_Magnet.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "This card magically pulls cards of the same kind towards it"
   },
   {
     "name": "Idea: Road Builder",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Road_Builder.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A guild for road builders, allows you to build roads between cards."
   },
   {
     "name": "Idea: Robot Soldier",
@@ -3271,109 +3726,127 @@
     "name": "Idea: Rope",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Rope.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Long and fibrous"
   },
   {
     "name": "Idea: Rowboat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Rowboat.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A rowboat to cross to a desert island."
   },
   {
     "name": "Idea: Royal Banquet",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Royal_Banquet.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Some very tasty foods combined"
   },
   {
     "name": "Idea: Sacred Key",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sacred_Key.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Forged with Glass and Gold. Used for opening the Sacred Chest."
   },
   {
     "name": "Idea: Sail",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sail.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Used for making boats"
   },
   {
     "name": "Idea: Sand Quarry",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sand_Quarry.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An unlimited resource of Sand"
   },
   {
     "name": "Idea: Sandstone",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sandstone.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An alternative to Stone. Can be used for anything Stone is needed for."
   },
   {
     "name": "Idea: Sawmill",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sawmill.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Quickly turns Wood into Planks"
   },
   {
     "name": "Idea: Scythe",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Scythe.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Useful for farming and chopping down monsters"
   },
   {
     "name": "Idea: Seafood Stew",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Seafood_Stew.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Delicious Island Stew"
   },
   {
     "name": "Idea: Septic Tank",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Septic_Tank.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Poop storage"
   },
   {
     "name": "Idea: Sewer",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sewer.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Automatically attracts Poop"
   },
   {
     "name": "Idea: Shack",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Shack.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Barely liveable..."
   },
   {
     "name": "Idea: Shed",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Shed.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Increases your Card cap by 4"
   },
   {
     "name": "Idea: Shell Chest",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Shell_Chest.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A chest with that can hold Shells"
   },
   {
     "name": "Idea: Slingshot",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Slingshot.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Very inaccurately hurl rocks at enemies"
   },
   {
     "name": "Idea: Sloop",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sloop.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can carry 10 cards. Needs a Villager to start sailing. Can't carry buildings"
   },
   {
     "name": "Idea: Smelter",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Smelter.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Processes various materials by smelting them"
   },
   {
     "name": "Idea: Sniper",
@@ -3385,61 +3858,71 @@
     "name": "Idea: Spear",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Spear.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Stick with a pointy end"
   },
   {
     "name": "Idea: Spiked Plank",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Spiked_Plank.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "For tough construction workers"
   },
   {
     "name": "Idea: Stable Portal",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stable_Portal.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A permanent portal to The Dark Forest. Can move 7 Cards. Time for revenge"
   },
   {
     "name": "Idea: Stew",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stew.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A hearty meal"
   },
   {
     "name": "Idea: Stick",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stick.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "What's brown and sticky?"
   },
   {
     "name": "Idea: Storage Container",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Storage_Container.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "A place to store your resources. Contained cards don't count towards your Card Cap"
   },
   {
     "name": "Idea: Stove",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stove.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Allows you to cook faster than with a Campfire"
   },
   {
     "name": "Idea: Sushi",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sushi.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A delicious treat"
   },
   {
     "name": "Idea: Sword",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sword.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An Iron Bar with a pointy end"
   },
   {
     "name": "Idea: Tamago Sushi",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Tamago_Sushi.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Egg flavored sushi"
   },
   {
     "name": "Idea: Tank",
@@ -3451,31 +3934,36 @@
     "name": "Idea: Tavern",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Tavern.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Turns Food into Happiness"
   },
   {
     "name": "Idea: Temple",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Temple.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An important place of worship. It needs a [[Golden Goblet"
   },
   {
     "name": "Idea: Throwing Stars",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Throwing_Stars.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Fast and accurate, ninjas love them"
   },
   {
     "name": "Idea: Tomatoes",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Tomatoes.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "The crowd did not like it"
   },
   {
     "name": "Idea: University",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_University.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A place of wisdom. You've discovered all their Ideas."
   },
   {
     "name": "Idea: War Ship",
@@ -3487,67 +3975,78 @@
     "name": "Idea: Warehouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Warehouse.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Increases your Card Cap by 14"
   },
   {
     "name": "Idea: Water Wheel",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Water_Wheel.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Generates energy from Water"
   },
   {
     "name": "Idea: Well",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Well.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "An infinite source of Water"
   },
   {
     "name": "Idea: Wind Turbine",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wind_Turbine.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Automatically generates energy"
   },
   {
     "name": "Idea: Wine",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wine.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "This grape juice is making me feel funny"
   },
   {
     "name": "Idea: Winter Coat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Winter_Coat.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Wonderful in winter"
   },
   {
     "name": "Idea: Wishing Well",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wishing_Well.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It gives you a wish for every 100 coins."
   },
   {
     "name": "Idea: Wizard Robe",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wizard_Robe.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "It's like a magical snuggie"
   },
   {
     "name": "Idea: Wooden Shield",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wooden_Shield.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "A basic defense against hard blows"
   },
   {
     "name": "Idea:Animal Pen",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:Animal_Pen.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Can hold 5 Animals"
   },
   {
     "name": "Landmark: Art Gallery",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Landmark:_Art_Gallery.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Converts 50 Money into an Artwork"
   },
   {
     "name": "Landmark: Cinema",
@@ -3559,7 +4058,8 @@
     "name": "Landmark: City Park",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Landmark:_City_Park.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Outdoor Pleasantries"
   },
   {
     "name": "Landmark: Stadium",
@@ -3577,53 +4077,62 @@
     "name": "Rumor: Combat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Rumor:_Combat.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Some attack types are stronger than others. For example, Melee beats Magic!"
   },
   {
     "name": "Rumor: Dark Forest",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Rumor:_Dark_Forest.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "There's a hidden world behind the Strange Portal"
   },
   {
     "name": "Rumor: Eel Bait",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Rumor:_Eel_Bait.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "When using a Fish Trap, Banana can be used to catch Eel"
   },
   {
     "name": "Rumor: Shark Bait",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Rumor:_Shark_Bait.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "When using a Fish Trap, Raw Meat can be used to catch Shark"
   },
   {
     "name": "Rumor: The Island",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Rumor:_The_Island.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "Gold and Glass can be found on the Island"
   },
   {
     "name": "Rumor: Tuna Bait",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Rumor:_Tuna_Bait.png",
-    "sellValue": 1
+    "sellValue": 1,
+    "description": "When using a Fish Trap, Lime can be used to catch Tuna"
   },
   {
     "name": "Rumour: Eureka!",
     "type": "IDEA",
-    "iconPath": "/Image/card/idea/Rumour:_Eureka!.png"
+    "iconPath": "/Image/card/idea/Rumour:_Eureka!.png",
+    "description": "RUMOR: EUREKA!"
   },
   {
     "name": "Rumour: Extraction",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Rumour:_Extraction.png",
-    "sellValue": 10
+    "sellValue": 10,
+    "description": "Combine a Deposit, Factory Parts and a Worker. For example, doing this with a Lumber Deposit will make a Tree Plantation"
   },
   {
     "name": "Coin",
     "type": "COIN",
-    "iconPath": "/Image/card/resource/Coin.png"
+    "iconPath": "/Image/card/resource/Coin.png",
+    "description": "Humanity's best friend"
   },
   {
     "name": "Tree",
@@ -3632,10 +4141,20 @@
     "sellValue": 1,
     "resourceCount": 5,
     "spawnCards": [
-      { "name": "Wood", "weight": 80 },
-      { "name": "Stick", "weight": 10 },
-      { "name": "Apple", "weight": 10 }
-    ]
+      {
+        "name": "Wood",
+        "weight": 80
+      },
+      {
+        "name": "Stick",
+        "weight": 10
+      },
+      {
+        "name": "Apple",
+        "weight": 10
+      }
+    ],
+    "description": "Made of Wood and Sticks"
   },
   {
     "name": "Rock",
@@ -3644,9 +4163,19 @@
     "sellValue": 1,
     "resourceCount": 5,
     "spawnCards": [
-      { "name": "Stone", "weight": 85 },
-      { "name": "Flint", "weight": 10 },
-      { "name": "Coin", "weight": 5 }
-    ]
+      {
+        "name": "Stone",
+        "weight": 85
+      },
+      {
+        "name": "Flint",
+        "weight": 10
+      },
+      {
+        "name": "Coin",
+        "weight": 5
+      }
+    ],
+    "description": "It looks sturdy, yet punchable"
   }
 ]

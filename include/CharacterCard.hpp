@@ -18,9 +18,10 @@
 class CharacterCard : public Card {
 public:
     CharacterCard(float x, float y, const std::string& name, int sellValue,
-                  const std::string& iconPath, float scale, int health = 1, int attack = 1)
+                  const std::string& iconPath, float scale, int health = 1, int attack = 1,
+                  int foodConsumption = 0)
         : Card(x, y, name, sellValue, CardType::CHARACTER, scale),
-          health(health), attack(attack)
+          health(health), attack(attack), m_FoodConsumption(foodConsumption)
     {
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.png");
         SetIconImage(iconPath);
@@ -104,11 +105,15 @@ public:
     // ── 基礎攻擊力 ────────────────────────────────────────────
     int GetBaseAttack() const { return attack; }
 
+    // ── 每月食物消耗 ──────────────────────────────────────────
+    int GetFoodConsumption() const { return m_FoodConsumption; }
+
 protected:
     std::shared_ptr<Util::GameObject> m_HealthText;
     int   health = 1;
     int   attack = 1;
     float attackSpeed = 1.0f;
+    int   m_FoodConsumption = 0;
 
     // 裝備插槽（存名稱，空字串 = 空槽）
     std::array<std::string, 4> m_EquipNames = {"", "", "", ""};

@@ -88,6 +88,36 @@ void App::Update() {
     // ── 卡片更新 ──────────────────────────────────────────
     m_CardManager->SetZoomRatio(m_EventManager->GetZoomRatio());
     m_CardManager->Update(mousePos);
+
+    // ── 卡片數量 UI 更新 ─────────────────────────────────
+    m_UIManager->UpdateCardCount(m_CardManager->GetCardCount(),m_CardManager->GetMaxCardCount());
+
+    // ── 金幣數量 UI 更新 ─────────────────────────────────
+    m_UIManager->UpdateCoinCount(m_CardManager->GetCoinCount());
+
+    // ── 食物數量 UI 更新 ─────────────────────────────────
+    m_UIManager->UpdateFood(m_CardManager->GetTotalFoodSupply(),m_CardManager->GetNeededFoodCount());
+
+    // ── 懸停卡片敘述更新 ─────────────────────────────────
+    {
+        std::shared_ptr<Card> hoveredCard = nullptr;
+        int highestZ = -9999;
+        for (auto& card : m_CardManager->GetAllCards()) {
+            if (card->GetType() == CardType::INTERACT) continue;
+            if (card->IsMouseHovering(mousePos)) {
+                int z = card->GetGameObjects()[0]->GetZIndex();
+                if (z > highestZ) {
+                    highestZ = z;
+                    hoveredCard = card;
+                }
+            }
+        }
+        m_UIManager->UpdateDescriptionName(
+            hoveredCard ? hoveredCard->GetName() : "");
+        m_UIManager->UpdateDescriptionText(
+            hoveredCard ? hoveredCard->GetDescription() : "");
+    }
+
     int sellPrice = m_SellSlot->GetTotalPrice();
     if (sellPrice > 0) {
         float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
@@ -101,17 +131,17 @@ void App::Update() {
         }
         auto soldCards = m_SellSlot->PopAllCards();
         for (auto& card : soldCards) {
+            card->OnSold();
             m_CardManager->RemoveCard(card);
         }
     }
 
     m_Renderer.Update();
 
-    /*
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) || Util::Input::IfExit()) {
+
+    if (m_EventManager->IsRequestingExit() || Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }
-    */
 }
 
 // ─────────────────────────────────────────────────────────────
