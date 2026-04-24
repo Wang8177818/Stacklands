@@ -16,7 +16,8 @@ struct CardSpawnData {
     CardType type;
     std::string iconPath;
     float scale, attackSpeed, hitChance;
-    int health, attack, defense, food; // 0 代表非人物卡
+    int health, attack, defense, foodConsumption; // 0 代表非人物卡
+    std::string description;   // 卡片敘述文字
 
     EquipSlot equipSlot = EquipSlot::NONE;
 

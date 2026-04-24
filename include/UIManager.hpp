@@ -22,6 +22,7 @@ public:
         CARD_WIKI,
         MODS,
         CONTINUE,
+        BACKTOMENU,
     };
 
     UIManager(Util::Renderer& renderer);
@@ -66,8 +67,54 @@ public:
     // 取得月份
     std::shared_ptr<Util::GameObject> GetMonth() const { return m_Month; }
 
+    // 每幀由 App 呼叫，傳入當前卡片數與上限，更新畫面文字
+    void UpdateCardCount(int current, int max);
+
+    // 每幀由 App 呼叫，傳入當前金幣數，更新畫面文字
+    void UpdateCoinCount(int current);
+
+    // 每幀由 App 呼叫，傳入當前食物數與所需食物數，更新畫面文字
+    void UpdateFood(int current, int need);
+
+    // 當月結束時更新月份
+    void UpdateMonth(int month);
+
     // 取得暫停選單:繼續
     std::shared_ptr<MenuButton> GetContinueButton() const { return m_Continue; }
+
+    // 取得返回選單
+    std::shared_ptr<MenuButton> GetReturnToMenuButton() const { return m_ReturnToMenu; }
+
+    // 取得卡片數量圖標
+    std::shared_ptr<BackgroundImage> GetCardIcon() const { return m_CardIcon; }
+
+    // 取得卡片數量顯示
+    std::shared_ptr<Util::GameObject> GetCardCount() const { return m_CardCount; }
+
+    // 取得卡片數量圖標
+    std::shared_ptr<BackgroundImage> GetCoinIcon() const { return m_CoinIcon; }
+
+    // 取得金幣數量顯示
+    std::shared_ptr<Util::GameObject> GetCoinCount() const { return m_CoinCount; }
+
+    // 取得食物數量圖標
+    std::shared_ptr<BackgroundImage> GetFoodIcon() const { return m_FoodIcon; }
+
+    // 取得食物數量顯示
+    std::shared_ptr<Util::GameObject> GetFoodCount() const { return m_FoodCount; }
+
+    // 取得敘述文字
+    std::shared_ptr<Util::GameObject> GetDescriptionText() const { return m_DescriptionText; }
+
+    // 更新敘述欄文字（滑鼠懸停卡片時由 App 呼叫）
+    void UpdateDescriptionText(const std::string& text);
+
+    // 取得卡片名稱文字（顯示於敘述欄上方）
+    std::shared_ptr<Util::GameObject> GetDescriptionName() const { return m_DescriptionName; }
+
+    // 更新卡片名稱（滑鼠懸停卡片時由 App 呼叫）
+    void UpdateDescriptionName(const std::string& name);
+
 
 private:
     Util::Renderer& m_Renderer;
@@ -84,6 +131,7 @@ private:
     std::shared_ptr<MenuButton> m_BtnMods;
 
     std::shared_ptr<MenuButton> m_Continue;
+    std::shared_ptr<MenuButton> m_ReturnToMenu;
 
     // ── 遊戲 UI 資源 ─────────────────────────────────────
     std::shared_ptr<BackgroundImage> m_GameFieldImage;
@@ -95,6 +143,14 @@ private:
     std::shared_ptr<MenuButton>       m_PlayButton;
 
     std::shared_ptr<Util::GameObject> m_Month;
+    std::shared_ptr<BackgroundImage> m_CardIcon;
+    std::shared_ptr<Util::GameObject> m_CardCount;
+    std::shared_ptr<BackgroundImage> m_CoinIcon;
+    std::shared_ptr<Util::GameObject> m_CoinCount;
+    std::shared_ptr<BackgroundImage> m_FoodIcon;
+    std::shared_ptr<Util::GameObject> m_FoodCount;
+    std::shared_ptr<Util::GameObject> m_DescriptionName;
+    std::shared_ptr<Util::GameObject> m_DescriptionText;
 
     // 內部輔助：把一個 MenuButton 的所有 GameObject 加入 Renderer
     void AddButtonToRenderer(std::shared_ptr<MenuButton> btn);

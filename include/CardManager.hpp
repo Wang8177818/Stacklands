@@ -19,6 +19,7 @@
 #include "nlohmann/json.hpp"
 #include "RecipeManager.hpp"
 #include  "BuildingCard.hpp"
+#include  "CharacterCard.hpp"
 #include  "StructureCard.hpp"
 #include  "FoodCard.hpp"
 using json = nlohmann::json;
@@ -55,6 +56,49 @@ public:
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 
+    // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型）
+    int GetCardCount() const {
+        int count = 0;
+        for (auto& card : m_Cards)
+            if (card->GetType() != CardType::INTERACT)
+                count++;
+        return count;
+    }
+
+    // 取得卡片持有上限
+    int  GetMaxCardCount() const { return m_MaxCardCount; }
+    bool IsCardFull()      const { return GetCardCount() >= m_MaxCardCount; }
+
+    // 取得場上所有人物卡每月需消耗的食物總數
+    int GetNeededFoodCount() const {
+        int total = 0;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::CHARACTER)
+                total += std::static_pointer_cast<CharacterCard>(card)->GetFoodConsumption();
+        }
+        return total;
+    }
+
+    // 取得場上所有食物卡提供的食物總量
+    int GetTotalFoodSupply() const {
+        int total = 0;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::FOOD)
+                total += std::static_pointer_cast<FoodCard>(card)->GetNutritionValue();
+        }
+        return total;
+    }
+
+    // 取得金幣數量
+    int GetCoinCount() {
+        int count = 0;
+        for (auto& card : GetAllCards()) {
+            if (card->GetType() == CardType::COIN)
+                count++;
+        }
+        return count;
+    }
+
 private:
     // 延遲採集任務（角色堆疊在結構卡上，等待 timeLeftMs 後生成卡片再分離）
     struct PendingGather {
@@ -76,6 +120,8 @@ private:
     };
 
     Util::Renderer& m_Renderer; // 參考到 App 的 Renderer
+
+    int m_MaxCardCount = 50; // 預設上限
 
     std::vector<std::shared_ptr<Card>> m_Cards;
     std::shared_ptr<Card> m_DraggingCard = nullptr;

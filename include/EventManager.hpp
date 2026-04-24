@@ -52,6 +52,9 @@ public:
     // 查詢目前是否正在拖曳地圖
     bool IsDraggingMap() const { return m_IsDraggingMap; }
 
+    // 暫停選單按下「返回選單」後會變成 true，App 讀取後應切換狀態
+    bool IsRequestingExit() const { return m_RequestExit; }
+
     // 取得目前縮放倍率
     float GetZoomRatio() const { return m_ZoomRatio; }
 
@@ -77,6 +80,7 @@ private:
     std::shared_ptr<BackgroundImage> m_GameField;
 
     bool      m_IsDraggingMap = false;
+    bool      m_RequestExit   = false;
     glm::vec2 m_LastMousePos  = {0.f, 0.f};
     float     m_ZoomRatio     = 1.0f;  // 累積縮放倍率，供生成新卡片時使用
 

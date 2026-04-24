@@ -24,7 +24,10 @@ public:
         END,
     };
 
-    State    GetCurrentState() const { return m_CurrentState; }
+    State GetCurrentState() const { return m_CurrentState; }
+    void SetAppState(State state) {
+        m_CurrentState = state;
+    }
 
     void Start();
     void MainMenu();
