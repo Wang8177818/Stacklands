@@ -11,17 +11,17 @@
 #include <memory>
 #include "Card.hpp"
 
-// 職業配方（任一裝備 + 角色 → 職業）
+// 職業配方
 struct ProfessionRecipe {
     std::vector<std::string> equipmentOptions;
     std::string output;
 };
 
-// 合成配方（所有 inputs 完全匹配 → output）
+// 合成配方
 struct CraftingRecipe {
-    std::vector<std::string> inputs; // 已展開並排序（"2x Wood" → {"Wood","Wood"}）
+    std::vector<std::string> inputs; //（"2x Wood" → {"Wood","Wood"}）
     std::string output;
-    float time = 10.0f;  // 合成等待秒數
+    float time = 2.0f;  // 合成秒數
 };
 
 class RecipeManager {
