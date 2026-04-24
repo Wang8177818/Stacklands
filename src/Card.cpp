@@ -5,37 +5,28 @@
 #include "Card.hpp"
 #include <algorithm>
 
-// 在建構子接收 scale 參數，並存入 m_Scale
 Card::Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale)
     : m_X(x), m_Y(y), m_Name(name), m_SellValue(sellValue), m_Type(type), m_Scale(scale), m_IsDragging(false)
 {
     //底圖
     m_Background = std::make_shared<Util::GameObject>();
-    m_Background->SetZIndex(10); // 預設圖層高度
+    m_Background->SetZIndex(GameConstants::Z_BACKGROUND);
 
     //圖示
     m_Icon = std::make_shared<Util::GameObject>();
-    m_Icon->SetZIndex(11); // 圖示要蓋在底圖上
+    m_Icon->SetZIndex(GameConstants::Z_ICON);
 
     //名稱
-    m_NameText = std::make_shared<Util::GameObject>();
-    int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-    m_NameText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjh.ttc", fontSize, m_Name, Util::Color(0, 0, 0)));
-    m_NameText->SetZIndex(11);
+    m_NameText = InitLabelText(m_Name, Util::Color(0, 0, 0));
 
     //縮放
     glm::vec2 card_scale = {m_Scale, m_Scale};
     m_Background->m_Transform.scale = card_scale * 2.0f;
-    m_Icon->m_Transform.scale = card_scale * 0.6f;
-    m_NameText->m_Transform.scale = card_scale;
+    m_Icon->m_Transform.scale       = card_scale * GameConstants::ICON_SCALE_FACTOR;
 
-    float baseWidth = 850.0f;
-    float baseHeight = 1250.0f;
+    m_Width  = GameConstants::BASE_CARD_WIDTH  * m_Scale;
+    m_Height = GameConstants::BASE_CARD_HEIGHT * m_Scale;
 
-    m_Width = baseWidth * m_Scale;
-    m_Height = baseHeight * m_Scale;
-
-    // 初始化座標位置
     UpdateVisualPositions();
 }
 
@@ -61,33 +52,29 @@ void Card::Update() {
     }
     // 吸附並跟隨
     else if (m_CardBelow != nullptr) {
-        // 1. 先算出「目標座標」(底卡的中心點往下偏移 10%)
+        // 目標座標
         float targetX = m_CardBelow->m_X;
-        float targetY = m_CardBelow->m_Y - (m_Height * 0.15f);
+        float targetY = m_CardBelow->m_Y + (m_Height * GameConstants::STACK_OFFSET_Y);
 
-        //移動延遲
-        float followSpeed = 0.3f;
-        m_X += (targetX - m_X) * followSpeed;
-        m_Y += (targetY - m_Y) * followSpeed;
+        // 移動延遲
+        m_X += (targetX - m_X) * GameConstants::FOLLOW_SPEED;
+        m_Y += (targetY - m_Y) * GameConstants::FOLLOW_SPEED;
 
-        // 3. 圖層調整
-        int baseZ = 10;
-        m_Background->SetZIndex(m_CardBelow->m_Background->GetZIndex() + 3);
-        m_Icon->SetZIndex(m_CardBelow->m_Icon->GetZIndex() + 3);
-        m_NameText->SetZIndex(m_CardBelow->m_NameText->GetZIndex() + 3);
+        // 圖層調整
+        m_Background->SetZIndex(m_CardBelow->m_Background->GetZIndex() + GameConstants::STACK_Z_STEP);
+        m_Icon->SetZIndex(m_CardBelow->m_Icon->GetZIndex()             + GameConstants::STACK_Z_STEP);
+        m_NameText->SetZIndex(m_CardBelow->m_NameText->GetZIndex()     + GameConstants::STACK_Z_STEP);
 
         UpdateVisualPositions();
     }
 }
 
 bool Card::IsMouseHovering(glm::vec2 mousePos) {
-    // 計算卡牌邊界
-    float left = m_X - m_Width / 2;
-    float right = m_X + m_Width / 2;
-    float top = m_Y + m_Height / 2;
+    float left   = m_X - m_Width  / 2;
+    float right  = m_X + m_Width  / 2;
+    float top    = m_Y + m_Height / 2;
     float bottom = m_Y - m_Height / 2;
 
-    // 判斷滑鼠座標是否落在邊界內
     return (mousePos.x >= left && mousePos.x <= right &&
             mousePos.y >= bottom && mousePos.y <= top);
 }
@@ -95,71 +82,58 @@ bool Card::IsMouseHovering(glm::vec2 mousePos) {
 bool Card::IsOverlapping(std::shared_ptr<Card> otherCard) {
     if (!otherCard) return false;
 
-    // 我的邊界
-    float l1 = m_X - m_Width / 2;
-    float r1 = m_X + m_Width / 2;
+    float l1 = m_X - m_Width  / 2;
+    float r1 = m_X + m_Width  / 2;
     float t1 = m_Y + m_Height / 2;
     float b1 = m_Y - m_Height / 2;
 
-    // 對方的邊界
-    float padding = m_Width * 0.2f; // 容錯
-    float l2 = otherCard->m_X - otherCard->m_Width / 2 + padding;
-    float r2 = otherCard->m_X + otherCard->m_Width / 2 - padding;
-    float t2 = otherCard->m_Y + otherCard->m_Height / 2 - padding;
-    float b2 = otherCard->m_Y - otherCard->m_Height / 2 + padding;
+    float l2 = otherCard->m_X - otherCard->m_Width  / 2;
+    float r2 = otherCard->m_X + otherCard->m_Width  / 2;
+    float t2 = otherCard->m_Y + otherCard->m_Height / 2;
+    float b2 = otherCard->m_Y - otherCard->m_Height / 2;
 
-    // AABB
     return !(l1 > r2 || r1 < l2 || t1 < b2 || b1 > t2);
 }
 
 void Card::StartDragging(glm::vec2 mousePos) {
     m_IsDragging = true;
-
-    // 計算滑鼠點擊點與卡牌中心的距離差
     m_DragOffset = glm::vec2(m_X, m_Y) - mousePos;
 
-    // 把正在拖曳的卡牌移到最上層，才不會被其他卡牌擋住
-    m_Background->SetZIndex(40);
-    m_Icon->SetZIndex(41);
-    m_NameText->SetZIndex(41);
+    m_Background->SetZIndex(GameConstants::Z_DRAG_BG);
+    m_Icon->SetZIndex(GameConstants::Z_DRAG_TEXT);
+    m_NameText->SetZIndex(GameConstants::Z_DRAG_TEXT);
 }
 
 void Card::StopDragging() {
     m_IsDragging = false;
-    // 放開後恢復原本的圖層高度
-    m_Background->SetZIndex(10);
-    m_Icon->SetZIndex(11);
-    m_NameText->SetZIndex(12);
+    m_Background->SetZIndex(GameConstants::Z_BACKGROUND);
+    m_Icon->SetZIndex(GameConstants::Z_ICON);
+    m_NameText->SetZIndex(GameConstants::Z_ICON);
 }
 
-void Card::UpdateVisualPositions() { // 排版
+void Card::UpdateVisualPositions() {
     if (m_Background) {
         m_Background->m_Transform.translation = glm::vec2(m_X, m_Y);
     }
 
     if (m_Icon) {
-        float iconOffsetY = m_Height * 0;
-        m_Icon->m_Transform.translation = glm::vec2(m_X, m_Y + iconOffsetY);
+        m_Icon->m_Transform.translation = glm::vec2(m_X, m_Y);
     }
 
     if (m_NameText) {
-        float textOffsetY = m_Height * 0.35;
-        float textWidth = m_NameText->GetScaledSize().x;
-
-        float padding = m_Width * 0.1f;
-        float textX = (m_X - m_Width / 2.0f) + (textWidth / 2.0f) + padding;
+        float textOffsetY = m_Height * 0.35f;
+        float textWidth   = m_NameText->GetScaledSize().x;
+        float padding     = m_Width * 0.1f;
+        float textX       = (m_X - m_Width / 2.0f) + (textWidth / 2.0f) + padding;
         m_NameText->m_Transform.translation = glm::vec2(textX, m_Y + textOffsetY);
     }
 }
 
-// 回傳 GameObject 給 App 渲染
 std::vector<std::shared_ptr<Util::GameObject>> Card::GetGameObjects() {
     std::vector<std::shared_ptr<Util::GameObject>> objs;
-
     if (m_Background) objs.push_back(m_Background);
-    if (m_Icon) objs.push_back(m_Icon);
-    if (m_NameText) objs.push_back(m_NameText);
-
+    if (m_Icon)       objs.push_back(m_Icon);
+    if (m_NameText)   objs.push_back(m_NameText);
     return objs;
 }
 
@@ -167,28 +141,40 @@ void Card::SetScale(float scale) {
     m_Scale = scale;
     glm::vec2 card_scale = {m_Scale, m_Scale};
     m_Background->m_Transform.scale = card_scale * 2.0f;
-    m_Icon->m_Transform.scale       = card_scale * 0.6f;
-    m_NameText->m_Transform.scale   = card_scale;
+    m_Icon->m_Transform.scale       = card_scale * GameConstants::ICON_SCALE_FACTOR;
 
-    // 重建文字以維持與卡牌大小成固定比例
-    if (m_NameText) {
-        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-        m_NameText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize, m_Name, Util::Color(0, 0, 0)));
-    }
+    // 重建名稱文字以維持與卡牌大小成固定比例
+    RebuildLabelText(m_NameText, m_Name, Util::Color(0, 0, 0));
 
-    float baseWidth  = 850.0f;
-    float baseHeight = 1250.0f;
-    m_Width  = baseWidth  * m_Scale;
-    m_Height = baseHeight * m_Scale;
+    m_Width  = GameConstants::BASE_CARD_WIDTH  * m_Scale;
+    m_Height = GameConstants::BASE_CARD_HEIGHT * m_Scale;
 
     UpdateVisualPositions();
 }
 
 bool Card::OnStacked(std::shared_ptr<Card> /*cardAbove*/) {
-    return false; // 預設不接受堆疊
+    return false;
 }
 
 void Card::OnMonthEnd() {
-    // 預設什麼都不做
+}
+
+std::shared_ptr<Util::GameObject> Card::InitLabelText(
+    const std::string& text, const Util::Color& color, int zOffset)
+{
+    auto obj = std::make_shared<Util::GameObject>();
+    int fontSize = std::max(1, static_cast<int>(GameConstants::CARD_FONT_SCALE * m_Scale));
+    obj->SetDrawable(std::make_shared<Util::Text>(FONT_REGULAR, fontSize, text, color));
+    obj->m_Transform.scale = {m_Scale, m_Scale};
+    obj->SetZIndex(m_Background->GetZIndex() + zOffset);
+    return obj;
+}
+
+void Card::RebuildLabelText(std::shared_ptr<Util::GameObject>& obj,
+                             const std::string& text, const Util::Color& color)
+{
+    if (!obj) return;
+    int fontSize = std::max(1, static_cast<int>(GameConstants::CARD_FONT_SCALE * m_Scale));
+    obj->SetDrawable(std::make_shared<Util::Text>(FONT_REGULAR, fontSize, text, color));
+    obj->m_Transform.scale = {m_Scale, m_Scale};
 }
