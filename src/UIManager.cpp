@@ -298,7 +298,7 @@ void UIManager::UpdateDescriptionText(const std::string& text) {
     // 描述欄顯示寬 333px，scale=0.5 → surface 換行寬 = 333/0.5 = 666 像素
     constexpr uint32_t WRAP_PX = 666;
     auto drawable = std::make_shared<Util::Text>(
-        RESOURCE_DIR"/Font/msjhbd.ttc", 28, text, Util::Color(0, 0, 0), WRAP_PX);
+        RESOURCE_DIR"/Font/msjhbd.ttc", 28, text, Util::Color(0, 0, 0));
     m_DescriptionText->SetDrawable(drawable);
     // 左對齊：pivot.x = -textWidth/2
     m_DescriptionText->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
