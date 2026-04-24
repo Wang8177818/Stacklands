@@ -7,11 +7,7 @@
 
 #pragma once
 #include <string>
-#include <algorithm>
 #include "Card.hpp"
-#include "Util/GameObject.hpp"
-#include "Util/Text.hpp"
-#include "Util/Image.hpp"
 
 class FoodCard : public Card {
 public:
@@ -23,21 +19,8 @@ public:
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Food.png");
         SetIconImage(iconPath);
 
-        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-
-        m_PriceText = std::make_shared<Util::GameObject>();
-        m_PriceText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-            std::to_string(sellValue), Util::Color(100, 111, 128)));
-        m_PriceText->m_Transform.scale = {m_Scale, m_Scale};
-        m_PriceText->SetZIndex(m_Background->GetZIndex() + 1);
-
-        m_NutritionText = std::make_shared<Util::GameObject>();
-        m_NutritionText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-            std::to_string(nutritionValue), Util::Color(255, 160, 60)));
-        m_NutritionText->m_Transform.scale = {m_Scale, m_Scale};
-        m_NutritionText->SetZIndex(m_Background->GetZIndex() + 1);
+        m_PriceText     = InitLabelText(std::to_string(sellValue),      Util::Color(100, 111, 128));
+        m_NutritionText = InitLabelText(std::to_string(nutritionValue),  Util::Color(255, 160,  60));
 
         UpdateVisualPositions();
     }
@@ -50,42 +33,33 @@ public:
 
     void SetScale(float scale) override {
         Card::SetScale(scale);
-        int fontSize = std::max(1, static_cast<int>(1000 * m_Scale));
-        if (m_PriceText) {
-            m_PriceText->SetDrawable(std::make_shared<Util::Text>(
-                RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-                std::to_string(m_SellValue), Util::Color(100, 111, 128)));
-            m_PriceText->m_Transform.scale = {m_Scale, m_Scale};
-        }
-        if (m_NutritionText) {
-            m_NutritionText->SetDrawable(std::make_shared<Util::Text>(
-                RESOURCE_DIR"/Font/msjh.ttc", fontSize,
-                std::to_string(m_NutritionValue), Util::Color(255, 160, 60)));
-            m_NutritionText->m_Transform.scale = {m_Scale, m_Scale};
-        }
+        if (m_PriceText)     RebuildLabelText(m_PriceText,     std::to_string(m_SellValue),       Util::Color(100, 111, 128));
+        if (m_NutritionText) RebuildLabelText(m_NutritionText, std::to_string(m_NutritionValue),  Util::Color(255, 160,  60));
     }
 
     void UpdateVisualPositions() override {
         Card::UpdateVisualPositions();
 
         if (m_PriceText) {
-            // 左下角：與其他卡片售價位置一致
-            m_PriceText->m_Transform.translation =
-                glm::vec2(m_X + m_Width * -0.32f, m_Y + m_Height * -0.3f);
+            // 左下角：售價
+            m_PriceText->m_Transform.translation = glm::vec2(
+                m_X + m_Width  * GameConstants::PRICE_OFFSET_X,
+                m_Y + m_Height * GameConstants::PRICE_OFFSET_Y);
             m_PriceText->SetZIndex(m_Background->GetZIndex() + 1);
         }
         if (m_NutritionText) {
             // 右下角：與售價對稱
-            m_NutritionText->m_Transform.translation =
-                glm::vec2(m_X + m_Width * 0.32f, m_Y + m_Height * -0.3f);
+            m_NutritionText->m_Transform.translation = glm::vec2(
+                m_X + m_Width  * GameConstants::SECONDARY_OFFSET_X,
+                m_Y + m_Height * GameConstants::PRICE_OFFSET_Y);
             m_NutritionText->SetZIndex(m_Background->GetZIndex() + 1);
         }
     }
 
     void StartDragging(glm::vec2 mousePos) override {
         Card::StartDragging(mousePos);
-        if (m_PriceText)     m_PriceText->SetZIndex(42);
-        if (m_NutritionText) m_NutritionText->SetZIndex(42);
+        if (m_PriceText)     m_PriceText->SetZIndex(GameConstants::Z_DRAG_EXTRA);
+        if (m_NutritionText) m_NutritionText->SetZIndex(GameConstants::Z_DRAG_EXTRA);
     }
 
     void StopDragging() override {

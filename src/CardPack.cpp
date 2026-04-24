@@ -17,9 +17,9 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
 
     m_CountText = std::make_shared<Util::GameObject>();
 
-    int fontSize = std::max(1, static_cast<int>(3000 * m_Scale));
+    int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
     m_CountText->SetDrawable(std::make_shared<Util::Text>(
-        RESOURCE_DIR"/Font/msjh.ttc", fontSize, std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
+        FONT_REGULAR, fontSize, std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
     m_CountText->SetZIndex(m_Background->GetZIndex() + 2);
     m_CountText->m_Transform.scale = card_scale;
 
@@ -35,9 +35,9 @@ std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
     m_ContentPool.pop_back();
 
     if (m_CountText) {
-        int fontSize = std::max(1, static_cast<int>(3000 * m_Scale));
+        int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
+            FONT_REGULAR, fontSize,
             std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
     }
 
@@ -74,7 +74,7 @@ void CardPack::StartDragging(glm::vec2 mousePos) {
     Card::StartDragging(mousePos);
 
     if (m_CountText) {
-        m_CountText->SetZIndex(42);
+        m_CountText->SetZIndex(GameConstants::Z_DRAG_EXTRA);
     }
 }
 
@@ -90,9 +90,9 @@ void CardPack::SetScale(float scale) {
     Card::SetScale(scale); // 同步更新 NameText
 
     if (m_CountText) {
-        int fontSize = std::max(1, static_cast<int>(3000 * m_Scale));
+        int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
-            RESOURCE_DIR"/Font/msjh.ttc", fontSize,
+            FONT_REGULAR, fontSize,
             std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
         m_CountText->m_Transform.scale = {m_Scale, m_Scale};
     }
