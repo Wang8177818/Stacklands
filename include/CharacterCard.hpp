@@ -27,10 +27,10 @@ struct EquipSlotData {
 class CharacterCard : public Card {
 public:
     CharacterCard(float x, float y, const std::string& name, int sellValue, const std::string& iconPath, float scale,
-                  int health, int attack, int defense, float attackSpeed, float hitChance, int food)
+                  int health, int attack, int defense, float attackSpeed, float hitChance, int foodConsumption = 0)
         : Card(x, y, name, sellValue, CardType::CHARACTER, scale),
           baseHealth(health), baseAttack(attack), baseDefense(defense),
-          baseAttackSpeed(attackSpeed), baseHitChance(hitChance), food(food),
+          baseAttackSpeed(attackSpeed), baseHitChance(hitChance), m_FoodConsumption(foodConsumption),
           health(health), attack(attack), defense(defense),
           attackSpeed(attackSpeed), hitChance(hitChance)
     {
@@ -155,6 +155,9 @@ public:
     int GetbaseDefense() const { return baseDefense; }
     int GetDefense() const { return defense; }
 
+    // ── 每月食物消耗 ──────────────────────────────────────────
+    int GetFoodConsumption() const { return m_FoodConsumption; }
+
 protected:
     std::shared_ptr<Util::GameObject> m_HealthText;
     int   baseHealth;
@@ -162,7 +165,7 @@ protected:
     int   baseDefense;
     float baseAttackSpeed;
     float baseHitChance;
-    int   food;
+    int   m_FoodConsumption = 0;
 
     int   health;
     int   attack;
