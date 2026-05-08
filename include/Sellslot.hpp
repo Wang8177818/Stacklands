@@ -61,7 +61,11 @@ public:
     void StopDragging() override{};
 
     bool OnStacked(std::shared_ptr<Card> cardAbove) override {
-        if (cardAbove->GetType() == CardType::CHARACTER || cardAbove->GetType() == CardType::COIN || cardAbove->GetType() == CardType::PACK) return false;
+        auto t = cardAbove->GetType();
+        if (t == CardType::CHARACTER || t == CardType::COIN ||
+            t == CardType::PACK     || t == CardType::ANIMAL ||
+            t == CardType::MONSTER)
+            return false;
         return true;
     }
 

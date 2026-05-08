@@ -5,6 +5,7 @@
 #include "CardFactory.hpp"
 #include "RecipeManager.hpp"
 #include "CharacterCard.hpp"
+#include "AnimalCard.hpp"
 #include "CardPack.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -26,7 +27,9 @@ CardType StringToCardType(const std::string& typeStr) {
     if (typeStr == "EQUIPMENT") return CardType::EQUIPMENT;
     if (typeStr == "BUILDING") return CardType::BUILDING;
     if (typeStr == "STRUCTURE") return CardType::STRUCTURE;
-    if (typeStr == "FOOD") return CardType::FOOD;
+    if (typeStr == "FOOD")    return CardType::FOOD;
+    if (typeStr == "ANIMAL")  return CardType::ANIMAL;
+    if (typeStr == "MONSTER") return CardType::MONSTER;
     return CardType::BASIC;
 }
 
@@ -92,6 +95,18 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
                     data.spawnCards.push_back({cardName, weight});
             }
         }
+
+        // 動物卡用
+        if (item.contains("dropCards")) {
+            for (const auto& entry : item["dropCards"]) {
+                std::string cardName = entry.value("name", "");
+                int weight           = entry.value("weight", 1);
+                if (!cardName.empty())
+                    data.dropCards.push_back({cardName, weight});
+            }
+        }
+        data.abilityName     = item.value("abilityName", "");
+        data.abilityCooldown = item.value("abilityCooldown", 0.0f);
 
         m_CardDatabase[data.name] = data;
     }
@@ -192,7 +207,14 @@ void CardManager::RemoveCard(std::shared_ptr<Card> target) {
 }
 
 std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const CardSpawnData& data) {
-    auto newCard = CardFactory::Create(x, y, data, m_MaxCardCount);
+    auto spawnCb = [this](const std::string& name, float sx, float sy) {
+        std::uniform_real_distribution<float> off(-50.0f, 50.0f);
+        SpawnCardByName(name, m_ZoomRatio * 0.05f,
+                        sx + off(m_RandomGenerator),
+                        sy + off(m_RandomGenerator));
+    };
+
+    auto newCard = CardFactory::Create(x, y, data, m_MaxCardCount, spawnCb);
     if (newCard && !data.description.empty())
         newCard->SetDescription(data.description);
     if (newCard) AddCard(newCard);
@@ -227,7 +249,29 @@ void CardManager::Update(glm::vec2 mousePos) {
             return false;
         }), m_Cards.end());
 
-    // 2. 更新卡片動畫與跟隨
+    // 2. 動物死亡偵測：hp <= 0 時掉落並移除
+    {
+        std::vector<std::shared_ptr<Card>> deadAnimals;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::ANIMAL) {
+                auto animal = std::static_pointer_cast<AnimalCard>(card);
+                if (animal->IsDead()) deadAnimals.push_back(card);
+            }
+        }
+        for (auto& card : deadAnimals) {
+            auto animal = std::static_pointer_cast<AnimalCard>(card);
+            std::string drop = animal->RollDrop();
+            if (!drop.empty()) {
+                std::uniform_real_distribution<float> off(-60.0f, 60.0f);
+                SpawnCardByName(drop, card->GetScale(),
+                                card->GetX() + off(m_RandomGenerator),
+                                card->GetY() + off(m_RandomGenerator));
+            }
+            RemoveCard(card);
+        }
+    }
+
+    // 3. 更新卡片動畫與跟隨
     for (auto& card : m_Cards) {
         card->Update();
     }
@@ -358,7 +402,8 @@ void CardManager::Update(glm::vec2 mousePos) {
         m_DraggingCard->StopDragging();
 
         // 堆疊邏輯
-        if (m_DraggingCard->GetType() != CardType::PACK) {
+        if (m_DraggingCard->GetType() != CardType::PACK &&
+            m_DraggingCard->CanStackOnto()) {
             for (auto it = m_Cards.rbegin(); it != m_Cards.rend(); ++it) {
                 auto targetCard = *it;
                 if (targetCard != m_DraggingCard && m_DraggingCard->IsOverlapping(targetCard)) {

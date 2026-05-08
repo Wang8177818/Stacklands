@@ -50,6 +50,7 @@ add_executable(${PROJECT_NAME}
         include/nlohmann/json.hpp
         include/EquipmentCard.hpp
         include/Sellslot.hpp
+        include/AnimalCard.hpp
 )
 
 if(MSVC)

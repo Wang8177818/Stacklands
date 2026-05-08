@@ -12,8 +12,10 @@
 #include "WarehouseCard.hpp"
 #include "FoodCard.hpp"
 #include "StructureCard.hpp"
+#include "AnimalCard.hpp"
 
-std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int maxCardCount) {
+std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int maxCardCount,
+                                           std::function<void(const std::string&, float, float)> spawnCallback) {
     switch (data.type) {
         case CardType::CHARACTER:
             return std::make_shared<CharacterCard>(
@@ -50,6 +52,13 @@ std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData&
             return std::make_shared<StructureCard>(
                 x, y, data.name, data.sellValue, data.iconPath,
                 data.resourceCount, data.spawnCards, data.scale);
+
+        case CardType::ANIMAL:
+            return std::make_shared<AnimalCard>(
+                x, y, data.name, data.iconPath, data.scale,
+                data.health, data.attack,
+                data.dropCards, data.abilityName, data.abilityCooldown,
+                spawnCallback);
 
         default:
             return std::make_shared<Card>(

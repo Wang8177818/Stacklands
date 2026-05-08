@@ -2721,28 +2721,45 @@
   },
   {
     "name": "Chicken",
-    "type": "CREATURE",
+    "type": "ANIMAL",
     "iconPath": "/Image/card/creature/Chicken.png",
     "health": 5,
     "combatLevel": 6,
     "damage": 2,
     "defense": 0,
+    "dropCards": [
+      { "name": "Raw Meat", "weight": 25 },
+      { "name": "Egg",      "weight": 25 },
+      { "name": "Poop",     "weight": 25 },
+      { "name": "Bone",     "weight": 25 }
+    ],
+    "abilityName": "produce_egg",
+    "abilityCooldown": 90.0,
     "description": "Alleged descendent of dinosaurs. I don't see it"
   },
   {
     "name": "Cow",
-    "type": "CREATURE",
+    "type": "ANIMAL",
     "iconPath": "/Image/card/creature/Cow.png",
     "health": 5,
     "combatLevel": 9,
     "damage": 2,
     "defense": 1,
     "effect": "10% chance to Stun target for 5s",
+    "dropCards": [
+      { "name": "Raw Meat",      "weight": 22 },
+      { "name": "Milk",          "weight": 22 },
+      { "name": "Poop",          "weight": 22 },
+      { "name": "Bone",          "weight": 22 },
+      { "name": "Leather Tunic", "weight": 11 }
+    ],
+    "abilityName": "produce_milk",
+    "abilityCooldown": 90.0,
     "description": "MOOOOOO!"
   },
   {
     "name": "Crab",
-    "type": "CREATURE",
+    "type": "ANIMAL",
     "iconPath": "/Image/card/creature/Crab.png",
     "health": 5,
     "combatLevel": 8,
@@ -2753,7 +2770,7 @@
   },
   {
     "name": "Monkey",
-    "type": "CREATURE",
+    "type": "ANIMAL",
     "iconPath": "/Image/card/creature/Aap.png",
     "health": 6,
     "combatLevel": 5,
@@ -2763,7 +2780,7 @@
   },
   {
     "name": "Parrot",
-    "type": "CREATURE",
+    "type": "ANIMAL",
     "iconPath": "/Image/card/creature/Parrot.png",
     "health": 5,
     "combatLevel": 6,
@@ -2773,18 +2790,27 @@
   },
   {
     "name": "Rabbit",
-    "type": "CREATURE",
+    "type": "ANIMAL",
     "iconPath": "/Image/card/creature/Rabbit.png",
     "health": 5,
     "combatLevel": 8,
     "damage": 2,
     "defense": 0,
     "effect": "10% chance to Frenzy self for 10s",
+    "dropCards": [
+      { "name": "Raw Meat",   "weight": 17 },
+      { "name": "Carrot",     "weight": 17 },
+      { "name": "Poop",       "weight": 17 },
+      { "name": "Bone",       "weight": 17 },
+      { "name": "Rabbit Hat", "weight": 33 }
+    ],
+    "abilityName": "produce_poop",
+    "abilityCooldown": 90.0,
     "description": "Fluffy poop machine"
   },
   {
     "name": "Cod",
-    "type": "CREATURE",
+    "type": "MONSTER",
     "iconPath": "/Image/card/creature/Cod.png",
     "health": 3,
     "combatLevel": 4,
@@ -2794,7 +2820,7 @@
   },
   {
     "name": "Mackerel",
-    "type": "CREATURE",
+    "type": "MONSTER",
     "iconPath": "/Image/card/creature/Makreel.png",
     "health": 4,
     "combatLevel": 9,
@@ -2804,7 +2830,7 @@
   },
   {
     "name": "Tuna",
-    "type": "CREATURE",
+    "type": "MONSTER",
     "iconPath": "/Image/card/creature/Tuna.png",
     "health": 6,
     "combatLevel": 8,

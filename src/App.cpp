@@ -64,16 +64,7 @@ void App::GameInit() {
     m_CardManager->LoadCraftingRecipes(RESOURCE_DIR"/Data/Recipe.json");
 
     m_CardManager->SpawnCardByName("Villager", basic_scale);
-    m_CardManager->SpawnCardByName("Wood",     basic_scale);
-    m_CardManager->SpawnCardByName("Wood",     basic_scale);
-    m_CardManager->SpawnCardByName("Coin",     basic_scale);
-    m_CardManager->SpawnCardByName("Plank",     basic_scale);
-    m_CardManager->SpawnCardByName("Plank",     basic_scale);
-    m_CardManager->SpawnCardByName("Flint",     basic_scale);
-    m_CardManager->SpawnCardByName("Iron Bar",     basic_scale);
-    m_CardManager->SpawnCardByName("Chainmail Armor",   basic_scale);
-    m_CardManager->SpawnCardByName("Crab Scale Armor",   basic_scale);
-    m_CardManager->SpawnCardByName("Bear Claw",   basic_scale);
+    m_CardManager->SpawnCardByName("Chicken",basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;
