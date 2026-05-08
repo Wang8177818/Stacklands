@@ -28,6 +28,11 @@ struct CardSpawnData {
     int resourceCount = 0;
     float time = 10.0f;
     std::vector<std::pair<std::string, int>> spawnCards; // {卡片名稱, 權重}
+
+    // 動物卡專用：
+    std::vector<std::pair<std::string, int>> dropCards;  // 死亡掉落 {卡片名稱, 權重}
+    std::string abilityName;                             // 特殊能力識別字 (produce_egg 等)
+    float abilityCooldown = 0.0f;                        // 能力冷卻秒數
 };
 
 struct Recipe {

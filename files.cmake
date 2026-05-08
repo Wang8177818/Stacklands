@@ -1,6 +1,7 @@
 set(SRC_FILES
     App.cpp
     Card.cpp
+    AnimalCard.cpp
     CardFactory.cpp
     CardManager.cpp
     CardPack.cpp
@@ -12,6 +13,7 @@ set(SRC_FILES
 
 set(INCLUDE_FILES
     App.hpp
+    AnimalCard.hpp
     BackgroundImage.hpp
     Button.hpp
     Card.hpp

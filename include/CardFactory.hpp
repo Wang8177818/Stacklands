@@ -10,11 +10,14 @@
 #pragma once
 #include "Card.hpp"
 #include "CardData.hpp"
+#include <functional>
 #include <memory>
+#include <string>
 
 class CardFactory {
 public:
-    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data, int& maxCardCount);
+    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data, int& maxCardCount,
+                                        std::function<void(const std::string&, float, float)> spawnCallback = nullptr);
 };
 
 #endif // STACKLANDS_CARDFACTORY_HPP

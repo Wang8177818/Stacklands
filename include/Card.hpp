@@ -28,7 +28,9 @@ enum class CardType {
     PACK,       // 卡包
     COIN,       // 金幣卡
     EQUIPMENT,  // 裝備卡
-    INTERACT    // SellSlot BuySlot
+    INTERACT,   // SellSlot BuySlot
+    ANIMAL,     // 動物卡 (雞、兔、牛等友善動物)
+    MONSTER     // 怪物卡 (魚類、敵對生物等)
 };
 
 enum class EquipSlot {
@@ -56,6 +58,9 @@ public:
 
     // 當卡牌被疊上另一張卡時觸發
     virtual bool OnStacked(std::shared_ptr<Card> cardAbove);
+
+    // 此卡牌是否允許被疊到其他卡上（false = 不可堆疊到任何卡）
+    virtual bool CanStackOnto() { return true; }
 
     // 月底結算時觸發 (例如扣除食物、產生新卡牌等)
     virtual void OnMonthEnd();

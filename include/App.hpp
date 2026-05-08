@@ -38,7 +38,7 @@ public:
     glm::vec2 mousePos = Util::Input::GetCursorPosition();
 
 private:
-    float basic_scale = 0.1f;
+    float basic_scale = 0.05f;
     State    m_CurrentState = State::START;
 
     Util::Renderer m_Renderer;
