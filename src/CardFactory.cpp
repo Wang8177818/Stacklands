@@ -14,7 +14,7 @@
 #include "StructureCard.hpp"
 #include "AnimalCard.hpp"
 
-std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int maxCardCount,
+std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int& maxCardCount,
                                            std::function<void(const std::string&, float, float)> spawnCallback) {
     switch (data.type) {
         case CardType::CHARACTER:

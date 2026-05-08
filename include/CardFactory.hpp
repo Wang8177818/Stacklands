@@ -16,7 +16,7 @@
 
 class CardFactory {
 public:
-    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data, int maxCardCount = 0,
+    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data, int& maxCardCount,
                                         std::function<void(const std::string&, float, float)> spawnCallback = nullptr);
 };
 

@@ -80,6 +80,12 @@ void App::Update() {
 
     // ── 卡片更新 ──────────────────────────────────────────
     m_CardManager->SetZoomRatio(m_EventManager->GetZoomRatio());
+    switch (m_EventManager->GetGameState()) {
+        case EventManager::GameTime::PAUSE:  m_CardManager->SetTimeScale(0.0f); break;
+        case EventManager::GameTime::FAST:   m_CardManager->SetTimeScale(2.0f); break;
+        case EventManager::GameTime::NORMAL:
+        default:                             m_CardManager->SetTimeScale(1.0f); break;
+    }
     m_CardManager->Update(mousePos);
 
     // ── 卡片數量 UI 更新 ─────────────────────────────────
@@ -92,7 +98,11 @@ void App::Update() {
     m_UIManager->UpdateFood(m_CardManager->GetTotalFoodSupply(),m_CardManager->GetNeededFoodCount());
 
     // ── 懸停卡片敘述更新 ─────────────────────────────────
-    {
+    // 暫停時不顯示懸停敘述（敘述欄底圖也已經被隱藏）
+    if (m_EventManager->GetGameState() == EventManager::GameTime::PAUSE) {
+        m_UIManager->UpdateDescriptionName("");
+        m_UIManager->UpdateDescriptionText("");
+    } else {
         std::shared_ptr<Card> hoveredCard = nullptr;
         int highestZ = -9999;
         for (auto& card : m_CardManager->GetAllCards()) {

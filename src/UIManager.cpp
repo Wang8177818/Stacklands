@@ -6,6 +6,46 @@
 #include "Core/Context.hpp"
 #include "App.hpp"
 
+namespace {
+// 以單字為單位插入 \n。SDL_TTF 的 TTF_RenderUTF8_Blended_Wrapped 會處理換行。
+// maxLinePx：surface 寬度（像素）；fontSize：字級。英文平均字元寬約 fontSize*0.5。
+std::string WrapEnglishText(const std::string& text, int maxLinePx, int fontSize) {
+    const float avgCharPx = fontSize * 0.5f;
+    const int maxCharsPerLine = std::max(1, static_cast<int>(maxLinePx / avgCharPx));
+
+    std::string result;
+    int lineLen = 0;
+    std::size_t i = 0;
+    while (i < text.size()) {
+        if (text[i] == '\n') {
+            result += '\n';
+            lineLen = 0;
+            ++i;
+            continue;
+        }
+        std::size_t wordEnd = i;
+        while (wordEnd < text.size() && text[wordEnd] != ' ' && text[wordEnd] != '\n') {
+            ++wordEnd;
+        }
+        int wordLen = static_cast<int>(wordEnd - i);
+
+        if (lineLen > 0 && lineLen + 1 + wordLen > maxCharsPerLine) {
+            result += '\n';
+            lineLen = 0;
+        } else if (lineLen > 0) {
+            result += ' ';
+            ++lineLen;
+        }
+        result.append(text, i, wordLen);
+        lineLen += wordLen;
+        i = wordEnd;
+
+        while (i < text.size() && text[i] == ' ') ++i;
+    }
+    return result;
+}
+} // namespace
+
 // ─────────────────────────────────────────────────────────────
 UIManager::UIManager(Util::Renderer& renderer) : m_Renderer(renderer) {}
 
@@ -296,9 +336,11 @@ void UIManager::UpdateDescriptionText(const std::string& text) {
     }
     m_DescriptionText->SetVisible(true);
     // 描述欄顯示寬 333px，scale=0.5 → surface 換行寬 = 333/0.5 = 666 像素
-    constexpr uint32_t WRAP_PX = 666;
+    constexpr int WRAP_PX = 666;
+    constexpr int FONT_SIZE = 28;
+    std::string wrapped = WrapEnglishText(text, WRAP_PX, FONT_SIZE);
     auto drawable = std::make_shared<Util::Text>(
-        RESOURCE_DIR"/Font/msjhbd.ttc", 28, text, Util::Color(0, 0, 0));
+        RESOURCE_DIR"/Font/msjhbd.ttc", FONT_SIZE, wrapped, Util::Color(0, 0, 0));
     m_DescriptionText->SetDrawable(drawable);
     // 左對齊：pivot.x = -textWidth/2
     m_DescriptionText->SetPivot({-drawable->GetSize().x / 2.f, 0.f});

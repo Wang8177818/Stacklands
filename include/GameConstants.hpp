@@ -43,7 +43,15 @@ namespace GameConstants {
     constexpr float PROGRESS_BAR_WIDTH = 265.0f;    // 月份進度條像素寬度
 
     // ── 採集時間 ──────────────────────────────────────────────────
-    constexpr float GATHER_TIME_MS = 10000.0f; // 採集等待時間
+    constexpr float GATHER_TIME_MS = 2000.0f; // 採集等待時間
+
+    // ── 合成讀條 ──────────────────────────────────────────────────
+    constexpr float CRAFT_BAR_OFFSET_Y = 650.0f;  // 讀條相對 stackTop 卡片的 Y 偏移（會再乘上卡片 scale）
+    constexpr float CRAFT_BAR_BLACK_W  = 88.0f; // 黑底框寬
+    constexpr float CRAFT_BAR_BLACK_H  = 14.0f;  // 黑底框高
+    constexpr float CRAFT_BAR_WHITE_W  = 82.0f; // 白讀條寬
+    constexpr float CRAFT_BAR_WHITE_H  = 10.0f;  // 白讀條高
+    constexpr int   CRAFT_BAR_Z        = 95;     // 讀條 z（必須 < 100，否則被 far clip 裁切）
 
 } // namespace GameConstants
 
