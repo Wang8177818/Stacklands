@@ -234,10 +234,26 @@ void CardManager::Update(glm::vec2 mousePos) {
 
     // 計時任務
     {
-        float dtMs = static_cast<float>(Util::Time::GetDeltaTimeMs());
+        // 套用時間流速倍率（PAUSE=0 → 完全停住合成 / 採集 / 讀條動畫）
+        float dtMs = static_cast<float>(Util::Time::GetDeltaTimeMs()) * m_TimeScale;
 
         // 採集等待
         for (auto it = m_PendingGathers.begin(); it != m_PendingGathers.end(); ) {
+            auto ch = it->character.lock();
+            auto st = it->structure.lock();
+            // 中斷：任一邊消失，或玩家把角色從結構上拖開
+            if (!ch || !st || ch->GetCardBelow() != st || st->GetCardAbove() != ch) {
+                it = m_PendingGathers.erase(it);
+                continue;
+            }
+
+            // 讀條跟著結構卡（stackBottom）+ 推進進度
+            if (it->bar) {
+                const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * st->GetScale();
+                it->bar->SetPosition({st->GetX(), st->GetY() + barOffsetY});
+                it->bar->Update(dtMs);
+            }
+
             it->timeLeftMs -= dtMs;
             if (it->timeLeftMs <= 0.0f) {
                 // 角色與結構分離
@@ -266,14 +282,23 @@ void CardManager::Update(glm::vec2 mousePos) {
             auto bottom = it->stackBottom.lock();
             if (!bottom) { it = m_PendingCrafts.erase(it); continue; }
 
+            // 每幀驗證配方仍成立（玩家可能抽走某張卡 → 中斷）
+            // erase 會解構 PendingCraft → unique_ptr<TimeBar> 析構 → 自動移出 Renderer
+            float verifyTime = 0.0f;
+            if (m_RecipeManager.CheckCrafting(bottom, verifyTime) != it->outputName) {
+                it = m_PendingCrafts.erase(it);
+                continue;
+            }
+
+            // 讀條跟著 stackBottom + 推進進度
+            if (it->bar) {
+                const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * bottom->GetScale();
+                it->bar->SetPosition({bottom->GetX(), bottom->GetY() + barOffsetY});
+                it->bar->Update(dtMs);
+            }
+
             it->timeLeftMs -= dtMs;
             if (it->timeLeftMs <= 0.0f) {
-                // 驗證配方仍然成立
-                float verifyTime = 0.0f;
-                if (m_RecipeManager.CheckCrafting(bottom, verifyTime) != it->outputName) {
-                    it = m_PendingCrafts.erase(it);
-                    continue;
-                }
                 float sx = bottom->GetX(), sy = bottom->GetY(), ss = bottom->GetScale();
                 std::vector<std::shared_ptr<Card>> toDelete;
                 for (auto cur = bottom; cur; cur = cur->GetCardAbove()) {
@@ -482,7 +507,19 @@ void CardManager::Update(glm::vec2 mousePos) {
                         pg.spawnY     = structure->GetY();
                         pg.spawnScale = m_DraggingCard->GetScale();
                         pg.timeLeftMs = GameConstants::GATHER_TIME_MS;
-                        m_PendingGathers.push_back(pg);
+
+                        const float gatherSec = GameConstants::GATHER_TIME_MS / 1000.0f;
+                        const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * targetCard->GetScale();
+                        pg.bar = std::make_unique<TimeBar>(
+                            m_Renderer,
+                            glm::vec2{targetCard->GetX(), targetCard->GetY() + barOffsetY},
+                            glm::vec2{GameConstants::CRAFT_BAR_BLACK_W, GameConstants::CRAFT_BAR_BLACK_H},
+                            glm::vec2{GameConstants::CRAFT_BAR_WHITE_W, GameConstants::CRAFT_BAR_WHITE_H},
+                            gatherSec,
+                            GameConstants::CRAFT_BAR_Z);
+                        pg.bar->Start();
+
+                        m_PendingGathers.push_back(std::move(pg));
                         break;
                     }
 
@@ -513,7 +550,20 @@ void CardManager::Update(glm::vec2 mousePos) {
                                 pc.spawnY      = stackBot->GetY();
                                 pc.spawnScale  = stackBot->GetScale();
                                 pc.timeLeftMs  = craftTime * 1000.0f;
-                                m_PendingCrafts.push_back(pc);
+                                pc.totalMs     = pc.timeLeftMs;
+
+                                // 讀條放在 stackBottom 上方
+                                const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * stackBot->GetScale();
+                                pc.bar = std::make_unique<TimeBar>(
+                                    m_Renderer,
+                                    glm::vec2{stackBot->GetX(), stackBot->GetY() + barOffsetY},
+                                    glm::vec2{GameConstants::CRAFT_BAR_BLACK_W, GameConstants::CRAFT_BAR_BLACK_H},
+                                    glm::vec2{GameConstants::CRAFT_BAR_WHITE_W, GameConstants::CRAFT_BAR_WHITE_H},
+                                    craftTime,
+                                    GameConstants::CRAFT_BAR_Z);
+                                pc.bar->Start();
+
+                                m_PendingCrafts.push_back(std::move(pc));
                             }
                         }
                     }

@@ -14,7 +14,7 @@
 
 class CardFactory {
 public:
-    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data, int maxCardCount = 0);
+    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data, int& maxCardCount);
 };
 
 #endif // STACKLANDS_CARDFACTORY_HPP

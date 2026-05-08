@@ -22,6 +22,7 @@
 #include  "CharacterCard.hpp"
 #include  "StructureCard.hpp"
 #include  "FoodCard.hpp"
+#include  "TimeBar.hpp"
 using json = nlohmann::json;
 
 class CardManager {
@@ -55,6 +56,9 @@ public:
 
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
+
+    // 時間流速倍率（PAUSE=0, NORMAL=1, FAST=2 等）：影響合成 / 採集 / 讀條
+    void SetTimeScale(float scale) { m_TimeScale = scale; }
 
     // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型）
     int GetCardCount() const {
@@ -108,6 +112,7 @@ private:
         std::string spawnName;
         float spawnX, spawnY, spawnScale;
         float timeLeftMs = 10000.0f;
+        std::unique_ptr<TimeBar> bar;   // 顯示用讀條（解構時自動移出 Renderer）
     };
 
     // 延遲合成任務（配方匹配後等待 timeLeftMs 再消耗材料生成成品）
@@ -117,6 +122,8 @@ private:
         std::string outputName;
         float spawnX, spawnY, spawnScale;
         float timeLeftMs;
+        float totalMs = 0.f;             // 整段配方所需毫秒（用於進度條）
+        std::unique_ptr<TimeBar> bar;    // 顯示用讀條（解構時自動移出 Renderer）
     };
 
     Util::Renderer& m_Renderer; // 參考到 App 的 Renderer
@@ -136,6 +143,7 @@ private:
     std::shared_ptr<Card> m_LastClickedCard = nullptr;
 
     float m_ZoomRatio = 1.0f; // 當前累積縮放倍率，用於卡包開出卡片時套用正確大小
+    float m_TimeScale = 1.0f; // 計時任務的時間流速倍率（暫停=0）
     RecipeManager m_RecipeManager;
 
     // 卡牌與卡包的資料庫字典
