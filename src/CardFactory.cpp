@@ -13,7 +13,7 @@
 #include "FoodCard.hpp"
 #include "StructureCard.hpp"
 
-std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int maxCardCount) {
+std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int& maxCardCount) {
     switch (data.type) {
         case CardType::CHARACTER:
             return std::make_shared<CharacterCard>(

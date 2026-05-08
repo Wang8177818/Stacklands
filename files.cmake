@@ -26,6 +26,7 @@ set(INCLUDE_FILES
     UIManager.hpp
     EventManager.hpp
     RecipeManager.hpp
+    TimeBar.hpp
 )
 
 set(TEST_FILES

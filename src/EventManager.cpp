@@ -196,6 +196,7 @@ void EventManager::ESCMenu() {
                 runTimeBar->SetVisible(true);
                 resourseBar->SetVisible(true);
                 timeBar->SetVisible(true);
+                playButton->ChangeImage("/Image/button/play.png");
                 playButton->ShowAll();
                 break;
             case UIManager::MenuEvent::BACKTOMENU:
@@ -246,6 +247,7 @@ void EventManager::ESCMenu() {
             coinCount->SetVisible(true);
             foodIcon->SetVisible(true);
             foodCount->SetVisible(true);
+            playButton->ChangeImage("/Image/button/play.png");
             playButton->ShowAll();
         }
     }
