@@ -194,6 +194,84 @@ void CardManager::AddCard(std::shared_ptr<Card> card) {
     }
 }
 
+// ─────────────────────────────────────────────────────────────
+// 月底結算：把人物每月需消耗的食物總量從場上扣除
+//   - 嬰兒 (food=1) 優先進食，再輪到成人 (food=2)
+//   - 食物卡上的 nutrition 累進扣，扣到 0 才移除（不浪費）
+//   - 食物不夠的人物 → 變成 Corpse
+// ─────────────────────────────────────────────────────────────
+void CardManager::OnMonthEnd() {
+    // 1. 收集人物，按 foodConsumption 升冪排序：嬰兒優先
+    std::vector<std::shared_ptr<CharacterCard>> chars;
+    for (auto& c : m_Cards)
+        if (c->GetType() == CardType::CHARACTER)
+            chars.push_back(std::static_pointer_cast<CharacterCard>(c));
+
+    if (chars.empty()) {
+        LOG_INFO("月底結算：場上無人物，無食物消耗");
+        return;
+    }
+
+    std::stable_sort(chars.begin(), chars.end(),
+        [](const std::shared_ptr<CharacterCard>& a,
+           const std::shared_ptr<CharacterCard>& b) {
+            return a->GetFoodConsumption() < b->GetFoodConsumption();
+        });
+
+    // 2. 收集所有食物卡（用 m_Cards 順序）
+    std::vector<std::shared_ptr<FoodCard>> foods;
+    for (auto& c : m_Cards)
+        if (c->GetType() == CardType::FOOD)
+            foods.push_back(std::static_pointer_cast<FoodCard>(c));
+
+    // 3. 依優先順序餵食：每人從食物池逐單位扣 nutrition
+    std::vector<std::shared_ptr<CharacterCard>> starved;
+    std::size_t foodIdx = 0;
+    int totalConsumed = 0;
+    for (auto& chr : chars) {
+        int need = chr->GetFoodConsumption();
+        while (need > 0 && foodIdx < foods.size()) {
+            int taken = foods[foodIdx]->ConsumeNutrition(need);
+            need          -= taken;
+            totalConsumed += taken;
+            if (foods[foodIdx]->GetNutritionValue() == 0) ++foodIdx;
+        }
+        if (need > 0) starved.push_back(chr);
+    }
+
+    // 4. 把扣到 0 的食物卡實際移除
+    int removedFoods = 0;
+    for (auto& f : foods) {
+        if (f->GetNutritionValue() == 0) {
+            RemoveCard(f);
+            ++removedFoods;
+        }
+    }
+
+    // 5. 餓死的人物變屍體
+    for (auto& c : starved) {
+        float x = c->GetX(), y = c->GetY(), s = c->GetScale();
+
+        // 切斷堆疊連結，避免角色被相鄰卡的 CardAbove/CardBelow 持有變成幽靈，
+        // 也讓 PendingGather/PendingCraft 的中斷判定立即觸發
+        if (auto below = c->GetCardBelow()) below->SetCardAbove(nullptr);
+        if (auto above = c->GetCardAbove()) above->SetCardBelow(nullptr);
+        c->SetCardBelow(nullptr);
+        c->SetCardAbove(nullptr);
+
+        RemoveCard(c);
+        SpawnCardByName("Corpse", s, x, y);
+    }
+
+    if (!starved.empty()) {
+        LOG_WARN("月底結算：消耗 {} nutrition、移除 {} 張空食物卡，飢餓死亡 {} 人",
+                 totalConsumed, removedFoods, starved.size());
+    } else {
+        LOG_INFO("月底結算：消耗 {} nutrition、移除 {} 張空食物卡",
+                 totalConsumed, removedFoods);
+    }
+}
+
 void CardManager::RemoveCard(std::shared_ptr<Card> target) {
     m_Cards.erase(std::remove_if(m_Cards.begin(), m_Cards.end(),
         [&](const std::shared_ptr<Card>& card) {

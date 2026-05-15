@@ -4,6 +4,7 @@
 
 #include "EventManager.hpp"
 #include "../PTSD/example/include/App.hpp"
+#include "CardManager.hpp"
 #include "GameConstants.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -156,6 +157,8 @@ void EventManager::SwitchGameState() {
         tick = 0;
         month += 1;
         m_UIManager->UpdateMonth(month);
+        // 月底結算（扣食物等）
+        if (m_CardManager) m_CardManager->OnMonthEnd();
     }
 
 }
