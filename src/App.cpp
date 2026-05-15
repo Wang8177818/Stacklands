@@ -65,6 +65,7 @@ void App::GameInit() {
 
     m_CardManager->SpawnCardByName("Villager", basic_scale);
     m_CardManager->SpawnCardByName("Chicken",basic_scale);
+    m_CardManager->SpawnCardByName("Bear",basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;

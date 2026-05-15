@@ -22,6 +22,12 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(ptsd)
 
+FetchContent_Declare(
+    Catch2
+    URL https://github.com/catchorg/Catch2/archive/refs/tags/v3.7.1.tar.gz
+)
+FetchContent_MakeAvailable(Catch2)
+
 include(files.cmake)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
@@ -51,6 +57,7 @@ add_executable(${PROJECT_NAME}
         include/EquipmentCard.hpp
         include/Sellslot.hpp
         include/AnimalCard.hpp
+        include/AttackResolver.hpp
 )
 
 if(MSVC)
@@ -74,3 +81,11 @@ target_link_libraries(${PROJECT_NAME}
     SDL2::SDL2main
     PTSD
 )
+
+# ── CombatTests（Catch2，無 SDL 依賴）──────────────────────────────
+add_executable(CombatTests ${SRC_DIR}/CombatTests.cpp)
+target_include_directories(CombatTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(CombatTests PRIVATE Catch2::Catch2WithMain)
+include(CTest)
+include(Catch)
+catch_discover_tests(CombatTests)

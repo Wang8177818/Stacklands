@@ -23,6 +23,7 @@
 #include  "StructureCard.hpp"
 #include  "FoodCard.hpp"
 #include  "TimeBar.hpp"
+#include  "MonsterCard.hpp"
 using json = nlohmann::json;
 
 class CardManager {
@@ -115,6 +116,14 @@ private:
         std::unique_ptr<TimeBar> bar;   // 顯示用讀條（解構時自動移出 Renderer）
     };
 
+    // 戰鬥任務（CHARACTER / ANIMAL 對 MONSTER 的持續戰鬥）
+    struct PendingCombat {
+        std::weak_ptr<Card> fighter;   // CHARACTER 或 ANIMAL
+        std::weak_ptr<Card> monster;
+        float fighterTimer = 0.0f;     // ms 倒數至下一次攻擊
+        float monsterTimer = 0.0f;
+    };
+
     // 延遲合成任務（配方匹配後等待 timeLeftMs 再消耗材料生成成品）
     struct PendingCraft {
         std::weak_ptr<Card> stackBottom;
@@ -132,8 +141,9 @@ private:
 
     std::vector<std::shared_ptr<Card>> m_Cards;
     std::shared_ptr<Card> m_DraggingCard = nullptr;
-    std::vector<PendingGather> m_PendingGathers;
-    std::vector<PendingCraft>  m_PendingCrafts;
+    std::vector<PendingGather>  m_PendingGathers;
+    std::vector<PendingCraft>   m_PendingCrafts;
+    std::vector<PendingCombat>  m_PendingCombats;
 
     std::mt19937 m_RandomGenerator;
 

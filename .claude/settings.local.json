@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmake --build cmake-build-debug --target Stacklands)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(head *)",
+      "Bash(cmake --build build --config Debug)"
+    ]
+  }
+}

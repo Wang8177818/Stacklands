@@ -9,6 +9,16 @@
 #include <string>
 #include "Card.hpp"
 
+// 裝備插槽資料（CharacterCard / MonsterCard 共用）
+struct EquipSlotData {
+    std::string name;
+    int   bonusAtk       = 0;
+    int   bonusHp        = 0;
+    int   bonusDef       = 0;
+    float bonusAtkSpd    = 0.0f;
+    float bonusHitChance = 0.0f;
+};
+
 // 生成卡片所需的資料
 struct CardSpawnData {
     std::string name;
