@@ -31,6 +31,17 @@ public:
 
     int GetNutritionValue() const { return m_NutritionValue; }
 
+    // 扣除 nutrition；回傳實際扣掉的量（可能 < amount，因為不會扣到負）。
+    // 扣至 0 後卡片應由 CardManager 移除。
+    int ConsumeNutrition(int amount) {
+        int taken = std::min(amount, m_NutritionValue);
+        m_NutritionValue -= taken;
+        if (m_NutritionText)
+            RebuildLabelText(m_NutritionText, std::to_string(m_NutritionValue),
+                             Util::Color(255, 160, 60));
+        return taken;
+    }
+
     void SetScale(float scale) override {
         Card::SetScale(scale);
         if (m_PriceText)     RebuildLabelText(m_PriceText,     std::to_string(m_SellValue),       Util::Color(100, 111, 128));

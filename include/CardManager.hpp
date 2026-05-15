@@ -73,6 +73,9 @@ public:
     int  GetMaxCardCount() const { return m_MaxCardCount; }
     bool IsCardFull()      const { return GetCardCount() >= m_MaxCardCount; }
 
+    // 月底結算：扣除人物的食物消耗
+    void OnMonthEnd();
+
     // 取得場上所有人物卡每月需消耗的食物總數
     int GetNeededFoodCount() const {
         int total = 0;

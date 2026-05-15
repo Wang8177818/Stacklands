@@ -13,6 +13,8 @@
 #include "Card.hpp"
 #include "UIManager.hpp"
 
+class CardManager;  // 前置宣告：避免循環 include
+
 class EventManager {
 public:
 
@@ -40,6 +42,9 @@ public:
 
     // 綁定 UIManager（不擁有，只借用）
     void SetUIManager(UIManager* uiManager) { m_UIManager = uiManager; }
+
+    // 綁定 CardManager（月底結算時呼叫其 OnMonthEnd）
+    void SetCardManager(CardManager* cardManager) { m_CardManager = cardManager; }
 
     // 每幀呼叫
     // mousePos        — 當前滑鼠座標
@@ -86,7 +91,8 @@ private:
 
     GameTime m_GameTime = GameTime::NORMAL;
 
-    UIManager* m_UIManager = nullptr;
+    UIManager*   m_UIManager   = nullptr;
+    CardManager* m_CardManager = nullptr;
 };
 
 #endif //STACKLANDS_EVENTMANAGER_HPP

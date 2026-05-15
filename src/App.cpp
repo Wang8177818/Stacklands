@@ -37,6 +37,7 @@ void App::MainMenu() {
             // 遊戲 UI 建好後，把 GameField 與 UIManager 交給 EventManager
             m_EventManager->SetGameField(m_UIManager->GetGameFieldImage());
             m_EventManager->SetUIManager(m_UIManager.get());
+            m_EventManager->SetCardManager(m_CardManager.get());
             m_CurrentState = State::GAME_INIT;
             break;
 
@@ -65,6 +66,7 @@ void App::GameInit() {
 
     m_CardManager->SpawnCardByName("Villager", basic_scale);
     m_CardManager->SpawnCardByName("Chicken",basic_scale);
+    m_CardManager->SpawnCardByName("Stew",basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;

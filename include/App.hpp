@@ -48,7 +48,6 @@ private:
     std::unique_ptr<UIManager>    m_UIManager;
     std::unique_ptr<EventManager> m_EventManager;
     std::shared_ptr<SellSlot> m_SellSlot;
-
 };
 
 #endif
