@@ -18,7 +18,8 @@ public:
                const std::string& name,
                const std::string& iconPath,
                float scale,
-               int health, int attack,
+               int health, int attack, int defense,
+               float attackSpeed, float hitChance,
                const std::vector<std::pair<std::string, int>>& dropCards,
                const std::string& abilityName,
                float abilityCooldown,
@@ -33,12 +34,18 @@ public:
     bool CanStackOnto() override { return false; }
 
     void TakeDamage(int dmg);
-    bool IsDead() const { return m_Health <= 0; }
-    int  GetHealth() const { return m_Health; }
+    bool  IsDead()         const { return m_Health <= 0; }
+    int   GetHealth()      const { return m_Health; }
+    int   GetMaxHealth()   const { return m_MaxHealth; }
+    int   GetAttack()      const { return m_Attack; }
+    int   GetDefense()     const { return m_Defense; }
+    float GetAttackSpeed() const { return m_AttackSpeed; }
+    float GetHitChance()   const { return m_HitChance; }
 
     // 以權重隨機抽一個掉落物名稱；無掉落則回傳空字串
     std::string RollDrop() const;
 
+    void StartDragging(glm::vec2 mousePos) override;
     void UpdateVisualPositions() override;
     void SetScale(float scale) override;
 
@@ -55,9 +62,17 @@ private:
     int m_Health;
     int m_Attack;
 
+    int   m_MaxHealth    = 0;
+    int   m_Defense      = 0;
+    float m_AttackSpeed  = 3.0f;
+    float m_HitChance    = 0.6f;
+
     // 隨機移動
     float m_MoveTimer    = 0.0f;
-    float m_MoveCooldown = 0.0f; // 隨機決定，3~6 秒
+    float m_MoveCooldown = 0.0f;
+    float m_TargetX      = 0.0f;
+    float m_TargetY      = 0.0f;
+    bool  m_IsMoving     = false;
 
     // 特殊能力
     float m_AbilityTimer    = 0.0f;

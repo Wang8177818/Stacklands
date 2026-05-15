@@ -62,6 +62,18 @@ public:
     // 此卡牌是否允許被疊到其他卡上（false = 不可堆疊到任何卡）
     virtual bool CanStackOnto() { return true; }
 
+    // 此卡牌是否可被玩家拖動
+    virtual bool CanDrag() const { return true; }
+
+    // 戰鬥介面（由 CharacterCard / AnimalCard / MonsterCard 覆寫）
+    virtual void  TakeDamage(int /*dmg*/) {}
+    virtual bool  IsDead()          const { return false; }
+    virtual int   GetAttack()       const { return 0; }
+    virtual int   GetDefense()      const { return 0; }
+    virtual float GetAttackSpeed()  const { return 3.0f; }
+    virtual float GetHitChance()    const { return 0.6f; }
+    virtual int   GetHealth()       const { return 0; }
+
     // 月底結算時觸發 (例如扣除食物、產生新卡牌等)
     virtual void OnMonthEnd();
 

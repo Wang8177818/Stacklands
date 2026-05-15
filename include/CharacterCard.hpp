@@ -9,16 +9,8 @@
 #include <array>
 #include <string>
 #include "Card.hpp"
+#include "CardData.hpp"
 #include "EquipmentCard.hpp"
-
-struct EquipSlotData {
-    std::string name;
-    int   bonusAtk       = 0;
-    int   bonusHp        = 0;
-    int   bonusDef       = 0;
-    float bonusAtkSpd    = 0.0f;
-    float bonusHitChance = 0.0f;
-};
 
 class CharacterCard : public Card {
 public:
@@ -28,7 +20,8 @@ public:
           baseHealth(health), baseAttack(attack), baseDefense(defense),
           baseAttackSpeed(attackSpeed), baseHitChance(hitChance), m_FoodConsumption(foodConsumption),
           health(health), attack(attack), defense(defense),
-          attackSpeed(attackSpeed), hitChance(hitChance)
+          attackSpeed(attackSpeed), hitChance(hitChance),
+          m_CurrentHealth(health)
     {
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.png");
         SetIconImage(iconPath);
@@ -92,12 +85,28 @@ public:
         defense     = totalDef;
         attackSpeed = totalAtkSpd;
         hitChance   = totalHit;
+        if (m_CurrentHealth > health) m_CurrentHealth = health;
         UpdateVisualPositions();
     }
 
+    // ── 戰鬥介面 ────────────────────────────────────────────────────
+    void TakeDamage(int dmg) override {
+        m_CurrentHealth -= dmg;
+        if (m_CurrentHealth < 0) m_CurrentHealth = 0;
+        if (m_HealthText)
+            RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), Util::Color(255, 255, 255));
+    }
+    bool IsDead()          const override { return m_CurrentHealth <= 0; }
+    int   GetAttack()      const override { return attack; }
+    int   GetDefense()     const override { return defense; }
+    float GetAttackSpeed() const override { return attackSpeed; }
+    float GetHitChance()   const override { return hitChance; }
+    int   GetHealth()      const override { return m_CurrentHealth; }
+    int   GetMaxHealth()   const          { return health; }
+
     void SetScale(float scale) override {
         Card::SetScale(scale);
-        if (m_HealthText) RebuildLabelText(m_HealthText, std::to_string(health), Util::Color(255, 255, 255));
+        if (m_HealthText) RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), Util::Color(255, 255, 255));
     }
 
     void OnMonthEnd() override {}
@@ -109,7 +118,7 @@ public:
                 m_X + m_Width  * GameConstants::HEALTH_OFFSET_X,
                 m_Y + m_Height * GameConstants::PRICE_OFFSET_Y);
             m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
-            RebuildLabelText(m_HealthText, std::to_string(health), Util::Color(255, 255, 255));
+            RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), Util::Color(255, 255, 255));
         }
     }
 
@@ -128,14 +137,9 @@ public:
         return cardAbove->GetType() == CardType::EQUIPMENT;
     }
 
-    int GetbaseAttack()  const { return baseAttack; }
-    int GetAttack()      const { return attack; }
-
-    int GetbaseHealth()  const { return baseHealth; }
-    int GetHealth()      const { return health; }
-
-    int GetbaseDefense() const { return baseDefense; }
-    int GetDefense()     const { return defense; }
+    int   GetbaseAttack()    const { return baseAttack; }
+    int   GetbaseHealth()    const { return baseHealth; }
+    int   GetbaseDefense()   const { return baseDefense; }
 
     // ── 每月食物消耗 ──────────────────────────────────────────
     int GetFoodConsumption() const { return m_FoodConsumption; }
@@ -154,6 +158,7 @@ protected:
     int   defense;
     float attackSpeed;
     float hitChance;
+    int   m_CurrentHealth = 0;
 
     std::array<EquipSlotData, 4> m_Equips;
 };

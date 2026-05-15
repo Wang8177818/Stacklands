@@ -2,6 +2,7 @@ set(SRC_FILES
     App.cpp
     Card.cpp
     AnimalCard.cpp
+    MonsterCard.cpp
     CardFactory.cpp
     CardManager.cpp
     CardPack.cpp
@@ -14,6 +15,7 @@ set(SRC_FILES
 set(INCLUDE_FILES
     App.hpp
     AnimalCard.hpp
+    AttackResolver.hpp
     BackgroundImage.hpp
     Button.hpp
     Card.hpp
@@ -24,6 +26,7 @@ set(INCLUDE_FILES
     CardPack.hpp
     CoinCard.hpp
     GameConstants.hpp
+    MonsterCard.hpp
     ResourceCard.hpp
     UIManager.hpp
     EventManager.hpp
@@ -32,4 +35,5 @@ set(INCLUDE_FILES
 )
 
 set(TEST_FILES
+    CombatTests.cpp
 )

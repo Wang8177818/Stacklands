@@ -2727,6 +2727,8 @@
     "combatLevel": 6,
     "damage": 2,
     "defense": 0,
+    "hitChance": 0.60,
+    "attackSpeed": 3.0,
     "dropCards": [
       { "name": "Raw Meat", "weight": 25 },
       { "name": "Egg",      "weight": 25 },
@@ -2745,6 +2747,8 @@
     "combatLevel": 9,
     "damage": 2,
     "defense": 1,
+    "hitChance": 0.60,
+    "attackSpeed": 3.0,
     "effect": "10% chance to Stun target for 5s",
     "dropCards": [
       { "name": "Raw Meat",      "weight": 22 },
@@ -2765,6 +2769,8 @@
     "combatLevel": 8,
     "damage": 2,
     "defense": 0,
+    "hitChance": 0.60,
+    "attackSpeed": 3.0,
     "effect": "10% chance to make self Invulnerable for 10s",
     "description": "Why does everything evolve into crabs?"
   },
@@ -2776,6 +2782,8 @@
     "combatLevel": 5,
     "damage": 2,
     "defense": 0,
+    "hitChance": 0.60,
+    "attackSpeed": 3.0,
     "description": "Would really like a Banana"
   },
   {
@@ -2786,6 +2794,8 @@
     "combatLevel": 6,
     "damage": 2,
     "defense": 0,
+    "hitChance": 0.60,
+    "attackSpeed": 3.0,
     "description": "Talks like a human, flies like a bird. Makes Pirates happy"
   },
   {
@@ -2796,6 +2806,8 @@
     "combatLevel": 8,
     "damage": 2,
     "defense": 0,
+    "hitChance": 0.60,
+    "attackSpeed": 3.0,
     "effect": "10% chance to Frenzy self for 10s",
     "dropCards": [
       { "name": "Raw Meat",   "weight": 17 },
