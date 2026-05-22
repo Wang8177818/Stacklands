@@ -18,6 +18,7 @@
 #include <fstream>
 
 #include "WarehouseCard.hpp"
+#include "LocationCard.hpp"
 
 #include "Util/Logger.hpp"
 
@@ -30,8 +31,10 @@ CardType StringToCardType(const std::string& typeStr) {
     if (typeStr == "BUILDING") return CardType::BUILDING;
     if (typeStr == "STRUCTURE") return CardType::STRUCTURE;
     if (typeStr == "FOOD")    return CardType::FOOD;
-    if (typeStr == "ANIMAL")  return CardType::ANIMAL;
-    if (typeStr == "MONSTER") return CardType::MONSTER;
+    if (typeStr == "ANIMAL")   return CardType::ANIMAL;
+    if (typeStr == "MONSTER")  return CardType::MONSTER;
+    if (typeStr == "LOCATION") return CardType::LOCATION;
+    if (typeStr == "IDEA")     return CardType::IDEA;
     return CardType::BASIC;
 }
 
@@ -403,17 +406,22 @@ void CardManager::Update(glm::vec2 mousePos) {
                     if (it->exhausted && st) RemoveCard(st);
                     it = m_PendingGathers.erase(it);
                 } else {
-                    // 結構仍有資源 → 直接重新開始採集（不需玩家重新堆疊）
-                    auto structure = std::static_pointer_cast<StructureCard>(st);
-                    std::string nextSpawn = structure->Gather(m_RandomGenerator);
+                    // 仍有資源（或地點卡永不耗盡）→ 直接重新開始採集
+                    if (st->GetType() == CardType::STRUCTURE) {
+                        auto structure = std::static_pointer_cast<StructureCard>(st);
+                        it->spawnName  = structure->Gather(m_RandomGenerator);
+                        it->exhausted  = structure->IsExhausted();
+                        it->timeLeftMs = GameConstants::GATHER_TIME_MS;
+                    } else { // LOCATION
+                        auto location = std::static_pointer_cast<LocationCard>(st);
+                        it->spawnName  = location->Explore(m_RandomGenerator);
+                        it->exhausted  = false;
+                        it->timeLeftMs = location->GetExploreTimeMs();
+                    }
+                    it->spawnX = st->GetX();
+                    it->spawnY = st->GetY();
 
-                    it->exhausted  = structure->IsExhausted();
-                    it->spawnName  = nextSpawn;
-                    it->spawnX     = st->GetX();
-                    it->spawnY     = st->GetY();
-                    it->timeLeftMs = GameConstants::GATHER_TIME_MS;
-
-                    const float gatherSec  = GameConstants::GATHER_TIME_MS / 1000.0f;
+                    const float gatherSec  = it->timeLeftMs / 1000.0f;
                     const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * st->GetScale();
                     it->bar = std::make_unique<TimeBar>(
                         m_Renderer,
@@ -745,28 +753,42 @@ void CardManager::Update(glm::vec2 mousePos) {
                         break;
                     }
 
-                    // Gather（採集：角色堆疊在結構卡上，等待 10s 後分離並生成資源卡）
-                    if (targetCard->GetType() == CardType::STRUCTURE &&
+                    // Gather（採集/探索：角色堆疊在結構卡或地點卡上）
+                    if ((targetCard->GetType() == CardType::STRUCTURE ||
+                         targetCard->GetType() == CardType::LOCATION) &&
                         m_DraggingCard->GetType() == CardType::CHARACTER) {
 
-                        auto structure = std::static_pointer_cast<StructureCard>(targetCard);
-                        std::string spawnName = structure->Gather(m_RandomGenerator);
+                        std::string spawnName;
+                        bool  exhausted   = false;
+                        float gatherTimeMs;
 
-                        // 將角色堆疊在結構卡上方
+                        if (targetCard->GetType() == CardType::STRUCTURE) {
+                            auto structure = std::static_pointer_cast<StructureCard>(targetCard);
+                            spawnName    = structure->Gather(m_RandomGenerator);
+                            exhausted    = structure->IsExhausted();
+                            gatherTimeMs = GameConstants::GATHER_TIME_MS;
+                        } else {
+                            auto location = std::static_pointer_cast<LocationCard>(targetCard);
+                            spawnName    = location->Explore(m_RandomGenerator);
+                            exhausted    = false;
+                            gatherTimeMs = location->GetExploreTimeMs();
+                        }
+
+                        // 將角色堆疊在卡上方
                         targetCard->SetCardAbove(m_DraggingCard);
                         m_DraggingCard->SetCardBelow(targetCard);
 
                         PendingGather pg;
                         pg.character  = m_DraggingCard;
                         pg.structure  = targetCard;
-                        pg.exhausted  = structure->IsExhausted();
+                        pg.exhausted  = exhausted;
                         pg.spawnName  = spawnName;
-                        pg.spawnX     = structure->GetX();
-                        pg.spawnY     = structure->GetY();
+                        pg.spawnX     = targetCard->GetX();
+                        pg.spawnY     = targetCard->GetY();
                         pg.spawnScale = m_DraggingCard->GetScale();
-                        pg.timeLeftMs = GameConstants::GATHER_TIME_MS;
+                        pg.timeLeftMs = gatherTimeMs;
 
-                        const float gatherSec = GameConstants::GATHER_TIME_MS / 1000.0f;
+                        const float gatherSec  = gatherTimeMs / 1000.0f;
                         const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * targetCard->GetScale();
                         pg.bar = std::make_unique<TimeBar>(
                             m_Renderer,

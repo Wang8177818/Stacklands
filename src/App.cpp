@@ -65,9 +65,9 @@ void App::GameInit() {
     m_CardManager->LoadCraftingRecipes(RESOURCE_DIR"/Data/Recipe.json");
 
     m_CardManager->SpawnCardByName("Villager", basic_scale);
-    m_CardManager->SpawnCardByName("Chicken",basic_scale);
+    m_CardManager->SpawnCardByName("Graveyard",basic_scale);
     m_CardManager->SpawnCardByName("Stew",basic_scale);
-    m_CardManager->SpawnCardByName("Bear",basic_scale);
+    m_CardManager->SpawnCardByName("Idea: Altar",basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;

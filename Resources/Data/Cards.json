@@ -2727,13 +2727,25 @@
     "combatLevel": 6,
     "damage": 2,
     "defense": 0,
-    "hitChance": 0.60,
+    "hitChance": 0.6,
     "attackSpeed": 3.0,
     "dropCards": [
-      { "name": "Raw Meat", "weight": 25 },
-      { "name": "Egg",      "weight": 25 },
-      { "name": "Poop",     "weight": 25 },
-      { "name": "Bone",     "weight": 25 }
+      {
+        "name": "Raw Meat",
+        "weight": 25
+      },
+      {
+        "name": "Egg",
+        "weight": 25
+      },
+      {
+        "name": "Poop",
+        "weight": 25
+      },
+      {
+        "name": "Bone",
+        "weight": 25
+      }
     ],
     "abilityName": "produce_egg",
     "abilityCooldown": 90.0,
@@ -2747,15 +2759,30 @@
     "combatLevel": 9,
     "damage": 2,
     "defense": 1,
-    "hitChance": 0.60,
+    "hitChance": 0.6,
     "attackSpeed": 3.0,
     "effect": "10% chance to Stun target for 5s",
     "dropCards": [
-      { "name": "Raw Meat",      "weight": 22 },
-      { "name": "Milk",          "weight": 22 },
-      { "name": "Poop",          "weight": 22 },
-      { "name": "Bone",          "weight": 22 },
-      { "name": "Leather Tunic", "weight": 11 }
+      {
+        "name": "Raw Meat",
+        "weight": 22
+      },
+      {
+        "name": "Milk",
+        "weight": 22
+      },
+      {
+        "name": "Poop",
+        "weight": 22
+      },
+      {
+        "name": "Bone",
+        "weight": 22
+      },
+      {
+        "name": "Leather Tunic",
+        "weight": 11
+      }
     ],
     "abilityName": "produce_milk",
     "abilityCooldown": 90.0,
@@ -2769,7 +2796,7 @@
     "combatLevel": 8,
     "damage": 2,
     "defense": 0,
-    "hitChance": 0.60,
+    "hitChance": 0.6,
     "attackSpeed": 3.0,
     "effect": "10% chance to make self Invulnerable for 10s",
     "description": "Why does everything evolve into crabs?"
@@ -2782,7 +2809,7 @@
     "combatLevel": 5,
     "damage": 2,
     "defense": 0,
-    "hitChance": 0.60,
+    "hitChance": 0.6,
     "attackSpeed": 3.0,
     "description": "Would really like a Banana"
   },
@@ -2794,7 +2821,7 @@
     "combatLevel": 6,
     "damage": 2,
     "defense": 0,
-    "hitChance": 0.60,
+    "hitChance": 0.6,
     "attackSpeed": 3.0,
     "description": "Talks like a human, flies like a bird. Makes Pirates happy"
   },
@@ -2806,15 +2833,30 @@
     "combatLevel": 8,
     "damage": 2,
     "defense": 0,
-    "hitChance": 0.60,
+    "hitChance": 0.6,
     "attackSpeed": 3.0,
     "effect": "10% chance to Frenzy self for 10s",
     "dropCards": [
-      { "name": "Raw Meat",   "weight": 17 },
-      { "name": "Carrot",     "weight": 17 },
-      { "name": "Poop",       "weight": 17 },
-      { "name": "Bone",       "weight": 17 },
-      { "name": "Rabbit Hat", "weight": 33 }
+      {
+        "name": "Raw Meat",
+        "weight": 17
+      },
+      {
+        "name": "Carrot",
+        "weight": 17
+      },
+      {
+        "name": "Poop",
+        "weight": 17
+      },
+      {
+        "name": "Bone",
+        "weight": 17
+      },
+      {
+        "name": "Rabbit Hat",
+        "weight": 33
+      }
     ],
     "abilityName": "produce_poop",
     "abilityCooldown": 90.0,
@@ -4351,5 +4393,323 @@
     ],
     "time": 10.0,
     "description": "It looks sturdy, yet punchable"
+  },
+  {
+    "name": "Iron Deposit",
+    "type": "STRUCTURE",
+    "iconPath": "/Image/card/resource/IronDeposit.png",
+    "sellValue": 1,
+    "resourceCount": 5,
+    "spawnCards": [
+      {
+        "name": "Iron Ore",
+        "weight": 90
+      },
+      {
+        "name": "Stone",
+        "weight": 8
+      },
+      {
+        "name": "Coin",
+        "weight": 2
+      }
+    ],
+    "time": 10.0,
+    "description": "A deposit of Iron Ore"
+  },
+  {
+    "name": "Mine",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Mine.png",
+    "sellValue": 5,
+    "description": "An unlimited resource of Iron Ore and Stone"
+  },
+  {
+    "name": "Soil",
+    "type": "RESOURCE",
+    "iconPath": "/Image/card/resource/Soil.png",
+    "sellValue": 1,
+    "description": "Good for growing plants"
+  },
+  {
+    "name": "Temple",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Temple.png",
+    "sellValue": 10,
+    "description": "Place a Golden Goblet on it to summon the Demon"
+  },
+  {
+    "name": "Travelling Cart",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/TravellingCart.png",
+    "sellValue": 0,
+    "description": "A merchant who visits occasionally. Buy cards with Coins."
+  },
+  {
+    "name": "Treasure Chest",
+    "type": "BUILDING",
+    "iconPath": "/Image/card/building/Treasure-Chest.png",
+    "sellValue": 0,
+    "description": "Needs a Key to open. Contains valuable resources."
+  },
+  {
+    "name": "Catacombs",
+    "type": "LOCATION",
+    "iconPath": "/Image/card/location/Catacombs.png",
+    "sellValue": 5,
+    "description": "An ancient underground tomb. Explore to find treasures.",
+    "spawnCards": [
+      {
+        "name": "Skeleton",
+        "weight": 20
+      },
+      {
+        "name": "Goblin",
+        "weight": 20
+      },
+      {
+        "name": "Wolf",
+        "weight": 20
+      },
+      {
+        "name": "Slime",
+        "weight": 20
+      },
+      {
+        "name": "Treasure Chest",
+        "weight": 10
+      },
+      {
+        "name": "Giant Rat",
+        "weight": 10
+      }
+    ],
+    "time": 60.0
+  },
+  {
+    "name": "Forest",
+    "type": "LOCATION",
+    "iconPath": "/Image/card/location/Forest.png",
+    "sellValue": 5,
+    "description": "A dense forest full of resources and danger.",
+    "spawnCards": [
+      {
+        "name": "Berry Bush",
+        "weight": 11
+      },
+      {
+        "name": "Tree",
+        "weight": 11
+      },
+      {
+        "name": "Stick",
+        "weight": 16
+      },
+      {
+        "name": "Rabbit",
+        "weight": 11
+      },
+      {
+        "name": "Mushroom",
+        "weight": 11
+      },
+      {
+        "name": "Apple",
+        "weight": 5
+      },
+      {
+        "name": "Apple Tree",
+        "weight": 5
+      },
+      {
+        "name": "Goblin",
+        "weight": 5
+      },
+      {
+        "name": "Bear",
+        "weight": 5
+      },
+      {
+        "name": "Wolf",
+        "weight": 5
+      },
+      {
+        "name": "Catacombs",
+        "weight": 8
+      },
+      {
+        "name": "Treasure Chest",
+        "weight": 5
+      }
+    ],
+    "time": 60.0
+  },
+  {
+    "name": "Graveyard",
+    "type": "LOCATION",
+    "iconPath": "/Image/card/location/Graveyard.png",
+    "sellValue": 5,
+    "description": "A spooky graveyard. Explore it to find Soil, Corpse and Treasure.",
+    "spawnCards": [
+      {
+        "name": "Soil",
+        "weight": 25
+      },
+      {
+        "name": "Treasure Chest",
+        "weight": 25
+      },
+      {
+        "name": "Bone",
+        "weight": 12
+      },
+      {
+        "name": "Skeleton",
+        "weight": 12
+      },
+      {
+        "name": "Corpse",
+        "weight": 12
+      },
+      {
+        "name": "Catacombs",
+        "weight": 12
+      }
+    ],
+    "time": 60.0
+  },
+  {
+    "name": "Mountain",
+    "type": "LOCATION",
+    "iconPath": "/Image/card/location/Mountain.png",
+    "sellValue": 5,
+    "description": "A tall mountain. Explore to find Iron Ore and Treasure.",
+    "spawnCards": [
+      {
+        "name": "Iron Deposit",
+        "weight": 25
+      },
+      {
+        "name": "Rock",
+        "weight": 12
+      },
+      {
+        "name": "Bear",
+        "weight": 6
+      },
+      {
+        "name": "Giant Rat",
+        "weight": 6
+      },
+      {
+        "name": "Treasure Chest",
+        "weight": 3
+      },
+      {
+        "name": "Catacombs",
+        "weight": 3
+      }
+    ],
+    "time": 60.0
+  },
+  {
+    "name": "Old Village",
+    "type": "LOCATION",
+    "iconPath": "/Image/card/location/OldVillage.png",
+    "sellValue": 5,
+    "description": "The ruins of an old village. Explore to find Corpses and Old Tomes.",
+    "spawnCards": [
+      {
+        "name": "Coin",
+        "weight": 17
+      },
+      {
+        "name": "Wood",
+        "weight": 17
+      },
+      {
+        "name": "Villager",
+        "weight": 8
+      },
+      {
+        "name": "Corpse",
+        "weight": 8
+      },
+      {
+        "name": "Iron Bar",
+        "weight": 8
+      },
+      {
+        "name": "Slime",
+        "weight": 8
+      },
+      {
+        "name": "Treasure Chest",
+        "weight": 8
+      },
+      {
+        "name": "Goblin",
+        "weight": 8
+      },
+      {
+        "name": "Milk",
+        "weight": 8
+      },
+      {
+        "name": "Catacombs",
+        "weight": 4
+      },
+      {
+        "name": "Old Tome",
+        "weight": 4
+      }
+    ],
+    "time": 60.0
+  },
+  {
+    "name": "Plains",
+    "type": "LOCATION",
+    "iconPath": "/Image/card/location/Plains.png",
+    "sellValue": 5,
+    "description": "Open flat land. Explore to find resources.",
+    "spawnCards": [
+      {
+        "name": "Chicken",
+        "weight": 14
+      },
+      {
+        "name": "Soil",
+        "weight": 14
+      },
+      {
+        "name": "Rat",
+        "weight": 14
+      },
+      {
+        "name": "Cow",
+        "weight": 14
+      },
+      {
+        "name": "Onion",
+        "weight": 14
+      },
+      {
+        "name": "Mushroom",
+        "weight": 7
+      },
+      {
+        "name": "Wolf",
+        "weight": 7
+      },
+      {
+        "name": "Carrot",
+        "weight": 7
+      },
+      {
+        "name": "Milk",
+        "weight": 7
+      }
+    ],
+    "time": 60.0
   }
 ]
