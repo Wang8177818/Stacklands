@@ -134,7 +134,7 @@ public:
     }
 
     bool OnStacked(std::shared_ptr<Card> cardAbove) override {
-        return cardAbove->GetType() == CardType::EQUIPMENT;
+        return cardAbove->GetType() == CardType::EQUIPMENT || cardAbove->GetType() == CardType::CHARACTER;
     }
 
     int   GetbaseAttack()    const { return baseAttack; }

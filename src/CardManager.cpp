@@ -486,16 +486,39 @@ void CardManager::Update(glm::vec2 mousePos) {
                 }
 
                 if (fighterDied) {
+                    const float fx = fighter->GetX();
+                    const float fy = fighter->GetY();
+                    const float fs = fighter->GetScale();
+
                     if (fighter->GetType() == CardType::ANIMAL) {
                         auto animal = std::static_pointer_cast<AnimalCard>(fighter);
                         std::string drop = animal->RollDrop();
                         if (!drop.empty()) {
                             std::uniform_real_distribution<float> off(-60.0f, 60.0f);
-                            SpawnCardByName(drop, fighter->GetScale(),
-                                            fighter->GetX() + off(m_RandomGenerator),
-                                            fighter->GetY() + off(m_RandomGenerator));
+                            SpawnCardByName(drop, fs,
+                                            fx + off(m_RandomGenerator),
+                                            fy + off(m_RandomGenerator));
                         }
+                    } else if (fighter->GetType() == CardType::CHARACTER) {
+                        auto chr = std::static_pointer_cast<CharacterCard>(fighter);
+                        // 掉裝備：把所有非空插槽的裝備散落在原位置周圍
+                        std::uniform_real_distribution<float> off(-80.0f, 80.0f);
+                        for (const auto& e : chr->GetAllEquipData()) {
+                            if (e.name.empty()) continue;
+                            SpawnCardByName(e.name, fs,
+                                            fx + off(m_RandomGenerator),
+                                            fy + off(m_RandomGenerator));
+                        }
+                        // 屍體留在原位
+                        SpawnCardByName("Corpse", fs, fx, fy);
                     }
+
+                    // 切斷堆疊連結，避免被相鄰卡 CardAbove/CardBelow 持有變幽靈
+                    if (auto below = fighter->GetCardBelow()) below->SetCardAbove(nullptr);
+                    if (auto above = fighter->GetCardAbove()) above->SetCardBelow(nullptr);
+                    fighter->SetCardBelow(nullptr);
+                    fighter->SetCardAbove(nullptr);
+
                     RemoveCard(fighter);
                 }
 
