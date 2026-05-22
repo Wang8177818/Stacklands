@@ -3,6 +3,7 @@
 //
 
 #include "AnimalCard.hpp"
+#include "EventManager.hpp"
 #include "GameConstants.hpp"
 #include "Util/Time.hpp"
 #include <random>
@@ -45,7 +46,8 @@ AnimalCard::AnimalCard(float x, float y,
 void AnimalCard::Update() {
     Card::Update();
 
-    float dtMs = static_cast<float>(Util::Time::GetDeltaTimeMs());
+    // 改用 EventManager 的倍率後 dtMs：PAUSE 自動停動、FAST 自動加速
+    float dtMs = EventManager::GetScaledDtMs();
 
     m_MoveTimer += dtMs;
 

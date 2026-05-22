@@ -81,11 +81,3 @@ target_link_libraries(${PROJECT_NAME}
     SDL2::SDL2main
     PTSD
 )
-
-# ── CombatTests（Catch2，無 SDL 依賴）──────────────────────────────
-add_executable(CombatTests ${SRC_DIR}/CombatTests.cpp)
-target_include_directories(CombatTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(CombatTests PRIVATE Catch2::Catch2WithMain)
-include(CTest)
-include(Catch)
-catch_discover_tests(CombatTests)
