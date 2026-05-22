@@ -6,6 +6,9 @@
 #include "Util/Logger.hpp"
 #include "CharacterCard.hpp"
 #include "Sellslot.hpp"
+#include <random>
+
+static std::mt19937 s_AppRng{ std::random_device{}() };
 
 // ─────────────────────────────────────────────────────────────
 void App::Start() {
@@ -15,6 +18,24 @@ void App::Start() {
     m_CardManager  = std::make_unique<CardManager>(m_Renderer);
     m_EventManager = std::make_unique<EventManager>();
     m_SellSlot     = std::make_shared<SellSlot>(-250, 210);
+
+    // ── SellSlot 右側 7 個空白格子（顯示名稱 + 價格，功能未接）─────
+    constexpr float SLOT_SPACING_X = 80.0f;  // 加大間距以容納較長的卡包名稱
+    // {名稱, 價格} — 修改這 7 項即可調整每個格子
+    const std::pair<std::string, int> blankSlotData[] = {
+        {"Humble Beginnings",     3},
+        {"Seeking Wisdom",    4},
+        {"Reap & Sow",    10},
+        {"Curious Cuisine",    10},
+        {"Logic and Reason",    15},
+        {"Explorers",   20},
+        {"Order and Structure", 25},
+    };
+    for (int i = 0; i < 7; ++i) {
+        float x = -250.0f + SLOT_SPACING_X * (i + 1);
+        m_BlankSlots.push_back(std::make_shared<BlankSlot>(
+            x, 210.0f, blankSlotData[i].first, blankSlotData[i].second));
+    }
 
     m_UIManager->InitMenu();
 
@@ -57,6 +78,7 @@ void App::MainMenu() {
 void App::GameInit() {
     //卡牌大小去App.hpp調basic_scale
     m_CardManager->AddCard(m_SellSlot);
+    for (auto& slot : m_BlankSlots) m_CardManager->AddCard(slot);
     m_Renderer.Update();
     // 讀 json
     m_CardManager->LoadCardDatabase(RESOURCE_DIR"/Data/Cards.json");
@@ -65,9 +87,12 @@ void App::GameInit() {
     m_CardManager->LoadCraftingRecipes(RESOURCE_DIR"/Data/Recipe.json");
 
     m_CardManager->SpawnCardByName("Villager", basic_scale);
-    m_CardManager->SpawnCardByName("Graveyard",basic_scale);
+    m_CardManager->SpawnCardByName("Chicken",basic_scale);
+    m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
+    m_CardManager->SpawnCardByName("Bear",basic_scale);
+    m_CardManager->SpawnCardByName("Smelter",basic_scale);
+    m_CardManager->SpawnCardByName("Iron Ore",basic_scale);
     m_CardManager->SpawnCardByName("Stew",basic_scale);
-    m_CardManager->SpawnCardByName("Idea: Altar",basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;
@@ -83,12 +108,6 @@ void App::Update() {
 
     // ── 卡片更新 ──────────────────────────────────────────
     m_CardManager->SetZoomRatio(m_EventManager->GetZoomRatio());
-    switch (m_EventManager->GetGameState()) {
-        case EventManager::GameTime::PAUSE:  m_CardManager->SetTimeScale(0.0f); break;
-        case EventManager::GameTime::FAST:   m_CardManager->SetTimeScale(2.0f); break;
-        case EventManager::GameTime::NORMAL:
-        default:                             m_CardManager->SetTimeScale(1.0f); break;
-    }
     m_CardManager->Update(mousePos);
 
     // ── 卡片數量 UI 更新 ─────────────────────────────────
@@ -139,6 +158,35 @@ void App::Update() {
         for (auto& card : soldCards) {
             card->OnSold();
             m_CardManager->RemoveCard(card);
+        }
+    }
+
+    // ── BlankSlot 購買檢查 ────────────────────────────────
+    // 每個格子若堆疊的硬幣數 >= 售價 → 扣硬幣、生成對應卡包；多餘的退回
+    for (auto& slot : m_BlankSlots) {
+        const int price = slot->GetBuyPrice();
+        if (price <= 0) continue;
+        const int coinCount = slot->GetCoinCount();
+        if (coinCount < price) continue;
+
+        const float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
+        const float sx = slot->GetX();
+        const float sy = slot->GetY();
+
+        // 扣掉所有疊在上面的硬幣
+        auto coins = slot->PopAllCoins();
+        for (auto& c : coins) m_CardManager->RemoveCard(c);
+
+        // 生卡包（位置稍微往下方，避免又疊回 slot 上）
+        m_CardManager->SpawnPackByName(slot->GetName(), spawnScale, sx, sy - 100.f);
+
+        // 找零：超付的部分以單顆 Coin 退回（在卡包旁邊散開）
+        const int refund = coinCount - price;
+        std::uniform_real_distribution<float> off(-60.f, 60.f);
+        for (int i = 0; i < refund; ++i) {
+            m_CardManager->SpawnCardByName("Coin", spawnScale,
+                                           sx + off(s_AppRng),
+                                           sy - 200.f + off(s_AppRng));
         }
     }
 

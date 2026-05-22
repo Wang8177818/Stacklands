@@ -3,6 +3,7 @@
 //
 #include "CardManager.hpp"
 #include "CardFactory.hpp"
+#include "EventManager.hpp"
 #include "RecipeManager.hpp"
 #include "CharacterCard.hpp"
 #include "AnimalCard.hpp"
@@ -166,13 +167,13 @@ void CardManager::SpawnPackByName(const std::string& packName, float scale, floa
     PackTemplate tmpl = m_PackDatabase[packName];
 
     // 把 pool 裡的「名字字串」轉換成真正的「CardSpawnData 配方」
+    // 存基準 scale（除掉當前 zoom），開包時 SpawnNext 後會 *= m_ZoomRatio 套回當下的縮放
+    const float baseCardScale = (m_ZoomRatio > 0.0f) ? (scale / m_ZoomRatio) : scale;
     std::vector<CardSpawnData> actualPool;
     for (const auto& cardName : tmpl.pool) {
         if (m_CardDatabase.count(cardName)) {
             CardSpawnData poolData = m_CardDatabase[cardName];
-
-            poolData.scale = scale;
-
+            poolData.scale = baseCardScale;
             actualPool.push_back(poolData);
         }
     }
@@ -365,8 +366,8 @@ void CardManager::Update(glm::vec2 mousePos) {
 
     // 計時任務
     {
-        // 套用時間流速倍率（PAUSE=0 → 完全停住合成 / 採集 / 讀條動畫）
-        float dtMs = static_cast<float>(Util::Time::GetDeltaTimeMs()) * m_TimeScale;
+        // 統一從 EventManager 取倍率後的 dtMs（PAUSE=0、FAST=2x）
+        float dtMs = EventManager::GetScaledDtMs();
 
         // 採集等待
         for (auto it = m_PendingGathers.begin(); it != m_PendingGathers.end(); ) {
@@ -497,6 +498,18 @@ void CardManager::Update(glm::vec2 mousePos) {
                     }
                 }
 
+                // 偵測死亡狀態
+                bool targetDied = target->IsDead();
+                bool fighterDied = false;
+                std::shared_ptr<Card> fighter = nullptr;
+                for (auto& fe : it->fighters) {
+                    auto f = fe.fighter.lock();
+                    if (f && f->IsDead()) {
+                        fighterDied = true;
+                        fighter = f;
+                        break;
+                    }
+                }
                 // 死亡的戰鬥員：移除
                 {
                     std::vector<std::shared_ptr<Card>> deadFighters;
@@ -512,7 +525,42 @@ void CardManager::Update(glm::vec2 mousePos) {
                         }), it->fighters.end());
                 }
 
-                bool targetDied = target->IsDead();
+                if (fighterDied) {
+                    const float fx = fighter->GetX();
+                    const float fy = fighter->GetY();
+                    const float fs = fighter->GetScale();
+
+                    if (fighter->GetType() == CardType::ANIMAL) {
+                        auto animal = std::static_pointer_cast<AnimalCard>(fighter);
+                        std::string drop = animal->RollDrop();
+                        if (!drop.empty()) {
+                            std::uniform_real_distribution<float> off(-60.0f, 60.0f);
+                            SpawnCardByName(drop, fs,
+                                            fx + off(m_RandomGenerator),
+                                            fy + off(m_RandomGenerator));
+                        }
+                    } else if (fighter->GetType() == CardType::CHARACTER) {
+                        auto chr = std::static_pointer_cast<CharacterCard>(fighter);
+                        // 掉裝備：把所有非空插槽的裝備散落在原位置周圍
+                        std::uniform_real_distribution<float> off(-80.0f, 80.0f);
+                        for (const auto& e : chr->GetAllEquipData()) {
+                            if (e.name.empty()) continue;
+                            SpawnCardByName(e.name, fs,
+                                            fx + off(m_RandomGenerator),
+                                            fy + off(m_RandomGenerator));
+                        }
+                        // 屍體留在原位
+                        SpawnCardByName("Corpse", fs, fx, fy);
+                    }
+
+                    // 切斷堆疊連結，避免被相鄰卡 CardAbove/CardBelow 持有變幽靈
+                    if (auto below = fighter->GetCardBelow()) below->SetCardAbove(nullptr);
+                    if (auto above = fighter->GetCardAbove()) above->SetCardBelow(nullptr);
+                    fighter->SetCardBelow(nullptr);
+                    fighter->SetCardAbove(nullptr);
+
+                    RemoveCard(fighter);
+                }
 
                 if (targetDied) {
                     // 目標掉落

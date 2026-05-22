@@ -5,6 +5,9 @@
 #include "CardPack.hpp"
 #include "Util/Text.hpp"
 #include <algorithm>
+#include <random>
+
+static std::mt19937 s_PackRng{ std::random_device{}() };
 
 CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
                    const std::string& iconPath, float scale, int totalCards,
@@ -27,11 +30,15 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
 }
 
 std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
-    if (m_CardsRemaining <= 0) return nullptr;
+    if (m_CardsRemaining <= 0 || m_ContentPool.empty()) return nullptr;
     m_CardsRemaining--;
 
-
-    auto dataToSpawn = std::make_shared<CardSpawnData>(m_ContentPool.back());
+    // 隨機抽一個（不重複）：swap-and-pop
+    std::uniform_int_distribution<std::size_t> dist(0, m_ContentPool.size() - 1);
+    const std::size_t idx = dist(s_PackRng);
+    auto dataToSpawn = std::make_shared<CardSpawnData>(m_ContentPool[idx]);
+    if (idx != m_ContentPool.size() - 1)
+        std::swap(m_ContentPool[idx], m_ContentPool.back());
     m_ContentPool.pop_back();
 
     if (m_CountText) {

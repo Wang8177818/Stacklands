@@ -58,9 +58,6 @@ public:
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 
-    // 時間流速倍率（PAUSE=0, NORMAL=1, FAST=2 等）：影響合成 / 採集 / 讀條
-    void SetTimeScale(float scale) { m_TimeScale = scale; }
-
     // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型）
     int GetCardCount() const {
         int count = 0;
@@ -159,7 +156,6 @@ private:
     std::shared_ptr<Card> m_LastClickedCard = nullptr;
 
     float m_ZoomRatio = 1.0f; // 當前累積縮放倍率，用於卡包開出卡片時套用正確大小
-    float m_TimeScale = 1.0f; // 計時任務的時間流速倍率（暫停=0）
     RecipeManager m_RecipeManager;
 
     // 卡牌與卡包的資料庫字典
