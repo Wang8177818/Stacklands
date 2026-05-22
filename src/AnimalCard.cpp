@@ -57,7 +57,7 @@ void AnimalCard::Update() {
         }
     }
 
-    if (m_IsDragging || m_CardBelow != nullptr) return;
+    if (m_InCombat || m_IsDragging || m_CardBelow != nullptr) return;
 
     // 平滑插值移動（指數型緩出，與幀率無關）
     if (m_IsMoving) {

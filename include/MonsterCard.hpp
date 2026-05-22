@@ -131,6 +131,18 @@ public:
         if (m_HealthText) m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
     }
 
+    // 視角移動/縮放時同步移動目標，避免漂移
+    void MoveBy(glm::vec2 delta) override {
+        Card::MoveBy(delta);
+        m_TargetX += delta.x;
+        m_TargetY += delta.y;
+    }
+    void ScaleAroundPivot(float ratio, glm::vec2 pivot) override {
+        Card::ScaleAroundPivot(ratio, pivot);
+        m_TargetX = pivot.x + (m_TargetX - pivot.x) * ratio;
+        m_TargetY = pivot.y + (m_TargetY - pivot.y) * ratio;
+    }
+
     std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override {
         auto objs = Card::GetGameObjects();
         if (m_HealthText) objs.push_back(m_HealthText);

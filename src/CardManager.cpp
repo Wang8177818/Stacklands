@@ -430,78 +430,103 @@ void CardManager::Update(glm::vec2 mousePos) {
             }
         }
 
-        // 戰鬥更新
+        // 戰鬥更新（多對一：多個村民可同時對戰同一個怪物或動物）
         {
             std::uniform_real_distribution<float> dist01(0.0f, 1.0f);
             for (auto it = m_PendingCombats.begin(); it != m_PendingCombats.end(); ) {
-                auto fighter = it->fighter.lock();
-                auto monster = it->monster.lock();
+                auto target = it->target.lock();
 
-                // 戰鬥員跑走（正在被拖動）或任一方消失 → 取消戰鬥
-                if (!fighter || !monster || fighter == m_DraggingCard) {
-                    if (monster) std::static_pointer_cast<MonsterCard>(monster)->SetInCombat(false);
+                // 目標消失 → 清除整個戰鬥
+                if (!target) {
                     it = m_PendingCombats.erase(it);
                     continue;
                 }
 
-                it->fighterTimer -= dtMs;
-                it->monsterTimer -= dtMs;
+                // 清理已消失或被拖走的戰鬥員
+                it->fighters.erase(std::remove_if(it->fighters.begin(), it->fighters.end(),
+                    [&](const PendingCombat::FighterEntry& fe) {
+                        auto f = fe.fighter.lock();
+                        return !f || f == m_DraggingCard;
+                    }), it->fighters.end());
 
-                // 戰鬥員攻擊怪物
-                if (it->fighterTimer <= 0.0f) {
-                    it->fighterTimer += fighter->GetAttackSpeed() * 1000.0f;
-                    if (Combat::IsHit(fighter->GetHitChance(), dist01(m_RandomGenerator))) {
-                        bool bonusDmg = dist01(m_RandomGenerator) < 0.5f;
-                        bool pierce   = dist01(m_RandomGenerator) < 0.5f;
-                        int dmg = Combat::ResolveDamage(fighter->GetAttack(), monster->GetDefense(), bonusDmg, pierce);
-                        monster->TakeDamage(dmg);
+                // 無戰鬥員 → 目標恢復移動
+                if (it->fighters.empty()) {
+                    if (target->GetType() == CardType::MONSTER)
+                        std::static_pointer_cast<MonsterCard>(target)->SetInCombat(false);
+                    else if (target->GetType() == CardType::ANIMAL)
+                        std::static_pointer_cast<AnimalCard>(target)->SetInCombat(false);
+                    it = m_PendingCombats.erase(it);
+                    continue;
+                }
+
+                // 各戰鬥員分別攻擊目標
+                for (auto& fe : it->fighters) {
+                    auto fighter = fe.fighter.lock();
+                    if (!fighter) continue;
+                    fe.timer -= dtMs;
+                    if (fe.timer <= 0.0f) {
+                        fe.timer += fighter->GetAttackSpeed() * 1000.0f;
+                        if (Combat::IsHit(fighter->GetHitChance(), dist01(m_RandomGenerator))) {
+                            bool bonusDmg = dist01(m_RandomGenerator) < 0.5f;
+                            bool pierce   = dist01(m_RandomGenerator) < 0.5f;
+                            int dmg = Combat::ResolveDamage(fighter->GetAttack(), target->GetDefense(), bonusDmg, pierce);
+                            target->TakeDamage(dmg);
+                        }
                     }
                 }
 
-                // 怪物攻擊戰鬥員
-                if (it->monsterTimer <= 0.0f) {
-                    it->monsterTimer += monster->GetAttackSpeed() * 1000.0f;
-                    if (Combat::IsHit(monster->GetHitChance(), dist01(m_RandomGenerator))) {
+                // 目標攻擊隨機一名戰鬥員
+                it->targetTimer -= dtMs;
+                if (it->targetTimer <= 0.0f && !it->fighters.empty()) {
+                    it->targetTimer += target->GetAttackSpeed() * 1000.0f;
+                    std::uniform_int_distribution<int> idx(0, static_cast<int>(it->fighters.size()) - 1);
+                    auto fighter = it->fighters[idx(m_RandomGenerator)].fighter.lock();
+                    if (fighter && Combat::IsHit(target->GetHitChance(), dist01(m_RandomGenerator))) {
                         bool bonusDmg = dist01(m_RandomGenerator) < 0.5f;
                         bool pierce   = dist01(m_RandomGenerator) < 0.5f;
-                        int dmg = Combat::ResolveDamage(monster->GetAttack(), fighter->GetDefense(), bonusDmg, pierce);
+                        int dmg = Combat::ResolveDamage(target->GetAttack(), fighter->GetDefense(), bonusDmg, pierce);
                         fighter->TakeDamage(dmg);
                     }
                 }
 
-                bool monsterDied = monster->IsDead();
-                bool fighterDied = fighter->IsDead();
+                // 死亡的戰鬥員：移除
+                {
+                    std::vector<std::shared_ptr<Card>> deadFighters;
+                    for (auto& fe : it->fighters) {
+                        auto f = fe.fighter.lock();
+                        if (f && f->IsDead()) deadFighters.push_back(f);
+                    }
+                    for (auto& df : deadFighters) RemoveCard(df);
+                    it->fighters.erase(std::remove_if(it->fighters.begin(), it->fighters.end(),
+                        [](const PendingCombat::FighterEntry& fe) {
+                            auto f = fe.fighter.lock();
+                            return !f || f->IsDead();
+                        }), it->fighters.end());
+                }
 
-                if (monsterDied) {
-                    auto monsterCard = std::static_pointer_cast<MonsterCard>(monster);
-                    std::string drop = monsterCard->RollDrop();
+                bool targetDied = target->IsDead();
+
+                if (targetDied) {
+                    // 目標掉落
+                    std::string drop;
+                    if (target->GetType() == CardType::MONSTER)
+                        drop = std::static_pointer_cast<MonsterCard>(target)->RollDrop();
+                    else if (target->GetType() == CardType::ANIMAL)
+                        drop = std::static_pointer_cast<AnimalCard>(target)->RollDrop();
                     if (!drop.empty()) {
-                        std::uniform_real_distribution<float> off(-60.0f, 60.0f);
-                        SpawnCardByName(drop, monster->GetScale(),
-                                        monster->GetX() + off(m_RandomGenerator),
-                                        monster->GetY() + off(m_RandomGenerator));
+                        std::uniform_real_distribution<float> off(-60.f, 60.f);
+                        SpawnCardByName(drop, target->GetScale(),
+                                        target->GetX() + off(m_RandomGenerator),
+                                        target->GetY() + off(m_RandomGenerator));
                     }
-                    RemoveCard(monster);
-                }
-
-                if (fighterDied) {
-                    if (fighter->GetType() == CardType::ANIMAL) {
-                        auto animal = std::static_pointer_cast<AnimalCard>(fighter);
-                        std::string drop = animal->RollDrop();
-                        if (!drop.empty()) {
-                            std::uniform_real_distribution<float> off(-60.0f, 60.0f);
-                            SpawnCardByName(drop, fighter->GetScale(),
-                                            fighter->GetX() + off(m_RandomGenerator),
-                                            fighter->GetY() + off(m_RandomGenerator));
-                        }
-                    }
-                    RemoveCard(fighter);
-                }
-
-                if (monsterDied || fighterDied) {
-                    // 怪物存活（戰鬥員死亡）→ 恢復移動
-                    if (!monsterDied)
-                        std::static_pointer_cast<MonsterCard>(monster)->SetInCombat(false);
+                    RemoveCard(target);
+                    it = m_PendingCombats.erase(it);
+                } else if (it->fighters.empty()) {
+                    // 所有戰鬥員已陣亡，目標恢復移動
+                    if (target->GetType() == CardType::MONSTER)
+                        std::static_pointer_cast<MonsterCard>(target)->SetInCombat(false);
+                    else if (target->GetType() == CardType::ANIMAL)
+                        std::static_pointer_cast<AnimalCard>(target)->SetInCombat(false);
                     it = m_PendingCombats.erase(it);
                 } else {
                     ++it;
@@ -756,24 +781,43 @@ void CardManager::Update(glm::vec2 mousePos) {
                         break;
                     }
 
-                    // 戰鬥觸發（角色/動物 疊到 怪物 上）
-                    if (targetCard->GetType() == CardType::MONSTER &&
-                        (m_DraggingCard->GetType() == CardType::CHARACTER ||
-                         m_DraggingCard->GetType() == CardType::ANIMAL)) {
+                    // 戰鬥觸發（村民 疊到 怪物 或 動物 上）
+                    if ((targetCard->GetType() == CardType::MONSTER ||
+                         targetCard->GetType() == CardType::ANIMAL) &&
+                        m_DraggingCard->GetType() == CardType::CHARACTER) {
 
-                        // 同一怪物已有戰鬥中則跳過
-                        bool alreadyFighting = false;
+                        // 此戰鬥員已在任何一場戰鬥中 → 跳過
+                        bool fighterBusy = false;
                         for (const auto& pc : m_PendingCombats) {
-                            if (pc.monster.lock() == targetCard) { alreadyFighting = true; break; }
+                            for (const auto& fe : pc.fighters) {
+                                if (fe.fighter.lock() == m_DraggingCard) { fighterBusy = true; break; }
+                            }
+                            if (fighterBusy) break;
                         }
-                        if (!alreadyFighting) {
-                            PendingCombat pc;
-                            pc.fighter      = m_DraggingCard;
-                            pc.monster      = targetCard;
-                            pc.fighterTimer = m_DraggingCard->GetAttackSpeed() * 1000.0f;
-                            pc.monsterTimer = targetCard->GetAttackSpeed()     * 1000.0f;
-                            std::static_pointer_cast<MonsterCard>(targetCard)->SetInCombat(true);
-                            m_PendingCombats.push_back(std::move(pc));
+
+                        if (!fighterBusy) {
+                            // 找此目標是否已有戰鬥任務，有則直接加入
+                            bool foundExisting = false;
+                            for (auto& pc : m_PendingCombats) {
+                                if (pc.target.lock() == targetCard) {
+                                    pc.fighters.push_back({m_DraggingCard,
+                                        m_DraggingCard->GetAttackSpeed() * 1000.0f});
+                                    foundExisting = true;
+                                    break;
+                                }
+                            }
+                            if (!foundExisting) {
+                                PendingCombat pc;
+                                pc.target      = targetCard;
+                                pc.targetTimer = targetCard->GetAttackSpeed() * 1000.0f;
+                                pc.fighters.push_back({m_DraggingCard,
+                                    m_DraggingCard->GetAttackSpeed() * 1000.0f});
+                                if (targetCard->GetType() == CardType::MONSTER)
+                                    std::static_pointer_cast<MonsterCard>(targetCard)->SetInCombat(true);
+                                else if (targetCard->GetType() == CardType::ANIMAL)
+                                    std::static_pointer_cast<AnimalCard>(targetCard)->SetInCombat(true);
+                                m_PendingCombats.push_back(std::move(pc));
+                            }
                         }
                         break;
                     }

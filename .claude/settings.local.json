@@ -5,7 +5,13 @@
       "PowerShell(Get-Command *)",
       "PowerShell(Get-ChildItem *)",
       "PowerShell(head *)",
-      "Bash(cmake --build build --config Debug)"
+      "Bash(cmake --build build --config Debug)",
+      "PowerShell(cmake *)",
+      "Read(//mnt/d/MyStuff/School/OOPL/**)",
+      "Bash(ls cmake-build-debug/*.exe)",
+      "PowerShell($ninja = Get-ChildItem \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\" -Recurse -Filter \"ninja.exe\" -ErrorAction SilentlyContinue | Select-Object -First 1 FullName; $cmake = Get-ChildItem \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\" -Recurse -Filter \"cmake.exe\" -ErrorAction SilentlyContinue | Select-Object -First 1 FullName; Write-Output \"ninja: $\\($ninja.FullName\\)\"; Write-Output \"cmake: $\\($cmake.FullName\\)\")",
+      "PowerShell($cmake = \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\\\\cmake\\\\win\\\\x64\\\\bin\\\\cmake.exe\"; Set-Location \"D:\\\\MyStuff\\\\School\\\\OOPL\\\\Stacklands\"; & $cmake --build cmake-build-debug --target Stacklands 2>&1 | Select-Object -Last 50)",
+      "PowerShell($cmake = \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\\\\cmake\\\\win\\\\x64\\\\bin\\\\cmake.exe\"; Set-Location \"D:\\\\MyStuff\\\\School\\\\OOPL\\\\Stacklands\"; & $cmake --build cmake-build-debug --target Stacklands -- -k 0 2>&1 | Where-Object { $_ -match \"error:|warning:\" } | Select-Object -First 60)"
     ]
   }
 }

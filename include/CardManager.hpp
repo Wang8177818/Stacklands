@@ -119,12 +119,15 @@ private:
         std::unique_ptr<TimeBar> bar;   // 顯示用讀條（解構時自動移出 Renderer）
     };
 
-    // 戰鬥任務（CHARACTER / ANIMAL 對 MONSTER 的持續戰鬥）
+    // 戰鬥任務（多個 CHARACTER 對 MONSTER 或 ANIMAL 的持續戰鬥）
     struct PendingCombat {
-        std::weak_ptr<Card> fighter;   // CHARACTER 或 ANIMAL
-        std::weak_ptr<Card> monster;
-        float fighterTimer = 0.0f;     // ms 倒數至下一次攻擊
-        float monsterTimer = 0.0f;
+        struct FighterEntry {
+            std::weak_ptr<Card> fighter;  // CHARACTER
+            float timer = 0.0f;           // ms 倒數至下一次攻擊
+        };
+        std::weak_ptr<Card>       target;      // MONSTER 或 ANIMAL（敵方）
+        std::vector<FighterEntry> fighters;    // 可同時多個村民參戰
+        float                     targetTimer = 0.0f;
     };
 
     // 延遲合成任務（配方匹配後等待 timeLeftMs 再消耗材料生成成品）
