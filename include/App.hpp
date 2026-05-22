@@ -13,6 +13,8 @@
 #include "UIManager.hpp"
 #include "EventManager.hpp"
 #include "Sellslot.hpp"
+#include "BlankSlot.hpp"
+#include <vector>
 
 class App {
 public:
@@ -48,6 +50,7 @@ private:
     std::unique_ptr<UIManager>    m_UIManager;
     std::unique_ptr<EventManager> m_EventManager;
     std::shared_ptr<SellSlot> m_SellSlot;
+    std::vector<std::shared_ptr<BlankSlot>> m_BlankSlots;  // SellSlot 右側 8 個無功能格子
 };
 
 #endif

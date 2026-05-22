@@ -32,6 +32,7 @@ set(INCLUDE_FILES
     EventManager.hpp
     RecipeManager.hpp
     TimeBar.hpp
+    BlankSlot.hpp
 )
 
 set(TEST_FILES
