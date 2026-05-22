@@ -26,6 +26,8 @@ set(INCLUDE_FILES
     CardPack.hpp
     CoinCard.hpp
     GameConstants.hpp
+    IdeaCard.hpp
+    LocationCard.hpp
     MonsterCard.hpp
     ResourceCard.hpp
     UIManager.hpp

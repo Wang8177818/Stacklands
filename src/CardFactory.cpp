@@ -14,6 +14,8 @@
 #include "StructureCard.hpp"
 #include "AnimalCard.hpp"
 #include "MonsterCard.hpp"
+#include "LocationCard.hpp"
+#include "IdeaCard.hpp"
 
 std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int& maxCardCount,
                                            std::function<void(const std::string&, float, float)> spawnCallback) {
@@ -68,6 +70,15 @@ std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData&
                 data.health, data.attack, data.defense,
                 data.attackSpeed, data.hitChance,
                 data.dropCards);
+
+        case CardType::LOCATION:
+            return std::make_shared<LocationCard>(
+                x, y, data.name, data.sellValue, data.iconPath,
+                data.time, data.spawnCards, data.scale);
+
+        case CardType::IDEA:
+            return std::make_shared<IdeaCard>(
+                x, y, data.name, data.sellValue, data.scale);
 
         default:
             return std::make_shared<Card>(

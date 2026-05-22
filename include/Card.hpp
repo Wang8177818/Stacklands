@@ -30,7 +30,9 @@ enum class CardType {
     EQUIPMENT,  // 裝備卡
     INTERACT,   // SellSlot BuySlot
     ANIMAL,     // 動物卡 (雞、兔、牛等友善動物)
-    MONSTER     // 怪物卡 (魚類、敵對生物等)
+    MONSTER,    // 怪物卡 (魚類、敵對生物等)
+    LOCATION,   // 地點卡 (森林、山脈等可無限探索的場所)
+    IDEA        // 想法卡 (純顯示，無特殊功能)
 };
 
 enum class EquipSlot {
