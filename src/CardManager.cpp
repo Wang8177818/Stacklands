@@ -164,13 +164,13 @@ void CardManager::SpawnPackByName(const std::string& packName, float scale, floa
     PackTemplate tmpl = m_PackDatabase[packName];
 
     // 把 pool 裡的「名字字串」轉換成真正的「CardSpawnData 配方」
+    // 存基準 scale（除掉當前 zoom），開包時 SpawnNext 後會 *= m_ZoomRatio 套回當下的縮放
+    const float baseCardScale = (m_ZoomRatio > 0.0f) ? (scale / m_ZoomRatio) : scale;
     std::vector<CardSpawnData> actualPool;
     for (const auto& cardName : tmpl.pool) {
         if (m_CardDatabase.count(cardName)) {
             CardSpawnData poolData = m_CardDatabase[cardName];
-
-            poolData.scale = scale;
-
+            poolData.scale = baseCardScale;
             actualPool.push_back(poolData);
         }
     }
@@ -490,6 +490,18 @@ void CardManager::Update(glm::vec2 mousePos) {
                     }
                 }
 
+                // 偵測死亡狀態
+                bool targetDied = target->IsDead();
+                bool fighterDied = false;
+                std::shared_ptr<Card> fighter = nullptr;
+                for (auto& fe : it->fighters) {
+                    auto f = fe.fighter.lock();
+                    if (f && f->IsDead()) {
+                        fighterDied = true;
+                        fighter = f;
+                        break;
+                    }
+                }
                 // 死亡的戰鬥員：移除
                 {
                     std::vector<std::shared_ptr<Card>> deadFighters;
