@@ -6,6 +6,8 @@
 #include "../PTSD/example/include/App.hpp"
 #include "CardManager.hpp"
 #include "GameConstants.hpp"
+
+float EventManager::s_ScaledDtMs = 0.0f;
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -21,6 +23,15 @@ void EventManager::Update(glm::vec2 mousePos,
                            bool isDraggingCard,
                            std::vector<std::shared_ptr<Card>>& cards) {
     if (!m_GameField) return;
+
+    // 計算本幀套用倍率後的 dtMs，提供給 Animal/Monster 等需要遊戲時間的系統
+    const float baseMs = static_cast<float>(Util::Time::GetDeltaTimeMs());
+    switch (m_GameTime) {
+        case GameTime::PAUSE:  s_ScaledDtMs = 0.0f;          break;
+        case GameTime::FAST:   s_ScaledDtMs = baseMs * 2.0f; break;
+        case GameTime::NORMAL:
+        default:               s_ScaledDtMs = baseMs;        break;
+    }
 
     HandlePan(mousePos, isDraggingCard, cards);
     HandleZoom(cards);

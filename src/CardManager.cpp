@@ -3,6 +3,7 @@
 //
 #include "CardManager.hpp"
 #include "CardFactory.hpp"
+#include "EventManager.hpp"
 #include "RecipeManager.hpp"
 #include "CharacterCard.hpp"
 #include "AnimalCard.hpp"
@@ -362,8 +363,8 @@ void CardManager::Update(glm::vec2 mousePos) {
 
     // 計時任務
     {
-        // 套用時間流速倍率（PAUSE=0 → 完全停住合成 / 採集 / 讀條動畫）
-        float dtMs = static_cast<float>(Util::Time::GetDeltaTimeMs()) * m_TimeScale;
+        // 統一從 EventManager 取倍率後的 dtMs（PAUSE=0、FAST=2x）
+        float dtMs = EventManager::GetScaledDtMs();
 
         // 採集等待
         for (auto it = m_PendingGathers.begin(); it != m_PendingGathers.end(); ) {

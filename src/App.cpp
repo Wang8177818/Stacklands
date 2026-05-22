@@ -83,12 +83,6 @@ void App::Update() {
 
     // ── 卡片更新 ──────────────────────────────────────────
     m_CardManager->SetZoomRatio(m_EventManager->GetZoomRatio());
-    switch (m_EventManager->GetGameState()) {
-        case EventManager::GameTime::PAUSE:  m_CardManager->SetTimeScale(0.0f); break;
-        case EventManager::GameTime::FAST:   m_CardManager->SetTimeScale(2.0f); break;
-        case EventManager::GameTime::NORMAL:
-        default:                             m_CardManager->SetTimeScale(1.0f); break;
-    }
     m_CardManager->Update(mousePos);
 
     // ── 卡片數量 UI 更新 ─────────────────────────────────

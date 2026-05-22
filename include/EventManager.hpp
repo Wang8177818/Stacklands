@@ -29,6 +29,10 @@ public:
 
     GameTime GetGameState() const { return m_GameTime; }
 
+    // 取得本幀已套用倍率的 dtMs（PAUSE=0、NORMAL=1x、FAST=2x）
+    // 動物 / 怪物 / 其他需要遊戲時間的系統應改用這個，而非 Util::Time::GetDeltaTimeMs()
+    static float GetScaledDtMs() { return s_ScaledDtMs; }
+
     // ── 縮放邊界常數 ──────────────────────────────────────
     static constexpr float ZOOM_MIN      = 0.5f;
     static constexpr float ZOOM_MAX      = 2.0f;
@@ -93,6 +97,8 @@ private:
 
     UIManager*   m_UIManager   = nullptr;
     CardManager* m_CardManager = nullptr;
+
+    static float s_ScaledDtMs;  // 每幀更新；經過 GameTime 倍率調整後的 dtMs
 };
 
 #endif //STACKLANDS_EVENTMANAGER_HPP
