@@ -10,6 +10,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include "EventManager.hpp"
 
 class AnimalCard : public Card {
 public:
@@ -27,11 +28,17 @@ public:
 
     void Update() override;
 
-    // 不接受任何卡疊在上面
-    bool OnStacked(std::shared_ptr<Card> /*cardAbove*/) override { return false; }
+    // 接受村民疊上來（觸發戰鬥）
+    bool OnStacked(std::shared_ptr<Card> cardAbove) override {
+        return cardAbove->GetType() == CardType::CHARACTER;
+    }
 
     // 不可被疊到其他卡上
     bool CanStackOnto() override { return false; }
+
+    // 戰鬥狀態：停止移動
+    void SetInCombat(bool inCombat) { m_InCombat = inCombat; }
+    bool IsInCombat() const { return m_InCombat; }
 
     void TakeDamage(int dmg);
     bool  IsDead()         const { return m_Health <= 0; }
@@ -48,6 +55,18 @@ public:
     void StartDragging(glm::vec2 mousePos) override;
     void UpdateVisualPositions() override;
     void SetScale(float scale) override;
+
+    // 視角移動/縮放時同步移動目標，避免漂移
+    void MoveBy(glm::vec2 delta) override {
+        Card::MoveBy(delta);
+        m_TargetX += delta.x;
+        m_TargetY += delta.y;
+    }
+    void ScaleAroundPivot(float ratio, glm::vec2 pivot) override {
+        Card::ScaleAroundPivot(ratio, pivot);
+        m_TargetX = pivot.x + (m_TargetX - pivot.x) * ratio;
+        m_TargetY = pivot.y + (m_TargetY - pivot.y) * ratio;
+    }
 
     std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override {
         auto objs = Card::GetGameObjects();
@@ -73,6 +92,7 @@ private:
     float m_TargetX      = 0.0f;
     float m_TargetY      = 0.0f;
     bool  m_IsMoving     = false;
+    bool  m_InCombat     = false;
 
     // 特殊能力
     float m_AbilityTimer    = 0.0f;
