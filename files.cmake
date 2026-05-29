@@ -1,11 +1,14 @@
 set(SRC_FILES
     App.cpp
     Card.cpp
+    CombatCard.cpp
+    WanderingCard.cpp
     AnimalCard.cpp
     MonsterCard.cpp
     CardFactory.cpp
     CardManager.cpp
     CardPack.cpp
+    TaskScheduler.cpp
     UIManager.cpp
     EventManager.cpp
     RecipeManager.cpp
@@ -19,6 +22,8 @@ set(INCLUDE_FILES
     BackgroundImage.hpp
     Button.hpp
     Card.hpp
+    CombatCard.hpp
+    WanderingCard.hpp
     CardFactory.hpp
     CharacterCard.hpp
     CardData.hpp
@@ -27,7 +32,9 @@ set(INCLUDE_FILES
     CoinCard.hpp
     GameConstants.hpp
     IdeaCard.hpp
+    ISpawnListener.hpp
     LocationCard.hpp
+    TaskScheduler.hpp
     MonsterCard.hpp
     ResourceCard.hpp
     UIManager.hpp

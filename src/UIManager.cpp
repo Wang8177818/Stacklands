@@ -65,54 +65,54 @@ void UIManager::InitMenu() {
     float winH      = instance->GetWindowHeight();
 
     // ── 主選單背景圖 ──────────────────────────────────────
-    m_MainMenuBG = std::make_shared<BackgroundImage>();
+    m_Menu.bg = std::make_shared<BackgroundImage>();
     float baseW  = 1150.f, baseH = 720.f;
-    m_MainMenuBG->SetScale({winW / baseW, winH / baseH});
-    m_Renderer.AddChild(m_MainMenuBG);
+    m_Menu.bg->SetScale({winW / baseW, winH / baseH});
+    m_Renderer.AddChild(m_Menu.bg);
 
-    m_MainMenuImage = std::make_shared<BackgroundImage>();
-    m_MainMenuImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/stacklandsMenuMain.png"));
-    m_MainMenuImage->m_Transform.translation = glm::vec2(-470, -110);
-    m_MainMenuImage->m_Transform.scale= {0.5f, 0.5f};
-    m_Renderer.AddChild(m_MainMenuImage);
+    m_Menu.panel = std::make_shared<BackgroundImage>();
+    m_Menu.panel->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/stacklandsMenuMain.png"));
+    m_Menu.panel->m_Transform.translation = glm::vec2(-470, -110);
+    m_Menu.panel->m_Transform.scale= {0.5f, 0.5f};
+    m_Renderer.AddChild(m_Menu.panel);
 
-    m_PauseMenuImage = std::make_shared<BackgroundImage>();
-    m_PauseMenuImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/pauseMenu.png"));
-    m_PauseMenuImage->m_Transform.translation = glm::vec2(-470, -190);
-    m_PauseMenuImage->m_Transform.scale= {0.5f, 0.5f};
-    m_PauseMenuImage->SetZIndex(98);
-    m_PauseMenuImage->SetVisible(false);
-    m_Renderer.AddChild(m_PauseMenuImage);
+    m_Pause.image = std::make_shared<BackgroundImage>();
+    m_Pause.image->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/pauseMenu.png"));
+    m_Pause.image->m_Transform.translation = glm::vec2(-470, -190);
+    m_Pause.image->m_Transform.scale= {0.5f, 0.5f};
+    m_Pause.image->SetZIndex(98);
+    m_Pause.image->SetVisible(false);
+    m_Renderer.AddChild(m_Pause.image);
 
     // ── 選單按鈕 ──────────────────────────────────────────
-    m_BtnStart    = std::make_shared<MenuButton>(-562, -80,  20, 100, 20, "開始新遊戲", true, 5);
-    m_BtnExit     = std::make_shared<MenuButton>(-572, -315, 20,  80, 20, "離開遊戲",   true, 4);
-    m_BtnOptions  = std::make_shared<MenuButton>(-592, -200, 20,  40, 20, "選項",       true, 2);
-    m_BtnCardWiki = std::make_shared<MenuButton>(-572, -160, 20,  80, 20, "卡片百科",   true, 4);
-    m_BtnMods     = std::make_shared<MenuButton>(-592, -240, 20,  40, 20, "模組",       true, 2);
+    m_Menu.btnStart    = std::make_shared<MenuButton>(-562, -80,  20, 100, 20, "開始新遊戲", true, 5);
+    m_Menu.btnExit     = std::make_shared<MenuButton>(-572, -315, 20,  80, 20, "離開遊戲",   true, 4);
+    m_Menu.btnOptions  = std::make_shared<MenuButton>(-592, -200, 20,  40, 20, "選項",       true, 2);
+    m_Menu.btnCardWiki = std::make_shared<MenuButton>(-572, -160, 20,  80, 20, "卡片百科",   true, 4);
+    m_Menu.btnMods     = std::make_shared<MenuButton>(-592, -240, 20,  40, 20, "模組",       true, 2);
 
-    m_Continue    = std::make_shared<MenuButton>(-592, -120, 20,  40, 20, "繼續",       true, 2);
-    m_Continue->HideAll();
+    m_Pause.btnContinue    = std::make_shared<MenuButton>(-592, -120, 20,  40, 20, "繼續",       true, 2);
+    m_Pause.btnContinue->HideAll();
 
-    m_ReturnToMenu = std::make_shared<MenuButton>(-574, -310, 20,  80, 20, "返回選單",       true, 4);
-    m_ReturnToMenu->HideAll();
+    m_Pause.btnReturnToMenu = std::make_shared<MenuButton>(-574, -310, 20,  80, 20, "返回選單",       true, 4);
+    m_Pause.btnReturnToMenu->HideAll();
 
-    AddButtonToRenderer(m_BtnStart);
-    AddButtonToRenderer(m_BtnExit);
-    AddButtonToRenderer(m_BtnOptions);
-    AddButtonToRenderer(m_BtnCardWiki);
-    AddButtonToRenderer(m_BtnMods);
-    AddButtonToRenderer(m_Continue);
-    AddButtonToRenderer(m_ReturnToMenu);
+    AddButtonToRenderer(m_Menu.btnStart);
+    AddButtonToRenderer(m_Menu.btnExit);
+    AddButtonToRenderer(m_Menu.btnOptions);
+    AddButtonToRenderer(m_Menu.btnCardWiki);
+    AddButtonToRenderer(m_Menu.btnMods);
+    AddButtonToRenderer(m_Pause.btnContinue);
+    AddButtonToRenderer(m_Pause.btnReturnToMenu);
 }
 
 // ─────────────────────────────────────────────────────────────
 UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
-    bool isStartHover    = m_BtnStart   ->UpdateHover(mousePos);
-    bool isExitHover     = m_BtnExit    ->UpdateHover(mousePos);
-    bool isOptionsHover  = m_BtnOptions ->UpdateHover(mousePos);
-    bool isCardWikiHover = m_BtnCardWiki->UpdateHover(mousePos);
-    bool isModsHover     = m_BtnMods    ->UpdateHover(mousePos);
+    bool isStartHover    = m_Menu.btnStart   ->UpdateHover(mousePos);
+    bool isExitHover     = m_Menu.btnExit    ->UpdateHover(mousePos);
+    bool isOptionsHover  = m_Menu.btnOptions ->UpdateHover(mousePos);
+    bool isCardWikiHover = m_Menu.btnCardWiki->UpdateHover(mousePos);
+    bool isModsHover     = m_Menu.btnMods    ->UpdateHover(mousePos);
 
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         if (isStartHover)    return MenuEvent::START_GAME;
@@ -125,8 +125,8 @@ UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
 }
 
 UIManager::MenuEvent UIManager::UpdatePauseMenu(glm::vec2 mousePos) {
-    bool isContinueHover = m_Continue   ->UpdateHover(mousePos);
-    bool isReturnToMenuButtonHover = m_ReturnToMenu->UpdateHover(mousePos);
+    bool isContinueHover = m_Pause.btnContinue   ->UpdateHover(mousePos);
+    bool isReturnToMenuButtonHover = m_Pause.btnReturnToMenu->UpdateHover(mousePos);
 
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         if (isContinueHover) return MenuEvent::CONTINUE;
@@ -138,210 +138,210 @@ UIManager::MenuEvent UIManager::UpdatePauseMenu(glm::vec2 mousePos) {
 // ─────────────────────────────────────────────────────────────
 void UIManager::TransitionToGame() {
     // ── 隱藏選單 ──────────────────────────────────────────
-    m_MainMenuImage->SetVisible(false);
-    m_BtnStart   ->HideAll();
-    m_BtnExit    ->HideAll();
-    m_BtnOptions ->HideAll();
-    m_BtnCardWiki->HideAll();
-    m_BtnMods    ->HideAll();
+    m_Menu.panel->SetVisible(false);
+    m_Menu.btnStart   ->HideAll();
+    m_Menu.btnExit    ->HideAll();
+    m_Menu.btnOptions ->HideAll();
+    m_Menu.btnCardWiki->HideAll();
+    m_Menu.btnMods    ->HideAll();
 
     // ── 換成遊戲背景 ──────────────────────────────────────
-    m_MainMenuBG->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/greenBG.png"));
+    m_Menu.bg->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/greenBG.png"));
 
     // ── 遊戲欄位圖 ────────────────────────────────────────
-    m_GameFieldImage = std::make_shared<BackgroundImage>();
-    m_GameFieldImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/gameField.png"));
-    m_GameFieldImage->SetScale({0.7f, 0.7f});
-    m_Renderer.AddChild(m_GameFieldImage);
+    m_HUD.field = std::make_shared<BackgroundImage>();
+    m_HUD.field->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/gameField.png"));
+    m_HUD.field->SetScale({0.7f, 0.7f});
+    m_Renderer.AddChild(m_HUD.field);
 
     // ── 描述欄 ────────────────────────────────────────────
-    m_DescriptionBarImage = std::make_shared<BackgroundImage>();
-    m_DescriptionBarImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/descriptionBar.png"));
-    m_DescriptionBarImage->SetScale({0.75f, 0.75f});
-    m_DescriptionBarImage->m_Transform.translation = {-510.f, -240.f};
-    m_DescriptionBarImage->SetZIndex(98);
-    m_Renderer.AddChild(m_DescriptionBarImage);
+    m_HUD.descBar = std::make_shared<BackgroundImage>();
+    m_HUD.descBar->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/descriptionBar.png"));
+    m_HUD.descBar->SetScale({0.75f, 0.75f});
+    m_HUD.descBar->m_Transform.translation = {-510.f, -240.f};
+    m_HUD.descBar->SetZIndex(98);
+    m_Renderer.AddChild(m_HUD.descBar);
 
     // ── 資源欄 ────────────────────────────────────────────
-    m_ResourceBarImage = std::make_shared<BackgroundImage>();
-    m_ResourceBarImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png"));
-    m_ResourceBarImage->SetScale({0.55f, 0.75f});
-    m_ResourceBarImage->m_Transform.translation = {260.f, 335.f};
-    m_ResourceBarImage->SetZIndex(98);
-    m_Renderer.AddChild(m_ResourceBarImage);
+    m_HUD.resourceBar = std::make_shared<BackgroundImage>();
+    m_HUD.resourceBar->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png"));
+    m_HUD.resourceBar->SetScale({0.55f, 0.75f});
+    m_HUD.resourceBar->m_Transform.translation = {260.f, 335.f};
+    m_HUD.resourceBar->SetZIndex(98);
+    m_Renderer.AddChild(m_HUD.resourceBar);
 
     // ── 時間欄 ────────────────────────────────────────────
-    m_TimeBarImage = std::make_shared<BackgroundImage>();
-    m_TimeBarImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png"));
-    m_TimeBarImage->SetScale({0.75f, 0.75f});
-    m_TimeBarImage->m_Transform.translation = {500.f, 335.f};
-    m_TimeBarImage->SetZIndex(98);
-    m_Renderer.AddChild(m_TimeBarImage);
+    m_HUD.timeBar = std::make_shared<BackgroundImage>();
+    m_HUD.timeBar->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/topBar.png"));
+    m_HUD.timeBar->SetScale({0.75f, 0.75f});
+    m_HUD.timeBar->m_Transform.translation = {500.f, 335.f};
+    m_HUD.timeBar->SetZIndex(98);
+    m_Renderer.AddChild(m_HUD.timeBar);
 
     // ── 進度條 ────────────────────────────────────────────
-    m_RunTimeBarImage = std::make_shared<BackgroundImage>();
-    m_RunTimeBarImage->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/darker_bg.png"));
-    m_RunTimeBarImage->SetPivot({-0.5f, 0.f});
-    m_RunTimeBarImage->SetScale({0.f, 35.f});
-    m_RunTimeBarImage->m_Transform.translation = {368.f, 335.f};
-    m_RunTimeBarImage->SetZIndex(99);
-    m_Renderer.AddChild(m_RunTimeBarImage);
+    m_HUD.runTimeBar = std::make_shared<BackgroundImage>();
+    m_HUD.runTimeBar->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/button/darker_bg.png"));
+    m_HUD.runTimeBar->SetPivot({-0.5f, 0.f});
+    m_HUD.runTimeBar->SetScale({0.f, 35.f});
+    m_HUD.runTimeBar->m_Transform.translation = {368.f, 335.f};
+    m_HUD.runTimeBar->SetZIndex(99);
+    m_Renderer.AddChild(m_HUD.runTimeBar);
 
     // ── 月份 ────────────────────────────────────────────
-    m_Month = std::make_shared<Util::GameObject>();
-    m_Month->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "1月", Util::Color(0, 0, 0)));
-    m_Month->m_Transform.translation = glm::vec2(395, 335);
-    m_Month->m_Transform.scale= {0.5f, 0.5f};
-    m_Month->SetZIndex(100);
-    m_Renderer.AddChild(m_Month);
+    m_HUD.month = std::make_shared<Util::GameObject>();
+    m_HUD.month->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "1月", Util::Color(0, 0, 0)));
+    m_HUD.month->m_Transform.translation = glm::vec2(395, 335);
+    m_HUD.month->m_Transform.scale= {0.5f, 0.5f};
+    m_HUD.month->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.month);
 
     // ── 暫停文字 ──────────────────────────────────────────
-    m_PauseText = std::make_shared<Util::GameObject>();
-    m_PauseText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 50, "暫停。", Util::Color(0, 0, 0, 50)));
-    m_PauseText->SetVisible(false);
-    m_PauseText->SetZIndex(100);
-    m_Renderer.AddChild(m_PauseText);
+    m_HUD.pauseText = std::make_shared<Util::GameObject>();
+    m_HUD.pauseText->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 50, "暫停。", Util::Color(0, 0, 0, 50)));
+    m_HUD.pauseText->SetVisible(false);
+    m_HUD.pauseText->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.pauseText);
 
     // ── 播放按鈕 ──────────────────────────────────────────
-    m_PlayButton = std::make_shared<MenuButton>(615.f, 335.f, 0.06f, 0.06f, 20.f, 20.f, "/Image/button/play.png");
-    AddButtonToRenderer(m_PlayButton);
+    m_HUD.playButton = std::make_shared<MenuButton>(615.f, 335.f, 0.06f, 0.06f, 20.f, 20.f, "/Image/button/play.png");
+    AddButtonToRenderer(m_HUD.playButton);
 
     // ── 卡片數量圖標 ──────────────────────────────────────────
-    m_CardIcon = std::make_shared<BackgroundImage>();
-    m_CardIcon->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/cardicon.png"));
-    m_CardIcon->m_Transform.translation = glm::vec2(340, 335);
-    m_CardIcon->m_Transform.scale= {0.35f, 0.35f};
-    m_CardIcon->SetZIndex(100);
-    m_Renderer.AddChild(m_CardIcon);
+    m_HUD.cardIcon = std::make_shared<BackgroundImage>();
+    m_HUD.cardIcon->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/cardicon.png"));
+    m_HUD.cardIcon->m_Transform.translation = glm::vec2(340, 335);
+    m_HUD.cardIcon->m_Transform.scale= {0.35f, 0.35f};
+    m_HUD.cardIcon->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.cardIcon);
 
     // ── 卡片數量 ────────────────────────────────────────────
-    m_CardCount = std::make_shared<Util::GameObject>();
-    m_CardCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "0/50", Util::Color(0, 0, 0)));
-    m_CardCount->m_Transform.translation = glm::vec2(305, 335);
-    m_CardCount->SetPivot({0.5,0});
-    m_CardCount->m_Transform.scale= {0.5f, 0.5f};
-    m_CardCount->SetZIndex(100);
-    m_Renderer.AddChild(m_CardCount);
+    m_HUD.cardCount = std::make_shared<Util::GameObject>();
+    m_HUD.cardCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "0/50", Util::Color(0, 0, 0)));
+    m_HUD.cardCount->m_Transform.translation = glm::vec2(305, 335);
+    m_HUD.cardCount->SetPivot({0.5,0});
+    m_HUD.cardCount->m_Transform.scale= {0.5f, 0.5f};
+    m_HUD.cardCount->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.cardCount);
 
     // ── 金幣數量圖標 ──────────────────────────────────────────
-    m_CoinIcon = std::make_shared<BackgroundImage>();
-    m_CoinIcon->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/Coin.png"));
-    m_CoinIcon->m_Transform.translation = glm::vec2(255, 335);
-    m_CoinIcon->m_Transform.scale= {0.04f, 0.04f};
-    m_CoinIcon->SetZIndex(100);
-    m_Renderer.AddChild(m_CoinIcon);
+    m_HUD.coinIcon = std::make_shared<BackgroundImage>();
+    m_HUD.coinIcon->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/Coin.png"));
+    m_HUD.coinIcon->m_Transform.translation = glm::vec2(255, 335);
+    m_HUD.coinIcon->m_Transform.scale= {0.04f, 0.04f};
+    m_HUD.coinIcon->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.coinIcon);
 
     // ── 金幣數量 ────────────────────────────────────────────
-    m_CoinCount = std::make_shared<Util::GameObject>();
-    m_CoinCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "0", Util::Color(0, 0, 0)));
-    m_CoinCount->m_Transform.translation = glm::vec2(235, 335);
-    m_CoinCount->SetPivot({0.5,0});
-    m_CoinCount->m_Transform.scale= {0.5f, 0.5f};
-    m_CoinCount->SetZIndex(100);
-    m_Renderer.AddChild(m_CoinCount);
+    m_HUD.coinCount = std::make_shared<Util::GameObject>();
+    m_HUD.coinCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "0", Util::Color(0, 0, 0)));
+    m_HUD.coinCount->m_Transform.translation = glm::vec2(235, 335);
+    m_HUD.coinCount->SetPivot({0.5,0});
+    m_HUD.coinCount->m_Transform.scale= {0.5f, 0.5f};
+    m_HUD.coinCount->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.coinCount);
 
     // ── 食物數量圖標 ──────────────────────────────────────────
-    m_FoodIcon = std::make_shared<BackgroundImage>();
-    m_FoodIcon->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/foodicon.png"));
-    m_FoodIcon->m_Transform.translation = glm::vec2(210, 335);
-    m_FoodIcon->m_Transform.scale= {0.04f, 0.04f};
-    m_FoodIcon->SetZIndex(100);
-    m_Renderer.AddChild(m_FoodIcon);
+    m_HUD.foodIcon = std::make_shared<BackgroundImage>();
+    m_HUD.foodIcon->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/foodicon.png"));
+    m_HUD.foodIcon->m_Transform.translation = glm::vec2(210, 335);
+    m_HUD.foodIcon->m_Transform.scale= {0.04f, 0.04f};
+    m_HUD.foodIcon->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.foodIcon);
 
     // ── 食物數量 ────────────────────────────────────────────
-    m_FoodCount = std::make_shared<Util::GameObject>();
-    m_FoodCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "0/0", Util::Color(0, 0, 0)));
-    m_FoodCount->m_Transform.translation = glm::vec2(185, 335);
-    m_FoodCount->SetPivot({0.5,0});
-    m_FoodCount->m_Transform.scale= {0.5f, 0.5f};
-    m_FoodCount->SetZIndex(100);
-    m_Renderer.AddChild(m_FoodCount);
+    m_HUD.foodCount = std::make_shared<Util::GameObject>();
+    m_HUD.foodCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, "0/0", Util::Color(0, 0, 0)));
+    m_HUD.foodCount->m_Transform.translation = glm::vec2(185, 335);
+    m_HUD.foodCount->SetPivot({0.5,0});
+    m_HUD.foodCount->m_Transform.scale= {0.5f, 0.5f};
+    m_HUD.foodCount->SetZIndex(100);
+    m_Renderer.AddChild(m_HUD.foodCount);
 
     // ── 卡片名稱（顯示於敘述欄上方）────────────────────────
-    m_DescriptionName = std::make_shared<Util::GameObject>();
+    m_HUD.descName = std::make_shared<Util::GameObject>();
     {
         auto initDrawable = std::make_shared<Util::Text>(
             RESOURCE_DIR"/Font/msjhbd.ttc", 32, " ", Util::Color(0, 0, 0));
-        m_DescriptionName->SetDrawable(initDrawable);
-        m_DescriptionName->SetPivot({-initDrawable->GetSize().x / 2.f, 0.f});
+        m_HUD.descName->SetDrawable(initDrawable);
+        m_HUD.descName->SetPivot({-initDrawable->GetSize().x / 2.f, 0.f});
     }
-    m_DescriptionName->m_Transform.translation = glm::vec2(-630, -150); // 位置可自行調整
-    m_DescriptionName->m_Transform.scale = {0.5f, 0.5f};
-    m_DescriptionName->SetZIndex(100);
-    m_DescriptionName->SetVisible(false);
-    m_Renderer.AddChild(m_DescriptionName);
+    m_HUD.descName->m_Transform.translation = glm::vec2(-630, -150); // 位置可自行調整
+    m_HUD.descName->m_Transform.scale = {0.5f, 0.5f};
+    m_HUD.descName->SetZIndex(100);
+    m_HUD.descName->SetVisible(false);
+    m_Renderer.AddChild(m_HUD.descName);
 
     // ── 敘述文字 ────────────────────────────────────────────
-    m_DescriptionText = std::make_shared<Util::GameObject>();
+    m_HUD.descText = std::make_shared<Util::GameObject>();
     {
         auto initDrawable = std::make_shared<Util::Text>(
             RESOURCE_DIR"/Font/msjhbd.ttc", 28, " ", Util::Color(0, 0, 0));
-        m_DescriptionText->SetDrawable(initDrawable);
-        m_DescriptionText->SetPivot({-initDrawable->GetSize().x / 2.f, 0.f});
+        m_HUD.descText->SetDrawable(initDrawable);
+        m_HUD.descText->SetPivot({-initDrawable->GetSize().x / 2.f, 0.f});
     }
-    m_DescriptionText->m_Transform.translation = glm::vec2(-630, -190);
-    m_DescriptionText->m_Transform.scale= {0.5f, 0.5f};
-    m_DescriptionText->SetZIndex(100);
-    m_DescriptionText->SetVisible(false);
-    m_Renderer.AddChild(m_DescriptionText);
+    m_HUD.descText->m_Transform.translation = glm::vec2(-630, -190);
+    m_HUD.descText->m_Transform.scale= {0.5f, 0.5f};
+    m_HUD.descText->SetZIndex(100);
+    m_HUD.descText->SetVisible(false);
+    m_Renderer.AddChild(m_HUD.descText);
 }
 
 // ─────────────────────────────────────────────────────────────
 void UIManager::UpdateCardCount(int current, int max) {
-    if (!m_CardCount) return;
+    if (!m_HUD.cardCount) return;
     std::string text = std::to_string(current) + "/" + std::to_string(max);
-    m_CardCount->SetDrawable(std::make_shared<Util::Text>(
+    m_HUD.cardCount->SetDrawable(std::make_shared<Util::Text>(
         RESOURCE_DIR"/Font/msjhbd.ttc", 35, text, Util::Color(0, 0, 0)));
 }
 
 void UIManager::UpdateCoinCount(int current) {
-    if (!m_CoinCount) return;
+    if (!m_HUD.coinCount) return;
     std::string text = std::to_string(current);
-    m_CoinCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, text, Util::Color(0, 0, 0)));
+    m_HUD.coinCount->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, text, Util::Color(0, 0, 0)));
 }
 
 void UIManager::UpdateMonth(int month) {
     std::string text = std::to_string(month) + "月";
-    m_Month->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, text, Util::Color(0, 0, 0)));
-    m_RunTimeBarImage->SetScale({0, 35.f});
+    m_HUD.month->SetDrawable(std::make_shared<Util::Text>(RESOURCE_DIR"/Font/msjhbd.ttc", 35, text, Util::Color(0, 0, 0)));
+    m_HUD.runTimeBar->SetScale({0, 35.f});
 }
 
 void UIManager::UpdateFood(int current, int need) {
-    if (!m_FoodCount) return;
+    if (!m_HUD.foodCount) return;
     std::string text = std::to_string(current) + "/" + std::to_string(need);
-    m_FoodCount->SetDrawable(std::make_shared<Util::Text>(
+    m_HUD.foodCount->SetDrawable(std::make_shared<Util::Text>(
         RESOURCE_DIR"/Font/msjhbd.ttc", 35, text, Util::Color(0, 0, 0)));
 }
 
 // ─────────────────────────────────────────────────────────────
 void UIManager::UpdateDescriptionName(const std::string& name) {
-    if (!m_DescriptionName) return;
+    if (!m_HUD.descName) return;
     if (name.empty()) {
-        m_DescriptionName->SetVisible(false);
+        m_HUD.descName->SetVisible(false);
         return;
     }
-    m_DescriptionName->SetVisible(true);
+    m_HUD.descName->SetVisible(true);
     auto drawable = std::make_shared<Util::Text>(
         RESOURCE_DIR"/Font/msjhbd.ttc", 32, name, Util::Color(0, 0, 0));
-    m_DescriptionName->SetDrawable(drawable);
-    m_DescriptionName->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
+    m_HUD.descName->SetDrawable(drawable);
+    m_HUD.descName->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
 }
 
 // ─────────────────────────────────────────────────────────────
 void UIManager::UpdateDescriptionText(const std::string& text) {
-    if (!m_DescriptionText) return;
+    if (!m_HUD.descText) return;
     if (text.empty()) {
-        m_DescriptionText->SetVisible(false);
+        m_HUD.descText->SetVisible(false);
         return;
     }
-    m_DescriptionText->SetVisible(true);
+    m_HUD.descText->SetVisible(true);
     // 描述欄顯示寬 333px，scale=0.5 → surface 換行寬 = 333/0.5 = 666 像素
     constexpr int WRAP_PX = 666;
     constexpr int FONT_SIZE = 28;
     std::string wrapped = WrapEnglishText(text, WRAP_PX, FONT_SIZE);
     auto drawable = std::make_shared<Util::Text>(
         RESOURCE_DIR"/Font/msjhbd.ttc", FONT_SIZE, wrapped, Util::Color(0, 0, 0));
-    m_DescriptionText->SetDrawable(drawable);
+    m_HUD.descText->SetDrawable(drawable);
     // 左對齊：pivot.x = -textWidth/2
-    m_DescriptionText->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
+    m_HUD.descText->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
 }
