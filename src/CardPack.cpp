@@ -45,7 +45,7 @@ std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
         int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
             FONT_REGULAR, fontSize,
-            std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
+            std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
     }
 
     // 回傳一份資料配方
@@ -100,7 +100,7 @@ void CardPack::SetScale(float scale) {
         int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
         m_CountText->SetDrawable(std::make_shared<Util::Text>(
             FONT_REGULAR, fontSize,
-            std::to_string(m_ContentPool.size()), Util::Color(1, 1, 1)));
+            std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
         m_CountText->m_Transform.scale = {m_Scale, m_Scale};
     }
 }
