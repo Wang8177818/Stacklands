@@ -81,6 +81,7 @@ bool Card::IsMouseHovering(glm::vec2 mousePos) {
 
 bool Card::IsOverlapping(std::shared_ptr<Card> otherCard) {
     if (!otherCard) return false;
+    if (!m_HitboxActive || !otherCard->m_HitboxActive) return false;
 
     float l1 = m_X - m_Width  / 2;
     float r1 = m_X + m_Width  / 2;

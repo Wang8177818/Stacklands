@@ -655,14 +655,14 @@ void CardManager::Update(glm::vec2 mousePos) {
     // 每幀偵測推擠
     for (size_t i = 0; i < m_Cards.size(); i++) {
         auto& cardA = m_Cards[i];
-        // 跳過 INTERACT type
         if (cardA->GetType() == CardType::INTERACT) continue;
-        // 跳過正在拖曳的卡片及其整個堆疊
+        if (!cardA->IsHitboxActive()) continue;
         if (m_DraggingCard && InSameStack(cardA, m_DraggingCard)) continue;
 
         for (size_t j = i + 1; j < m_Cards.size(); j++) {
             auto& cardB = m_Cards[j];
             if (cardB->GetType() == CardType::INTERACT) continue;
+            if (!cardB->IsHitboxActive()) continue;
             if (m_DraggingCard && InSameStack(cardB, m_DraggingCard)) continue;
             if (InSameStack(cardA, cardB)) continue;
 

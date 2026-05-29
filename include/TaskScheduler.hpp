@@ -3,6 +3,7 @@
 #define STACKLANDS_TASKSCHEDULER_HPP
 
 #include "Card.hpp"
+#include "CombatArena.hpp"
 #include "RecipeManager.hpp"
 #include "TimeBar.hpp"
 #include "Util/Renderer.hpp"
@@ -33,9 +34,10 @@ public:
             std::weak_ptr<Card> fighter;
             float timer = 0.0f;
         };
-        std::weak_ptr<Card>       target;
-        std::vector<FighterEntry> fighters;
-        float                     targetTimer = 0.0f;
+        std::weak_ptr<Card>              target;
+        std::vector<FighterEntry>        fighters;
+        float                            targetTimer = 0.0f;
+        std::unique_ptr<CombatArena>     arena;
     };
 
     struct PendingCraft {

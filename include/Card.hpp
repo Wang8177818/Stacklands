@@ -67,6 +67,10 @@ public:
     // 此卡牌是否可被玩家拖動
     virtual bool CanDrag() const { return true; }
 
+    // 戰鬥中禁用碰撞箱，避免被其他卡堆疊或推擠
+    void SetHitboxActive(bool active) { m_HitboxActive = active; }
+    bool IsHitboxActive() const { return m_HitboxActive; }
+
     // 戰鬥介面（由 CharacterCard / AnimalCard / MonsterCard 覆寫）
     virtual void  TakeDamage(int /*dmg*/) {}
     virtual bool  IsDead()          const { return false; }
@@ -145,6 +149,7 @@ protected:
     // 拖曳狀態
     bool m_IsDragging;
     glm::vec2 m_DragOffset;
+    bool m_HitboxActive = true;
 
     // 堆疊指標
     std::shared_ptr<Card> m_CardBelow = nullptr;

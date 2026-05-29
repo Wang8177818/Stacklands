@@ -1,6 +1,7 @@
 set(SRC_FILES
     App.cpp
     Card.cpp
+    CombatArena.cpp
     CombatCard.cpp
     WanderingCard.cpp
     AnimalCard.cpp
@@ -18,6 +19,7 @@ set(SRC_FILES
 set(INCLUDE_FILES
     App.hpp
     AnimalCard.hpp
+    CombatArena.hpp
     AttackResolver.hpp
     BackgroundImage.hpp
     Button.hpp

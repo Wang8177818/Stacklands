@@ -1,4 +1,5 @@
 #include "TaskScheduler.hpp"
+#include "CombatArena.hpp"
 #include "AnimalCard.hpp"
 #include "MonsterCard.hpp"
 #include "CharacterCard.hpp"
@@ -99,6 +100,8 @@ bool TaskScheduler::JoinOrCreateCombat(const std::shared_ptr<Card>& target,
     for (auto& pc : m_Combats) {
         if (pc.target.lock() == target) {
             pc.fighters.push_back({fighter, fighter->GetAttackSpeed() * 1000.0f});
+            if (pc.arena) pc.arena->AddFighter(fighter);
+            fighter->SetHitboxActive(false);
             return true;
         }
     }
@@ -111,6 +114,12 @@ bool TaskScheduler::JoinOrCreateCombat(const std::shared_ptr<Card>& target,
         std::static_pointer_cast<MonsterCard>(target)->SetInCombat(true);
     else if (target->GetType() == CardType::ANIMAL)
         std::static_pointer_cast<AnimalCard>(target)->SetInCombat(true);
+    fighter->SetHitboxActive(false);
+    target->SetHitboxActive(false);
+    pc.arena = std::make_unique<CombatArena>(
+        m_Renderer,
+        std::vector<std::weak_ptr<Card>>{fighter},
+        std::weak_ptr<Card>(target));
     m_Combats.push_back(std::move(pc));
     return true;
 }
@@ -122,6 +131,10 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
         auto target = it->target.lock();
         if (!target) { it = m_Combats.erase(it); continue; }
 
+        for (auto& fe : it->fighters) {
+            auto f = fe.fighter.lock();
+            if (f && f == dragging) f->SetHitboxActive(true);
+        }
         it->fighters.erase(std::remove_if(it->fighters.begin(), it->fighters.end(),
             [&](const PendingCombat::FighterEntry& fe) {
                 auto f = fe.fighter.lock();
@@ -129,6 +142,7 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
             }), it->fighters.end());
 
         if (it->fighters.empty()) {
+            target->SetHitboxActive(true);
             if (target->GetType() == CardType::MONSTER)
                 std::static_pointer_cast<MonsterCard>(target)->SetInCombat(false);
             else if (target->GetType() == CardType::ANIMAL)
@@ -137,12 +151,15 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
             continue;
         }
 
+        if (it->arena) it->arena->Update(dtMs);
+
         for (auto& fe : it->fighters) {
             auto fighter = fe.fighter.lock();
             if (!fighter) continue;
             fe.timer -= dtMs;
             if (fe.timer <= 0.0f) {
                 fe.timer += fighter->GetAttackSpeed() * 1000.0f;
+                if (it->arena) it->arena->TriggerAttack(fighter);
                 if (Combat::IsHit(fighter->GetHitChance(), dist01(m_Rng))) {
                     bool bonusDmg = dist01(m_Rng) < 0.5f;
                     bool pierce   = dist01(m_Rng) < 0.5f;
@@ -157,11 +174,14 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
             it->targetTimer += target->GetAttackSpeed() * 1000.0f;
             std::uniform_int_distribution<int> idx(0, static_cast<int>(it->fighters.size()) - 1);
             auto fighter = it->fighters[idx(m_Rng)].fighter.lock();
-            if (fighter && Combat::IsHit(target->GetHitChance(), dist01(m_Rng))) {
-                bool bonusDmg = dist01(m_Rng) < 0.5f;
-                bool pierce   = dist01(m_Rng) < 0.5f;
-                int dmg = Combat::ResolveDamage(target->GetAttack(), fighter->GetDefense(), bonusDmg, pierce);
-                fighter->TakeDamage(dmg);
+            if (fighter) {
+                if (it->arena) it->arena->TriggerCounter(target);
+                if (Combat::IsHit(target->GetHitChance(), dist01(m_Rng))) {
+                    bool bonusDmg = dist01(m_Rng) < 0.5f;
+                    bool pierce   = dist01(m_Rng) < 0.5f;
+                    int dmg = Combat::ResolveDamage(target->GetAttack(), fighter->GetDefense(), bonusDmg, pierce);
+                    fighter->TakeDamage(dmg);
+                }
             }
         }
 
@@ -215,6 +235,9 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
         }
 
         if (targetDied) {
+            for (auto& fe : it->fighters) {
+                if (auto f = fe.fighter.lock()) f->SetHitboxActive(true);
+            }
             std::string drop;
             if (target->GetType() == CardType::MONSTER)
                 drop = std::static_pointer_cast<MonsterCard>(target)->RollDrop();
@@ -229,6 +252,7 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
             m_RemoveFn(target);
             it = m_Combats.erase(it);
         } else if (it->fighters.empty()) {
+            target->SetHitboxActive(true);
             if (target->GetType() == CardType::MONSTER)
                 std::static_pointer_cast<MonsterCard>(target)->SetInCombat(false);
             else if (target->GetType() == CardType::ANIMAL)
