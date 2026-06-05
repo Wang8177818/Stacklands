@@ -20,6 +20,9 @@
 #include <fstream>
 
 #include "WarehouseCard.hpp"
+#include "CoinChest.hpp"
+#include "Hotpot.hpp"
+#include "ResourceChest.hpp"
 #include "LocationCard.hpp"
 
 #include "Util/Logger.hpp"
@@ -232,23 +235,39 @@ void CardManager::OnMonthEnd() {
             return a->GetFoodConsumption() < b->GetFoodConsumption();
         });
 
-    // 2. 收集所有食物卡（用 m_Cards 順序）
+    // 2. 收集所有食物卡與 Hotpot（用 m_Cards 順序；FOOD 卡先吃完才輪 Hotpot）
     std::vector<std::shared_ptr<FoodCard>> foods;
-    for (auto& c : m_Cards)
-        if (c->GetType() == CardType::FOOD)
+    std::vector<std::shared_ptr<Hotpot>>   hotpots;
+    for (auto& c : m_Cards) {
+        if (c->GetType() == CardType::FOOD) {
             foods.push_back(std::static_pointer_cast<FoodCard>(c));
+        } else if (c->GetType() == CardType::BUILDING &&
+                   c->GetName() == "Hotpot") {
+            hotpots.push_back(std::static_pointer_cast<Hotpot>(c));
+        }
+    }
 
-    // 3. 依優先順序餵食：每人從食物池逐單位扣 nutrition
+    // 3. 依優先順序餵食：先吃完 FOOD 卡，再從 Hotpot 扣
     std::vector<std::shared_ptr<CharacterCard>> starved;
     std::size_t foodIdx = 0;
+    std::size_t potIdx  = 0;
     int totalConsumed = 0;
     for (auto& chr : chars) {
         int need = chr->GetFoodConsumption();
+        // (a) 先消耗 FOOD 卡
         while (need > 0 && foodIdx < foods.size()) {
             int taken = foods[foodIdx]->ConsumeNutrition(need);
             need          -= taken;
             totalConsumed += taken;
             if (foods[foodIdx]->GetNutritionValue() == 0) ++foodIdx;
+        }
+        // (b) FOOD 卡耗盡才動 Hotpot 內存
+        while (need > 0 && potIdx < hotpots.size()) {
+            if (hotpots[potIdx]->GetStored() <= 0) { ++potIdx; continue; }
+            int taken = hotpots[potIdx]->Withdraw(need);
+            need          -= taken;
+            totalConsumed += taken;
+            if (hotpots[potIdx]->GetStored() == 0) ++potIdx;
         }
         if (need > 0) starved.push_back(chr);
     }
@@ -324,6 +343,15 @@ static bool InSameStack(const std::shared_ptr<Card>& a, const std::shared_ptr<Ca
     return false;
 }
 
+// 判斷一張卡所在的整個堆疊裡是否有 sticky 卡（如 Magic Glue）
+static bool StackHasSticky(const std::shared_ptr<Card>& c) {
+    auto cur = c;
+    while (cur) { if (cur->IsSticky()) return true; cur = cur->GetCardAbove(); }
+    cur = c->GetCardBelow();
+    while (cur) { if (cur->IsSticky()) return true; cur = cur->GetCardBelow(); }
+    return false;
+}
+
 void CardManager::Update(glm::vec2 mousePos) {
     // 1. 清理空卡包
     m_Cards.erase(std::remove_if(m_Cards.begin(), m_Cards.end(),
@@ -380,6 +408,159 @@ void CardManager::Update(glm::vec2 mousePos) {
         m_Tasks.UpdateGathers(dtMs);
         m_Tasks.UpdateCombats(dtMs, m_DraggingCard);
         m_Tasks.UpdateCrafts(dtMs);
+    }
+
+    // 2.5 Coin Chest：吸收疊在上方的硬幣
+    // 先收集要移除的硬幣，遍歷結束後才呼叫 RemoveCard（避免在 range-for m_Cards 時 erase 而 UB）
+    {
+        std::vector<std::shared_ptr<Card>> coinsToRemove;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Coin Chest") continue;
+            auto chest = std::static_pointer_cast<CoinChest>(card);
+            if (chest->IsFull()) continue;
+
+            // 從 chest 往上掃，把直接相連的 Coin 一張一張吸收（先記住，最後才 unlink/remove）
+            std::vector<std::shared_ptr<Card>> toAbsorb;
+            for (auto cur = chest->GetCardAbove();
+                 cur && cur->GetType() == CardType::COIN && !chest->IsFull();
+                 cur = cur->GetCardAbove()) {
+                if (chest->Deposit(1) > 0) toAbsorb.push_back(cur);
+                else break;
+            }
+            for (auto& c : toAbsorb) {
+                auto below = c->GetCardBelow();
+                auto above = c->GetCardAbove();
+                if (below) below->SetCardAbove(above);
+                if (above) above->SetCardBelow(below);
+                c->SetCardBelow(nullptr);
+                c->SetCardAbove(nullptr);
+                coinsToRemove.push_back(c);
+            }
+        }
+        // 安全在迴圈外做實際移除
+        for (auto& c : coinsToRemove) RemoveCard(c);
+    }
+
+    // 2.54 Resource Chest：吸收疊在上方的同類型 RESOURCE 卡（最多 100 張）
+    {
+        std::vector<std::shared_ptr<Card>> resourcesToRemove;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Resource Chest") continue;
+            auto chest = std::static_pointer_cast<ResourceChest>(card);
+            if (chest->IsFull()) continue;
+
+            std::vector<std::shared_ptr<Card>> toAbsorb;
+            for (auto cur = chest->GetCardAbove(); cur; cur = cur->GetCardAbove()) {
+                if (cur->GetType() != CardType::RESOURCE) break;
+                if (!chest->CanAccept(cur->GetName())) break;
+                // 從資料庫查 iconPath；查不到就不存
+                auto it = m_CardDatabase.find(cur->GetName());
+                if (it == m_CardDatabase.end()) break;
+                if (!chest->Deposit(cur->GetName(), it->second.iconPath)) break;
+                toAbsorb.push_back(cur);
+            }
+            for (auto& c : toAbsorb) {
+                auto below = c->GetCardBelow();
+                auto above = c->GetCardAbove();
+                if (below) below->SetCardAbove(above);
+                if (above) above->SetCardBelow(below);
+                c->SetCardBelow(nullptr);
+                c->SetCardAbove(nullptr);
+                resourcesToRemove.push_back(c);
+            }
+        }
+        for (auto& c : resourcesToRemove) RemoveCard(c);
+    }
+
+    // 2.55 Hotpot：吸收疊在上方的 Food（依各自 nutritionValue）
+    {
+        std::vector<std::shared_ptr<Card>> foodsToRemove;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Hotpot") continue;
+            auto pot = std::static_pointer_cast<Hotpot>(card);
+
+            std::vector<std::shared_ptr<Card>> toAbsorb;
+            for (auto cur = pot->GetCardAbove();
+                 cur && cur->GetType() == CardType::FOOD;
+                 cur = cur->GetCardAbove()) {
+                auto food = std::static_pointer_cast<FoodCard>(cur);
+                pot->Deposit(food->GetNutritionValue());
+                toAbsorb.push_back(cur);
+            }
+            for (auto& c : toAbsorb) {
+                auto below = c->GetCardBelow();
+                auto above = c->GetCardAbove();
+                if (below) below->SetCardAbove(above);
+                if (above) above->SetCardBelow(below);
+                c->SetCardBelow(nullptr);
+                c->SetCardAbove(nullptr);
+                foodsToRemove.push_back(c);
+            }
+        }
+        for (auto& c : foodsToRemove) RemoveCard(c);
+    }
+
+    // 2.6 Coin Chest：右鍵點擊吐出 WITHDRAW_AMOUNT 枚硬幣
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_RB)) {
+        std::shared_ptr<CoinChest> targetChest;
+        float chestX = 0.f, chestY = 0.f, chestS = 1.f;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Coin Chest") continue;
+            if (!card->IsMouseHovering(mousePos)) continue;
+            targetChest = std::static_pointer_cast<CoinChest>(card);
+            chestX = card->GetX();
+            chestY = card->GetY();
+            chestS = card->GetScale();
+            break;
+        }
+        // 找到後再 spawn（SpawnCardByName 會 push_back m_Cards，會讓上方 range-for 失效）
+        // 吐出的硬幣串成一堆疊，避免散落
+        if (targetChest) {
+            const int give = targetChest->Withdraw(CoinChest::WITHDRAW_AMOUNT);
+            if (give > 0) {
+                auto topCoin = SpawnCardByName("Coin", chestS, chestX, chestY - 80.f);
+                for (int i = 1; i < give; ++i) {
+                    auto newCoin = SpawnCardByName("Coin", chestS, chestX, chestY - 80.f);
+                    topCoin->SetCardAbove(newCoin);
+                    newCoin->SetCardBelow(topCoin);
+                    topCoin = newCoin;
+                }
+            }
+        }
+
+        // 2.65 Resource Chest：右鍵取出 WITHDRAW_AMOUNT 張同類資源（堆疊呈現）
+        std::shared_ptr<ResourceChest> rcChest;
+        std::string rcName;
+        float rcX = 0.f, rcY = 0.f, rcS = 1.f;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Resource Chest") continue;
+            if (!card->IsMouseHovering(mousePos)) continue;
+            auto chest = std::static_pointer_cast<ResourceChest>(card);
+            if (chest->IsEmpty()) break; // 空 chest 不做事
+            rcChest = chest;
+            rcName  = chest->GetStoredName();
+            rcX     = card->GetX();
+            rcY     = card->GetY();
+            rcS     = card->GetScale();
+            break;
+        }
+        if (rcChest && !rcName.empty()) {
+            const int give = rcChest->Withdraw(ResourceChest::WITHDRAW_AMOUNT);
+            if (give > 0) {
+                auto top = SpawnCardByName(rcName, rcS, rcX, rcY - 80.f);
+                for (int i = 1; i < give; ++i) {
+                    auto next = SpawnCardByName(rcName, rcS, rcX, rcY - 80.f);
+                    top->SetCardAbove(next);
+                    next->SetCardBelow(top);
+                    top = next;
+                }
+            }
+        }
     }
 
     // 3. 按下左鍵：抓取
@@ -673,14 +854,21 @@ void CardManager::Update(glm::vec2 mousePos) {
 
             if (overlapX <= 0 || overlapY <= 0) continue;
 
+            // 堆疊中含 Magic Glue（sticky）→ 該邊不被推；對側吸收整段重疊量
+            const bool aSticky = StackHasSticky(cardA);
+            const bool bSticky = StackHasSticky(cardB);
+            if (aSticky && bSticky) continue; // 兩邊都黏住，不動
+
             if (overlapX <= overlapY) {
-                float push = overlapX * 0.5f;
-                cardA->MoveBy({dx >= 0.f ?  push : -push, 0.f});
-                cardB->MoveBy({dx >= 0.f ? -push :  push, 0.f});
+                const float pushA = aSticky ? 0.f : (bSticky ? overlapX : overlapX * 0.5f);
+                const float pushB = bSticky ? 0.f : (aSticky ? overlapX : overlapX * 0.5f);
+                cardA->MoveBy({dx >= 0.f ?  pushA : -pushA, 0.f});
+                cardB->MoveBy({dx >= 0.f ? -pushB :  pushB, 0.f});
             } else {
-                float push = overlapY * 0.5f;
-                cardA->MoveBy({0.f, dy >= 0.f ?  push : -push});
-                cardB->MoveBy({0.f, dy >= 0.f ? -push :  push});
+                const float pushA = aSticky ? 0.f : (bSticky ? overlapY : overlapY * 0.5f);
+                const float pushB = bSticky ? 0.f : (aSticky ? overlapY : overlapY * 0.5f);
+                cardA->MoveBy({0.f, dy >= 0.f ?  pushA : -pushA});
+                cardB->MoveBy({0.f, dy >= 0.f ? -pushB :  pushB});
             }
         }
     }

@@ -64,6 +64,9 @@ public:
     // 此卡牌是否允許被疊到其他卡上（false = 不可堆疊到任何卡）
     virtual bool CanStackOnto() { return true; }
 
+    // 此卡牌是否「黏住」自身所在的整個堆疊（不受推擠移動，如 Magic Glue）
+    virtual bool IsSticky() const { return false; }
+
     // 此卡牌是否可被玩家拖動
     virtual bool CanDrag() const { return true; }
 

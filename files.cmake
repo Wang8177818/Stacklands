@@ -44,6 +44,10 @@ set(INCLUDE_FILES
     RecipeManager.hpp
     TimeBar.hpp
     BlankSlot.hpp
+    MagicGlue.hpp
+    CoinChest.hpp
+    Hotpot.hpp
+    ResourceChest.hpp
 )
 
 set(TEST_FILES

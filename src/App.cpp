@@ -93,6 +93,11 @@ void App::GameInit() {
     m_CardManager->SpawnCardByName("Smelter",basic_scale);
     m_CardManager->SpawnCardByName("Iron Ore",basic_scale);
     m_CardManager->SpawnCardByName("Stew",basic_scale);
+    m_CardManager->SpawnCardByName("Magic Dust",basic_scale);
+    m_CardManager->SpawnCardByName("Charcoal",basic_scale);
+    m_CardManager->SpawnCardByName("Coin Chest",basic_scale);
+    m_CardManager->SpawnCardByName("Hotpot",basic_scale);
+    m_CardManager->SpawnCardByName("Resource Chest",basic_scale);
 
     m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;

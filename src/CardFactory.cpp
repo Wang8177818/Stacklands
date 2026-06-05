@@ -10,6 +10,10 @@
 #include "EquipmentCard.hpp"
 #include "BuildingCard.hpp"
 #include "WarehouseCard.hpp"
+#include "MagicGlue.hpp"
+#include "CoinChest.hpp"
+#include "Hotpot.hpp"
+#include "ResourceChest.hpp"
 #include "FoodCard.hpp"
 #include "StructureCard.hpp"
 #include "AnimalCard.hpp"
@@ -50,6 +54,18 @@ std::unordered_map<CardType, CardFactory::CreatorFn>& CardFactory::Registry() {
             if (d.name == "Warehouse")
                 return std::make_shared<WarehouseCard>(
                     x, y, d.sellValue, d.iconPath, d.scale, maxCardCount);
+            if (d.name == "Magic Glue")
+                return std::make_shared<MagicGlue>(
+                    x, y, d.sellValue, d.iconPath, d.scale);
+            if (d.name == "Coin Chest")
+                return std::make_shared<CoinChest>(
+                    x, y, d.sellValue, d.iconPath, d.scale);
+            if (d.name == "Hotpot")
+                return std::make_shared<Hotpot>(
+                    x, y, d.sellValue, d.iconPath, d.scale);
+            if (d.name == "Resource Chest")
+                return std::make_shared<ResourceChest>(
+                    x, y, d.sellValue, d.iconPath, d.scale);
             return std::make_shared<BuildingCard>(
                 x, y, d.name, d.sellValue, d.iconPath, d.scale);
         };

@@ -24,6 +24,9 @@
 #include  "FoodCard.hpp"
 #include  "TimeBar.hpp"
 #include  "MonsterCard.hpp"
+#include  "CoinChest.hpp"
+#include  "Hotpot.hpp"
+#include  "ResourceChest.hpp"
 #include "ISpawnListener.hpp"
 #include "TaskScheduler.hpp"
 using json = nlohmann::json;
@@ -62,12 +65,18 @@ public:
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 
-    // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型）
+    // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型，以及 Coin；含 Resource Chest 內儲存的）
     int GetCardCount() const {
         int count = 0;
-        for (auto& card : m_Cards)
-            if (card->GetType() != CardType::INTERACT)
-                count++;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::INTERACT) continue;
+            if (card->GetType() == CardType::COIN)     continue;
+            ++count;
+            if (card->GetType() == CardType::BUILDING &&
+                card->GetName() == "Resource Chest") {
+                count += std::static_pointer_cast<ResourceChest>(card)->GetStored();
+            }
+        }
         return count;
     }
 
@@ -88,22 +97,30 @@ public:
         return total;
     }
 
-    // 取得場上所有食物卡提供的食物總量
+    // 取得場上所有食物卡提供的食物總量（含 Hotpot 內儲存的）
     int GetTotalFoodSupply() const {
         int total = 0;
         for (auto& card : m_Cards) {
-            if (card->GetType() == CardType::FOOD)
+            if (card->GetType() == CardType::FOOD) {
                 total += std::static_pointer_cast<FoodCard>(card)->GetNutritionValue();
+            } else if (card->GetType() == CardType::BUILDING &&
+                       card->GetName() == "Hotpot") {
+                total += std::static_pointer_cast<Hotpot>(card)->GetStored();
+            }
         }
         return total;
     }
 
-    // 取得金幣數量
+    // 取得金幣數量（場上的 Coin + Coin Chest 內儲存的）
     int GetCoinCount() {
         int count = 0;
         for (auto& card : GetAllCards()) {
-            if (card->GetType() == CardType::COIN)
-                count++;
+            if (card->GetType() == CardType::COIN) {
+                ++count;
+            } else if (card->GetType() == CardType::BUILDING &&
+                       card->GetName() == "Coin Chest") {
+                count += std::static_pointer_cast<CoinChest>(card)->GetStored();
+            }
         }
         return count;
     }
