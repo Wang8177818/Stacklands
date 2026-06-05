@@ -24,10 +24,14 @@
 #include  "FoodCard.hpp"
 #include  "TimeBar.hpp"
 #include  "MonsterCard.hpp"
+#include "ISpawnListener.hpp"
+#include "TaskScheduler.hpp"
 using json = nlohmann::json;
 
-class CardManager {
+class CardManager : public ISpawnListener {
 public:
+    // ISpawnListener 介面：動物卡觸發特殊能力時呼叫
+    void OnSpawn(const std::string& name, float x, float y) override;
     // 建構子：需要接收 App 的 Renderer 才能把卡片畫在畫面上
     CardManager(Util::Renderer& renderer);
 
@@ -105,50 +109,16 @@ public:
     }
 
 private:
-    // 延遲採集任務（角色堆疊在結構卡上，等待 timeLeftMs 後生成卡片再分離）
-    struct PendingGather {
-        std::weak_ptr<Card> character;
-        std::weak_ptr<Card> structure;
-        bool exhausted = false;
-        std::string spawnName;
-        float spawnX, spawnY, spawnScale;
-        float timeLeftMs = 10000.0f;
-        std::unique_ptr<TimeBar> bar;   // 顯示用讀條（解構時自動移出 Renderer）
-    };
-
-    // 戰鬥任務（多個 CHARACTER 對 MONSTER 或 ANIMAL 的持續戰鬥）
-    struct PendingCombat {
-        struct FighterEntry {
-            std::weak_ptr<Card> fighter;  // CHARACTER
-            float timer = 0.0f;           // ms 倒數至下一次攻擊
-        };
-        std::weak_ptr<Card>       target;      // MONSTER 或 ANIMAL（敵方）
-        std::vector<FighterEntry> fighters;    // 可同時多個村民參戰
-        float                     targetTimer = 0.0f;
-    };
-
-    // 延遲合成任務（配方匹配後等待 timeLeftMs 再消耗材料生成成品）
-    struct PendingCraft {
-        std::weak_ptr<Card> stackBottom;
-        std::vector<std::weak_ptr<Card>> allCards;
-        std::string outputName;
-        float spawnX, spawnY, spawnScale;
-        float timeLeftMs;
-        float totalMs = 0.f;             // 整段配方所需毫秒（用於進度條）
-        std::unique_ptr<TimeBar> bar;    // 顯示用讀條（解構時自動移出 Renderer）
-    };
-
     Util::Renderer& m_Renderer; // 參考到 App 的 Renderer
 
     int m_MaxCardCount = 50; // 預設上限
 
     std::vector<std::shared_ptr<Card>> m_Cards;
     std::shared_ptr<Card> m_DraggingCard = nullptr;
-    std::vector<PendingGather>  m_PendingGathers;
-    std::vector<PendingCraft>   m_PendingCrafts;
-    std::vector<PendingCombat>  m_PendingCombats;
 
     std::mt19937 m_RandomGenerator;
+    RecipeManager m_RecipeManager;
+    TaskScheduler m_Tasks;
 
     // 將原本在 App 裡的 static 變數變成 Manager 的私人變數
     glm::vec2 m_ClickStartPos = {0, 0};
@@ -156,7 +126,6 @@ private:
     std::shared_ptr<Card> m_LastClickedCard = nullptr;
 
     float m_ZoomRatio = 1.0f; // 當前累積縮放倍率，用於卡包開出卡片時套用正確大小
-    RecipeManager m_RecipeManager;
 
     // 卡牌與卡包的資料庫字典
     std::unordered_map<std::string, CardSpawnData> m_CardDatabase;

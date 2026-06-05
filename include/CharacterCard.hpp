@@ -1,166 +1,41 @@
-//
-// Created by m0938 on 2026/3/13.
-//
-
+#pragma once
 #ifndef STACKLANDS_CHARACTERCARD_HPP
 #define STACKLANDS_CHARACTERCARD_HPP
 
-#pragma once
-#include <array>
-#include <string>
-#include "Card.hpp"
-#include "CardData.hpp"
-#include "EquipmentCard.hpp"
+#include "CombatCard.hpp"
 
-class CharacterCard : public Card {
+class CharacterCard : public CombatCard {
 public:
-    CharacterCard(float x, float y, const std::string& name, int sellValue, const std::string& iconPath, float scale,
-                  int health, int attack, int defense, float attackSpeed, float hitChance, int foodConsumption = 0)
-        : Card(x, y, name, sellValue, CardType::CHARACTER, scale),
-          baseHealth(health), baseAttack(attack), baseDefense(defense),
-          baseAttackSpeed(attackSpeed), baseHitChance(hitChance), m_FoodConsumption(foodConsumption),
-          health(health), attack(attack), defense(defense),
-          attackSpeed(attackSpeed), hitChance(hitChance),
-          m_CurrentHealth(health)
+    CharacterCard(float x, float y, const std::string& name, int sellValue,
+                  const std::string& iconPath, float scale,
+                  int health, int attack, int defense,
+                  float attackSpeed, float hitChance, int foodConsumption = 0)
+        : CombatCard(x, y, name, sellValue, CardType::CHARACTER, scale,
+                     health, attack, defense, attackSpeed, hitChance),
+          m_FoodConsumption(foodConsumption)
     {
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Character.png");
         SetIconImage(iconPath);
-
-        m_HealthText = InitLabelText(std::to_string(health), Util::Color(255, 255, 255));
-
+        m_HealthText = InitLabelText(std::to_string(health), HealthTextColor());
         UpdateVisualPositions();
-    }
-
-    // 儲存裝備到對應插槽
-    void StoreEquipment(EquipSlot slot, const std::string& name,
-                        int bonusAtk, int bonusHp, int bonusDef,
-                        float bonusAtkSpd, float bonusHitChance) {
-        auto& data          = m_Equips[static_cast<int>(slot)];
-        data.name           = name;
-        data.bonusAtk       = bonusAtk;
-        data.bonusHp        = bonusHp;
-        data.bonusDef       = bonusDef;
-        data.bonusAtkSpd    = bonusAtkSpd;
-        data.bonusHitChance = bonusHitChance;
-        RecalculateStats();
-    }
-
-    void ClearEquipment(EquipSlot slot) {
-        m_Equips[static_cast<int>(slot)] = {};
-        RecalculateStats();
-    }
-
-    const std::string& GetEquipName(EquipSlot slot) const {
-        return m_Equips[static_cast<int>(slot)].name;
-    }
-
-    const EquipSlotData& GetEquipSlotData(EquipSlot slot) const {
-        return m_Equips[static_cast<int>(slot)];
-    }
-
-    const std::array<EquipSlotData, 4>& GetAllEquipData() const {
-        return m_Equips;
-    }
-
-    void SetAllEquipData(const std::array<EquipSlotData, 4>& data) {
-        m_Equips = data;
-        RecalculateStats();
-    }
-
-    void RecalculateStats() {
-        int   totalAtk    = baseAttack;
-        int   totalHp     = baseHealth;
-        int   totalDef    = baseDefense;
-        float totalAtkSpd = baseAttackSpeed;
-        float totalHit    = baseHitChance;
-        for (const auto& e : m_Equips) {
-            totalAtk    += e.bonusAtk;
-            totalHp     += e.bonusHp;
-            totalDef    += e.bonusDef;
-            totalAtkSpd += e.bonusAtkSpd;
-            totalHit    += e.bonusHitChance;
-        }
-        attack      = totalAtk;
-        health      = totalHp;
-        defense     = totalDef;
-        attackSpeed = totalAtkSpd;
-        hitChance   = totalHit;
-        if (m_CurrentHealth > health) m_CurrentHealth = health;
-        UpdateVisualPositions();
-    }
-
-    // ── 戰鬥介面 ────────────────────────────────────────────────────
-    void TakeDamage(int dmg) override {
-        m_CurrentHealth -= dmg;
-        if (m_CurrentHealth < 0) m_CurrentHealth = 0;
-        if (m_HealthText)
-            RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), Util::Color(255, 255, 255));
-    }
-    bool IsDead()          const override { return m_CurrentHealth <= 0; }
-    int   GetAttack()      const override { return attack; }
-    int   GetDefense()     const override { return defense; }
-    float GetAttackSpeed() const override { return attackSpeed; }
-    float GetHitChance()   const override { return hitChance; }
-    int   GetHealth()      const override { return m_CurrentHealth; }
-    int   GetMaxHealth()   const          { return health; }
-
-    void SetScale(float scale) override {
-        Card::SetScale(scale);
-        if (m_HealthText) RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), Util::Color(255, 255, 255));
     }
 
     void OnMonthEnd() override {}
 
-    virtual void UpdateVisualPositions() override {
-        Card::UpdateVisualPositions();
-        if (m_HealthText) {
-            m_HealthText->m_Transform.translation = glm::vec2(
-                m_X + m_Width  * GameConstants::HEALTH_OFFSET_X,
-                m_Y + m_Height * GameConstants::PRICE_OFFSET_Y);
-            m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
-            RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), Util::Color(255, 255, 255));
-        }
-    }
-
-    virtual void StopDragging() override {
-        Card::StopDragging();
-        if (m_HealthText) m_HealthText->SetZIndex(m_Background->GetZIndex() + 1);
-    }
-
-    virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override {
-        auto objs = Card::GetGameObjects();
-        if (m_HealthText) objs.push_back(m_HealthText);
-        return objs;
-    }
-
     bool OnStacked(std::shared_ptr<Card> cardAbove) override {
-        return cardAbove->GetType() == CardType::EQUIPMENT || cardAbove->GetType() == CardType::CHARACTER;
+        return cardAbove->GetType() == CardType::EQUIPMENT ||
+               cardAbove->GetType() == CardType::CHARACTER;
     }
 
-    int   GetbaseAttack()    const { return baseAttack; }
-    int   GetbaseHealth()    const { return baseHealth; }
-    int   GetbaseDefense()   const { return baseDefense; }
-
-    // ── 每月食物消耗 ──────────────────────────────────────────
     int GetFoodConsumption() const { return m_FoodConsumption; }
 
+    // 向下相容的別名（原本 lowercase b，現在委派到 CombatCard）
+    int GetbaseAttack()  const { return m_BaseAttack; }
+    int GetbaseHealth()  const { return m_BaseHealth; }
+    int GetbaseDefense() const { return m_BaseDefense; }
+
 protected:
-    std::shared_ptr<Util::GameObject> m_HealthText;
-    int   baseHealth;
-    int   baseAttack;
-    int   baseDefense;
-    float baseAttackSpeed;
-    float baseHitChance;
-    int   m_FoodConsumption = 0;
-
-    int   health;
-    int   attack;
-    int   defense;
-    float attackSpeed;
-    float hitChance;
-    int   m_CurrentHealth = 0;
-
-    std::array<EquipSlotData, 4> m_Equips;
+    int m_FoodConsumption = 0;
 };
 
-#endif //STACKLANDS_CHARACTERCARD_HPP
+#endif // STACKLANDS_CHARACTERCARD_HPP

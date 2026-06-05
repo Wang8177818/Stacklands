@@ -17,71 +17,100 @@
 #include "LocationCard.hpp"
 #include "IdeaCard.hpp"
 
-std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data, int& maxCardCount,
-                                           std::function<void(const std::string&, float, float)> spawnCallback) {
-    switch (data.type) {
-        case CardType::CHARACTER:
+// ── Registry ────────────────────────────────────────────────────────────────
+
+std::unordered_map<CardType, CardFactory::CreatorFn>& CardFactory::Registry() {
+    static std::unordered_map<CardType, CreatorFn> s_Registry = []() {
+        std::unordered_map<CardType, CreatorFn> r;
+
+        r[CardType::CHARACTER] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<CharacterCard>(
-                x, y, data.name, data.sellValue, data.iconPath, data.scale,
-                data.health, data.attack, data.defense,
-                data.attackSpeed, data.hitChance, data.foodConsumption);
+                x, y, d.name, d.sellValue, d.iconPath, d.scale,
+                d.health, d.attack, d.defense,
+                d.attackSpeed, d.hitChance, d.foodConsumption);
+        };
 
-        case CardType::RESOURCE:
+        r[CardType::RESOURCE] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<ResourceCard>(
-                x, y, data.name, data.sellValue, data.iconPath, data.scale);
+                x, y, d.name, d.sellValue, d.iconPath, d.scale);
+        };
 
-        case CardType::COIN:
-            return std::make_shared<CoinCard>(x, y, data.scale);
+        r[CardType::COIN] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
+            return std::make_shared<CoinCard>(x, y, d.scale);
+        };
 
-        case CardType::EQUIPMENT:
+        r[CardType::EQUIPMENT] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<EquipmentCard>(
-                x, y, data.name, data.sellValue, data.iconPath,
-                data.attack, data.health, data.defense,
-                data.attackSpeed, data.hitChance, data.equipSlot, data.scale);
+                x, y, d.name, d.sellValue, d.iconPath,
+                d.attack, d.health, d.defense,
+                d.attackSpeed, d.hitChance, d.equipSlot, d.scale);
+        };
 
-        case CardType::BUILDING:
-            if (data.name == "Warehouse")
+        r[CardType::BUILDING] = [](float x, float y, const CardSpawnData& d, int& maxCardCount, SpawnCb) -> std::shared_ptr<Card> {
+            if (d.name == "Warehouse")
                 return std::make_shared<WarehouseCard>(
-                    x, y, data.sellValue, data.iconPath, data.scale, maxCardCount);
+                    x, y, d.sellValue, d.iconPath, d.scale, maxCardCount);
             return std::make_shared<BuildingCard>(
-                x, y, data.name, data.sellValue, data.iconPath, data.scale);
+                x, y, d.name, d.sellValue, d.iconPath, d.scale);
+        };
 
-        case CardType::FOOD:
+        r[CardType::FOOD] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<FoodCard>(
-                x, y, data.name, data.sellValue, data.iconPath,
-                data.nutritionValue, data.scale);
+                x, y, d.name, d.sellValue, d.iconPath,
+                d.nutritionValue, d.scale);
+        };
 
-        case CardType::STRUCTURE:
+        r[CardType::STRUCTURE] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<StructureCard>(
-                x, y, data.name, data.sellValue, data.iconPath,
-                data.resourceCount, data.spawnCards, data.scale);
+                x, y, d.name, d.sellValue, d.iconPath,
+                d.resourceCount, d.spawnCards, d.scale);
+        };
 
-        case CardType::ANIMAL:
+        r[CardType::ANIMAL] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb listener) {
             return std::make_shared<AnimalCard>(
-                x, y, data.name, data.iconPath, data.scale,
-                data.health, data.attack, data.defense,
-                data.attackSpeed, data.hitChance,
-                data.dropCards, data.abilityName, data.abilityCooldown,
-                spawnCallback);
+                x, y, d.name, d.iconPath, d.scale,
+                d.health, d.attack, d.defense,
+                d.attackSpeed, d.hitChance,
+                d.dropCards, d.abilityName, d.abilityCooldown,
+                listener);
+        };
 
-        case CardType::MONSTER:
+        r[CardType::MONSTER] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<MonsterCard>(
-                x, y, data.name, data.sellValue, data.iconPath, data.scale,
-                data.health, data.attack, data.defense,
-                data.attackSpeed, data.hitChance,
-                data.dropCards);
+                x, y, d.name, d.sellValue, d.iconPath, d.scale,
+                d.health, d.attack, d.defense,
+                d.attackSpeed, d.hitChance,
+                d.dropCards);
+        };
 
-        case CardType::LOCATION:
+        r[CardType::LOCATION] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<LocationCard>(
-                x, y, data.name, data.sellValue, data.iconPath,
-                data.time, data.spawnCards, data.scale);
+                x, y, d.name, d.sellValue, d.iconPath,
+                d.time, d.spawnCards, d.scale);
+        };
 
-        case CardType::IDEA:
+        r[CardType::IDEA] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<IdeaCard>(
-                x, y, data.name, data.sellValue, data.scale);
+                x, y, d.name, d.sellValue, d.scale);
+        };
 
-        default:
-            return std::make_shared<Card>(
-                x, y, data.name, data.sellValue, data.type, data.scale);
-    }
+        return r;
+    }();
+    return s_Registry;
+}
+
+// ── Public API ───────────────────────────────────────────────────────────────
+
+void CardFactory::Register(CardType type, CreatorFn creator) {
+    Registry()[type] = std::move(creator);
+}
+
+std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData& data,
+                                           int& maxCardCount, SpawnCb spawnCallback) {
+    auto& reg = Registry();
+    auto it = reg.find(data.type);
+    if (it != reg.end())
+        return it->second(x, y, data, maxCardCount, spawnCallback);
+
+    return std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
 }

@@ -1,23 +1,28 @@
-//
-// CardFactory.hpp — 負責依 CardSpawnData 建立對應卡牌物件
-// 將建立邏輯從 CardManager 拆出，CardManager 不再需要知道每種子類別
-// Created during Phase 1 refactoring, 2026/4/18
-//
-
 #ifndef STACKLANDS_CARDFACTORY_HPP
 #define STACKLANDS_CARDFACTORY_HPP
 
 #pragma once
 #include "Card.hpp"
 #include "CardData.hpp"
-#include <functional>
+#include "ISpawnListener.hpp"
 #include <memory>
 #include <string>
+#include <unordered_map>
+#include <functional>
 
 class CardFactory {
 public:
-    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data, int& maxCardCount,
-                                        std::function<void(const std::string&, float, float)> spawnCallback = nullptr);
+    using SpawnCb   = ISpawnListener*;
+    using CreatorFn = std::function<std::shared_ptr<Card>(float, float, const CardSpawnData&, int&, SpawnCb)>;
+
+    static std::shared_ptr<Card> Create(float x, float y, const CardSpawnData& data,
+                                        int& maxCardCount, SpawnCb listener = nullptr);
+
+    // 允許在不修改 CardFactory 本身的情況下新增卡片類型（OCP）
+    static void Register(CardType type, CreatorFn creator);
+
+private:
+    static std::unordered_map<CardType, CreatorFn>& Registry();
 };
 
 #endif // STACKLANDS_CARDFACTORY_HPP
