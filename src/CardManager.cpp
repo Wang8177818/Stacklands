@@ -3,6 +3,7 @@
 //
 #include "CardManager.hpp"
 #include "CardFactory.hpp"
+#include "EffectData.hpp"
 #include "EventManager.hpp"
 #include "RecipeManager.hpp"
 #include "CharacterCard.hpp"
@@ -114,6 +115,55 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
         }
         data.abilityName     = item.value("abilityName", "");
         data.abilityCooldown = item.value("abilityCooldown", 0.0f);
+
+        // 背景覆寫
+        data.backgroundPath = item.value("backgroundPath", "");
+
+        // 結構化特效列表
+        data.effects.clear();
+        if (item.contains("effects")) {
+            for (const auto& e : item["effects"]) {
+                EffectData ed;
+                std::string typeStr = e.value("type", "");
+                if      (typeStr == "Stun")         ed.type = EffectData::Type::Stun;
+                else if (typeStr == "Bleed")        ed.type = EffectData::Type::Bleed;
+                else if (typeStr == "Poison")       ed.type = EffectData::Type::Poison;
+                else if (typeStr == "CriticalHit")  ed.type = EffectData::Type::CriticalHit;
+                else if (typeStr == "Lifesteal")    ed.type = EffectData::Type::Lifesteal;
+                else if (typeStr == "DamageAll")    ed.type = EffectData::Type::DamageAll;
+                else if (typeStr == "DamageRandom") ed.type = EffectData::Type::DamageRandom;
+                else if (typeStr == "Heal")         ed.type = EffectData::Type::Heal;
+                else if (typeStr == "Frenzy")       ed.type = EffectData::Type::Frenzy;
+                else if (typeStr == "Invulnerable") ed.type = EffectData::Type::Invulnerable;
+                else continue;
+
+                std::string tgtStr = e.value("target", "target");
+                if      (tgtStr == "target")             ed.target = EffectData::Target::DirectTarget;
+                else if (tgtStr == "self")               ed.target = EffectData::Target::Self;
+                else if (tgtStr == "random_enemy")       ed.target = EffectData::Target::RandomEnemy;
+                else if (tgtStr == "all_enemies")        ed.target = EffectData::Target::AllEnemies;
+                else if (tgtStr == "random_friendly")    ed.target = EffectData::Target::RandomFriendly;
+                else if (tgtStr == "friendly_lowest_hp") ed.target = EffectData::Target::FriendlyLowestHp;
+                else if (tgtStr == "all_friendlies")     ed.target = EffectData::Target::AllFriendlies;
+
+                ed.chance   = e.value("chance",   0.0f) / 100.0f;
+                ed.duration = e.value("duration", 5.0f);
+                ed.value    = e.value("value",    2);
+                ed.passive  = e.value("passive",  false);
+                data.effects.push_back(ed);
+            }
+        }
+
+        // 地點卡專用
+        data.maxGathers = item.value("maxGathers", 0);
+        if (item.contains("guaranteedDrops")) {
+            for (const auto& entry : item["guaranteedDrops"]) {
+                int         count    = entry.value("count", 0);
+                std::string cardName = entry.value("name", "");
+                if (count > 0 && !cardName.empty())
+                    data.guaranteedDrops.push_back({count, cardName});
+            }
+        }
 
         m_CardDatabase[data.name] = data;
     }
@@ -516,6 +566,13 @@ void CardManager::Update(glm::vec2 mousePos) {
                                 equip->GetBonusHitChance()
                             };
 
+                            // 切斷堆疊連結，確保 PendingCraft 的 weak_ptr 立即失效，
+                            // 避免合成任務抓住 ghost character 造成卡牌卡死
+                            if (auto above = charCard->GetCardAbove()) above->SetCardBelow(nullptr);
+                            if (auto below = charCard->GetCardBelow()) below->SetCardAbove(nullptr);
+                            charCard->SetCardAbove(nullptr);
+                            charCard->SetCardBelow(nullptr);
+
                             auto dragging = m_DraggingCard;
                             m_DraggingCard = nullptr;
                             RemoveCard(dragging);
@@ -567,7 +624,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                         } else {
                             auto location = std::static_pointer_cast<LocationCard>(targetCard);
                             spawnName    = location->Explore(m_RandomGenerator);
-                            exhausted    = false;
+                            exhausted    = location->IsExhausted();
                             gatherTimeMs = location->GetExploreTimeMs();
                         }
 

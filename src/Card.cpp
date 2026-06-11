@@ -3,7 +3,11 @@
 //
 
 #include "Card.hpp"
+#include "EffectData.hpp"
 #include <algorithm>
+
+static const std::vector<EffectData> s_EmptyEffects;
+const std::vector<EffectData>& Card::GetEffects() const { return s_EmptyEffects; }
 
 Card::Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale)
     : m_X(x), m_Y(y), m_Name(name), m_SellValue(sellValue), m_Type(type), m_Scale(scale), m_IsDragging(false)
@@ -81,7 +85,6 @@ bool Card::IsMouseHovering(glm::vec2 mousePos) {
 
 bool Card::IsOverlapping(std::shared_ptr<Card> otherCard) {
     if (!otherCard) return false;
-    if (!m_HitboxActive || !otherCard->m_HitboxActive) return false;
 
     float l1 = m_X - m_Width  / 2;
     float r1 = m_X + m_Width  / 2;

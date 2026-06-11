@@ -18,6 +18,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include "EffectData.hpp"
+
 enum class CardType {
     BASIC,      // 空卡
     RESOURCE,   // 資源卡 (木頭、石頭等)
@@ -79,6 +81,16 @@ public:
     virtual float GetAttackSpeed()  const { return 3.0f; }
     virtual float GetHitChance()    const { return 0.6f; }
     virtual int   GetHealth()       const { return 0; }
+
+    // 暈眩 / 特效狀態介面（CombatCard 覆寫）
+    virtual bool  IsStunned()                    const { return false; }
+    virtual void  ApplyStun(float /*ms*/)              {}
+    virtual void  UpdateStun(float /*ms*/)             {}
+    virtual void  UpdateCombatStates(float /*ms*/)     {}
+
+    // 特效列表（CombatCard 覆寫）
+    virtual const std::vector<EffectData>& GetEffects() const;
+    virtual void SetEffects(const std::vector<EffectData>& effects) {}
 
     // 月底結算時觸發 (例如扣除食物、產生新卡牌等)
     virtual void OnMonthEnd();

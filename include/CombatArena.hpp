@@ -23,15 +23,20 @@ public:
     // 戰鬥中途新增戰鬥員
     void AddFighter(const std::shared_ptr<Card>& fighter);
 
-    // 觸發攻擊衝刺動畫（fighter → target / target → fighter）
+    // 觸發攻擊衝刺動畫（fighter → target / target → 指定 fighter）
     void TriggerAttack(const std::shared_ptr<Card>& attacker);
-    void TriggerCounter(const std::shared_ptr<Card>& target);
+    void TriggerCounter(const std::shared_ptr<Card>& target,
+                        const std::shared_ptr<Card>& chosenFighter);
+
+    // 同步世界座標（Pan / Zoom 時呼叫）
+    void MoveBy(glm::vec2 delta);
+    void ScaleAroundPivot(float ratio, glm::vec2 pivot);
 
 private:
     // 座標常數（world units；BASE_CARD_WIDTH=850 × scale*2=0.1 → 85 px/card）
     static constexpr float SLOT_SPACING = 90.0f;  // 每個槽位水平間距
-    static constexpr float FIGHTER_Y   =  80.0f;  // 角色行偏移（中心下方）
-    static constexpr float TARGET_Y    = -80.0f;  // 敵人行偏移（中心上方）
+    static constexpr float FIGHTER_Y   = -80.0f;  // 角色行偏移（中心下方）
+    static constexpr float TARGET_Y    =  80.0f;  // 敵人行偏移（中心上方）
     static constexpr float PAD_X       =  60.0f;  // 背景左右留白
     static constexpr float PAD_Y       =  60.0f;  // 背景上下留白
     static constexpr float LERP_SPEED  =  10.0f;  // 歸位插值速度

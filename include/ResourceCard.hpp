@@ -10,10 +10,11 @@
 
 class ResourceCard : public Card {
 public:
-    ResourceCard(float x, float y, const std::string& name, int sellValue, const std::string& iconPath, float scale = 1.0f)
+    ResourceCard(float x, float y, const std::string& name, int sellValue, const std::string& iconPath, float scale = 1.0f, const std::string& backgroundPath = "")
         : Card(x, y, name, sellValue, CardType::RESOURCE, scale) {
 
-        SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Resource.png");
+        SetBackgroundImage(backgroundPath.empty() ? RESOURCE_DIR"/Image/card/Card_Resource.png"
+                                                  : RESOURCE_DIR + backgroundPath);
         SetIconImage(iconPath);
 
         m_PriceText = InitLabelText(std::to_string(sellValue), Util::Color(100, 111, 128));

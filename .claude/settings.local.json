@@ -19,7 +19,10 @@
       "PowerShell($cmake = \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\\\\cmake\\\\cygwin\\\\x64\\\\bin\\\\cmake.exe\"; & $cmake --build \"D:\\\\MyStuff\\\\School\\\\OOPL\\\\Stacklands\\\\cmake-build-debug\" --target Stacklands 2>&1 | Select-Object -First 150)",
       "PowerShell($cmake = \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\\\\cmake\\\\win\\\\x64\\\\bin\\\\cmake.exe\"; & $cmake --build \"D:\\\\MyStuff\\\\School\\\\OOPL\\\\Stacklands\\\\cmake-build-debug\" --target Stacklands 2>&1 | Select-Object -First 150)",
       "PowerShell($cmake = \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\\\\cmake\\\\win\\\\x64\\\\bin\\\\cmake.exe\"; & $cmake --build \"D:\\\\MyStuff\\\\School\\\\OOPL\\\\Stacklands\\\\cmake-build-debug\" --target Stacklands 2>&1 | Where-Object { $_ -match \"error:|warning:\" } | Select-Object -First 80)",
-      "PowerShell($cmake = \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\\\\cmake\\\\win\\\\x64\\\\bin\\\\cmake.exe\"; $output = & $cmake --build \"D:\\\\MyStuff\\\\School\\\\OOPL\\\\Stacklands\\\\cmake-build-debug\" --target Stacklands 2>&1; $output | Select-String -Pattern \"error:|In file|note:\" | Select-Object -First 60 | ForEach-Object { $_.ToString\\(\\) })"
+      "PowerShell($cmake = \"C:\\\\Program Files\\\\JetBrains\\\\CLion 2025.3\\\\bin\\\\cmake\\\\win\\\\x64\\\\bin\\\\cmake.exe\"; $output = & $cmake --build \"D:\\\\MyStuff\\\\School\\\\OOPL\\\\Stacklands\\\\cmake-build-debug\" --target Stacklands 2>&1; $output | Select-String -Pattern \"error:|In file|note:\" | Select-Object -First 60 | ForEach-Object { $_.ToString\\(\\) })",
+      "Bash(cmake --build build)",
+      "Bash(cmake --build D:/MyStuff/School/OOPL/Stacklands/cmake-build-debug)",
+      "PowerShell($ninja = Get-ChildItem \"C:\\\\Users\\\\m0938\" -Recurse -Filter \"ninja.exe\" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName; Write-Output \"ninja: $ninja\")"
     ]
   }
 }

@@ -89,7 +89,7 @@ void EventManager::HandleZoom(std::vector<std::shared_ptr<Card>>& cards) {
         card->ScaleAroundPivot(ratio, pivot);
     }
 
-    // 記錄累積縮放倍率 讓後續生成的新卡片能以正確大小出現
+    if (m_CardManager) m_CardManager->ScaleCombatArenas(ratio, pivot);
     m_ZoomRatio *= ratio;
 
     // LOG_DEBUG("Zoom {} -> {:.3f}", (scroll.y > 0 ? "in " : "out"), newScale);
@@ -114,10 +114,8 @@ void EventManager::HandleWASD(std::vector<std::shared_ptr<Card>>& cards) {
 // 卡片透過 MoveBy() 修改 m_X, m_Y，而非直接動 GameObject translation。
 void EventManager::MoveAll(glm::vec2 delta, std::vector<std::shared_ptr<Card>>& cards) {
     m_GameField->m_Transform.translation += delta;
-
-    for (auto& card : cards) {
-        card->MoveBy(delta);
-    }
+    for (auto& card : cards) card->MoveBy(delta);
+    if (m_CardManager) m_CardManager->MoveCombatArenas(delta);
 }
 
 void EventManager::SwitchGameState() {
