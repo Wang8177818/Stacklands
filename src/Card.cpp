@@ -147,8 +147,8 @@ void Card::SetScale(float scale) {
     m_Background->m_Transform.scale = card_scale * 2.0f;
     m_Icon->m_Transform.scale       = card_scale * GameConstants::ICON_SCALE_FACTOR;
 
-    // 重建名稱文字以維持與卡牌大小成固定比例
-    RebuildLabelText(m_NameText, m_Name, Util::Color(0, 0, 0));
+    // 文字只更新 transform 縮放，不重建紋理（避免縮放時大量 SDL_TTF 呼叫造成卡頓）
+    if (m_NameText) m_NameText->m_Transform.scale = card_scale;
 
     m_Width  = GameConstants::BASE_CARD_WIDTH  * m_Scale;
     m_Height = GameConstants::BASE_CARD_HEIGHT * m_Scale;

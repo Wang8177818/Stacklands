@@ -10,6 +10,7 @@
 #include "Util/Input.hpp"
 #include "Util/Renderer.hpp"
 #include "Button.hpp"
+#include "CheatMenu.hpp"
 
 class UIManager {
 public:
@@ -32,6 +33,7 @@ public:
     MenuEvent UpdateMenu(glm::vec2 mousePos);
     MenuEvent UpdatePauseMenu(glm::vec2 mousePos);
     void TransitionToGame();
+    void TransitionToMenu();
 
     // ── 遊戲 UI 階段 ──────────────────────────────────────
     std::shared_ptr<BackgroundImage>   GetGameFieldImage()      const { return m_HUD.field; }
@@ -60,6 +62,9 @@ public:
     void UpdateMonth(int month);
     void UpdateDescriptionText(const std::string& text);
     void UpdateDescriptionName(const std::string& name);
+
+    // 作弊選單
+    CheatMenu& GetCheatMenu() { return m_CheatMenu; }
 
 private:
     Util::Renderer& m_Renderer;
@@ -103,6 +108,8 @@ private:
     } m_HUD;
 
     void AddButtonToRenderer(std::shared_ptr<MenuButton> btn);
+
+    CheatMenu m_CheatMenu;
 };
 
 #endif //STACKLANDS_UIMANAGER_HPP

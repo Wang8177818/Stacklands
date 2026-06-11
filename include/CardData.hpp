@@ -19,6 +19,7 @@ struct EquipSlotData {
     int   bonusDef       = 0;
     float bonusAtkSpd    = 0.0f;
     float bonusHitChance = 0.0f;
+    std::vector<EffectData> effects;  // 裝備附帶的特效
 };
 
 // 生成卡片所需的資料

@@ -14,7 +14,8 @@
 TaskScheduler::TaskScheduler(Util::Renderer& renderer, std::mt19937& rng,
                              RecipeManager& recipes, SpawnFn spawnFn, RemoveFn removeFn)
     : m_Renderer(renderer), m_Rng(rng), m_Recipes(recipes),
-      m_SpawnFn(std::move(spawnFn)), m_RemoveFn(std::move(removeFn)) {}
+      m_SpawnFn(std::move(spawnFn)), m_RemoveFn(std::move(removeFn)),
+      m_FloatingText(renderer) {}
 
 // ── Gather ────────────────────────────────────────────────────────────────────
 
@@ -128,6 +129,7 @@ bool TaskScheduler::JoinOrCreateCombat(const std::shared_ptr<Card>& target,
 }
 
 void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragging) {
+    m_FloatingText.Update(dtMs);
     std::uniform_real_distribution<float> dist01(0.0f, 1.0f);
 
     for (auto it = m_Combats.begin(); it != m_Combats.end(); ) {
@@ -192,6 +194,9 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
                     int rawAtk = fighter->GetAttack() * (isCrit ? 2 : 1);
                     int dmg = Combat::ResolveDamage(rawAtk, target->GetDefense(), bonusDmg, pierce);
                     target->TakeDamage(dmg);
+                    if (isCrit)
+                        m_FloatingText.Spawn(EffectData::Type::CriticalHit,
+                                             target->GetX(), target->GetY());
                     ApplyHitEffects(fighter, target, dmg, aliveFighters, it->target, true);
                 }
                 // passive 非傷害特效（即使 miss 也觸發）
@@ -223,6 +228,9 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
                     int rawAtk = target->GetAttack() * (isCrit ? 2 : 1);
                     int dmg = Combat::ResolveDamage(rawAtk, fighter->GetDefense(), bonusDmg, pierce);
                     fighter->TakeDamage(dmg);
+                    if (isCrit)
+                        m_FloatingText.Spawn(EffectData::Type::CriticalHit,
+                                             fighter->GetX(), fighter->GetY());
                     ApplyHitEffects(target, fighter, dmg, aliveFighters, it->target, false);
                 }
                 ApplyPassiveEffects(target, fighter, aliveFighters, it->target, false);
@@ -313,11 +321,13 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
 void TaskScheduler::MoveCombatArenas(glm::vec2 delta) {
     for (auto& pc : m_Combats)
         if (pc.arena) pc.arena->MoveBy(delta);
+    m_FloatingText.MoveBy(delta);
 }
 
 void TaskScheduler::ScaleCombatArenas(float ratio, glm::vec2 pivot) {
     for (auto& pc : m_Combats)
         if (pc.arena) pc.arena->ScaleAroundPivot(ratio, pivot);
+    m_FloatingText.ScaleAroundPivot(ratio, pivot);
 }
 
 // ── Effect helpers ────────────────────────────────────────────────────────────
@@ -408,6 +418,11 @@ void TaskScheduler::ApplyHitEffects(
                     if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->ApplyInvulnerable(durMs); break;
                 default: break;
             }
+            // 浮動文字：Lifesteal 顯示在攻擊者身上，其他顯示在目標身上
+            if (eff.type == EffectData::Type::Lifesteal)
+                m_FloatingText.Spawn(eff.type, attacker->GetX(), attacker->GetY());
+            else
+                m_FloatingText.Spawn(eff.type, tgt->GetX(), tgt->GetY());
         }
     }
 }
@@ -442,6 +457,7 @@ void TaskScheduler::ApplyPassiveEffects(
                     tgt->TakeDamage(eff.value > 0 ? eff.value : 1); break;
                 default: break;
             }
+            m_FloatingText.Spawn(eff.type, tgt->GetX(), tgt->GetY());
         }
     }
 }

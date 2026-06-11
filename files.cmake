@@ -9,6 +9,8 @@ set(SRC_FILES
     CardFactory.cpp
     CardManager.cpp
     CardPack.cpp
+    CheatMenu.cpp
+    FloatingTextManager.cpp
     TaskScheduler.cpp
     UIManager.cpp
     EventManager.cpp
@@ -37,6 +39,8 @@ set(INCLUDE_FILES
     IdeaCard.hpp
     ISpawnListener.hpp
     LocationCard.hpp
+    CheatMenu.hpp
+    FloatingTextManager.hpp
     TaskScheduler.hpp
     MonsterCard.hpp
     ResourceCard.hpp

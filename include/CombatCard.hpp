@@ -49,12 +49,13 @@ public:
 
     // ── 特效列表 ─────────────────────────────────────────────────────
     const std::vector<EffectData>& GetEffects() const override { return m_Effects; }
-    void SetEffects(const std::vector<EffectData>& effects) override { m_Effects = effects; }
+    void SetEffects(const std::vector<EffectData>& effects) override;
 
     // ── 裝備系統（CharacterCard 主要使用）──────────────────────────
     void StoreEquipment(EquipSlot slot, const std::string& name,
                         int bonusAtk, int bonusHp, int bonusDef,
-                        float bonusAtkSpd, float bonusHitChance);
+                        float bonusAtkSpd, float bonusHitChance,
+                        const std::vector<EffectData>& effects = {});
     void ClearEquipment(EquipSlot slot);
     void RecalculateStats();
     const std::string&                  GetEquipName(EquipSlot slot)    const;
@@ -91,9 +92,13 @@ protected:
     float m_InvulnerableTimerMs = 0.0f;
     float m_FrenzyTimerMs      = 0.0f;
 
-    std::vector<EffectData>            m_Effects;
+    std::vector<EffectData>            m_BaseEffects; // 角色自身效果（來自 JSON）
+    std::vector<EffectData>            m_Effects;     // 合併後效果（base + 裝備）
     std::array<EquipSlotData, 4>       m_Equips{};
     std::shared_ptr<Util::GameObject>  m_HealthText;
+
+    // 重建 m_Effects = m_BaseEffects + 所有裝備的 effects
+    void RebuildEffects();
 };
 
 #endif // STACKLANDS_COMBATCARD_HPP

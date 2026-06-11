@@ -35,8 +35,8 @@ public:
 
     // ── 縮放邊界常數 ──────────────────────────────────────
     static constexpr float ZOOM_MIN      = 0.5f;
-    static constexpr float ZOOM_MAX      = 2.0f;
-    static constexpr float ZOOM_STEP     = 0.01f;
+    static constexpr float ZOOM_MAX      = 4.0f;
+    static constexpr float ZOOM_FACTOR   = 1.08f;  // 乘法縮放：每次滾輪 ×1.08
     static constexpr float WASD_SPEED    = 3.0f;
 
     EventManager() = default;

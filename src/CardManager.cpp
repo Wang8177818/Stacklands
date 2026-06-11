@@ -350,11 +350,31 @@ void CardManager::RemoveCard(std::shared_ptr<Card> target) {
         }), m_Cards.end());
 }
 
+void CardManager::ClearAllCards() {
+    for (auto& card : m_Cards) {
+        for (auto& obj : card->GetGameObjects()) {
+            obj->SetVisible(false);
+            obj->m_Transform.translation = glm::vec2(-9999, -9999);
+        }
+    }
+    m_Cards.clear();
+    m_DraggingCard = nullptr;
+}
+
 void CardManager::OnSpawn(const std::string& name, float x, float y) {
     std::uniform_real_distribution<float> off(-50.0f, 50.0f);
     SpawnCardByName(name, m_ZoomRatio * 0.05f,
                     x + off(m_RandomGenerator),
                     y + off(m_RandomGenerator));
+}
+
+std::vector<std::string> CardManager::GetAllCardNames() const {
+    std::vector<std::string> names;
+    names.reserve(m_CardDatabase.size());
+    for (const auto& pair : m_CardDatabase)
+        names.push_back(pair.first);
+    std::sort(names.begin(), names.end());
+    return names;
 }
 
 std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const CardSpawnData& data) {
@@ -493,6 +513,7 @@ void CardManager::Update(glm::vec2 mousePos) {
         }
 
         m_DraggingCard->StopDragging();
+        ClampCardToField(m_DraggingCard);
 
         // 堆疊邏輯
         if (m_DraggingCard->GetType() != CardType::PACK &&
@@ -540,6 +561,11 @@ void CardManager::Update(glm::vec2 mousePos) {
 
                         std::string outputName = m_RecipeManager.CheckProfession(equipName);
 
+                        // 從資料庫查出裝備的特效
+                        std::vector<EffectData> equipEffects;
+                        if (m_CardDatabase.count(equipName))
+                            equipEffects = m_CardDatabase[equipName].effects;
+
                         if (!outputName.empty()) {
                             float spawnX     = charCard->GetX();
                             float spawnY     = charCard->GetY();
@@ -563,7 +589,8 @@ void CardManager::Update(glm::vec2 mousePos) {
                                 equip->GetBonusHealth(),
                                 equip->GetBonusDefense(),
                                 equip->GetBonusAttackSpeed(),
-                                equip->GetBonusHitChance()
+                                equip->GetBonusHitChance(),
+                                equipEffects
                             };
 
                             // 切斷堆疊連結，確保 PendingCraft 的 weak_ptr 立即失效，
@@ -599,7 +626,8 @@ void CardManager::Update(glm::vec2 mousePos) {
                                                      equip->GetBonusHealth(),
                                                      equip->GetBonusDefense(),
                                                      equip->GetBonusAttackSpeed(),
-                                                     equip->GetBonusHitChance());
+                                                     equip->GetBonusHitChance(),
+                                                     equipEffects);
                             auto dragging = m_DraggingCard;
                             m_DraggingCard = nullptr;
                             RemoveCard(dragging);
@@ -709,6 +737,13 @@ void CardManager::Update(glm::vec2 mousePos) {
         if (m_DraggingCard) m_DraggingCard = nullptr;
     }
 
+    // 每幀將卡片約束在場地範圍內
+    for (auto& card : m_Cards) {
+        if (card == m_DraggingCard) continue; // 拖曳中的不管
+        if (card->GetType() == CardType::INTERACT) continue;
+        ClampCardToField(card);
+    }
+
     // 每幀偵測推擠
     for (size_t i = 0; i < m_Cards.size(); i++) {
         auto& cardA = m_Cards[i];
@@ -740,5 +775,34 @@ void CardManager::Update(glm::vec2 mousePos) {
                 cardB->MoveBy({0.f, dy >= 0.f ? -push :  push});
             }
         }
+    }
+}
+
+void CardManager::ClampCardToField(const std::shared_ptr<Card>& card) {
+    if (!m_Field) return;
+
+    // 場地的世界中心 & 半寬半高
+    glm::vec2 fieldPos  = m_Field->m_Transform.translation;
+    glm::vec2 fieldSize = m_Field->GetScaledSize();
+    float fieldHalfW = fieldSize.x * 0.5f;
+    float fieldHalfH = fieldSize.y * 0.5f;
+
+    // 卡片半寬半高
+    float cardHalfW = card->GetWidth()  * 0.5f;
+    float cardHalfH = card->GetHeight() * 0.5f;
+
+    // 場地邊界（卡片中心允許的範圍）
+    float minX = fieldPos.x - fieldHalfW + cardHalfW;
+    float maxX = fieldPos.x + fieldHalfW - cardHalfW;
+    float minY = fieldPos.y - fieldHalfH + cardHalfH;
+    float maxY = fieldPos.y + fieldHalfH - cardHalfH;
+
+    float cx = card->GetX();
+    float cy = card->GetY();
+    float nx = std::clamp(cx, minX, maxX);
+    float ny = std::clamp(cy, minY, maxY);
+
+    if (nx != cx || ny != cy) {
+        card->MoveBy({nx - cx, ny - cy});
     }
 }

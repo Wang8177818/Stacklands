@@ -45,9 +45,9 @@ Structure Func
 - Week 6 : 
     - [X] 製作資源卡片
 - Week 7 : 
-    - [ ] 製作特殊功能卡片 (建築，箱子 etc)
+    - [X] 製作特殊功能卡片 (建築，箱子 etc)
 - Week 8 :
-    - [ ] 測試&改善目前BUG
+    - [X] 測試&改善目前BUG
 - Week 9 : 
 	- [X] 製作裝備卡片
 	- [X] 調適兼容人物卡
@@ -59,7 +59,7 @@ Structure Func
 - Week 12 : 
     - [X] 製作敵人卡片
     - [X] 製作基本怪物
-    - [ ] 實作怪物技能
+    - [X] 實作怪物技能
 - Week 13 : 
 	- [X] 製作卡片互動 (戰鬥 etc)
     - [X] 製作攻擊系統
@@ -68,7 +68,7 @@ Structure Func
 	- [X] 加入時間跑條
 	- [X] 每日結算機制
 - Week 15 :
-	- [ ] FInal Boss Fight
+	- [X] FInal Boss Fight
 - Week 16 :
 	- [ ] 通關畫面
 	- [ ] 讀檔存檔

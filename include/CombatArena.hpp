@@ -33,15 +33,15 @@ public:
     void ScaleAroundPivot(float ratio, glm::vec2 pivot);
 
 private:
-    // 座標常數（world units；BASE_CARD_WIDTH=850 × scale*2=0.1 → 85 px/card）
-    static constexpr float SLOT_SPACING = 90.0f;  // 每個槽位水平間距
-    static constexpr float FIGHTER_Y   = -80.0f;  // 角色行偏移（中心下方）
-    static constexpr float TARGET_Y    =  80.0f;  // 敵人行偏移（中心上方）
-    static constexpr float PAD_X       =  60.0f;  // 背景左右留白
-    static constexpr float PAD_Y       =  60.0f;  // 背景上下留白
-    static constexpr float LERP_SPEED  =  10.0f;  // 歸位插值速度
-    static constexpr float ATK_SPEED   = 700.0f;  // 衝刺速度 (px/s)
-    static constexpr float RTN_SPEED   = 450.0f;  // 回位速度 (px/s)
+    // 座標常數（world units；basic_scale=0.1 → 卡片約 170px 寬）
+    static constexpr float SLOT_SPACING = 105.0f;  // 每個槽位水平間距
+    static constexpr float FIGHTER_Y   = -95.0f;   // 角色行偏移（中心下方）
+    static constexpr float TARGET_Y    =  95.0f;   // 敵人行偏移（中心上方）
+    static constexpr float PAD_X       =  70.0f;   // 背景左右留白
+    static constexpr float PAD_Y       =  70.0f;   // 背景上下留白
+    static constexpr float LERP_SPEED  =  10.0f;   // 歸位插值速度
+    static constexpr float ATK_SPEED   = 800.0f;   // 衝刺速度 (px/s)
+    static constexpr float RTN_SPEED   = 520.0f;   // 回位速度 (px/s)
     static constexpr float BG_IMG_W    = 850.0f;  // 底圖原始寬度 (px)
     static constexpr float BG_IMG_H    = 1250.0f; // 底圖原始高度 (px)
     static constexpr int   BG_Z        = 5;       // Z 低於卡片(10)

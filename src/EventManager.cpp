@@ -70,14 +70,20 @@ void EventManager::HandleZoom(std::vector<std::shared_ptr<Card>>& cards) {
 
     glm::vec2 scroll   = Util::Input::GetScrollDistance();
     float     oldScale = m_GameField->m_Transform.scale.x;
-    float     newScale = oldScale;
 
-    if      (scroll.y > 0 && oldScale < ZOOM_MAX) newScale = oldScale + ZOOM_STEP;
-    else if (scroll.y < 0 && oldScale > ZOOM_MIN) newScale = oldScale - ZOOM_STEP;
+    // 乘法縮放：放大 ×ZOOM_FACTOR，縮小 ÷ZOOM_FACTOR
+    float ratio;
+    if      (scroll.y > 0 && oldScale < ZOOM_MAX) ratio = ZOOM_FACTOR;
+    else if (scroll.y < 0 && oldScale > ZOOM_MIN) ratio = 1.0f / ZOOM_FACTOR;
     else return;
 
-    const float     ratio = newScale / oldScale;
-    const glm::vec2 pivot = {0.f, 0.f}; // 畫面中心為縮放錨點
+    float newScale = oldScale * ratio;
+    // 夾在邊界內
+    if (newScale > ZOOM_MAX) { newScale = ZOOM_MAX; ratio = newScale / oldScale; }
+    if (newScale < ZOOM_MIN) { newScale = ZOOM_MIN; ratio = newScale / oldScale; }
+    if (ratio == 1.0f) return;
+
+    const glm::vec2 pivot = {0.f, 0.f};
 
     // 背景圖：縮放 + 錨點等比位移
     m_GameField->SetScale({newScale, newScale});
@@ -91,8 +97,6 @@ void EventManager::HandleZoom(std::vector<std::shared_ptr<Card>>& cards) {
 
     if (m_CardManager) m_CardManager->ScaleCombatArenas(ratio, pivot);
     m_ZoomRatio *= ratio;
-
-    // LOG_DEBUG("Zoom {} -> {:.3f}", (scroll.y > 0 ? "in " : "out"), newScale);
 }
 
 // ─────────────────────────────────────────────────────────────

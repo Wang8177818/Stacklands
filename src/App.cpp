@@ -17,25 +17,6 @@ void App::Start() {
     m_UIManager    = std::make_unique<UIManager>(m_Renderer);
     m_CardManager  = std::make_unique<CardManager>(m_Renderer);
     m_EventManager = std::make_unique<EventManager>();
-    m_SellSlot     = std::make_shared<SellSlot>(-250, 210);
-
-    // ── SellSlot 右側 7 個空白格子（顯示名稱 + 價格，功能未接）─────
-    constexpr float SLOT_SPACING_X = 80.0f;  // 加大間距以容納較長的卡包名稱
-    // {名稱, 價格} — 修改這 7 項即可調整每個格子
-    const std::pair<std::string, int> blankSlotData[] = {
-        {"Humble Beginnings",     3},
-        {"Seeking Wisdom",    4},
-        {"Reap & Sow",    10},
-        {"Curious Cuisine",    10},
-        {"Logic and Reason",    15},
-        {"Explorers",   20},
-        {"Order and Structure", 25},
-    };
-    for (int i = 0; i < 7; ++i) {
-        float x = -250.0f + SLOT_SPACING_X * (i + 1);
-        m_BlankSlots.push_back(std::make_shared<BlankSlot>(
-            x, 210.0f, blankSlotData[i].first, blankSlotData[i].second));
-    }
 
     m_UIManager->InitMenu();
 
@@ -47,7 +28,6 @@ void App::MainMenu() {
     LOG_TRACE("MainMenu");
 
     mousePos = Util::Input::GetCursorPosition();
-    LOG_DEBUG("{} {}", mousePos.x, mousePos.y);
 
     auto event = m_UIManager->UpdateMenu(mousePos);
 
@@ -59,6 +39,7 @@ void App::MainMenu() {
             m_EventManager->SetGameField(m_UIManager->GetGameFieldImage());
             m_EventManager->SetUIManager(m_UIManager.get());
             m_EventManager->SetCardManager(m_CardManager.get());
+            m_CardManager->SetFieldBounds(m_UIManager->GetGameFieldImage());
             m_CurrentState = State::GAME_INIT;
             break;
 
@@ -77,6 +58,25 @@ void App::MainMenu() {
 // ─────────────────────────────────────────────────────────────
 void App::GameInit() {
     //卡牌大小去App.hpp調basic_scale
+    // 重建 SellSlot & BlankSlots（支援 Game Over 後重新開始）
+    m_SellSlot = std::make_shared<SellSlot>(-500, 420);
+    m_BlankSlots.clear();
+    constexpr float SLOT_SPACING_X = 160.0f;
+    const std::pair<std::string, int> blankSlotData[] = {
+        {"Humble Beginnings",     3},
+        {"Seeking Wisdom",    4},
+        {"Reap & Sow",    10},
+        {"Curious Cuisine",    10},
+        {"Logic and Reason",    15},
+        {"Explorers",   20},
+        {"Order and Structure", 25},
+    };
+    for (int i = 0; i < 7; ++i) {
+        float x = -500.0f + SLOT_SPACING_X * (i + 1);
+        m_BlankSlots.push_back(std::make_shared<BlankSlot>(
+            x, 420.0f, blankSlotData[i].first, blankSlotData[i].second));
+    }
+
     m_CardManager->AddCard(m_SellSlot);
     for (auto& slot : m_BlankSlots) m_CardManager->AddCard(slot);
     m_Renderer.Update();
@@ -92,27 +92,43 @@ void App::GameInit() {
     m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
     m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
     m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
-    m_CardManager->SpawnCardByName("Axe",basic_scale);
-    m_CardManager->SpawnCardByName("Axe",basic_scale);
-    m_CardManager->SpawnCardByName("Axe",basic_scale);
+    m_CardManager->SpawnCardByName("Hammer",basic_scale);
+    m_CardManager->SpawnCardByName("Hammer",basic_scale);
+    m_CardManager->SpawnCardByName("Hammer",basic_scale);
     m_CardManager->SpawnCardByName("Stew",basic_scale);
     m_CardManager->SpawnCardByName("Stew",basic_scale);
     m_CardManager->SpawnCardByName("Stew",basic_scale);
     m_CardManager->SpawnCardByName("Stew",basic_scale);
-    m_CardManager->SpawnCardByName("Temple",basic_scale);
-    m_CardManager->SpawnCardByName("Catacombs",basic_scale);
+    m_CardManager->SpawnCardByName("Demon",basic_scale);
 
-    m_CardManager->SpawnPackByName("A New World", basic_scale);
     m_CurrentState = State::UPDATE;
 }
 
 // ─────────────────────────────────────────────────────────────
 void App::Update() {
+    LOG_DEBUG("{} {}", mousePos.x, mousePos.y);
     mousePos = Util::Input::GetCursorPosition();
 
     // ── 鏡頭移動 & 地圖縮放（完全委託給 EventManager）────
     auto cards = m_CardManager->GetAllCards();
     m_EventManager->Update(mousePos, m_CardManager->isDraggingCard(), cards);
+
+    // ── 作弊選單（F1 開關）─────────────────────────────────
+    if (Util::Input::IsKeyUp(Util::Keycode::F1)) {
+        auto& cheat = m_UIManager->GetCheatMenu();
+        if (!cheat.IsVisible()) {
+            cheat.SetCardNames(m_CardManager->GetAllCardNames());
+        }
+        cheat.Toggle();
+    }
+    {
+        auto& cheat = m_UIManager->GetCheatMenu();
+        std::string spawnName = cheat.Update(mousePos);
+        if (!spawnName.empty()) {
+            float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
+            m_CardManager->SpawnCardByName(spawnName, spawnScale);
+        }
+    }
 
     // ── 卡片更新 ──────────────────────────────────────────
     m_CardManager->SetZoomRatio(m_EventManager->GetZoomRatio());
@@ -186,20 +202,34 @@ void App::Update() {
         for (auto& c : coins) m_CardManager->RemoveCard(c);
 
         // 生卡包（位置稍微往下方，避免又疊回 slot 上）
-        m_CardManager->SpawnPackByName(slot->GetName(), spawnScale, sx, sy - 100.f);
+        m_CardManager->SpawnPackByName(slot->GetName(), spawnScale, sx, sy - 200.f);
 
         // 找零：超付的部分以單顆 Coin 退回（在卡包旁邊散開）
         const int refund = coinCount - price;
-        std::uniform_real_distribution<float> off(-60.f, 60.f);
+        std::uniform_real_distribution<float> off(-120.f, 120.f);
         for (int i = 0; i < refund; ++i) {
             m_CardManager->SpawnCardByName("Coin", spawnScale,
                                            sx + off(s_AppRng),
-                                           sy - 200.f + off(s_AppRng));
+                                           sy - 400.f + off(s_AppRng));
         }
     }
 
-    m_Renderer.Update();
+    // ── Game Over 檢查 ─────────────────────────────────────
+    int charCount = m_CardManager->GetCharacterCount();
+    if (charCount > 0) m_HadCharacters = true;
+    if (m_HadCharacters && charCount == 0) {
+        LOG_INFO("Game Over: no characters remaining");
+        m_HadCharacters = false;
+        // 清除場上所有卡片
+        m_CardManager->ClearAllCards();
+        m_BlankSlots.clear();
+        m_SellSlot = nullptr;
+        m_UIManager->TransitionToMenu();
+        m_CurrentState = State::MAIN_MENU;
+        return;
+    }
 
+    m_Renderer.Update();
 
     if (m_EventManager->IsRequestingExit() || Util::Input::IfExit()) {
         m_CurrentState = State::END;
