@@ -1,5 +1,6 @@
 #include "CombatCard.hpp"
 #include "GameConstants.hpp"
+#include <algorithm>
 
 CombatCard::CombatCard(float x, float y, const std::string& name, int sellValue,
                         CardType type, float scale,
@@ -13,7 +14,68 @@ CombatCard::CombatCard(float x, float y, const std::string& name, int sellValue,
       m_CurrentHealth(health)
 {}
 
+float CombatCard::GetAttackSpeed() const {
+    return m_FrenzyTimerMs > 0.0f ? m_CombatAttackSpeed * 0.5f : m_CombatAttackSpeed;
+}
+
+void CombatCard::ApplyStun(float durationMs) {
+    if (durationMs > m_StunTimerMs) m_StunTimerMs = durationMs;
+}
+void CombatCard::UpdateStun(float dtMs) {
+    if (m_StunTimerMs > 0.0f) m_StunTimerMs = std::max(0.0f, m_StunTimerMs - dtMs);
+}
+
+void CombatCard::ApplyBleed(float durationMs) {
+    if (durationMs > m_BleedTimerMs) {
+        m_BleedTimerMs = durationMs;
+        if (m_BleedTickMs <= 0.0f) m_BleedTickMs = 1000.0f;
+    }
+}
+void CombatCard::ApplyPoison(float durationMs) {
+    if (durationMs > m_PoisonTimerMs) {
+        m_PoisonTimerMs = durationMs;
+        if (m_PoisonTickMs <= 0.0f) m_PoisonTickMs = 1000.0f;
+    }
+}
+void CombatCard::ApplyInvulnerable(float durationMs) {
+    if (durationMs > m_InvulnerableTimerMs) m_InvulnerableTimerMs = durationMs;
+}
+void CombatCard::ApplyFrenzy(float durationMs) {
+    if (durationMs > m_FrenzyTimerMs) m_FrenzyTimerMs = durationMs;
+}
+void CombatCard::HealBy(int amount) {
+    m_CurrentHealth = std::min(m_CurrentHealth + amount, m_CombatHealth);
+    if (m_HealthText)
+        RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), HealthTextColor());
+}
+
+void CombatCard::UpdateCombatStates(float dtMs) {
+    UpdateStun(dtMs);
+
+    if (m_BleedTimerMs > 0.0f) {
+        m_BleedTimerMs = std::max(0.0f, m_BleedTimerMs - dtMs);
+        m_BleedTickMs -= dtMs;
+        if (m_BleedTickMs <= 0.0f) {
+            m_BleedTickMs += 1000.0f;
+            TakeDamage(1);
+        }
+    }
+    if (m_PoisonTimerMs > 0.0f) {
+        m_PoisonTimerMs = std::max(0.0f, m_PoisonTimerMs - dtMs);
+        m_PoisonTickMs -= dtMs;
+        if (m_PoisonTickMs <= 0.0f) {
+            m_PoisonTickMs += 1000.0f;
+            TakeDamage(1);
+        }
+    }
+    if (m_InvulnerableTimerMs > 0.0f)
+        m_InvulnerableTimerMs = std::max(0.0f, m_InvulnerableTimerMs - dtMs);
+    if (m_FrenzyTimerMs > 0.0f)
+        m_FrenzyTimerMs = std::max(0.0f, m_FrenzyTimerMs - dtMs);
+}
+
 void CombatCard::TakeDamage(int dmg) {
+    if (m_InvulnerableTimerMs > 0.0f) return;
     m_CurrentHealth -= dmg;
     if (m_CurrentHealth < 0) m_CurrentHealth = 0;
     if (m_HealthText)

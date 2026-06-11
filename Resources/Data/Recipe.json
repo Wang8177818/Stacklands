@@ -2091,5 +2091,13 @@
     ],
     "output": "Wooden Shield",
     "time": 15.0
+  },
+  {
+    "inputs": [
+      "Temple",
+      "Golden Goblet"
+    ],
+    "output": "Demon",
+    "time": 120.0
   }
 ]

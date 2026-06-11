@@ -12,17 +12,21 @@
 #include "Card.hpp"
 #include "GameConstants.hpp"
 
-// 地點卡：可無限探索，每次生成一張隨機卡片，使用 JSON 中 "time" 欄位決定探索時間
 class LocationCard : public Card {
 public:
     LocationCard(float x, float y, const std::string& name, int sellValue,
                  const std::string& iconPath,
                  float exploreTimeSec,
                  const std::vector<std::pair<std::string, int>>& spawnCards,
-                 float scale = 1.0f)
+                 float scale = 1.0f,
+                 int maxGathers = 0,
+                 const std::vector<std::pair<int, std::string>>& guaranteedDrops = {})
         : Card(x, y, name, sellValue, CardType::LOCATION, scale),
           m_ExploreTimeMs(exploreTimeSec * 1000.0f),
-          m_SpawnCards(spawnCards)
+          m_SpawnCards(spawnCards),
+          m_MaxGathers(maxGathers),
+          m_GatherCount(0),
+          m_GuaranteedDrops(guaranteedDrops)
     {
         SetBackgroundImage(RESOURCE_DIR"/Image/card/Card_Location.png");
         SetIconImage(iconPath);
@@ -34,12 +38,15 @@ public:
         return cardAbove->GetType() == CardType::CHARACTER;
     }
 
-    // 探索：依權重隨機回傳卡片名稱；永不耗盡
     std::string Explore(std::mt19937& rng) {
+        ++m_GatherCount;
+        for (const auto& [count, cardName] : m_GuaranteedDrops) {
+            if (m_GatherCount == count) return cardName;
+        }
         return PickByWeight(rng);
     }
 
-    bool  IsExhausted()       const { return false; }
+    bool  IsExhausted()       const { return m_MaxGathers > 0 && m_GatherCount >= m_MaxGathers; }
     float GetExploreTimeMs()  const { return m_ExploreTimeMs; }
 
     void SetScale(float scale) override {
@@ -78,6 +85,9 @@ protected:
     std::shared_ptr<Util::GameObject> m_PriceText;
     float m_ExploreTimeMs;
     std::vector<std::pair<std::string, int>> m_SpawnCards;
+    int  m_MaxGathers;
+    int  m_GatherCount;
+    std::vector<std::pair<int, std::string>> m_GuaranteedDrops;
 
 private:
     std::string PickByWeight(std::mt19937& rng) const {

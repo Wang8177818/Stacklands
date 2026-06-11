@@ -32,7 +32,7 @@ std::unordered_map<CardType, CardFactory::CreatorFn>& CardFactory::Registry() {
 
         r[CardType::RESOURCE] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<ResourceCard>(
-                x, y, d.name, d.sellValue, d.iconPath, d.scale);
+                x, y, d.name, d.sellValue, d.iconPath, d.scale, d.backgroundPath);
         };
 
         r[CardType::COIN] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
@@ -86,7 +86,8 @@ std::unordered_map<CardType, CardFactory::CreatorFn>& CardFactory::Registry() {
         r[CardType::LOCATION] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
             return std::make_shared<LocationCard>(
                 x, y, d.name, d.sellValue, d.iconPath,
-                d.time, d.spawnCards, d.scale);
+                d.time, d.spawnCards, d.scale,
+                d.maxGathers, d.guaranteedDrops);
         };
 
         r[CardType::IDEA] = [](float x, float y, const CardSpawnData& d, int&, SpawnCb) {
@@ -109,8 +110,14 @@ std::shared_ptr<Card> CardFactory::Create(float x, float y, const CardSpawnData&
                                            int& maxCardCount, SpawnCb spawnCallback) {
     auto& reg = Registry();
     auto it = reg.find(data.type);
+    std::shared_ptr<Card> card;
     if (it != reg.end())
-        return it->second(x, y, data, maxCardCount, spawnCallback);
+        card = it->second(x, y, data, maxCardCount, spawnCallback);
+    else
+        card = std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
 
-    return std::make_shared<Card>(x, y, data.name, data.sellValue, data.type, data.scale);
+    if (card && !data.effects.empty())
+        card->SetEffects(data.effects);
+
+    return card;
 }

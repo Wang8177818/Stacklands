@@ -7,7 +7,9 @@
 
 #pragma once
 #include <string>
-#include "Card.hpp"
+#include <vector>
+#include "Card.hpp"        // CardType, EquipSlot (also transitively includes EffectData.hpp)
+#include "EffectData.hpp"  // explicit include for EffectData
 
 // 裝備插槽資料（CharacterCard / MonsterCard 共用）
 struct EquipSlotData {
@@ -27,34 +29,38 @@ struct CardSpawnData {
     std::string iconPath;
     float scale, attackSpeed, hitChance;
     int health, attack, defense, foodConsumption; // 0 代表非人物卡
-    std::string description;   // 卡片敘述文字
+    std::string description;
 
     EquipSlot equipSlot = EquipSlot::NONE;
 
     // 食物卡專用
     int nutritionValue = 0;
 
-    // 結構卡專用：
+    // 結構卡專用
     int resourceCount = 0;
     float time = 10.0f;
-    std::vector<std::pair<std::string, int>> spawnCards; // {卡片名稱, 權重}
+    std::vector<std::pair<std::string, int>> spawnCards;
 
-    // 動物卡專用：
-    std::vector<std::pair<std::string, int>> dropCards;  // 死亡掉落 {卡片名稱, 權重}
-    std::string abilityName;                             // 特殊能力識別字 (produce_egg 等)
-    float abilityCooldown = 0.0f;                        // 能力冷卻秒數
+    // 動物卡專用
+    std::vector<std::pair<std::string, int>> dropCards;
+    std::string abilityName;
+    float abilityCooldown = 0.0f;
+
+    // 地點卡專用
+    int maxGathers = 0;
+    std::vector<std::pair<int, std::string>> guaranteedDrops;
+
+    // 背景覆寫（空字串 = 使用各類型預設背景）
+    std::string backgroundPath;
+
+    // 戰鬥特效列表
+    std::vector<EffectData> effects;
 };
 
 struct Recipe {
-    // 1. 需要的卡片名稱清單 (例如: {"Villager", "Wood", "Stone"})
     std::vector<std::string> requiredCards;
-
-    // 2. 合成出來的結果名稱
     std::string resultCardName;
-
-    // 3. 需要花費的時間 (秒)
     float craftTime;
 };
-
 
 #endif //STACKLANDS_CARDDATA_HPP

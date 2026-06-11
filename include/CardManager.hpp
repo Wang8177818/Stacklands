@@ -62,6 +62,10 @@ public:
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 
+    // 同步戰鬥場地世界座標（Pan / Zoom 時由 EventManager 呼叫）
+    void MoveCombatArenas(glm::vec2 delta)               { m_Tasks.MoveCombatArenas(delta); }
+    void ScaleCombatArenas(float ratio, glm::vec2 pivot) { m_Tasks.ScaleCombatArenas(ratio, pivot); }
+
     // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型）
     int GetCardCount() const {
         int count = 0;

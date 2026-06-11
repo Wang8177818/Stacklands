@@ -77,7 +77,9 @@
     "damage": 2,
     "defense": 1,
     "attackSpeed": 2.9,
-    "effect": "10% chance to Stun target",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "It has joined your side"
   },
   {
@@ -406,6 +408,7 @@
     "name": "Golden Goblet",
     "type": "RESOURCE",
     "iconPath": "/Image/card/resource/GoldenGoblet.png",
+    "backgroundPath": "/Image/card/Card_Golden.png",
     "description": "A mysterious artifact"
   },
   {
@@ -674,7 +677,9 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": -1,
-    "special": "10% chance to Bleed target",
+    "effects": [
+      { "type": "Bleed", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "For chopping wood and monsters"
   },
   {
@@ -686,7 +691,9 @@
     "health": 5,
     "slot": "Hand",
     "attackSpeed": 1,
-    "special": "*10% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 10, "target": "target", "passive": true }
+    ],
     "description": "Cheap Wolverine knockoff"
   },
   {
@@ -698,7 +705,9 @@
     "hitChance": 1,
     "slot": "Hand",
     "attackSpeed": -1,
-    "special": "10% chance to Poison target",
+    "effects": [
+      { "type": "Poison", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "Blow as hard as you can"
   },
   {
@@ -709,7 +718,9 @@
     "attack": 4,
     "hitChance": -1,
     "slot": "Hand",
-    "special": "*15% chance to Damage all enemies",
+    "effects": [
+      { "type": "DamageAll", "chance": 15, "value": 1, "target": "all_enemies", "passive": true }
+    ],
     "description": "Watch out! Could blow up in your own face"
   },
   {
@@ -720,7 +731,9 @@
     "attack": 2,
     "hitChance": 1,
     "slot": "Hand",
-    "special": "10% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 10, "target": "target" }
+    ],
     "description": "Intimidating version of a regular Spear"
   },
   {
@@ -731,7 +744,9 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": 1,
-    "special": "20% chance to Lifesteal from target",
+    "effects": [
+      { "type": "Lifesteal", "chance": 20, "target": "target" }
+    ],
     "description": "A bone with special abilities"
   },
   {
@@ -741,7 +756,9 @@
     "sellValue": 3,
     "attack": 1,
     "slot": "Hand",
-    "special": "15% chance to Damage all enemies",
+    "effects": [
+      { "type": "DamageAll", "chance": 15, "value": 1, "target": "all_enemies" }
+    ],
     "description": "Always comes back to you"
   },
   {
@@ -752,7 +769,9 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": -1,
-    "special": "7% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 7, "target": "target" }
+    ],
     "description": "Makes you feel like Robin Hood"
   },
   {
@@ -762,7 +781,9 @@
     "sellValue": 1,
     "attack": 1,
     "slot": "Hand",
-    "special": "*10% chance to Bleed self",
+    "effects": [
+      { "type": "Bleed", "chance": 10, "duration": 5, "target": "self", "passive": true }
+    ],
     "description": "Cut out for the job"
   },
   {
@@ -884,7 +905,9 @@
     "sellValue": 3,
     "defense": 1,
     "slot": "Head",
-    "special": "5% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 5, "target": "target" }
+    ],
     "description": "Goblin fashion is outdated"
   },
   {
@@ -894,7 +917,9 @@
     "sellValue": 10,
     "defense": 3,
     "slot": "Body",
-    "special": "10% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "Slightly overdressed for the event"
   },
   {
@@ -910,7 +935,9 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "special": "10% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "Slow and blunt but packs a punch"
   },
   {
@@ -930,7 +957,9 @@
     "attack": 2,
     "defense": 2,
     "slot": "Head",
-    "special": "20% chance to Bleed target",
+    "effects": [
+      { "type": "Bleed", "chance": 20, "duration": 5, "target": "target" }
+    ],
     "description": "Useful for strong headbuts"
   },
   {
@@ -940,7 +969,9 @@
     "sellValue": 3,
     "defense": 2,
     "slot": "Body",
-    "special": "10% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "A strong defense against hard blows"
   },
   {
@@ -951,7 +982,11 @@
     "defense": 1,
     "slot": "Head",
     "attackSpeed": 2,
-    "special": "10% chance to Stun random enemy 10% chance to Poison random enemy 10% chance to Lifesteal from random enemy",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "random_enemy" },
+      { "type": "Poison", "chance": 10, "duration": 5, "target": "random_enemy" },
+      { "type": "Lifesteal", "chance": 10, "target": "random_enemy" }
+    ],
     "description": "Makes you look like a clown"
   },
   {
@@ -962,7 +997,9 @@
     "attack": 2,
     "defense": 1,
     "slot": "Hand",
-    "special": "20% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 20, "target": "target" }
+    ],
     "description": "Left for the tooth fairy, you took it instead"
   },
   {
@@ -982,7 +1019,9 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": 1,
-    "special": "20% chance to Frenzy random friendly for 10s",
+    "effects": [
+      { "type": "Frenzy", "chance": 20, "duration": 10, "target": "random_friendly" }
+    ],
     "description": "An ordinary sword that glitters"
   },
   {
@@ -993,7 +1032,9 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": 2,
-    "special": "15% chance to Heal all friendlies by 2",
+    "effects": [
+      { "type": "Heal", "chance": 15, "value": 2, "target": "all_friendlies" }
+    ],
     "description": "You took it from some Old Lady"
   },
   {
@@ -1003,7 +1044,9 @@
     "sellValue": 3,
     "attack": 1,
     "slot": "Hand",
-    "special": "10% chance to make random friendly Invulnerable for 10s",
+    "effects": [
+      { "type": "Invulnerable", "chance": 10, "duration": 10, "target": "random_friendly" }
+    ],
     "description": "Once it slides on your finger it grants you magic powers"
   },
   {
@@ -1014,7 +1057,9 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": 1,
-    "special": "*15% chance to Heal friendly with lowest health by 2",
+    "effects": [
+      { "type": "Heal", "chance": 15, "value": 2, "target": "friendly_lowest_hp", "passive": true }
+    ],
     "description": "A long, enchanted rod"
   },
   {
@@ -1024,7 +1069,9 @@
     "sellValue": 3,
     "attack": 1,
     "slot": "Hand",
-    "special": "*10% chance to Heal random friendly by 2",
+    "effects": [
+      { "type": "Heal", "chance": 10, "value": 2, "target": "random_friendly", "passive": true }
+    ],
     "description": "An old book with spells in it"
   },
   {
@@ -1034,7 +1081,9 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "special": "10% chance to Heal friendly with lowest health by 2",
+    "effects": [
+      { "type": "Heal", "chance": 10, "value": 2, "target": "friendly_lowest_hp" }
+    ],
     "description": "A simple magic weapon"
   },
   {
@@ -1055,7 +1104,9 @@
     "defense": 1,
     "slot": "Hand",
     "attackSpeed": -1,
-    "special": "15% chance to Stun random enemy for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 15, "duration": 5, "target": "random_enemy" }
+    ],
     "description": "Spikes on a stick"
   },
   {
@@ -1065,7 +1116,9 @@
     "sellValue": 8,
     "attack": 2,
     "slot": "Head",
-    "special": "10% chance to make random friendly Invulnerable for 10s",
+    "effects": [
+      { "type": "Invulnerable", "chance": 10, "duration": 10, "target": "random_friendly" }
+    ],
     "description": "It grounds you"
   },
   {
@@ -1076,7 +1129,9 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": -1,
-    "special": "10% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 10, "target": "target" }
+    ],
     "description": "A stick with two pointy ends"
   },
   {
@@ -1086,7 +1141,9 @@
     "sellValue": 5,
     "defense": 1,
     "slot": "Head",
-    "special": "20% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 20, "duration": 5, "target": "target" }
+    ],
     "description": "Useful for dress up parties"
   },
   {
@@ -1097,7 +1154,9 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": 2,
-    "special": "7% chance to make self Invulnerable for 10s",
+    "effects": [
+      { "type": "Invulnerable", "chance": 7, "duration": 10, "target": "self" }
+    ],
     "description": "Designed for swashbucklers"
   },
   {
@@ -1116,7 +1175,9 @@
     "iconPath": "/Image/card/equipment/Purple_Socks.png",
     "sellValue": 5,
     "slot": "Body",
-    "special": "10% chance to Heal Self",
+    "effects": [
+      { "type": "Heal", "chance": 10, "value": 2, "target": "self" }
+    ],
     "description": "They have small cat paws on!"
   },
   {
@@ -1126,7 +1187,9 @@
     "sellValue": 3,
     "slot": "Body",
     "attackSpeed": 2,
-    "special": "10% chance to Bleed target",
+    "effects": [
+      { "type": "Bleed", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "Makes you more efficient"
   },
   {
@@ -1168,7 +1231,9 @@
     "attack": 2,
     "defense": 2,
     "slot": "Head",
-    "special": "10% chance to Lifesteal from target",
+    "effects": [
+      { "type": "Lifesteal", "chance": 10, "target": "target" }
+    ],
     "description": "Kinda messed up"
   },
   {
@@ -1179,7 +1244,9 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": 1,
-    "special": "25% chance to Damage random enemy",
+    "effects": [
+      { "type": "DamageRandom", "chance": 25, "value": 1, "target": "random_enemy" }
+    ],
     "description": "Very inaccurately hurl rocks at enemies"
   },
   {
@@ -1189,7 +1256,9 @@
     "sellValue": 3,
     "attack": 2,
     "slot": "Hand",
-    "special": "5% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 5, "target": "target" }
+    ],
     "description": "Stick with a pointy end"
   },
   {
@@ -1199,7 +1268,9 @@
     "sellValue": 4,
     "attack": 1,
     "slot": "Hand",
-    "special": "7% chance to Bleed target",
+    "effects": [
+      { "type": "Bleed", "chance": 7, "duration": 5, "target": "target" }
+    ],
     "description": "For tough construction workers"
   },
   {
@@ -1210,7 +1281,9 @@
     "attack": 2,
     "slot": "Hand",
     "attackSpeed": 1,
-    "special": "20% chance to Stun random enemy for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 20, "duration": 5, "target": "random_enemy" }
+    ],
     "description": "Very scary!!"
   },
   {
@@ -1221,7 +1294,9 @@
     "attack": 1,
     "slot": "Hand",
     "attackSpeed": 1,
-    "special": "10% chance to Bleed target",
+    "effects": [
+      { "type": "Bleed", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "An Iron Bar with a pointy end"
   },
   {
@@ -1249,7 +1324,9 @@
     "iconPath": "/Image/card/equipment/Winter_Coat.png",
     "sellValue": 3,
     "slot": "Body",
-    "special": "10% chance to Heal Self",
+    "effects": [
+      { "type": "Heal", "chance": 10, "value": 2, "target": "self" }
+    ],
     "description": "Wonderful in winter"
   },
   {
@@ -1258,7 +1335,9 @@
     "iconPath": "/Image/card/equipment/WizardRobe.png",
     "sellValue": 3,
     "slot": "Body",
-    "special": "10% chance to make self Invulnerable for 10s",
+    "effects": [
+      { "type": "Invulnerable", "chance": 10, "duration": 10, "target": "self" }
+    ],
     "description": "It's like a magical snuggie"
   },
   {
@@ -2326,7 +2405,9 @@
     "combatLevel": 174,
     "damage": 5,
     "defense": 2,
-    "effect": "5% chance to Stun all enemies for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 5, "duration": 5, "target": "all_enemies" }
+    ],
     "description": "The Final Boss"
   },
   {
@@ -2337,7 +2418,9 @@
     "combatLevel": 373,
     "damage": 6,
     "defense": 2,
-    "effect": "10% chance to Lifesteal from random enemy",
+    "effects": [
+      { "type": "Lifesteal", "chance": 10, "target": "random_enemy" }
+    ],
     "description": "The final, final boss!"
   },
   {
@@ -2348,7 +2431,9 @@
     "combatLevel": 168,
     "damage": 5,
     "defense": 3,
-    "effect": "5% chance to Stun all enemies",
+    "effects": [
+      { "type": "Stun", "chance": 5, "duration": 5, "target": "all_enemies" }
+    ],
     "description": "it was created by your Villagers' sadness"
   },
   {
@@ -2409,7 +2494,9 @@
     "combatLevel": 8,
     "damage": 1,
     "defense": 0,
-    "effect": "10% chance to Poison target",
+    "effects": [
+      { "type": "Poison", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "Does it have rabies? Probably!"
   },
   {
@@ -2420,7 +2507,9 @@
     "combatLevel": 16,
     "damage": 4,
     "defense": 3,
-    "effect": "10% chance to Stun target",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "A large, demon-like creature"
   },
   {
@@ -2511,7 +2600,9 @@
     "combatLevel": 150,
     "damage": 5,
     "defense": 2,
-    "effect": "20% chance to Stun all enemies for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 20, "duration": 5, "target": "all_enemies" }
+    ],
     "description": "Mad that you took its relic"
   },
   {
@@ -2542,7 +2633,9 @@
     "combatLevel": 67,
     "damage": 2,
     "defense": 2,
-    "effect": "20% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 20, "duration": 5, "target": "target" }
+    ],
     "description": "Maybe you shouldn't have killed those Crabs?"
   },
   {
@@ -2583,7 +2676,9 @@
     "combatLevel": 14,
     "damage": 2,
     "defense": 1,
-    "effect": "10% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "A burly angry seaman"
   },
   {
@@ -2626,7 +2721,9 @@
     "combatLevel": 20,
     "damage": 3,
     "defense": 2,
-    "effect": "10% chance to Bleed target",
+    "effects": [
+      { "type": "Bleed", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "description": "A type of big angry fish"
   },
   {
@@ -2637,7 +2734,9 @@
     "combatLevel": 12,
     "damage": 2,
     "defense": 1,
-    "effect": "5% chance to do a Critical Hit on target",
+    "effects": [
+      { "type": "CriticalHit", "chance": 5, "target": "target" }
+    ],
     "description": "A monster consisting of a set of bones"
   },
   {
@@ -2668,7 +2767,9 @@
     "combatLevel": 15,
     "damage": 2,
     "defense": 0,
-    "effect": "30% chance to Poison target",
+    "effects": [
+      { "type": "Poison", "chance": 30, "duration": 5, "target": "target" }
+    ],
     "description": "A slithering, poisonous creature"
   },
   {
@@ -2685,7 +2786,9 @@
     "combatLevel": 43,
     "damage": 4,
     "defense": 1,
-    "effect": "20% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 20, "duration": 5, "target": "target" }
+    ],
     "description": "Wiggle wiggle wiggle"
   },
   {
@@ -2696,7 +2799,9 @@
     "combatLevel": 22,
     "damage": 2,
     "defense": 2,
-    "effect": "20% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 20, "duration": 5, "target": "target" }
+    ],
     "description": "A very strong cat"
   },
   {
@@ -2761,7 +2866,9 @@
     "defense": 1,
     "hitChance": 0.6,
     "attackSpeed": 3.0,
-    "effect": "10% chance to Stun target for 5s",
+    "effects": [
+      { "type": "Stun", "chance": 10, "duration": 5, "target": "target" }
+    ],
     "dropCards": [
       {
         "name": "Raw Meat",
@@ -4483,6 +4590,10 @@
         "name": "Giant Rat",
         "weight": 10
       }
+    ],
+    "maxGathers": 10,
+    "guaranteedDrops": [
+      { "count": 4, "name": "Golden Goblet" }
     ],
     "time": 60.0
   },

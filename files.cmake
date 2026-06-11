@@ -25,6 +25,7 @@ set(INCLUDE_FILES
     Button.hpp
     Card.hpp
     CombatCard.hpp
+    EffectData.hpp
     WanderingCard.hpp
     CardFactory.hpp
     CharacterCard.hpp

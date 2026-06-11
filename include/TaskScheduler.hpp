@@ -67,7 +67,24 @@ public:
     bool IsFighterBusy(const std::shared_ptr<Card>& fighter) const;
     bool HasCraftForBottom(const std::shared_ptr<Card>& bottom) const;
 
+    // 同步所有戰鬥場地的世界座標（Pan / Zoom 時呼叫）
+    void MoveCombatArenas(glm::vec2 delta);
+    void ScaleCombatArenas(float ratio, glm::vec2 pivot);
+
 private:
+    void ApplyHitEffects(const std::shared_ptr<Card>& attacker,
+                         const std::shared_ptr<Card>& directHit,
+                         int dmgDealt,
+                         const std::vector<std::shared_ptr<Card>>& fighters,
+                         const std::weak_ptr<Card>& combatTarget,
+                         bool attackerIsFighter);
+
+    void ApplyPassiveEffects(const std::shared_ptr<Card>& attacker,
+                             const std::shared_ptr<Card>& directHit,
+                             const std::vector<std::shared_ptr<Card>>& fighters,
+                             const std::weak_ptr<Card>& combatTarget,
+                             bool attackerIsFighter);
+
     std::vector<PendingGather>  m_Gathers;
     std::vector<PendingCombat>  m_Combats;
     std::vector<PendingCraft>   m_Crafts;
