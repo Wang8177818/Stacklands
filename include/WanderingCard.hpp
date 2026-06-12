@@ -37,6 +37,11 @@ public:
     void SetInCombat(bool v) { m_InCombat = v; }
     bool IsInCombat()  const { return m_InCombat; }
 
+    // 主動追擊：設定追擊目標座標（覆寫隨機漫遊）／取消追擊
+    void SetSeekTarget(float x, float y) { m_HasSeek = true; m_SeekX = x; m_SeekY = y; }
+    void ClearSeekTarget()               { m_HasSeek = false; }
+    bool HasSeekTarget() const           { return m_HasSeek; }
+
     // 依權重隨機抽掉落物，無則回傳空字串
     std::string RollDrop() const;
 
@@ -52,6 +57,11 @@ protected:
     float m_MoveCooldown = 0.0f;
     bool  m_IsMoving     = false;
     bool  m_InCombat     = false;
+
+    // 主動追擊狀態（由 CardManager 每幀驅動，怪物靠近角色用）
+    bool  m_HasSeek      = false;
+    float m_SeekX        = 0.0f;
+    float m_SeekY        = 0.0f;
 
     std::vector<std::pair<std::string, int>> m_DropCards;
 
