@@ -435,6 +435,43 @@ void CardManager::Update(glm::vec2 mousePos) {
         }
     }
 
+    // 2.5 怪物主動追擊最近的角色，接觸後開戰
+    for (auto& card : m_Cards) {
+        if (card->GetType() != CardType::MONSTER) continue;
+        auto monster = std::static_pointer_cast<MonsterCard>(card);
+
+        // 戰鬥中 / 拖曳中 / 堆疊中 / 無碰撞箱 → 不主動行動
+        if (monster->IsInCombat() || monster == m_DraggingCard ||
+            monster->GetCardBelow() || monster->GetCardAbove() ||
+            !monster->IsHitboxActive()) {
+            monster->ClearSeekTarget();
+            continue;
+        }
+
+        // 找最近且可被攻擊的角色（排除拖曳中、已在戰鬥中即碰撞箱關閉者）
+        std::shared_ptr<Card> nearest;
+        float bestDist2 = 0.0f;
+        for (auto& other : m_Cards) {
+            if (other->GetType() != CardType::CHARACTER) continue;
+            if (other == m_DraggingCard || !other->IsHitboxActive()) continue;
+            float dx = other->GetX() - monster->GetX();
+            float dy = other->GetY() - monster->GetY();
+            float d2 = dx * dx + dy * dy;
+            if (!nearest || d2 < bestDist2) { nearest = other; bestDist2 = d2; }
+        }
+
+        // 場上沒有角色才隨機漫遊，否則持續主動追擊（不再受偵測範圍限制）
+        if (!nearest) { monster->ClearSeekTarget(); continue; }
+
+        // 接觸（重疊）即開戰，否則持續靠近
+        if (monster->IsOverlapping(nearest)) {
+            monster->ClearSeekTarget();
+            m_Tasks.JoinOrCreateCombat(monster, nearest);
+        } else {
+            monster->SetSeekTarget(nearest->GetX(), nearest->GetY());
+        }
+    }
+
     // 3. 更新卡片動畫與跟隨
     // 快照避免 Update 內部（如動物產卵 callback）呼叫 AddCard 導致迭代器失效
     {
@@ -775,6 +812,13 @@ void CardManager::Update(glm::vec2 mousePos) {
                 cardB->MoveBy({0.f, dy >= 0.f ? -push :  push});
             }
         }
+    }
+
+    // 推擠後再次約束邊界，避免被推出場地
+    for (auto& card : m_Cards) {
+        if (card == m_DraggingCard) continue;
+        if (card->GetType() == CardType::INTERACT) continue;
+        ClampCardToField(card);
     }
 }
 

@@ -46,6 +46,20 @@ void WanderingCard::UpdateWander(float dtMs) {
     // 戰鬥中、被拖曳中、或疊在卡上時不移動，但計時繼續累積
     if (m_InCombat || m_IsDragging || m_CardBelow != nullptr) return;
 
+    // 主動追擊：覆寫隨機漫遊，朝目標座標前進
+    if (m_HasSeek) {
+        const float dtSec = dtMs / 1000.0f;
+        const float alpha = 1.0f - std::exp(-m_WanderParams.speed * dtSec);
+        m_X += (m_SeekX - m_X) * alpha;
+        m_Y += (m_SeekY - m_Y) * alpha;
+        m_TargetX  = m_X;      // 同步隨機漫遊目標，取消追擊後不會瞬移
+        m_TargetY  = m_Y;
+        m_IsMoving = false;
+        m_MoveTimer = 0.0f;    // 重置漫遊冷卻
+        UpdateVisualPositions();
+        return;
+    }
+
     if (m_IsMoving) {
         const float dtSec = dtMs / 1000.0f;
         const float alpha = 1.0f - std::exp(-m_WanderParams.speed * dtSec);

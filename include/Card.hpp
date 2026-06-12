@@ -82,7 +82,7 @@ public:
     virtual float GetHitChance()    const { return 0.6f; }
     virtual int   GetHealth()       const { return 0; }
 
-    // 暈眩 / 特效狀態介面（CombatCard 覆寫）
+// 暈眩 / 特效狀態介面（CombatCard 覆寫）
     virtual bool  IsStunned()                    const { return false; }
     virtual void  ApplyStun(float /*ms*/)              {}
     virtual void  UpdateStun(float /*ms*/)             {}

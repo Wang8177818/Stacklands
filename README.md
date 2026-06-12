@@ -12,19 +12,6 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
 
 遊戲示範連結 : https://youtu.be/au7YlQecD4c?si=xV3quaz0hVEGTKs7
 
-# DID (howhowdy2)
----
-4/17  
-Weapon bonus  
-Fix EquipmentCard  
-Fix CardPack 
-
-# TODO (howhowdy2)
----
-4/17
-Structure Func  
-
-
 # Devlopment timeline
 ---
 - Week 1 :  
@@ -73,8 +60,3 @@ Structure Func
 	- [ ] 通關畫面
 	- [ ] 讀檔存檔
 - Week 17 : 測試&改善
-
-# 長頸鹿大冒險通關證明
-
-![[image.png]]
-![[image1.png]]
