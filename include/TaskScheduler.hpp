@@ -4,6 +4,7 @@
 
 #include "Card.hpp"
 #include "CombatArena.hpp"
+#include "FloatingTextManager.hpp"
 #include "RecipeManager.hpp"
 #include "TimeBar.hpp"
 #include "Util/Renderer.hpp"
@@ -67,16 +68,37 @@ public:
     bool IsFighterBusy(const std::shared_ptr<Card>& fighter) const;
     bool HasCraftForBottom(const std::shared_ptr<Card>& bottom) const;
 
+    // 同步所有戰鬥場地的世界座標（Pan / Zoom 時呼叫）
+    void MoveCombatArenas(glm::vec2 delta);
+    void ScaleCombatArenas(float ratio, glm::vec2 pivot);
+
+    // 浮動文字管理器（供外部同步 Pan/Zoom）
+    FloatingTextManager& GetFloatingText() { return m_FloatingText; }
+
 private:
+    void ApplyHitEffects(const std::shared_ptr<Card>& attacker,
+                         const std::shared_ptr<Card>& directHit,
+                         int dmgDealt,
+                         const std::vector<std::shared_ptr<Card>>& fighters,
+                         const std::weak_ptr<Card>& combatTarget,
+                         bool attackerIsFighter);
+
+    void ApplyPassiveEffects(const std::shared_ptr<Card>& attacker,
+                             const std::shared_ptr<Card>& directHit,
+                             const std::vector<std::shared_ptr<Card>>& fighters,
+                             const std::weak_ptr<Card>& combatTarget,
+                             bool attackerIsFighter);
+
     std::vector<PendingGather>  m_Gathers;
     std::vector<PendingCombat>  m_Combats;
     std::vector<PendingCraft>   m_Crafts;
 
-    Util::Renderer& m_Renderer;
-    std::mt19937&   m_Rng;
-    RecipeManager&  m_Recipes;
-    SpawnFn         m_SpawnFn;
-    RemoveFn        m_RemoveFn;
+    Util::Renderer&     m_Renderer;
+    std::mt19937&       m_Rng;
+    RecipeManager&      m_Recipes;
+    SpawnFn             m_SpawnFn;
+    RemoveFn            m_RemoveFn;
+    FloatingTextManager m_FloatingText;
 };
 
 #endif // STACKLANDS_TASKSCHEDULER_HPP

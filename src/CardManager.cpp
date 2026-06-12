@@ -3,6 +3,7 @@
 //
 #include "CardManager.hpp"
 #include "CardFactory.hpp"
+#include "EffectData.hpp"
 #include "EventManager.hpp"
 #include "RecipeManager.hpp"
 #include "CharacterCard.hpp"
@@ -117,6 +118,55 @@ void CardManager::LoadCardDatabase(const std::string& filePath) {
         }
         data.abilityName     = item.value("abilityName", "");
         data.abilityCooldown = item.value("abilityCooldown", 0.0f);
+
+        // 背景覆寫
+        data.backgroundPath = item.value("backgroundPath", "");
+
+        // 結構化特效列表
+        data.effects.clear();
+        if (item.contains("effects")) {
+            for (const auto& e : item["effects"]) {
+                EffectData ed;
+                std::string typeStr = e.value("type", "");
+                if      (typeStr == "Stun")         ed.type = EffectData::Type::Stun;
+                else if (typeStr == "Bleed")        ed.type = EffectData::Type::Bleed;
+                else if (typeStr == "Poison")       ed.type = EffectData::Type::Poison;
+                else if (typeStr == "CriticalHit")  ed.type = EffectData::Type::CriticalHit;
+                else if (typeStr == "Lifesteal")    ed.type = EffectData::Type::Lifesteal;
+                else if (typeStr == "DamageAll")    ed.type = EffectData::Type::DamageAll;
+                else if (typeStr == "DamageRandom") ed.type = EffectData::Type::DamageRandom;
+                else if (typeStr == "Heal")         ed.type = EffectData::Type::Heal;
+                else if (typeStr == "Frenzy")       ed.type = EffectData::Type::Frenzy;
+                else if (typeStr == "Invulnerable") ed.type = EffectData::Type::Invulnerable;
+                else continue;
+
+                std::string tgtStr = e.value("target", "target");
+                if      (tgtStr == "target")             ed.target = EffectData::Target::DirectTarget;
+                else if (tgtStr == "self")               ed.target = EffectData::Target::Self;
+                else if (tgtStr == "random_enemy")       ed.target = EffectData::Target::RandomEnemy;
+                else if (tgtStr == "all_enemies")        ed.target = EffectData::Target::AllEnemies;
+                else if (tgtStr == "random_friendly")    ed.target = EffectData::Target::RandomFriendly;
+                else if (tgtStr == "friendly_lowest_hp") ed.target = EffectData::Target::FriendlyLowestHp;
+                else if (tgtStr == "all_friendlies")     ed.target = EffectData::Target::AllFriendlies;
+
+                ed.chance   = e.value("chance",   0.0f) / 100.0f;
+                ed.duration = e.value("duration", 5.0f);
+                ed.value    = e.value("value",    2);
+                ed.passive  = e.value("passive",  false);
+                data.effects.push_back(ed);
+            }
+        }
+
+        // 地點卡專用
+        data.maxGathers = item.value("maxGathers", 0);
+        if (item.contains("guaranteedDrops")) {
+            for (const auto& entry : item["guaranteedDrops"]) {
+                int         count    = entry.value("count", 0);
+                std::string cardName = entry.value("name", "");
+                if (count > 0 && !cardName.empty())
+                    data.guaranteedDrops.push_back({count, cardName});
+            }
+        }
 
         m_CardDatabase[data.name] = data;
     }
@@ -319,11 +369,31 @@ void CardManager::RemoveCard(std::shared_ptr<Card> target) {
         }), m_Cards.end());
 }
 
+void CardManager::ClearAllCards() {
+    for (auto& card : m_Cards) {
+        for (auto& obj : card->GetGameObjects()) {
+            obj->SetVisible(false);
+            obj->m_Transform.translation = glm::vec2(-9999, -9999);
+        }
+    }
+    m_Cards.clear();
+    m_DraggingCard = nullptr;
+}
+
 void CardManager::OnSpawn(const std::string& name, float x, float y) {
     std::uniform_real_distribution<float> off(-50.0f, 50.0f);
     SpawnCardByName(name, m_ZoomRatio * 0.05f,
                     x + off(m_RandomGenerator),
                     y + off(m_RandomGenerator));
+}
+
+std::vector<std::string> CardManager::GetAllCardNames() const {
+    std::vector<std::string> names;
+    names.reserve(m_CardDatabase.size());
+    for (const auto& pair : m_CardDatabase)
+        names.push_back(pair.first);
+    std::sort(names.begin(), names.end());
+    return names;
 }
 
 std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const CardSpawnData& data) {
@@ -390,6 +460,43 @@ void CardManager::Update(glm::vec2 mousePos) {
                                 card->GetY() + off(m_RandomGenerator));
             }
             RemoveCard(card);
+        }
+    }
+
+    // 2.5 怪物主動追擊最近的角色，接觸後開戰
+    for (auto& card : m_Cards) {
+        if (card->GetType() != CardType::MONSTER) continue;
+        auto monster = std::static_pointer_cast<MonsterCard>(card);
+
+        // 戰鬥中 / 拖曳中 / 堆疊中 / 無碰撞箱 → 不主動行動
+        if (monster->IsInCombat() || monster == m_DraggingCard ||
+            monster->GetCardBelow() || monster->GetCardAbove() ||
+            !monster->IsHitboxActive()) {
+            monster->ClearSeekTarget();
+            continue;
+        }
+
+        // 找最近且可被攻擊的角色（排除拖曳中、已在戰鬥中即碰撞箱關閉者）
+        std::shared_ptr<Card> nearest;
+        float bestDist2 = 0.0f;
+        for (auto& other : m_Cards) {
+            if (other->GetType() != CardType::CHARACTER) continue;
+            if (other == m_DraggingCard || !other->IsHitboxActive()) continue;
+            float dx = other->GetX() - monster->GetX();
+            float dy = other->GetY() - monster->GetY();
+            float d2 = dx * dx + dy * dy;
+            if (!nearest || d2 < bestDist2) { nearest = other; bestDist2 = d2; }
+        }
+
+        // 場上沒有角色才隨機漫遊，否則持續主動追擊（不再受偵測範圍限制）
+        if (!nearest) { monster->ClearSeekTarget(); continue; }
+
+        // 接觸（重疊）即開戰，否則持續靠近
+        if (monster->IsOverlapping(nearest)) {
+            monster->ClearSeekTarget();
+            m_Tasks.JoinOrCreateCombat(monster, nearest);
+        } else {
+            monster->SetSeekTarget(nearest->GetX(), nearest->GetY());
         }
     }
 
@@ -624,6 +731,7 @@ void CardManager::Update(glm::vec2 mousePos) {
         }
 
         m_DraggingCard->StopDragging();
+        ClampCardToField(m_DraggingCard);
 
         // 堆疊邏輯
         if (m_DraggingCard->GetType() != CardType::PACK &&
@@ -671,6 +779,11 @@ void CardManager::Update(glm::vec2 mousePos) {
 
                         std::string outputName = m_RecipeManager.CheckProfession(equipName);
 
+                        // 從資料庫查出裝備的特效
+                        std::vector<EffectData> equipEffects;
+                        if (m_CardDatabase.count(equipName))
+                            equipEffects = m_CardDatabase[equipName].effects;
+
                         if (!outputName.empty()) {
                             float spawnX     = charCard->GetX();
                             float spawnY     = charCard->GetY();
@@ -694,8 +807,16 @@ void CardManager::Update(glm::vec2 mousePos) {
                                 equip->GetBonusHealth(),
                                 equip->GetBonusDefense(),
                                 equip->GetBonusAttackSpeed(),
-                                equip->GetBonusHitChance()
+                                equip->GetBonusHitChance(),
+                                equipEffects
                             };
+
+                            // 切斷堆疊連結，確保 PendingCraft 的 weak_ptr 立即失效，
+                            // 避免合成任務抓住 ghost character 造成卡牌卡死
+                            if (auto above = charCard->GetCardAbove()) above->SetCardBelow(nullptr);
+                            if (auto below = charCard->GetCardBelow()) below->SetCardAbove(nullptr);
+                            charCard->SetCardAbove(nullptr);
+                            charCard->SetCardBelow(nullptr);
 
                             auto dragging = m_DraggingCard;
                             m_DraggingCard = nullptr;
@@ -723,7 +844,8 @@ void CardManager::Update(glm::vec2 mousePos) {
                                                      equip->GetBonusHealth(),
                                                      equip->GetBonusDefense(),
                                                      equip->GetBonusAttackSpeed(),
-                                                     equip->GetBonusHitChance());
+                                                     equip->GetBonusHitChance(),
+                                                     equipEffects);
                             auto dragging = m_DraggingCard;
                             m_DraggingCard = nullptr;
                             RemoveCard(dragging);
@@ -748,7 +870,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                         } else {
                             auto location = std::static_pointer_cast<LocationCard>(targetCard);
                             spawnName    = location->Explore(m_RandomGenerator);
-                            exhausted    = false;
+                            exhausted    = location->IsExhausted();
                             gatherTimeMs = location->GetExploreTimeMs();
                         }
 
@@ -833,6 +955,13 @@ void CardManager::Update(glm::vec2 mousePos) {
         if (m_DraggingCard) m_DraggingCard = nullptr;
     }
 
+    // 每幀將卡片約束在場地範圍內
+    for (auto& card : m_Cards) {
+        if (card == m_DraggingCard) continue; // 拖曳中的不管
+        if (card->GetType() == CardType::INTERACT) continue;
+        ClampCardToField(card);
+    }
+
     // 每幀偵測推擠
     for (size_t i = 0; i < m_Cards.size(); i++) {
         auto& cardA = m_Cards[i];
@@ -871,5 +1000,41 @@ void CardManager::Update(glm::vec2 mousePos) {
                 cardB->MoveBy({0.f, dy >= 0.f ? -pushB :  pushB});
             }
         }
+    }
+
+    // 推擠後再次約束邊界，避免被推出場地
+    for (auto& card : m_Cards) {
+        if (card == m_DraggingCard) continue;
+        if (card->GetType() == CardType::INTERACT) continue;
+        ClampCardToField(card);
+    }
+}
+
+void CardManager::ClampCardToField(const std::shared_ptr<Card>& card) {
+    if (!m_Field) return;
+
+    // 場地的世界中心 & 半寬半高
+    glm::vec2 fieldPos  = m_Field->m_Transform.translation;
+    glm::vec2 fieldSize = m_Field->GetScaledSize();
+    float fieldHalfW = fieldSize.x * 0.5f;
+    float fieldHalfH = fieldSize.y * 0.5f;
+
+    // 卡片半寬半高
+    float cardHalfW = card->GetWidth()  * 0.5f;
+    float cardHalfH = card->GetHeight() * 0.5f;
+
+    // 場地邊界（卡片中心允許的範圍）
+    float minX = fieldPos.x - fieldHalfW + cardHalfW;
+    float maxX = fieldPos.x + fieldHalfW - cardHalfW;
+    float minY = fieldPos.y - fieldHalfH + cardHalfH;
+    float maxY = fieldPos.y + fieldHalfH - cardHalfH;
+
+    float cx = card->GetX();
+    float cy = card->GetY();
+    float nx = std::clamp(cx, minX, maxX);
+    float ny = std::clamp(cy, minY, maxY);
+
+    if (nx != cx || ny != cy) {
+        card->MoveBy({nx - cx, ny - cy});
     }
 }

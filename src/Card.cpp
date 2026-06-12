@@ -3,7 +3,11 @@
 //
 
 #include "Card.hpp"
+#include "EffectData.hpp"
 #include <algorithm>
+
+static const std::vector<EffectData> s_EmptyEffects;
+const std::vector<EffectData>& Card::GetEffects() const { return s_EmptyEffects; }
 
 Card::Card(float x, float y, const std::string& name, int sellValue, CardType type, float scale)
     : m_X(x), m_Y(y), m_Name(name), m_SellValue(sellValue), m_Type(type), m_Scale(scale), m_IsDragging(false)
@@ -81,7 +85,6 @@ bool Card::IsMouseHovering(glm::vec2 mousePos) {
 
 bool Card::IsOverlapping(std::shared_ptr<Card> otherCard) {
     if (!otherCard) return false;
-    if (!m_HitboxActive || !otherCard->m_HitboxActive) return false;
 
     float l1 = m_X - m_Width  / 2;
     float r1 = m_X + m_Width  / 2;
@@ -144,8 +147,8 @@ void Card::SetScale(float scale) {
     m_Background->m_Transform.scale = card_scale * 2.0f;
     m_Icon->m_Transform.scale       = card_scale * GameConstants::ICON_SCALE_FACTOR;
 
-    // 重建名稱文字以維持與卡牌大小成固定比例
-    RebuildLabelText(m_NameText, m_Name, Util::Color(0, 0, 0));
+    // 文字只更新 transform 縮放，不重建紋理（避免縮放時大量 SDL_TTF 呼叫造成卡頓）
+    if (m_NameText) m_NameText->m_Transform.scale = card_scale;
 
     m_Width  = GameConstants::BASE_CARD_WIDTH  * m_Scale;
     m_Height = GameConstants::BASE_CARD_HEIGHT * m_Scale;

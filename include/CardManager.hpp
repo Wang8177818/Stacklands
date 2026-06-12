@@ -44,6 +44,7 @@ public:
     // 把卡片加入管理清單，並同時交給 Renderer 渲染
     void AddCard(std::shared_ptr<Card> card);
     void RemoveCard(std::shared_ptr<Card> target);
+    void ClearAllCards();
 
     // json
     void LoadCardDatabase(const std::string& filePath);
@@ -62,10 +63,28 @@ public:
     // 是否正在拖曳卡片
     bool isDraggingCard();
 
+    // 取得資料庫中所有卡片名稱（供作弊選單使用）
+    std::vector<std::string> GetAllCardNames() const;
+
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 
-    // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型，以及 Coin；含 Resource Chest 內儲存的）
+    // 同步戰鬥場地世界座標（Pan / Zoom 時由 EventManager 呼叫）
+    void MoveCombatArenas(glm::vec2 delta)               { m_Tasks.MoveCombatArenas(delta); }
+    void ScaleCombatArenas(float ratio, glm::vec2 pivot) { m_Tasks.ScaleCombatArenas(ratio, pivot); }
+
+    // 設定遊戲場地邊界（供卡片位置約束使用）
+    void SetFieldBounds(const std::shared_ptr<Util::GameObject>& field) { m_Field = field; }
+
+    // 取得場上角色卡數量
+    int GetCharacterCount() const {
+        int count = 0;
+        for (auto& card : m_Cards)
+            if (card->GetType() == CardType::CHARACTER) count++;
+        return count;
+    }
+
+    // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型）
     int GetCardCount() const {
         int count = 0;
         for (auto& card : m_Cards) {
@@ -143,6 +162,12 @@ private:
     std::shared_ptr<Card> m_LastClickedCard = nullptr;
 
     float m_ZoomRatio = 1.0f; // 當前累積縮放倍率，用於卡包開出卡片時套用正確大小
+
+    // 遊戲場地 GameObject（用於計算邊界）
+    std::shared_ptr<Util::GameObject> m_Field;
+
+    // 將卡片位置約束在場地範圍內
+    void ClampCardToField(const std::shared_ptr<Card>& card);
 
     // 卡牌與卡包的資料庫字典
     std::unordered_map<std::string, CardSpawnData> m_CardDatabase;

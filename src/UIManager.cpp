@@ -47,7 +47,8 @@ std::string WrapEnglishText(const std::string& text, int maxLinePx, int fontSize
 } // namespace
 
 // ─────────────────────────────────────────────────────────────
-UIManager::UIManager(Util::Renderer& renderer) : m_Renderer(renderer) {}
+UIManager::UIManager(Util::Renderer& renderer)
+    : m_Renderer(renderer), m_CheatMenu(renderer) {}
 
 // ─────────────────────────────────────────────────────────────
 // 輔助：把按鈕的所有 GameObject 一次加入 Renderer
@@ -151,7 +152,7 @@ void UIManager::TransitionToGame() {
     // ── 遊戲欄位圖 ────────────────────────────────────────
     m_HUD.field = std::make_shared<BackgroundImage>();
     m_HUD.field->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/gameField.png"));
-    m_HUD.field->SetScale({0.7f, 0.7f});
+    m_HUD.field->SetScale({1.4f, 1.4f});
     m_Renderer.AddChild(m_HUD.field);
 
     // ── 描述欄 ────────────────────────────────────────────
@@ -284,6 +285,44 @@ void UIManager::TransitionToGame() {
     m_HUD.descText->SetZIndex(100);
     m_HUD.descText->SetVisible(false);
     m_Renderer.AddChild(m_HUD.descText);
+}
+
+// ─────────────────────────────────────────────────────────────
+void UIManager::TransitionToMenu() {
+    // ── 隱藏遊戲 HUD ─────────────────────────────────────
+    if (m_HUD.field)       m_HUD.field->SetVisible(false);
+    if (m_HUD.descBar)     m_HUD.descBar->SetVisible(false);
+    if (m_HUD.resourceBar) m_HUD.resourceBar->SetVisible(false);
+    if (m_HUD.timeBar)     m_HUD.timeBar->SetVisible(false);
+    if (m_HUD.runTimeBar)  m_HUD.runTimeBar->SetVisible(false);
+    if (m_HUD.month)       m_HUD.month->SetVisible(false);
+    if (m_HUD.pauseText)   m_HUD.pauseText->SetVisible(false);
+    if (m_HUD.cardIcon)    m_HUD.cardIcon->SetVisible(false);
+    if (m_HUD.cardCount)   m_HUD.cardCount->SetVisible(false);
+    if (m_HUD.coinIcon)    m_HUD.coinIcon->SetVisible(false);
+    if (m_HUD.coinCount)   m_HUD.coinCount->SetVisible(false);
+    if (m_HUD.foodIcon)    m_HUD.foodIcon->SetVisible(false);
+    if (m_HUD.foodCount)   m_HUD.foodCount->SetVisible(false);
+    if (m_HUD.descName)    m_HUD.descName->SetVisible(false);
+    if (m_HUD.descText)    m_HUD.descText->SetVisible(false);
+    if (m_HUD.playButton)  m_HUD.playButton->HideAll();
+    if (m_Pause.image)     m_Pause.image->SetVisible(false);
+    if (m_Pause.btnContinue)     m_Pause.btnContinue->HideAll();
+    if (m_Pause.btnReturnToMenu) m_Pause.btnReturnToMenu->HideAll();
+
+    // ── 還原選單背景 ─────────────────────────────────────
+    m_Menu.bg->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR"/Image/background/stacklandsMenuBG.png"));
+
+    // ── 顯示選單 UI ──────────────────────────────────────
+    m_Menu.panel->SetVisible(true);
+    m_Menu.btnStart   ->ShowAll();
+    m_Menu.btnExit    ->ShowAll();
+    m_Menu.btnOptions ->ShowAll();
+    m_Menu.btnCardWiki->ShowAll();
+    m_Menu.btnMods    ->ShowAll();
+
+    // 隱藏作弊選單
+    m_CheatMenu.Hide();
 }
 
 // ─────────────────────────────────────────────────────────────

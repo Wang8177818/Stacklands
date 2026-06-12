@@ -94,13 +94,10 @@ void CardPack::StopDragging() {
 }
 
 void CardPack::SetScale(float scale) {
-    Card::SetScale(scale); // 同步更新 NameText
+    Card::SetScale(scale);
 
+    // 數量文字只更新 transform 縮放，不重建紋理（避免縮放卡頓）
     if (m_CountText) {
-        int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
-        m_CountText->SetDrawable(std::make_shared<Util::Text>(
-            FONT_REGULAR, fontSize,
-            std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
         m_CountText->m_Transform.scale = {m_Scale, m_Scale};
     }
 }

@@ -131,10 +131,32 @@ void CombatArena::TriggerAttack(const std::shared_ptr<Card>& attacker) {
     m_Anims.push_back({attacker, home, m_Target.home, false, false});
 }
 
-void CombatArena::TriggerCounter(const std::shared_ptr<Card>& target) {
+void CombatArena::TriggerCounter(const std::shared_ptr<Card>& target,
+                                  const std::shared_ptr<Card>& chosenFighter) {
     glm::vec2 aim{0.0f, 0.0f};
     for (const auto& s : m_Fighters) {
-        if (s.card.lock()) { aim = s.home; break; }
+        if (s.card.lock() == chosenFighter) { aim = s.home; break; }
+    }
+    if (aim == glm::vec2{0.0f, 0.0f}) {
+        for (const auto& s : m_Fighters) {
+            if (s.card.lock()) { aim = s.home; break; }
+        }
     }
     m_Anims.push_back({target, m_Target.home, aim, false, false});
+}
+
+void CombatArena::MoveBy(glm::vec2 delta) {
+    m_Center += delta;
+    for (auto& s : m_Fighters) s.home += delta;
+    m_Target.home += delta;
+    m_Bg->m_Transform.translation += delta;
+}
+
+void CombatArena::ScaleAroundPivot(float ratio, glm::vec2 pivot) {
+    m_Center = pivot + (m_Center - pivot) * ratio;
+    for (auto& s : m_Fighters)
+        s.home = pivot + (s.home - pivot) * ratio;
+    m_Target.home = pivot + (m_Target.home - pivot) * ratio;
+    m_Bg->m_Transform.translation = pivot + (m_Bg->m_Transform.translation - pivot) * ratio;
+    m_Bg->m_Transform.scale *= ratio;
 }

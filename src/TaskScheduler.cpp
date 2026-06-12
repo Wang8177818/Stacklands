@@ -6,13 +6,16 @@
 #include "StructureCard.hpp"
 #include "LocationCard.hpp"
 #include "AttackResolver.hpp"
+#include "CombatCard.hpp"
+#include "EffectData.hpp"
 #include "GameConstants.hpp"
 #include <algorithm>
 
 TaskScheduler::TaskScheduler(Util::Renderer& renderer, std::mt19937& rng,
                              RecipeManager& recipes, SpawnFn spawnFn, RemoveFn removeFn)
     : m_Renderer(renderer), m_Rng(rng), m_Recipes(recipes),
-      m_SpawnFn(std::move(spawnFn)), m_RemoveFn(std::move(removeFn)) {}
+      m_SpawnFn(std::move(spawnFn)), m_RemoveFn(std::move(removeFn)),
+      m_FloatingText(renderer) {}
 
 // ── Gather ────────────────────────────────────────────────────────────────────
 
@@ -61,11 +64,12 @@ void TaskScheduler::UpdateGathers(float dtMs) {
                 } else {
                     auto location    = std::static_pointer_cast<LocationCard>(st);
                     it->spawnName  = location->Explore(m_Rng);
-                    it->exhausted  = false;
+                    it->exhausted  = location->IsExhausted();
                     it->timeLeftMs = location->GetExploreTimeMs();
                 }
-                it->spawnX = st->GetX();
-                it->spawnY = st->GetY();
+                it->spawnX     = st->GetX();
+                it->spawnY     = st->GetY();
+                it->spawnScale = st->GetScale();
 
                 const float gatherSec  = it->timeLeftMs / 1000.0f;
                 const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * st->GetScale();
@@ -125,6 +129,7 @@ bool TaskScheduler::JoinOrCreateCombat(const std::shared_ptr<Card>& target,
 }
 
 void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragging) {
+    m_FloatingText.Update(dtMs);
     std::uniform_real_distribution<float> dist01(0.0f, 1.0f);
 
     for (auto it = m_Combats.begin(); it != m_Combats.end(); ) {
@@ -153,35 +158,82 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
 
         if (it->arena) it->arena->Update(dtMs);
 
+        // 收集活著的戰鬥員（供特效目標解析用）
+        std::vector<std::shared_ptr<Card>> aliveFighters;
+        for (auto& fe : it->fighters)
+            if (auto f = fe.fighter.lock()) aliveFighters.push_back(f);
+
+        // 每幀更新所有戰鬥狀態（暈眩 / DoT / 無敵 / 狂暴）
+        target->UpdateCombatStates(dtMs);
+        for (auto& f : aliveFighters) f->UpdateCombatStates(dtMs);
+
+        // 角色攻擊：暈眩中凍結 CD、不可出手
         for (auto& fe : it->fighters) {
             auto fighter = fe.fighter.lock();
             if (!fighter) continue;
-            fe.timer -= dtMs;
-            if (fe.timer <= 0.0f) {
+            if (!fighter->IsStunned()) fe.timer -= dtMs;
+            if (fe.timer <= 0.0f && !fighter->IsStunned()) {
                 fe.timer += fighter->GetAttackSpeed() * 1000.0f;
                 if (it->arena) it->arena->TriggerAttack(fighter);
+
+                // 暴擊判定（passive 效果在 miss 時也觸發，非 passive 需先命中）
+                bool isCrit = false;
+                for (const auto& eff : fighter->GetEffects()) {
+                    if (eff.type == EffectData::Type::CriticalHit && eff.passive)
+                        if (dist01(m_Rng) < eff.chance) isCrit = true;
+                }
+
                 if (Combat::IsHit(fighter->GetHitChance(), dist01(m_Rng))) {
+                    // 命中後再判定非 passive 暴擊
+                    for (const auto& eff : fighter->GetEffects())
+                        if (eff.type == EffectData::Type::CriticalHit && !eff.passive)
+                            if (dist01(m_Rng) < eff.chance) isCrit = true;
+
                     bool bonusDmg = dist01(m_Rng) < 0.5f;
                     bool pierce   = dist01(m_Rng) < 0.5f;
-                    int dmg = Combat::ResolveDamage(fighter->GetAttack(), target->GetDefense(), bonusDmg, pierce);
+                    int rawAtk = fighter->GetAttack() * (isCrit ? 2 : 1);
+                    int dmg = Combat::ResolveDamage(rawAtk, target->GetDefense(), bonusDmg, pierce);
                     target->TakeDamage(dmg);
+                    if (isCrit)
+                        m_FloatingText.Spawn(EffectData::Type::CriticalHit,
+                                             target->GetX(), target->GetY());
+                    ApplyHitEffects(fighter, target, dmg, aliveFighters, it->target, true);
                 }
+                // passive 非傷害特效（即使 miss 也觸發）
+                ApplyPassiveEffects(fighter, target, aliveFighters, it->target, true);
             }
         }
 
-        it->targetTimer -= dtMs;
-        if (it->targetTimer <= 0.0f && !it->fighters.empty()) {
+        // 怪物反擊：暈眩中凍結 CD、不可出手
+        if (!target->IsStunned()) it->targetTimer -= dtMs;
+        if (it->targetTimer <= 0.0f && !it->fighters.empty() && !target->IsStunned()) {
             it->targetTimer += target->GetAttackSpeed() * 1000.0f;
             std::uniform_int_distribution<int> idx(0, static_cast<int>(it->fighters.size()) - 1);
             auto fighter = it->fighters[idx(m_Rng)].fighter.lock();
             if (fighter) {
-                if (it->arena) it->arena->TriggerCounter(target);
+                if (it->arena) it->arena->TriggerCounter(target, fighter);
+
+                bool isCrit = false;
+                for (const auto& eff : target->GetEffects())
+                    if (eff.type == EffectData::Type::CriticalHit && eff.passive)
+                        if (dist01(m_Rng) < eff.chance) isCrit = true;
+
                 if (Combat::IsHit(target->GetHitChance(), dist01(m_Rng))) {
+                    for (const auto& eff : target->GetEffects())
+                        if (eff.type == EffectData::Type::CriticalHit && !eff.passive)
+                            if (dist01(m_Rng) < eff.chance) isCrit = true;
+
                     bool bonusDmg = dist01(m_Rng) < 0.5f;
                     bool pierce   = dist01(m_Rng) < 0.5f;
-                    int dmg = Combat::ResolveDamage(target->GetAttack(), fighter->GetDefense(), bonusDmg, pierce);
+                    int rawAtk = target->GetAttack() * (isCrit ? 2 : 1);
+                    int dmg = Combat::ResolveDamage(rawAtk, fighter->GetDefense(), bonusDmg, pierce);
                     fighter->TakeDamage(dmg);
+                    if (isCrit)
+                        m_FloatingText.Spawn(EffectData::Type::CriticalHit,
+                                             fighter->GetX(), fighter->GetY());
+                    ApplyHitEffects(target, fighter, dmg, aliveFighters, it->target, false);
                 }
+                ApplyPassiveEffects(target, fighter, aliveFighters, it->target, false);
             }
         }
 
@@ -260,6 +312,152 @@ void TaskScheduler::UpdateCombats(float dtMs, const std::shared_ptr<Card>& dragg
             it = m_Combats.erase(it);
         } else {
             ++it;
+        }
+    }
+}
+
+// ── Arena world-sync ────────────────────────────────────────────────────────
+
+void TaskScheduler::MoveCombatArenas(glm::vec2 delta) {
+    for (auto& pc : m_Combats)
+        if (pc.arena) pc.arena->MoveBy(delta);
+    m_FloatingText.MoveBy(delta);
+}
+
+void TaskScheduler::ScaleCombatArenas(float ratio, glm::vec2 pivot) {
+    for (auto& pc : m_Combats)
+        if (pc.arena) pc.arena->ScaleAroundPivot(ratio, pivot);
+    m_FloatingText.ScaleAroundPivot(ratio, pivot);
+}
+
+// ── Effect helpers ────────────────────────────────────────────────────────────
+
+// 解析目標清單（fighter 側呼叫：allEnemies = {monster}, allFriendlies = fighters）
+static std::vector<std::shared_ptr<Card>> ResolveTargets(
+    EffectData::Target t,
+    const std::shared_ptr<Card>& attacker,
+    const std::shared_ptr<Card>& directHit,
+    const std::vector<std::shared_ptr<Card>>& fighters,
+    const std::weak_ptr<Card>& combatTarget,
+    bool attackerIsFighter,
+    std::mt19937& rng)
+{
+    auto monster = combatTarget.lock();
+    std::vector<std::shared_ptr<Card>> enemies  = monster ? std::vector<std::shared_ptr<Card>>{monster} : std::vector<std::shared_ptr<Card>>{};
+    const auto& friendlies = fighters;
+
+    // 若攻擊者是怪物，敵友互換
+    if (!attackerIsFighter) {
+        enemies.clear();
+        for (const auto& f : fighters) enemies.push_back(f);
+    }
+
+    switch (t) {
+        case EffectData::Target::DirectTarget:     return {directHit};
+        case EffectData::Target::Self:             return {attacker};
+        case EffectData::Target::AllEnemies:       return enemies;
+        case EffectData::Target::AllFriendlies:    return {friendlies.begin(), friendlies.end()};
+        case EffectData::Target::RandomEnemy: {
+            if (enemies.empty()) return {};
+            std::uniform_int_distribution<int> d(0, static_cast<int>(enemies.size()) - 1);
+            return {enemies[d(rng)]};
+        }
+        case EffectData::Target::RandomFriendly: {
+            if (friendlies.empty()) return {};
+            std::uniform_int_distribution<int> d(0, static_cast<int>(friendlies.size()) - 1);
+            return {friendlies[d(rng)]};
+        }
+        case EffectData::Target::FriendlyLowestHp: {
+            std::shared_ptr<Card> lowest;
+            for (const auto& f : friendlies)
+                if (!lowest || f->GetHealth() < lowest->GetHealth()) lowest = f;
+            return lowest ? std::vector<std::shared_ptr<Card>>{lowest} : std::vector<std::shared_ptr<Card>>{};
+        }
+        default: break;
+    }
+    return {};
+}
+
+void TaskScheduler::ApplyHitEffects(
+    const std::shared_ptr<Card>& attacker,
+    const std::shared_ptr<Card>& directHit,
+    int dmgDealt,
+    const std::vector<std::shared_ptr<Card>>& fighters,
+    const std::weak_ptr<Card>& combatTarget,
+    bool attackerIsFighter)
+{
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    for (const auto& eff : attacker->GetEffects()) {
+        if (eff.type == EffectData::Type::CriticalHit) continue; // handled separately
+        if (eff.passive) continue;                                // handled by ApplyPassiveEffects
+        if (dist(m_Rng) >= eff.chance) continue;
+
+        auto targets = ResolveTargets(eff.target, attacker, directHit,
+                                      fighters, combatTarget, attackerIsFighter, m_Rng);
+        float durMs = eff.duration * 1000.0f;
+
+        for (auto& tgt : targets) {
+            if (!tgt) continue;
+            switch (eff.type) {
+                case EffectData::Type::Stun:
+                    tgt->ApplyStun(durMs); break;
+                case EffectData::Type::Bleed:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->ApplyBleed(durMs); break;
+                case EffectData::Type::Poison:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->ApplyPoison(durMs); break;
+                case EffectData::Type::Lifesteal:
+                    if (auto cc = dynamic_cast<CombatCard*>(attacker.get())) cc->HealBy(dmgDealt); break;
+                case EffectData::Type::DamageAll:
+                case EffectData::Type::DamageRandom:
+                    tgt->TakeDamage(eff.value > 0 ? eff.value : 1); break;
+                case EffectData::Type::Heal:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->HealBy(eff.value); break;
+                case EffectData::Type::Frenzy:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->ApplyFrenzy(durMs); break;
+                case EffectData::Type::Invulnerable:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->ApplyInvulnerable(durMs); break;
+                default: break;
+            }
+            // 浮動文字：Lifesteal 顯示在攻擊者身上，其他顯示在目標身上
+            if (eff.type == EffectData::Type::Lifesteal)
+                m_FloatingText.Spawn(eff.type, attacker->GetX(), attacker->GetY());
+            else
+                m_FloatingText.Spawn(eff.type, tgt->GetX(), tgt->GetY());
+        }
+    }
+}
+
+void TaskScheduler::ApplyPassiveEffects(
+    const std::shared_ptr<Card>& attacker,
+    const std::shared_ptr<Card>& directHit,
+    const std::vector<std::shared_ptr<Card>>& fighters,
+    const std::weak_ptr<Card>& combatTarget,
+    bool attackerIsFighter)
+{
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    for (const auto& eff : attacker->GetEffects()) {
+        if (!eff.passive) continue;
+        if (eff.type == EffectData::Type::CriticalHit) continue;
+        if (dist(m_Rng) >= eff.chance) continue;
+
+        auto targets = ResolveTargets(eff.target, attacker, directHit,
+                                      fighters, combatTarget, attackerIsFighter, m_Rng);
+        float durMs = eff.duration * 1000.0f;
+        for (auto& tgt : targets) {
+            if (!tgt) continue;
+            switch (eff.type) {
+                case EffectData::Type::Bleed:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->ApplyBleed(durMs); break;
+                case EffectData::Type::Poison:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->ApplyPoison(durMs); break;
+                case EffectData::Type::Heal:
+                    if (auto cc = dynamic_cast<CombatCard*>(tgt.get())) cc->HealBy(eff.value); break;
+                case EffectData::Type::DamageAll:
+                case EffectData::Type::DamageRandom:
+                    tgt->TakeDamage(eff.value > 0 ? eff.value : 1); break;
+                default: break;
+            }
+            m_FloatingText.Spawn(eff.type, tgt->GetX(), tgt->GetY());
         }
     }
 }

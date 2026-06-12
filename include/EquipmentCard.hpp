@@ -50,7 +50,7 @@ public:
 
     void SetScale(float scale) override {
         Card::SetScale(scale);
-        if (m_PriceText) RebuildLabelText(m_PriceText, std::to_string(m_SellValue), Util::Color(100, 111, 128));
+        if (m_PriceText) m_PriceText->m_Transform.scale = {m_Scale, m_Scale};
     }
 
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override {

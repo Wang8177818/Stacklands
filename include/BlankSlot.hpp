@@ -18,7 +18,7 @@ public:
     BlankSlot(float x, float y,
               const std::string& name = " ",   // 空字串會讓 SDL_TTF 失敗，預設一個空白
               int buyPrice = 0,
-              float scale = 0.05f)
+              float scale = 0.1f)
         : Card(x, y, name.empty() ? " " : name, 0, CardType::CHARACTER, scale),
           m_BuyPrice(buyPrice) {
         this->m_Type = CardType::INTERACT;
@@ -88,10 +88,10 @@ public:
         return coins;
     }
 
-    // 覆寫：Card::SetScale 會把 m_NameText 重建為黑色，需要再蓋回白色 + 重建價格
+    // 覆寫：縮放時只更新 transform，不重建紋理（避免縮放卡頓）
     void SetScale(float scale) override {
         Card::SetScale(scale);
-        RebuildSlotText(m_Name);
+        if (m_PriceText) m_PriceText->m_Transform.scale = {m_Scale, m_Scale};
     }
 
 private:
