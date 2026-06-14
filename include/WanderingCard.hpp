@@ -55,7 +55,7 @@ protected:
 
     std::vector<std::pair<std::string, int>> m_DropCards;
 
-private:
+protected:
     static std::mt19937 s_Rng;
 };
 

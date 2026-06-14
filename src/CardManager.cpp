@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <limits>
 
 #include "WarehouseCard.hpp"
 #include "LocationCard.hpp"
@@ -432,6 +433,48 @@ void CardManager::Update(glm::vec2 mousePos) {
                                 card->GetY() + off(m_RandomGenerator));
             }
             RemoveCard(card);
+        }
+    }
+
+    // 2.5 讓怪物朝最近的角色移動，並在重疊時主動觸發戰鬥
+    {
+        // 收集所有角色卡
+        std::vector<std::shared_ptr<Card>> characters;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::CHARACTER)
+                characters.push_back(card);
+        }
+
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::MONSTER) continue;
+            auto monster = std::static_pointer_cast<MonsterCard>(card);
+
+            if (monster->IsInCombat()) continue;
+
+            if (characters.empty()) {
+                monster->ClearChaseTarget();
+                continue;
+            }
+
+            // 找最近的角色
+            float bestDist = std::numeric_limits<float>::max();
+            std::shared_ptr<Card> nearest = nullptr;
+            for (auto& ch : characters) {
+                float dx = ch->GetX() - monster->GetX();
+                float dy = ch->GetY() - monster->GetY();
+                float dist = dx * dx + dy * dy;
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    nearest = ch;
+                }
+            }
+
+            monster->SetChaseTarget(nearest->GetX(), nearest->GetY());
+
+            // 怪物與角色重疊時主動觸發戰鬥
+            if (monster->IsOverlapping(nearest)) {
+                m_Tasks.JoinOrCreateCombat(monster, nearest);
+            }
         }
     }
 
