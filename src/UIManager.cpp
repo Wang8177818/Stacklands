@@ -59,7 +59,7 @@ void UIManager::AddButtonToRenderer(std::shared_ptr<MenuButton> btn) {
 }
 
 // ─────────────────────────────────────────────────────────────
-void UIManager::InitMenu() {
+void UIManager::InitMenu(int saveMonth) {
     // ── 視窗尺寸 ──────────────────────────────────────────
     auto instance   = Core::Context::GetInstance();
     float winW      = instance->GetWindowWidth();
@@ -87,6 +87,12 @@ void UIManager::InitMenu() {
 
     // ── 選單按鈕 ──────────────────────────────────────────
     m_Menu.btnStart    = std::make_shared<MenuButton>(-562, -80,  20, 100, 20, "開始新遊戲", true, 5);
+    if (saveMonth > 0) {
+        const std::string label = "繼續遊戲(" + std::to_string(saveMonth) + "月)";
+        // 字數 = label 長度（中英混合粗估 6 個顯示字元，下底線寬度用於繪製）
+        m_Menu.btnLoadGame = std::make_shared<MenuButton>(-557, -120, 20, 110, 20,
+                                                         label, true, 6);
+    }
     m_Menu.btnExit     = std::make_shared<MenuButton>(-572, -315, 20,  80, 20, "離開遊戲",   true, 4);
     m_Menu.btnOptions  = std::make_shared<MenuButton>(-592, -200, 20,  40, 20, "選項",       true, 2);
     m_Menu.btnCardWiki = std::make_shared<MenuButton>(-572, -160, 20,  80, 20, "卡片百科",   true, 4);
@@ -99,6 +105,7 @@ void UIManager::InitMenu() {
     m_Pause.btnReturnToMenu->HideAll();
 
     AddButtonToRenderer(m_Menu.btnStart);
+    if (m_Menu.btnLoadGame) AddButtonToRenderer(m_Menu.btnLoadGame);
     AddButtonToRenderer(m_Menu.btnExit);
     AddButtonToRenderer(m_Menu.btnOptions);
     AddButtonToRenderer(m_Menu.btnCardWiki);
@@ -110,6 +117,7 @@ void UIManager::InitMenu() {
 // ─────────────────────────────────────────────────────────────
 UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
     bool isStartHover    = m_Menu.btnStart   ->UpdateHover(mousePos);
+    bool isLoadHover     = m_Menu.btnLoadGame ? m_Menu.btnLoadGame->UpdateHover(mousePos) : false;
     bool isExitHover     = m_Menu.btnExit    ->UpdateHover(mousePos);
     bool isOptionsHover  = m_Menu.btnOptions ->UpdateHover(mousePos);
     bool isCardWikiHover = m_Menu.btnCardWiki->UpdateHover(mousePos);
@@ -117,6 +125,7 @@ UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
 
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         if (isStartHover)    return MenuEvent::START_GAME;
+        if (isLoadHover)     return MenuEvent::LOAD_GAME;
         if (isExitHover)     return MenuEvent::EXIT;
         if (isOptionsHover)  return MenuEvent::OPTIONS;
         if (isCardWikiHover) return MenuEvent::CARD_WIKI;
@@ -141,6 +150,7 @@ void UIManager::TransitionToGame() {
     // ── 隱藏選單 ──────────────────────────────────────────
     m_Menu.panel->SetVisible(false);
     m_Menu.btnStart   ->HideAll();
+    if (m_Menu.btnLoadGame) m_Menu.btnLoadGame->HideAll();
     m_Menu.btnExit    ->HideAll();
     m_Menu.btnOptions ->HideAll();
     m_Menu.btnCardWiki->HideAll();
@@ -316,6 +326,7 @@ void UIManager::TransitionToMenu() {
     // ── 顯示選單 UI ──────────────────────────────────────
     m_Menu.panel->SetVisible(true);
     m_Menu.btnStart   ->ShowAll();
+    if (m_Menu.btnLoadGame) m_Menu.btnLoadGame->ShowAll();
     m_Menu.btnExit    ->ShowAll();
     m_Menu.btnOptions ->ShowAll();
     m_Menu.btnCardWiki->ShowAll();

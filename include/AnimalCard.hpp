@@ -22,6 +22,10 @@ public:
     }
     bool CanStackOnto() override { return false; }
 
+    // 存檔用：特殊能力冷卻計時器（毫秒）
+    float GetAbilityTimer() const { return m_AbilityTimer; }
+    void  SetAbilityTimer(float v) { m_AbilityTimer = std::max(0.0f, v); }
+
 protected:
     // 黑色血量文字（動物卡背景較亮）
     Util::Color HealthTextColor() const override { return Util::Color(0, 0, 0); }

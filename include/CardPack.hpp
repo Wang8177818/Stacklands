@@ -25,6 +25,12 @@ public:
     // 檢查卡包是否已經空了
     bool IsEmpty() const { return m_CardsRemaining <= 0; }
 
+    // ── 存檔 / 讀檔 ────────────────────────────────────────────
+    int                          GetCardsRemaining() const { return m_CardsRemaining; }
+    const std::vector<CardSpawnData>& GetContentPool() const { return m_ContentPool; }
+    // 給讀檔用：覆寫剩餘張數與剩餘卡池
+    void RestoreState(int remaining, const std::vector<CardSpawnData>& pool);
+
     virtual bool OnStacked(std::shared_ptr<Card> cardAbove) override;
     virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override;
     virtual void UpdateVisualPositions() override;

@@ -63,6 +63,19 @@ public:
         return true;
     }
 
+    // 給存檔回復：直接設定儲存內容（不會疊加，會覆蓋）
+    void RestoreState(const std::string& name, int count, const std::string& iconPath) {
+        m_StoredName  = name;
+        m_StoredCount = std::min(count, MAX_COUNT);
+        if (!m_StoredName.empty() && m_StoredIcon) {
+            m_StoredIcon->SetDrawable(std::make_shared<Util::Image>(iconPath));
+            m_StoredIcon->m_Transform.scale = {m_Scale * STORED_ICON_SCALE,
+                                               m_Scale * STORED_ICON_SCALE};
+            m_StoredIcon->SetVisible(m_StoredCount > 0);
+        }
+        RefreshCountText();
+    }
+
     // 取出 amount 張；回傳實際取出的數量。歸 0 時自動解鎖類型 + 隱藏 icon
     int Withdraw(int amount) {
         const int give = std::min(amount, m_StoredCount);

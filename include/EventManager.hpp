@@ -66,6 +66,8 @@ public:
 
     // 取得目前縮放倍率
     float GetZoomRatio() const { return m_ZoomRatio; }
+    // 存檔回復用
+    void  SetZoomRatio(float r) { m_ZoomRatio = r; }
 
 private:
     void HandlePan(glm::vec2 mousePos,

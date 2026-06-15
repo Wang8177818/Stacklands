@@ -37,6 +37,10 @@ public:
     void Update();
     void End();
 
+    // 存檔 / 讀檔
+    void SaveGame();
+    void LoadGame();
+
     glm::vec2 mousePos = Util::Input::GetCursorPosition();
 
 private:
@@ -53,6 +57,7 @@ private:
     std::vector<std::shared_ptr<BlankSlot>> m_BlankSlots;  // SellSlot 右側 8 個無功能格子
 
     bool m_HadCharacters = false; // 場上曾經出現過角色後才啟用 Game Over 檢查
+    bool m_LoadOnInit    = false; // GameInit 完成基礎設定後是否從存檔載入
 };
 
 #endif

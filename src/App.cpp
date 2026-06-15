@@ -6,9 +6,26 @@
 #include "Util/Logger.hpp"
 #include "CharacterCard.hpp"
 #include "Sellslot.hpp"
+#include "nlohmann/json.hpp"
+#include <fstream>
 #include <random>
 
 static std::mt19937 s_AppRng{ std::random_device{}() };
+
+constexpr const char* SAVE_FILE_PATH = "save.json";
+
+namespace {
+// 讀取存檔的月份；找不到或解析失敗回傳 -1
+int PeekSaveMonth() {
+    std::ifstream f(SAVE_FILE_PATH);
+    if (!f.is_open()) return -1;
+    try {
+        nlohmann::json j; f >> j;
+        if (j.contains("month")) return j["month"].get<int>();
+    } catch (...) {}
+    return -1;
+}
+} // namespace
 
 // ─────────────────────────────────────────────────────────────
 void App::Start() {
@@ -18,7 +35,9 @@ void App::Start() {
     m_CardManager  = std::make_unique<CardManager>(m_Renderer);
     m_EventManager = std::make_unique<EventManager>();
 
-    m_UIManager->InitMenu();
+    // 偵測存檔（找得到就顯示「繼續遊戲(N月)」按鈕）
+    const int saveMonth = PeekSaveMonth();
+    m_UIManager->InitMenu(saveMonth);
 
     m_CurrentState = State::MAIN_MENU;
 }
@@ -35,11 +54,22 @@ void App::MainMenu() {
         case UIManager::MenuEvent::START_GAME:
             LOG_INFO("Start Button Clicked!");
             m_UIManager->TransitionToGame();
-            // 遊戲 UI 建好後，把 GameField 與 UIManager 交給 EventManager
             m_EventManager->SetGameField(m_UIManager->GetGameFieldImage());
             m_EventManager->SetUIManager(m_UIManager.get());
             m_EventManager->SetCardManager(m_CardManager.get());
             m_CardManager->SetFieldBounds(m_UIManager->GetGameFieldImage());
+            m_LoadOnInit = false;
+            m_CurrentState = State::GAME_INIT;
+            break;
+
+        case UIManager::MenuEvent::LOAD_GAME:
+            LOG_INFO("Load Button Clicked!");
+            m_UIManager->TransitionToGame();
+            m_EventManager->SetGameField(m_UIManager->GetGameFieldImage());
+            m_EventManager->SetUIManager(m_UIManager.get());
+            m_EventManager->SetCardManager(m_CardManager.get());
+            m_CardManager->SetFieldBounds(m_UIManager->GetGameFieldImage());
+            m_LoadOnInit = true;
             m_CurrentState = State::GAME_INIT;
             break;
 
@@ -101,7 +131,88 @@ void App::GameInit() {
     m_CardManager->SpawnCardByName("Stew",basic_scale);
     m_CardManager->SpawnCardByName("Demon",basic_scale);
 
+    // 如果是「繼續遊戲」進來，覆蓋上面新建的卡片
+    if (m_LoadOnInit) {
+        LoadGame();
+    }
+
     m_CurrentState = State::UPDATE;
+}
+
+// ─────────────────────────────────────────────────────────────
+void App::SaveGame() {
+    if (!m_CardManager || !m_EventManager) return;
+    nlohmann::json j = m_CardManager->ToJson();
+    j["month"]     = static_cast<int>(m_EventManager->month);
+    j["tick"]      = m_EventManager->tick;
+    j["zoomRatio"] = m_EventManager->GetZoomRatio();
+    // 鏡頭位置（GameField 的 transform）
+    if (auto field = m_UIManager->GetGameFieldImage()) {
+        j["camera"] = {
+            {"x",  field->m_Transform.translation.x},
+            {"y",  field->m_Transform.translation.y},
+            {"sx", field->m_Transform.scale.x},
+            {"sy", field->m_Transform.scale.y}
+        };
+    }
+    // BlankSlot 上累積的硬幣數（依 m_BlankSlots 索引順序）
+    nlohmann::json slotCoins = nlohmann::json::array();
+    for (auto& slot : m_BlankSlots) slotCoins.push_back(slot->GetCoinCount());
+    j["blankSlotCoins"] = slotCoins;
+    std::ofstream f(SAVE_FILE_PATH);
+    if (!f.is_open()) { LOG_ERROR("無法寫入存檔: {}", SAVE_FILE_PATH); return; }
+    f << j.dump(2);
+    LOG_INFO("已存檔（月份 {}, 卡片 {} 張）",
+             j["month"].get<int>(),
+             static_cast<int>(j.value("cards", nlohmann::json::array()).size()));
+}
+
+// ─────────────────────────────────────────────────────────────
+void App::LoadGame() {
+    if (!m_CardManager || !m_EventManager) return;
+    std::ifstream f(SAVE_FILE_PATH);
+    if (!f.is_open()) { LOG_WARN("找不到存檔 {}", SAVE_FILE_PATH); return; }
+    nlohmann::json j;
+    try { f >> j; } catch (...) {
+        LOG_ERROR("存檔解析失敗");
+        return;
+    }
+    m_CardManager->LoadFromJson(j, basic_scale);
+    if (j.contains("month")) {
+        m_EventManager->month = static_cast<float>(j["month"].get<int>());
+        m_UIManager->UpdateMonth(static_cast<int>(m_EventManager->month));
+    }
+    if (j.contains("tick"))      m_EventManager->tick = j["tick"].get<float>();
+    if (j.contains("zoomRatio")) m_EventManager->SetZoomRatio(j["zoomRatio"].get<float>());
+    if (j.contains("camera")) {
+        const auto& cam = j["camera"];
+        if (auto field = m_UIManager->GetGameFieldImage()) {
+            field->m_Transform.translation = glm::vec2(
+                cam.value("x", 0.0f), cam.value("y", 0.0f));
+            field->m_Transform.scale = glm::vec2(
+                cam.value("sx", 1.0f), cam.value("sy", 1.0f));
+        }
+    }
+    // BlankSlot 硬幣還原（在每個 slot 上重建堆疊）
+    if (j.contains("blankSlotCoins")) {
+        const auto& counts = j["blankSlotCoins"];
+        const float zoom   = m_EventManager->GetZoomRatio();
+        const float scale  = basic_scale * zoom;
+        for (std::size_t i = 0; i < counts.size() && i < m_BlankSlots.size(); ++i) {
+            const int n = counts[i].is_number_integer() ? counts[i].get<int>() : 0;
+            if (n <= 0) continue;
+            auto slot = m_BlankSlots[i];
+            std::shared_ptr<Card> top = slot;
+            for (int k = 0; k < n; ++k) {
+                auto coin = m_CardManager->SpawnCardByName("Coin", scale, slot->GetX(), slot->GetY());
+                if (!coin) break;
+                top->SetCardAbove(coin);
+                coin->SetCardBelow(top);
+                top = coin;
+            }
+        }
+    }
+    LOG_INFO("已讀檔（月份 {}）", static_cast<int>(m_EventManager->month));
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -239,4 +350,8 @@ void App::Update() {
 // ─────────────────────────────────────────────────────────────
 void App::End() {
     LOG_TRACE("End");
+    // 若曾經進入遊戲（已建立 EventManager 並有 GameField），離開前自動存檔
+    if (m_EventManager && m_UIManager && m_UIManager->GetGameFieldImage()) {
+        SaveGame();
+    }
 }

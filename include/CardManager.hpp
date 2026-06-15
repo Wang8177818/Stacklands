@@ -106,6 +106,14 @@ public:
     // 月底結算：扣除人物的食物消耗
     void OnMonthEnd();
 
+    // ── 存檔 / 讀檔 ────────────────────────────────────────────
+    // 把當前所有非 INTERACT 卡片 + maxCardCount 序列化為 JSON
+    nlohmann::json ToJson() const;
+    // 清空現有卡（保留 INTERACT 卡如 SellSlot/BlankSlot），依 JSON 重建
+    void LoadFromJson(const nlohmann::json& j, float spawnScale);
+    // 對外暴露上限的 setter（讀檔用）
+    void SetMaxCardCount(int n) { m_MaxCardCount = n; }
+
     // 取得場上所有人物卡每月需消耗的食物總數
     int GetNeededFoodCount() const {
         int total = 0;

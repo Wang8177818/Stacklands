@@ -23,13 +23,15 @@ public:
         MODS,
         CONTINUE,
         BACKTOMENU,
+        LOAD_GAME,   // 主選單按下「繼續遊戲(X月)」載入存檔
     };
 
     UIManager(Util::Renderer& renderer);
     ~UIManager() = default;
 
     // ── 選單階段 ──────────────────────────────────────────
-    void InitMenu();
+    // saveMonth：若有存檔則顯示「繼續遊戲(N月)」按鈕；< 0 = 無存檔
+    void InitMenu(int saveMonth = -1);
     MenuEvent UpdateMenu(glm::vec2 mousePos);
     MenuEvent UpdatePauseMenu(glm::vec2 mousePos);
     void TransitionToGame();
@@ -74,6 +76,7 @@ private:
         std::shared_ptr<BackgroundImage> bg;
         std::shared_ptr<BackgroundImage> panel;
         std::shared_ptr<MenuButton> btnStart;
+        std::shared_ptr<MenuButton> btnLoadGame;   // 繼續遊戲(N月)
         std::shared_ptr<MenuButton> btnExit;
         std::shared_ptr<MenuButton> btnOptions;
         std::shared_ptr<MenuButton> btnCardWiki;
