@@ -23,6 +23,7 @@ public:
         MAIN_MENU,
         GAME_INIT,
         UPDATE,
+        GAME_OVER,
         END,
     };
 
@@ -35,6 +36,7 @@ public:
     void MainMenu();
     void GameInit();
     void Update();
+    void GameOver();   // 顯示 Game Over 畫面，等玩家點返回選單
     void End();
 
     // 存檔 / 讀檔

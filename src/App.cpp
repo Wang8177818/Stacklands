@@ -7,6 +7,7 @@
 #include "CharacterCard.hpp"
 #include "Sellslot.hpp"
 #include "nlohmann/json.hpp"
+#include <cstdio>
 #include <fstream>
 #include <random>
 
@@ -58,6 +59,12 @@ void App::MainMenu() {
             m_EventManager->SetUIManager(m_UIManager.get());
             m_EventManager->SetCardManager(m_CardManager.get());
             m_CardManager->SetFieldBounds(m_UIManager->GetGameFieldImage());
+            // 新遊戲：清掉殘留的月份 / 進度條（避免從繼續→返回→新遊戲時殘留）
+            m_EventManager->month = 1;
+            m_EventManager->tick  = 0;
+            m_UIManager->UpdateMonth(1);
+            // 重置遊戲時間狀態為 NORMAL（之前若進過暫停選單可能殘留 PAUSE）
+            m_EventManager->SetGameState(EventManager::GameTime::NORMAL);
             m_LoadOnInit = false;
             m_CurrentState = State::GAME_INIT;
             break;
@@ -69,6 +76,8 @@ void App::MainMenu() {
             m_EventManager->SetUIManager(m_UIManager.get());
             m_EventManager->SetCardManager(m_CardManager.get());
             m_CardManager->SetFieldBounds(m_UIManager->GetGameFieldImage());
+            // 讀檔同樣重置為 NORMAL（讀檔本身不保存遊戲時間狀態）
+            m_EventManager->SetGameState(EventManager::GameTime::NORMAL);
             m_LoadOnInit = true;
             m_CurrentState = State::GAME_INIT;
             break;
@@ -116,8 +125,6 @@ void App::GameInit() {
     m_CardManager->LoadProfessionRecipes(RESOURCE_DIR"/Data/Profession.json");
     m_CardManager->LoadCraftingRecipes(RESOURCE_DIR"/Data/Recipe.json");
 
-    m_CardManager->SpawnCardByName("Villager", basic_scale);
-    m_CardManager->SpawnCardByName("Villager", basic_scale);
     m_CardManager->SpawnCardByName("Villager", basic_scale);
     m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
     m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
@@ -325,32 +332,64 @@ void App::Update() {
         }
     }
 
-    // ── Game Over 檢查 ─────────────────────────────────────
+    // ── Game Over 檢查（所有村民死光）────────────────────
     int charCount = m_CardManager->GetCharacterCount();
     if (charCount > 0) m_HadCharacters = true;
     if (m_HadCharacters && charCount == 0) {
         LOG_INFO("Game Over: no characters remaining");
         m_HadCharacters = false;
-        // 清除場上所有卡片
-        m_CardManager->ClearAllCards();
-        m_BlankSlots.clear();
-        m_SellSlot = nullptr;
-        m_UIManager->TransitionToMenu();
-        m_CurrentState = State::MAIN_MENU;
+        const int monthsPlayed = static_cast<int>(m_EventManager->month);
+        // 顯示 Game Over 畫面，等玩家按返回；卡片暫不清除（讓畫面有背景）
+        m_UIManager->ShowGameOver(monthsPlayed);
+        m_CurrentState = State::GAME_OVER;
         return;
     }
 
     m_Renderer.Update();
 
-    if (m_EventManager->IsRequestingExit() || Util::Input::IfExit()) {
+    // 暫停選單按下「返回選單」→ 存檔 + 回主選單（不結束程式）
+    if (m_EventManager->IsRequestingExit()) {
+        SaveGame();
+        const int monthsPlayed = static_cast<int>(m_EventManager->month);
+        m_CardManager->ClearAllCards();
+        m_BlankSlots.clear();
+        m_SellSlot = nullptr;
+        m_HadCharacters = false;
+        m_EventManager->ClearExitRequest();  // 重置旗標，下次進遊戲不會立刻又跳回
+        m_UIManager->RefreshLoadGameButton(monthsPlayed);
+        m_UIManager->TransitionToMenu();
+        m_CurrentState = State::MAIN_MENU;
+        return;
+    }
+    // 視窗 X 按鈕關閉：結束程式（End() 會自動存檔）
+    if (Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }
+}
+
+// ─────────────────────────────────────────────────────────────
+void App::GameOver() {
+    mousePos = Util::Input::GetCursorPosition();
+    if (m_UIManager->UpdateGameOver(mousePos)) {
+        // 玩家點了返回選單：清乾淨、回主選單；同時刪除存檔（不能繼續死局）
+        m_UIManager->HideGameOver();
+        m_CardManager->ClearAllCards();
+        m_BlankSlots.clear();
+        m_SellSlot = nullptr;
+        std::remove(SAVE_FILE_PATH);
+        // 既然存檔已刪，主選單的「繼續遊戲」按鈕也應該不再顯示
+        m_UIManager->ClearLoadGameButton();
+        m_UIManager->TransitionToMenu();
+        m_CurrentState = State::MAIN_MENU;
+    }
+    m_Renderer.Update();
 }
 
 // ─────────────────────────────────────────────────────────────
 void App::End() {
     LOG_TRACE("End");
     // 若曾經進入遊戲（已建立 EventManager 並有 GameField），離開前自動存檔
+    // 但若已進入 Game Over，存檔已被刪除不需要重存
     if (m_EventManager && m_UIManager && m_UIManager->GetGameFieldImage()) {
         SaveGame();
     }

@@ -28,6 +28,7 @@ public:
     float month = 1;
 
     GameTime GetGameState() const { return m_GameTime; }
+    void     SetGameState(GameTime t) { m_GameTime = t; }
 
     // 取得本幀已套用倍率的 dtMs（PAUSE=0、NORMAL=1x、FAST=2x）
     // 動物 / 怪物 / 其他需要遊戲時間的系統應改用這個，而非 Util::Time::GetDeltaTimeMs()
@@ -63,6 +64,7 @@ public:
 
     // 暫停選單按下「返回選單」後會變成 true，App 讀取後應切換狀態
     bool IsRequestingExit() const { return m_RequestExit; }
+    void ClearExitRequest()       { m_RequestExit = false; }
 
     // 取得目前縮放倍率
     float GetZoomRatio() const { return m_ZoomRatio; }

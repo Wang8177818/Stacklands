@@ -37,6 +37,19 @@ public:
     void TransitionToGame();
     void TransitionToMenu();
 
+    // ── Game Over 畫面 ────────────────────────────────────
+    // monthsPlayed：要顯示的「遊玩 N 月」
+    void ShowGameOver(int monthsPlayed);
+    void HideGameOver();
+    // 回傳 true 表示點擊了「返回選單」
+    bool UpdateGameOver(glm::vec2 mousePos);
+
+    // 主選單「繼續遊戲」按鈕從此不再顯示（存檔被刪後呼叫）
+    void ClearLoadGameButton();
+
+    // 重建主選單「繼續遊戲(N月)」按鈕（剛存檔後呼叫，月份標籤刷新）
+    void RefreshLoadGameButton(int month);
+
     // ── 遊戲 UI 階段 ──────────────────────────────────────
     std::shared_ptr<BackgroundImage>   GetGameFieldImage()      const { return m_HUD.field; }
     std::shared_ptr<Util::GameObject>  GetPauseText()           const { return m_HUD.pauseText; }
@@ -89,6 +102,15 @@ private:
         std::shared_ptr<MenuButton>      btnContinue;
         std::shared_ptr<MenuButton>      btnReturnToMenu;
     } m_Pause;
+
+    // Game Over 畫面資源
+    struct GameOverUI {
+        std::shared_ptr<BackgroundImage>  panel;
+        std::shared_ptr<Util::GameObject> title;
+        std::shared_ptr<Util::GameObject> subtitle;
+        std::shared_ptr<MenuButton>       btnReturn;
+        bool initialized = false;
+    } m_GameOver;
 
     // 遊戲 HUD 資源
     struct GameHUD {
