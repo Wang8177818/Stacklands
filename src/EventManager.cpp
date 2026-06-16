@@ -26,11 +26,15 @@ void EventManager::Update(glm::vec2 mousePos,
 
     // 計算本幀套用倍率後的 dtMs，提供給 Animal/Monster 等需要遊戲時間的系統
     const float baseMs = static_cast<float>(Util::Time::GetDeltaTimeMs());
-    switch (m_GameTime) {
-        case GameTime::PAUSE:  s_ScaledDtMs = 0.0f;          break;
-        case GameTime::FAST:   s_ScaledDtMs = baseMs * 2.0f; break;
-        case GameTime::NORMAL:
-        default:               s_ScaledDtMs = baseMs;        break;
+    if (m_TimeBlocked) {
+        s_ScaledDtMs = 0.0f;   // 強制暫停（卡片超量）：凍結所有計時系統
+    } else {
+        switch (m_GameTime) {
+            case GameTime::PAUSE:  s_ScaledDtMs = 0.0f;          break;
+            case GameTime::FAST:   s_ScaledDtMs = baseMs * 2.0f; break;
+            case GameTime::NORMAL:
+            default:               s_ScaledDtMs = baseMs;        break;
+        }
     }
 
     HandlePan(mousePos, isDraggingCard, cards);
@@ -66,6 +70,7 @@ void EventManager::HandlePan(glm::vec2 mousePos,
 // 卡片透過 ScaleAroundPivot() 同時修改 m_X, m_Y 與 m_Scale，
 // 確保 UpdateVisualPositions() 每幀覆寫時位置仍然正確。
 void EventManager::HandleZoom(std::vector<std::shared_ptr<Card>>& cards) {
+    if (m_MouseBlocked) return;       // 例如滑鼠在作弊選單上時不縮放鏡頭
     if (!Util::Input::IfScroll()) return;
 
     glm::vec2 scroll   = Util::Input::GetScrollDistance();
@@ -149,6 +154,12 @@ void EventManager::SwitchGameState() {
         }
     }
 
+    // 卡片超量強制暫停：凍結月份進度（不推進 tick、不觸發月底結算）
+    if (m_TimeBlocked) {
+        runTimeBar->SetScale({tick * GameConstants::PROGRESS_BAR_WIDTH / GameConstants::MONTH_DURATION_MS, 35.f});
+        return;
+    }
+
     if (tick < GameConstants::MONTH_DURATION_MS) {
         switch (GetGameState()) {
         case GameTime::NORMAL:
@@ -207,11 +218,19 @@ void EventManager::ESCMenu() {
 
                 PauseMenu->SetVisible(false);
                 continueButton->HideAll();
+                returnToMenuButton->HideAll();
 
                 DescriptionBar->SetVisible(true);
                 runTimeBar->SetVisible(true);
                 resourseBar->SetVisible(true);
                 timeBar->SetVisible(true);
+                month->SetVisible(true);
+                cardIcon->SetVisible(true);
+                cardCount->SetVisible(true);
+                coinIcon->SetVisible(true);
+                coinCount->SetVisible(true);
+                foodIcon->SetVisible(true);
+                foodCount->SetVisible(true);
                 playButton->ChangeImage("/Image/button/play.png");
                 playButton->ShowAll();
                 break;

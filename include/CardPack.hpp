@@ -25,6 +25,10 @@ public:
     // 檢查卡包是否已經空了
     bool IsEmpty() const { return m_CardsRemaining <= 0; }
 
+    // 此卡包是否已被開過至少一張（用於統計第幾個被開的卡包）
+    bool HasBeenOpened() const { return m_HasBeenOpened; }
+    void MarkOpened()          { m_HasBeenOpened = true; }
+
     // ── 存檔 / 讀檔 ────────────────────────────────────────────
     int                          GetCardsRemaining() const { return m_CardsRemaining; }
     const std::vector<CardSpawnData>& GetContentPool() const { return m_ContentPool; }
@@ -44,6 +48,7 @@ protected:
     int m_CardsRemaining;
     std::vector<CardSpawnData> m_ContentPool; // 內容配方
     std::shared_ptr<Util::GameObject> m_CountText; // 卡片剩餘數
+    bool m_HasBeenOpened = false;
 };
 
 #endif //STACKLANDS_CARDPACK_HPP

@@ -77,6 +77,9 @@ public:
     void UpdateMonth(int month);
     void UpdateDescriptionText(const std::string& text);
     void UpdateDescriptionName(const std::string& name);
+    // 顯示 / 隱藏敘述欄底部的「卡片超量請賣卡」警告
+    // overflowCount：還需賣出的卡片張數
+    void SetCardOverflowWarning(bool show, int overflowCount = 0);
 
     // 作弊選單
     CheatMenu& GetCheatMenu() { return m_CheatMenu; }
@@ -129,8 +132,11 @@ private:
         std::shared_ptr<Util::GameObject> foodCount;
         std::shared_ptr<Util::GameObject> descName;
         std::shared_ptr<Util::GameObject> descText;
+        std::shared_ptr<Util::GameObject> descWarning;
         std::shared_ptr<MenuButton>       playButton;
     } m_HUD;
+
+    int  m_LastOverflowCount = -1; // 上次顯示的超量張數（變化時才重建文字）
 
     void AddButtonToRenderer(std::shared_ptr<MenuButton> btn);
 

@@ -322,10 +322,16 @@ void CardManager::OnMonthEnd() {
         if (need > 0) starved.push_back(chr);
     }
 
-    // 4. 把扣到 0 的食物卡實際移除
+    // 4. 把扣到 0 的食物卡實際移除（先切斷堆疊鏈，否則仍會被相鄰卡的
+    //    CardAbove / CardBelow 持有 → CheckCrafting 仍能匹配到已消失的食物，
+    //    讓 PendingCraft / PendingGather 的進度條繼續跑）
     int removedFoods = 0;
     for (auto& f : foods) {
         if (f->GetNutritionValue() == 0) {
+            if (auto below = f->GetCardBelow()) below->SetCardAbove(nullptr);
+            if (auto above = f->GetCardAbove()) above->SetCardBelow(nullptr);
+            f->SetCardBelow(nullptr);
+            f->SetCardAbove(nullptr);
             RemoveCard(f);
             ++removedFoods;
         }
@@ -352,6 +358,12 @@ void CardManager::OnMonthEnd() {
     } else {
         LOG_INFO("月底結算：消耗 {} nutrition、移除 {} 張空食物卡",
                  totalConsumed, removedFoods);
+    }
+
+    // 結算後若卡片超過上限，點亮警告（提醒玩家賣卡），直到賣到不超量
+    if (GetCardCount() > m_MaxCardCount) {
+        m_OverflowWarningActive = true;
+        LOG_WARN("月底結算：卡片 {} 張超過上限 {} 張", GetCardCount(), m_MaxCardCount);
     }
 }
 
@@ -757,11 +769,14 @@ void CardManager::ClearAllCards() {
     }
     m_Cards.clear();
     m_DraggingCard = nullptr;
+    // 同步清掉延遲任務（合成 / 採集 / 戰鬥），避免讀條與場地殘留
+    m_Tasks.ClearAll();
 }
 
-void CardManager::OnSpawn(const std::string& name, float x, float y) {
+void CardManager::OnSpawn(const std::string& name, float x, float y, float scale) {
     std::uniform_real_distribution<float> off(-50.0f, 50.0f);
-    SpawnCardByName(name, m_ZoomRatio * 0.05f,
+    // scale 已是產出者的顯示縮放（含 zoom），直接沿用以維持大小一致
+    SpawnCardByName(name, scale,
                     x + off(m_RandomGenerator),
                     y + off(m_RandomGenerator));
 }
@@ -773,6 +788,16 @@ std::vector<std::string> CardManager::GetAllCardNames() const {
         names.push_back(pair.first);
     std::sort(names.begin(), names.end());
     return names;
+}
+
+std::vector<std::pair<std::string, CardType>> CardManager::GetAllCardEntries() const {
+    std::vector<std::pair<std::string, CardType>> entries;
+    entries.reserve(m_CardDatabase.size());
+    for (const auto& pair : m_CardDatabase)
+        entries.emplace_back(pair.first, pair.second.type);
+    std::sort(entries.begin(), entries.end(),
+        [](const auto& a, const auto& b) { return a.first < b.first; });
+    return entries;
 }
 
 std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const CardSpawnData& data) {
@@ -1088,8 +1113,23 @@ void CardManager::Update(glm::vec2 mousePos) {
                 if (m_DraggingCard->GetType() == CardType::PACK) {
                     auto pack = std::static_pointer_cast<CardPack>(m_DraggingCard);
                     if (!pack->IsEmpty()) {
+                        const bool firstOpen = !pack->HasBeenOpened();
+                        pack->MarkOpened();
                         auto dataToSpawn = pack->SpawnNext();
                         if (dataToSpawn) {
+                            // 新遊戲保底：第二個被「首次開」的卡包，第一張卡覆寫為村民
+                            if (firstOpen) {
+                                ++m_PacksOpenedThisGame;
+                                if (m_VillagerGuaranteeArmed && m_PacksOpenedThisGame == 2) {
+                                    auto it = m_CardDatabase.find("Villager");
+                                    if (it != m_CardDatabase.end()) {
+                                        const float keepScale = dataToSpawn->scale;
+                                        *dataToSpawn = it->second;
+                                        dataToSpawn->scale = keepScale;
+                                    }
+                                    m_VillagerGuaranteeArmed = false;
+                                }
+                            }
                             std::uniform_real_distribution<float> distOffset(-60.0f, 60.0f);
                             float spawnX = m_DraggingCard->GetX() + distOffset(m_RandomGenerator);
                             float spawnY = m_DraggingCard->GetY() - 80.0f + distOffset(m_RandomGenerator);

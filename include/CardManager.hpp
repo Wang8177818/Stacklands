@@ -34,7 +34,7 @@ using json = nlohmann::json;
 class CardManager : public ISpawnListener {
 public:
     // ISpawnListener 介面：動物卡觸發特殊能力時呼叫
-    void OnSpawn(const std::string& name, float x, float y) override;
+    void OnSpawn(const std::string& name, float x, float y, float scale) override;
     // 建構子：需要接收 App 的 Renderer 才能把卡片畫在畫面上
     CardManager(Util::Renderer& renderer);
 
@@ -65,6 +65,8 @@ public:
 
     // 取得資料庫中所有卡片名稱（供作弊選單使用）
     std::vector<std::string> GetAllCardNames() const;
+    // 給作弊選單分類：回傳 (name, type) 配對，按名稱排序
+    std::vector<std::pair<std::string, CardType>> GetAllCardEntries() const;
 
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
@@ -105,6 +107,26 @@ public:
 
     // 月底結算：扣除人物的食物消耗
     void OnMonthEnd();
+
+    // 開始新遊戲時呼叫：重置統計（如「第二包保底村民」的計數）
+    void ResetNewGameState() {
+        m_PacksOpenedThisGame    = 0;
+        m_VillagerGuaranteeArmed = true;
+        m_OverflowWarningActive  = false;
+    }
+
+    // ── 卡片超量警告 ───────────────────────────────────────────
+    // 月底結算時若卡片數 > 上限會被點亮，直到玩家賣到不超量為止
+    bool IsCardOverflowWarning() const { return m_OverflowWarningActive; }
+    // 每幀由 App 呼叫：若已賣到不超量則自動關閉警告
+    void ClearOverflowWarningIfResolved() {
+        if (m_OverflowWarningActive && GetCardCount() <= m_MaxCardCount)
+            m_OverflowWarningActive = false;
+    }
+    // 依當前卡片數立即評估是否超量（讀檔後呼叫）
+    void ArmOverflowWarningIfOver() {
+        m_OverflowWarningActive = (GetCardCount() > m_MaxCardCount);
+    }
 
     // ── 存檔 / 讀檔 ────────────────────────────────────────────
     // 把當前所有非 INTERACT 卡片 + maxCardCount 序列化為 JSON
@@ -170,6 +192,13 @@ private:
     std::shared_ptr<Card> m_LastClickedCard = nullptr;
 
     float m_ZoomRatio = 1.0f; // 當前累積縮放倍率，用於卡包開出卡片時套用正確大小
+
+    // 新遊戲統計：第二個被開的卡包，其第一張卡保底為村民
+    int  m_PacksOpenedThisGame   = 0;
+    bool m_VillagerGuaranteeArmed = false; // 新遊戲時設 true，發過就 false
+
+    // 月底結算發現卡片超量時點亮的警告旗標
+    bool m_OverflowWarningActive = false;
 
     // 遊戲場地 GameObject（用於計算邊界）
     std::shared_ptr<Util::GameObject> m_Field;

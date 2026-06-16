@@ -65,6 +65,11 @@ void App::MainMenu() {
             m_UIManager->UpdateMonth(1);
             // 重置遊戲時間狀態為 NORMAL（之前若進過暫停選單可能殘留 PAUSE）
             m_EventManager->SetGameState(EventManager::GameTime::NORMAL);
+            m_EventManager->SetTimeBlocked(false);
+            // 新遊戲卡片以 basic_scale 全新生成（等同 zoom=1），重置縮放避免殘留
+            m_EventManager->SetZoomRatio(1.0f);
+            // 啟用「第二包保底村民」
+            m_CardManager->ResetNewGameState();
             m_LoadOnInit = false;
             m_CurrentState = State::GAME_INIT;
             break;
@@ -78,6 +83,7 @@ void App::MainMenu() {
             m_CardManager->SetFieldBounds(m_UIManager->GetGameFieldImage());
             // 讀檔同樣重置為 NORMAL（讀檔本身不保存遊戲時間狀態）
             m_EventManager->SetGameState(EventManager::GameTime::NORMAL);
+            m_EventManager->SetTimeBlocked(false);
             m_LoadOnInit = true;
             m_CurrentState = State::GAME_INIT;
             break;
@@ -97,6 +103,10 @@ void App::MainMenu() {
 // ─────────────────────────────────────────────────────────────
 void App::GameInit() {
     //卡牌大小去App.hpp調basic_scale
+    // 先同步縮放：GameInit 在 App::Update 之前執行，若不同步，CardManager 內
+    // 殘留的 m_ZoomRatio 會讓本階段生成的卡包存錯基準 scale（開包後變大/變小）
+    m_CardManager->SetZoomRatio(m_EventManager->GetZoomRatio());
+
     // 重建 SellSlot & BlankSlots（支援 Game Over 後重新開始）
     m_SellSlot = std::make_shared<SellSlot>(-500, 420);
     m_BlankSlots.clear();
@@ -125,18 +135,7 @@ void App::GameInit() {
     m_CardManager->LoadProfessionRecipes(RESOURCE_DIR"/Data/Profession.json");
     m_CardManager->LoadCraftingRecipes(RESOURCE_DIR"/Data/Recipe.json");
 
-    m_CardManager->SpawnCardByName("Villager", basic_scale);
-    m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
-    m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
-    m_CardManager->SpawnCardByName("Chainmail Armor",basic_scale);
-    m_CardManager->SpawnCardByName("Hammer",basic_scale);
-    m_CardManager->SpawnCardByName("Hammer",basic_scale);
-    m_CardManager->SpawnCardByName("Hammer",basic_scale);
-    m_CardManager->SpawnCardByName("Stew",basic_scale);
-    m_CardManager->SpawnCardByName("Stew",basic_scale);
-    m_CardManager->SpawnCardByName("Stew",basic_scale);
-    m_CardManager->SpawnCardByName("Stew",basic_scale);
-    m_CardManager->SpawnCardByName("Demon",basic_scale);
+    m_CardManager->SpawnPackByName("A New World", basic_scale);
 
     // 如果是「繼續遊戲」進來，覆蓋上面新建的卡片
     if (m_LoadOnInit) {
@@ -184,13 +183,19 @@ void App::LoadGame() {
         LOG_ERROR("存檔解析失敗");
         return;
     }
+    // 先還原縮放再重建卡片：LoadFromJson 內重建卡包時會用 m_ZoomRatio 換算基準 scale，
+    // 必須在重建前同步，否則還原的卡包開出來大小會錯。
+    if (j.contains("zoomRatio")) {
+        const float z = j["zoomRatio"].get<float>();
+        m_EventManager->SetZoomRatio(z);
+        m_CardManager->SetZoomRatio(z);
+    }
     m_CardManager->LoadFromJson(j, basic_scale);
     if (j.contains("month")) {
         m_EventManager->month = static_cast<float>(j["month"].get<int>());
         m_UIManager->UpdateMonth(static_cast<int>(m_EventManager->month));
     }
     if (j.contains("tick"))      m_EventManager->tick = j["tick"].get<float>();
-    if (j.contains("zoomRatio")) m_EventManager->SetZoomRatio(j["zoomRatio"].get<float>());
     if (j.contains("camera")) {
         const auto& cam = j["camera"];
         if (auto field = m_UIManager->GetGameFieldImage()) {
@@ -199,6 +204,18 @@ void App::LoadGame() {
             field->m_Transform.scale = glm::vec2(
                 cam.value("sx", 1.0f), cam.value("sy", 1.0f));
         }
+        // INTERACT 卡（SellSlot / BlankSlot）在 ToJson 被跳過，GameInit 把它們
+        // 建在「初始」位置；讀檔還原 GameField 鏡頭後，要對它們補上同樣的
+        // zoom + pan 變換才不會跑位。
+        const float zoom = m_EventManager->GetZoomRatio();
+        const glm::vec2 pan(cam.value("x", 0.0f), cam.value("y", 0.0f));
+        auto applyCameraDelta = [&](const std::shared_ptr<Card>& c) {
+            if (!c) return;
+            if (zoom != 1.0f) c->ScaleAroundPivot(zoom, glm::vec2(0.f, 0.f));
+            if (pan.x != 0.f || pan.y != 0.f) c->MoveBy(pan);
+        };
+        applyCameraDelta(m_SellSlot);
+        for (auto& slot : m_BlankSlots) applyCameraDelta(slot);
     }
     // BlankSlot 硬幣還原（在每個 slot 上重建堆疊）
     if (j.contains("blankSlotCoins")) {
@@ -219,6 +236,8 @@ void App::LoadGame() {
             }
         }
     }
+    // 讀檔當下若卡片已超量，立即點亮警告並凍結時間（不必等下個月底）
+    m_CardManager->ArmOverflowWarningIfOver();
     LOG_INFO("已讀檔（月份 {}）", static_cast<int>(m_EventManager->month));
 }
 
@@ -228,14 +247,19 @@ void App::Update() {
     mousePos = Util::Input::GetCursorPosition();
 
     // ── 鏡頭移動 & 地圖縮放（完全委託給 EventManager）────
+    // 滑鼠在作弊選單上時不能拖鏡頭也不能滾輪縮放
     auto cards = m_CardManager->GetAllCards();
-    m_EventManager->Update(mousePos, m_CardManager->isDraggingCard(), cards);
+    const bool overCheat = m_UIManager->GetCheatMenu().IsCapturingMouse(mousePos);
+    m_EventManager->SetMouseBlocked(overCheat);
+    m_EventManager->Update(mousePos,
+                           m_CardManager->isDraggingCard() || overCheat,
+                           cards);
 
     // ── 作弊選單（F1 開關）─────────────────────────────────
     if (Util::Input::IsKeyUp(Util::Keycode::F1)) {
         auto& cheat = m_UIManager->GetCheatMenu();
         if (!cheat.IsVisible()) {
-            cheat.SetCardNames(m_CardManager->GetAllCardNames());
+            cheat.SetCardEntries(m_CardManager->GetAllCardEntries());
         }
         cheat.Toggle();
     }
@@ -285,9 +309,24 @@ void App::Update() {
             hoveredCard ? hoveredCard->GetDescription() : "");
     }
 
+    // ── 卡片超量警告 + 強制暫停（敘述欄底部）──────────────
+    // 月底結算超量會點亮；玩家賣到不超量才自動解除、遊戲恢復進行
+    m_CardManager->ClearOverflowWarningIfResolved();
+    const bool overflow = m_CardManager->IsCardOverflowWarning();
+    int overflowCount = m_CardManager->GetCardCount() - m_CardManager->GetMaxCardCount();
+    if (overflowCount < 0) overflowCount = 0;
+    // 凍結遊戲時間直到玩家賣完（仍可拖曳賣卡）
+    m_EventManager->SetTimeBlocked(overflow);
+    // 暫停選單開啟時不顯示警告文字（避免蓋住選單），但時間仍凍結
+    const bool showOverflowWarn =
+        overflow && m_EventManager->GetGameState() != EventManager::GameTime::PAUSE;
+    m_UIManager->SetCardOverflowWarning(showOverflowWarn, overflowCount);
+
     int sellPrice = m_SellSlot->GetTotalPrice();
     if (sellPrice > 0) {
-        float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
+        // 用 SellSlot 自身的實際縮放，確保金幣與場上卡片同大小
+        // （避免 m_ZoomRatio 殘留導致 basic_scale*zoom 與場上卡片不一致）
+        float spawnScale = m_SellSlot->GetScale();
         // 生成一Coin作為堆疊底部
         auto topCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);
         for (int i = 1; i < sellPrice; i++) {
@@ -311,7 +350,8 @@ void App::Update() {
         const int coinCount = slot->GetCoinCount();
         if (coinCount < price) continue;
 
-        const float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
+        // 用 slot 自身的實際縮放，確保卡包 / 找零金幣與場上卡片同大小
+        const float spawnScale = slot->GetScale();
         const float sx = slot->GetX();
         const float sy = slot->GetY();
 

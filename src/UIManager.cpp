@@ -295,6 +295,20 @@ void UIManager::TransitionToGame() {
     m_HUD.descText->SetZIndex(100);
     m_HUD.descText->SetVisible(false);
     m_Renderer.AddChild(m_HUD.descText);
+
+    // ── 卡片超量警告（敘述欄最底部，紅色）────────────────────
+    m_HUD.descWarning = std::make_shared<Util::GameObject>();
+    {
+        auto initDrawable = std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjhbd.ttc", 26, " ", Util::Color(200, 40, 40));
+        m_HUD.descWarning->SetDrawable(initDrawable);
+        m_HUD.descWarning->SetPivot({-initDrawable->GetSize().x / 2.f, 0.f});
+    }
+    m_HUD.descWarning->m_Transform.translation = glm::vec2(-630, -315);
+    m_HUD.descWarning->m_Transform.scale = {0.5f, 0.5f};
+    m_HUD.descWarning->SetZIndex(100);
+    m_HUD.descWarning->SetVisible(false);
+    m_Renderer.AddChild(m_HUD.descWarning);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -349,6 +363,7 @@ void UIManager::ShowGameOver(int monthsPlayed) {
     if (m_HUD.descBar)     m_HUD.descBar->SetVisible(false);
     if (m_HUD.descName)    m_HUD.descName->SetVisible(false);
     if (m_HUD.descText)    m_HUD.descText->SetVisible(false);
+    if (m_HUD.descWarning) m_HUD.descWarning->SetVisible(false);
 
     m_GameOver.panel->SetVisible(true);
     m_GameOver.title->SetVisible(true);
@@ -406,6 +421,7 @@ void UIManager::TransitionToMenu() {
     if (m_HUD.foodCount)   m_HUD.foodCount->SetVisible(false);
     if (m_HUD.descName)    m_HUD.descName->SetVisible(false);
     if (m_HUD.descText)    m_HUD.descText->SetVisible(false);
+    if (m_HUD.descWarning) m_HUD.descWarning->SetVisible(false);
     if (m_HUD.playButton)  m_HUD.playButton->HideAll();
     if (m_Pause.image)     m_Pause.image->SetVisible(false);
     if (m_Pause.btnContinue)     m_Pause.btnContinue->HideAll();
@@ -485,4 +501,24 @@ void UIManager::UpdateDescriptionText(const std::string& text) {
     m_HUD.descText->SetDrawable(drawable);
     // 左對齊：pivot.x = -textWidth/2
     m_HUD.descText->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
+}
+
+// ─────────────────────────────────────────────────────────────
+void UIManager::SetCardOverflowWarning(bool show, int overflowCount) {
+    if (!m_HUD.descWarning) return;
+    if (!show) {
+        m_HUD.descWarning->SetVisible(false);
+        return;
+    }
+    // 張數變化時才重建紋理（避免每幀重建 SDL 文字）
+    if (overflowCount != m_LastOverflowCount) {
+        m_LastOverflowCount = overflowCount;
+        const std::string warnText =
+            "卡片超過上限！\n請賣出 " + std::to_string(overflowCount) + " 張卡片";
+        auto drawable = std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjhbd.ttc", 26, warnText, Util::Color(200, 40, 40));
+        m_HUD.descWarning->SetDrawable(drawable);
+        m_HUD.descWarning->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
+    }
+    m_HUD.descWarning->SetVisible(true);
 }

@@ -62,6 +62,14 @@ public:
     void AddGather(PendingGather pg);
     void AddCraft(PendingCraft  pc);
 
+    // 清空所有延遲任務（返回選單 / Game Over 用）
+    // 會析構各任務內的 TimeBar / CombatArena，自動從 Renderer 移除
+    void ClearAll() {
+        m_Gathers.clear();
+        m_Combats.clear();
+        m_Crafts.clear();
+    }
+
     // ── 存檔用 access ────────────────────────────────────────────────
     const std::vector<PendingGather>& GetGathers() const { return m_Gathers; }
     const std::vector<PendingCombat>& GetCombats() const { return m_Combats; }
