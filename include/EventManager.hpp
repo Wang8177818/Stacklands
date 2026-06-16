@@ -28,6 +28,15 @@ public:
     float month = 1;
 
     GameTime GetGameState() const { return m_GameTime; }
+    void     SetGameState(GameTime t) { m_GameTime = t; }
+
+    // 由 App 在 Update 之前呼叫：是否要阻擋滑鼠 pan/zoom（例如滑鼠在 UI 上）
+    void     SetMouseBlocked(bool b) { m_MouseBlocked = b; }
+
+    // 凍結遊戲時間（月份進度 + 合成/採集/戰鬥/動物移動），但仍可拖曳賣卡。
+    // 用於「卡片超量必須賣出才能繼續」的強制暫停。
+    void     SetTimeBlocked(bool b) { m_TimeBlocked = b; }
+    bool     IsTimeBlocked()  const { return m_TimeBlocked; }
 
     // 取得本幀已套用倍率的 dtMs（PAUSE=0、NORMAL=1x、FAST=2x）
     // 動物 / 怪物 / 其他需要遊戲時間的系統應改用這個，而非 Util::Time::GetDeltaTimeMs()
@@ -63,9 +72,12 @@ public:
 
     // 暫停選單按下「返回選單」後會變成 true，App 讀取後應切換狀態
     bool IsRequestingExit() const { return m_RequestExit; }
+    void ClearExitRequest()       { m_RequestExit = false; }
 
     // 取得目前縮放倍率
     float GetZoomRatio() const { return m_ZoomRatio; }
+    // 存檔回復用
+    void  SetZoomRatio(float r) { m_ZoomRatio = r; }
 
 private:
     void HandlePan(glm::vec2 mousePos,
@@ -93,7 +105,9 @@ private:
     glm::vec2 m_LastMousePos  = {0.f, 0.f};
     float     m_ZoomRatio     = 1.0f;  // 累積縮放倍率，供生成新卡片時使用
 
-    GameTime m_GameTime = GameTime::NORMAL;
+    GameTime m_GameTime    = GameTime::NORMAL;
+    bool     m_MouseBlocked = false;
+    bool     m_TimeBlocked  = false;
 
     UIManager*   m_UIManager   = nullptr;
     CardManager* m_CardManager = nullptr;

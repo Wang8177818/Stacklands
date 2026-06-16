@@ -23,17 +23,32 @@ public:
         MODS,
         CONTINUE,
         BACKTOMENU,
+        LOAD_GAME,   // 主選單按下「繼續遊戲(X月)」載入存檔
     };
 
     UIManager(Util::Renderer& renderer);
     ~UIManager() = default;
 
     // ── 選單階段 ──────────────────────────────────────────
-    void InitMenu();
+    // saveMonth：若有存檔則顯示「繼續遊戲(N月)」按鈕；< 0 = 無存檔
+    void InitMenu(int saveMonth = -1);
     MenuEvent UpdateMenu(glm::vec2 mousePos);
     MenuEvent UpdatePauseMenu(glm::vec2 mousePos);
     void TransitionToGame();
     void TransitionToMenu();
+
+    // ── Game Over 畫面 ────────────────────────────────────
+    // monthsPlayed：要顯示的「遊玩 N 月」
+    void ShowGameOver(int monthsPlayed);
+    void HideGameOver();
+    // 回傳 true 表示點擊了「返回選單」
+    bool UpdateGameOver(glm::vec2 mousePos);
+
+    // 主選單「繼續遊戲」按鈕從此不再顯示（存檔被刪後呼叫）
+    void ClearLoadGameButton();
+
+    // 重建主選單「繼續遊戲(N月)」按鈕（剛存檔後呼叫，月份標籤刷新）
+    void RefreshLoadGameButton(int month);
 
     // ── 遊戲 UI 階段 ──────────────────────────────────────
     std::shared_ptr<BackgroundImage>   GetGameFieldImage()      const { return m_HUD.field; }
@@ -62,6 +77,9 @@ public:
     void UpdateMonth(int month);
     void UpdateDescriptionText(const std::string& text);
     void UpdateDescriptionName(const std::string& name);
+    // 顯示 / 隱藏敘述欄底部的「卡片超量請賣卡」警告
+    // overflowCount：還需賣出的卡片張數
+    void SetCardOverflowWarning(bool show, int overflowCount = 0);
 
     // 作弊選單
     CheatMenu& GetCheatMenu() { return m_CheatMenu; }
@@ -74,6 +92,7 @@ private:
         std::shared_ptr<BackgroundImage> bg;
         std::shared_ptr<BackgroundImage> panel;
         std::shared_ptr<MenuButton> btnStart;
+        std::shared_ptr<MenuButton> btnLoadGame;   // 繼續遊戲(N月)
         std::shared_ptr<MenuButton> btnExit;
         std::shared_ptr<MenuButton> btnOptions;
         std::shared_ptr<MenuButton> btnCardWiki;
@@ -86,6 +105,15 @@ private:
         std::shared_ptr<MenuButton>      btnContinue;
         std::shared_ptr<MenuButton>      btnReturnToMenu;
     } m_Pause;
+
+    // Game Over 畫面資源
+    struct GameOverUI {
+        std::shared_ptr<BackgroundImage>  panel;
+        std::shared_ptr<Util::GameObject> title;
+        std::shared_ptr<Util::GameObject> subtitle;
+        std::shared_ptr<MenuButton>       btnReturn;
+        bool initialized = false;
+    } m_GameOver;
 
     // 遊戲 HUD 資源
     struct GameHUD {
@@ -104,8 +132,11 @@ private:
         std::shared_ptr<Util::GameObject> foodCount;
         std::shared_ptr<Util::GameObject> descName;
         std::shared_ptr<Util::GameObject> descText;
+        std::shared_ptr<Util::GameObject> descWarning;
         std::shared_ptr<MenuButton>       playButton;
     } m_HUD;
+
+    int  m_LastOverflowCount = -1; // 上次顯示的超量張數（變化時才重建文字）
 
     void AddButtonToRenderer(std::shared_ptr<MenuButton> btn);
 

@@ -22,6 +22,9 @@ int main(int, char**) {
             case App::State::UPDATE:
                 app.Update();
                 break;
+            case App::State::GAME_OVER:
+                app.GameOver();
+                break;
             case App::State::END:
                 app.End();
                 context->SetExit(true);

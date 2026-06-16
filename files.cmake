@@ -1,11 +1,5 @@
-# 此檔為建構檔案清單的唯一來源（single source of truth）。
-# 新增/刪除 .cpp 或 .hpp 時，只需在此維護，CMakeLists.txt 不必再改。
-# main.cpp 由 CMakeLists.txt 另外加入，故不列於此。
-
 set(SRC_FILES
-    # 核心 / 入口
     App.cpp
-    # 卡片
     Card.cpp
     CardPack.cpp
     CardFactory.cpp
@@ -68,6 +62,10 @@ set(INCLUDE_FILES
     Button.hpp
     TimeBar.hpp
     BlankSlot.hpp
+    MagicGlue.hpp
+    CoinChest.hpp
+    Hotpot.hpp
+    ResourceChest.hpp
     Sellslot.hpp
     # 第三方
     nlohmann/json.hpp
