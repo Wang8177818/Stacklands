@@ -31,33 +31,14 @@ FetchContent_MakeAvailable(Catch2)
 include(files.cmake)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
+# 將 files.cmake 中的相對檔名展開為絕對路徑
 list(TRANSFORM SRC_FILES PREPEND ${SRC_DIR}/)
 list(TRANSFORM INCLUDE_FILES PREPEND ${INCLUDE_DIR}/)
-
-# file(GLOB_RECURSE SRC_FILES src/*)
-# file(GLOB_RECURSE HEADER_FILES include/*)
 
 add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
     ${SRC_FILES}
-    ${HEADER_FILES}
-        include/BackgroundImage.hpp
-        include/Button.hpp
-        include/Card.hpp
-        src/Card.cpp
-        include/CharacterCard.hpp
-        include/CardData.hpp
-        src/CardPack.cpp
-        include/CardPack.hpp
-        include/CardManager.hpp
-        src/CardManager.cpp
-        include/ResourceCard.hpp
-        include/CoinCard.hpp
-        include/nlohmann/json.hpp
-        include/EquipmentCard.hpp
-        include/Sellslot.hpp
-        include/AnimalCard.hpp
-        include/AttackResolver.hpp
+    ${INCLUDE_FILES}
 )
 
 if(MSVC)
