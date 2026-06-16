@@ -38,26 +38,25 @@ list(TRANSFORM INCLUDE_FILES PREPEND ${INCLUDE_DIR}/)
 # file(GLOB_RECURSE HEADER_FILES include/*)
 
 add_executable(${PROJECT_NAME}
-    ${SRC_DIR}/main.cpp
     ${SRC_FILES}
     ${HEADER_FILES}
-        include/BackgroundImage.hpp
-        include/Button.hpp
-        include/Card.hpp
-        src/Card.cpp
-        include/CharacterCard.hpp
-        include/CardData.hpp
-        src/CardPack.cpp
-        include/CardPack.hpp
-        include/CardManager.hpp
-        src/CardManager.cpp
-        include/ResourceCard.hpp
-        include/CoinCard.hpp
+        include/ui/BackgroundImage.hpp
+        include/ui/Button.hpp
+        include/cards/Card.hpp
+        src/cards/Card.cpp
+        include/cards/CharacterCard.hpp
+        include/data/CardData.hpp
+        src/cards/CardPack.cpp
+        include/cards/CardPack.hpp
+        include/core/CardManager.hpp
+        src/core/CardManager.cpp
+        include/cards/ResourceCard.hpp
+        include/cards/CoinCard.hpp
         include/nlohmann/json.hpp
-        include/EquipmentCard.hpp
-        include/Sellslot.hpp
-        include/AnimalCard.hpp
-        include/AttackResolver.hpp
+        include/cards/EquipmentCard.hpp
+        include/cards/Sellslot.hpp
+        include/cards/AnimalCard.hpp
+        include/combat/AttackResolver.hpp
 )
 
 if(MSVC)

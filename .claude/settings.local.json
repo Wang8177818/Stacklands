@@ -24,7 +24,8 @@
       "Bash(cmake --build D:/MyStuff/School/OOPL/Stacklands/cmake-build-debug)",
       "PowerShell($ninja = Get-ChildItem \"C:\\\\Users\\\\m0938\" -Recurse -Filter \"ninja.exe\" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName; Write-Output \"ninja: $ninja\")",
       "Bash(cmake --build cmake-build-debug)",
-      "Bash(\"C:\\\\PROGRA~1\\\\JETBRA~1\\\\CLION2~1.4\\\\bin\\\\mingw\\\\bin\\\\g++.exe\" --version)"
+      "Bash(\"C:\\\\PROGRA~1\\\\JETBRA~1\\\\CLION2~1.4\\\\bin\\\\mingw\\\\bin\\\\g++.exe\" --version)",
+      "Bash(git mv:*)"
     ]
   }
 }

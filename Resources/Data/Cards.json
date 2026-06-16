@@ -2448,133 +2448,133 @@
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Animal_Pen.png",
     "sellValue": 1,
-    "description": "Can hold 5 Animals"
+    "description": "2x Plank, 2x Wood, 1x Iron Bar and 1x Villager"
   },
   {
     "name": "Idea: Aquarium",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Aquarium.png",
     "sellValue": 1,
-    "description": "Can hold 5 Fish"
+    "description": "2x Glass, 1x Iron Bar and 1x Villager"
   },
   {
     "name": "Idea: Axe",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Axe.png",
     "sellValue": 1,
-    "description": "For chopping wood and monsters"
+    "description": "1x Iron Bar, 1x Stick and 1x Wood"
   },
   {
     "name": "Idea: Blunderbuss",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Blunderbuss.png",
     "sellValue": 1,
-    "description": "Watch out! Could blow up in your own face"
+    "description": "1x Gold Bar, 1x Iron Bar, 1x Plank, 1x Flint and 1x Smithy"
   },
   {
     "name": "Idea: Bone Spear",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bone_Spear.png",
     "sellValue": 1,
-    "description": "Intimidating version of a regular Spear"
+    "description": "1x Spear and 2x Bone"
   },
   {
     "name": "Idea: Bone Staff",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bone_Staff.png",
     "sellValue": 1,
-    "description": "A bone with special abilities"
+    "description": "1x Magic Staff, 1x Bone, 1x Gold Bar and 1x Smithy"
   },
   {
     "name": "Idea: Boomerang",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Boomerang.png",
     "sellValue": 1,
-    "description": "Always comes back to you"
+    "description": "3x Plank and 1x Smithy"
   },
   {
     "name": "Idea: Bottle of Rum",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bottle_of_Rum.png",
     "sellValue": 1,
-    "description": "Be careful: gets Villagers drunk!"
+    "description": "1x Cane Sugar, 1x Bottle of Water and 1x Distillery"
   },
   {
     "name": "Idea: Bow",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Bow.png",
     "sellValue": 1,
-    "description": "Makes you feel like Robin Hood"
+    "description": "1x Rope, 1x Plank and 1x Wood"
   },
   {
     "name": "Idea: Breeding Pen",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Breeding_Pen.png",
     "sellValue": 1,
-    "description": "A pen for breeding Animals"
+    "description": "1x Animal Pen and 2x Magic Dust"
   },
   {
     "name": "Idea: Brick",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Brick.png",
     "sellValue": 1,
-    "description": "A strong building material"
+    "description": "3x Stone and 1x Villager"
   },
   {
     "name": "Idea: Brickyard",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Brickyard.png",
     "sellValue": 1,
-    "description": "Quickly turns Stone into Bricks"
+    "description": "1x Brick, 1x Iron Bar, 1x Wood and 1x Villager"
   },
   {
     "name": "Idea: Broken Bottle",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Broken_Bottle.png",
     "sellValue": 1,
-    "description": "Cut out for the job"
+    "description": "1x Empty Bottle and 1x Stone"
   },
   {
     "name": "Idea: Butchery",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Butchery.png",
     "sellValue": 1,
-    "description": "Sends animals on vacation"
+    "description": "1x Raw Meat, 2x Plank, 1x Iron Bar and 1x Villager"
   },
   {
     "name": "Idea: Campfire",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Campfire.png",
     "sellValue": 1,
-    "description": "Can be used to cook  - it looks warm & cozy"
+    "description": "1x Flint and 1x Stick"
   },
   {
     "name": "Idea: Cathedral",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Cathedral.png",
     "sellValue": 1,
-    "description": "An important place of worship. It needs a relic."
+    "description": "5x Gold Bar, 5x Glass, 5x Brick, 5x Plank and 5x Villager"
   },
   {
     "name": "Idea: Ceviche",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Ceviche.png",
     "sellValue": 1,
-    "description": "Sour fish, what's not to like"
+    "description": "1x Lime and 1x Raw Fish"
   },
   {
     "name": "Idea: Chainmail Armor",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Chainmail_Armor.png",
     "sellValue": 1,
-    "description": "A medieval era classic"
+    "description": "2x Iron Bar and 1x Smithy"
   },
   {
     "name": "Idea: Charcoal",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Charcoal.png",
     "sellValue": 1,
-    "description": "Functions as an antidote for Snake Poison"
+    "description": "1x Wood and 1x Campfire"
   },
   {
     "name": "Idea: Chicken",
@@ -2588,168 +2588,168 @@
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Club.png",
     "sellValue": 1,
-    "description": "Not used for playing baseball"
+    "description": "2x Wood and 1x Stick"
   },
   {
     "name": "Idea: Coin",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Coin.png",
     "sellValue": 1,
-    "description": "Humanity's best friend"
+    "description": "1x Gold Bar, 1x Wood and 1x Smelter"
   },
   {
     "name": "Idea: Coin Chest",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Coin_Chest.png",
     "sellValue": 1,
-    "description": "A chest that can hold Coins"
+    "description": "1x Coin and 2x Wood"
   },
   {
     "name": "Idea: Composter",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Composter.png",
     "sellValue": 1,
-    "description": "Turns 5 Food into Soil"
+    "description": "2x Poop, 1x Plank, 1x Brick and 1x Villager"
   },
   {
     "name": "Idea: Cooked Meat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Cooked_Meat.png",
     "sellValue": 1,
-    "description": "It's cooked medium rare"
+    "description": "1x Raw Meat and 1x Campfire"
   },
   {
     "name": "Idea: Crane",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Crane.png",
     "sellValue": 1,
-    "description": "Lifts cards from one place to another"
+    "description": "1x Iron Bar, 1x Plank, 1x Stick and 1x Magic Dust"
   },
   {
     "name": "Idea: Crossbow",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Crossbow.png",
     "sellValue": 1,
-    "description": "A gun for arrows"
+    "description": "1x Rope, 1x Plank, 1x Wood, 1x Iron Bar and 1x Smithy"
   },
   {
     "name": "Idea: Distillery",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Distillery.png",
     "sellValue": 1,
-    "description": "Used for making booze"
+    "description": "1x Stove, 1x Iron Bar, 1x Plank and 1x Villager"
   },
   {
     "name": "Idea: Dustbin",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Dustbin.png",
     "sellValue": 1,
-    "description": "Allows you to get rid of cards you don't want anymore"
+    "description": "1x Iron Bar, 1x Goop and 1x Villager"
   },
   {
     "name": "Idea: Empty Bottle",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Empty_Bottle.png",
     "sellValue": 1,
-    "description": "Made of Glass. Can be refilled!"
+    "description": "2x Glass and 1x Campfire"
   },
   {
     "name": "Idea: Fabric",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fabric.png",
     "sellValue": 1,
-    "description": "Fibres. together. strong."
+    "description": "4x Cotton and 1x Villager"
   },
   {
     "name": "Idea: Farm",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Farm.png",
     "sellValue": 1,
-    "description": "An advanced building for growing Food"
+    "description": "1x Soil, 2x Brick, 2x Plank and 1x Villager"
   },
   {
     "name": "Idea: Fish Trap",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fish_Trap.png",
     "sellValue": 1,
-    "description": "Needs a type of Food as bait"
+    "description": "1x Fishing Spot, 1x Stone and 1x Rope"
   },
   {
     "name": "Idea: Fishing Rod",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fishing_Rod.png",
     "sellValue": 1,
-    "description": "Give it to a Villager to turn them into a Fisher"
+    "description": "1x Stick and 1x Rope"
   },
   {
     "name": "Idea: Forest Amulet",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Forest_Amulet.png",
     "sellValue": 1,
-    "description": "You feel the healing power of nature running through you"
+    "description": "2x Gold Bar, 1x Magic Dust, 1x Wood and 1x Smithy"
   },
   {
     "name": "Idea: Frigate",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Frigate.png",
     "sellValue": 1,
-    "description": "Can carry 25 cards. Needs a villager to start sailing. Can't carry buildings."
+    "description": "10x Plank, 3x Sail and 2x Villager"
   },
   {
     "name": "Idea: Frittata",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Frittata.png",
     "sellValue": 1,
-    "description": "Delicious and comes with a fork"
+    "description": "1x Egg, 1x Potato and 1x Campfire"
   },
   {
     "name": "Idea: Fruit Salad",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Fruit_Salad.png",
     "sellValue": 1,
-    "description": "A classic ancient food"
+    "description": "1x Apple and 1x Berry"
   },
   {
     "name": "Idea: Garden",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Garden.png",
     "sellValue": 1,
-    "description": "A simple building for growing Food"
+    "description": "1x Soil, 2x Wood, 2x Stone and 1x Villager"
   },
   {
     "name": "Idea: Glass",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Glass.png",
     "sellValue": 1,
-    "description": "A transparent resource"
+    "description": "1x Wood, 1x Sand and 1x Smelter"
   },
   {
     "name": "Idea: Gold Bar",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Gold_Bar.png",
     "sellValue": 1,
-    "description": "A very shiny, very valuable material"
+    "description": "1x Wood, 1x Gold Ore and 1x Smelter"
   },
   {
     "name": "Idea: Gold Mine",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Gold_Mine.png",
     "sellValue": 1,
-    "description": "An unlimited resource of Gold Ore"
+    "description": "1x Flint, 1x Gold Ore, 1x Wood, 1x Stone and 1x Villager"
   },
   {
     "name": "Idea: Golden Chestplate",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Golden_Chestplate.png",
     "sellValue": 1,
-    "description": "Slightly overdressed for the event"
+    "description": "2x Gold Bar and 1x Smithy"
   },
   {
     "name": "Idea: Greenhouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Greenhouse.png",
     "sellValue": 1,
-    "description": "A high-tech building for growing Food. Automatically replants crops."
+    "description": "2x Iron Bar, 2x Glass, 1x Soil and 1x Villager"
   },
   {
     "name": "Idea: Growth",
@@ -2763,126 +2763,126 @@
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Hammer.png",
     "sellValue": 1,
-    "description": "Slow and blunt but packs a punch"
+    "description": "1x Iron Bar, 1x Stick and 1x Stone"
   },
   {
     "name": "Idea: Hotpot",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Hotpot.png",
     "sellValue": 1,
-    "description": "A replenishable source of Food that your Villagers can eat from. Add Food and they will eat from it at the end of the Moon!"
+    "description": "1x Campfire, 2x Iron Bar and 1x Villager"
   },
   {
     "name": "Idea: House",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_House.png",
     "sellValue": 1,
-    "description": "A nice place to live"
+    "description": "1x Stone, 2x Wood and 1x Villager"
   },
   {
     "name": "Idea: Iron Bar",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Iron_Bar.png",
     "sellValue": 1,
-    "description": "A shiny, valuable material"
+    "description": "1x Iron Ore, 1x Wood and 1x Smelter"
   },
   {
     "name": "Idea: Iron Mine",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Iron_Mine.png",
     "sellValue": 1,
-    "description": "An unlimited resource of Iron"
+    "description": "2x Flint, 1x Wood, 1x Stone and 1x Villager"
   },
   {
     "name": "Idea: Iron Shield",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Iron_Shield.png",
     "sellValue": 1,
-    "description": "A strong defense against hard blows"
+    "description": "1x Iron Bar, 1x Plank and 1x Smithy"
   },
   {
     "name": "Idea: Lighthouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Lighthouse.png",
     "sellValue": 1,
-    "description": "Increases the board size past the Warehouse limit"
+    "description": "2x Brick, 1x Glass, 1x Campfire and 1x Villager"
   },
   {
     "name": "Idea: Lumber Camp",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Lumber_Camp.png",
     "sellValue": 1,
-    "description": "An unlimited source of Wood"
+    "description": "3x Wood, 1x Stone and 1x Villager"
   },
   {
     "name": "Idea: Magic Blade",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Blade.png",
     "sellValue": 1,
-    "description": "An ordinary sword that glitters"
+    "description": "2x Magic Dust, 1x Sword and 1x Smithy"
   },
   {
     "name": "Idea: Magic Glue",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Glue.png",
     "sellValue": 1,
-    "description": "Sticks the stack on top of it to the board and prevents it from moving"
+    "description": "1x Magic Dust and 1x Charcoal"
   },
   {
     "name": "Idea: Magic Ring",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Ring.png",
     "sellValue": 1,
-    "description": "Once it slides on your finger it grants you magic powers"
+    "description": "1x Magic Dust, 2x Coin and 1x Smithy"
   },
   {
     "name": "Idea: Magic Staff",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Staff.png",
     "sellValue": 1,
-    "description": "A long, enchanted rod"
+    "description": "1x Magic Dust, 1x Wood and 1x Smithy"
   },
   {
     "name": "Idea: Magic Tome",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Tome.png",
     "sellValue": 1,
-    "description": "An old book with spells in it"
+    "description": "1x Magic Dust, 1x Map and 1x Smithy"
   },
   {
     "name": "Idea: Magic Wand",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Magic_Wand.png",
     "sellValue": 1,
-    "description": "A simple magic weapon"
+    "description": "1x Magic Dust and 1x Stick"
   },
   {
     "name": "Idea: Market",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Market.png",
     "sellValue": 1,
-    "description": "Sell cards for more Coins than usual"
+    "description": "3x Coin, 1x Plank, 1x Brick and 1x Villager"
   },
   {
     "name": "Idea: Mess Hall",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Mess_Hall.png",
     "sellValue": 1,
-    "description": "Villagers will prioritize eating food that's on top of the Mess Hall."
+    "description": "1x Plank, 1x Iron Bar and 1x Campfire"
   },
   {
     "name": "Idea: Milkshake",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Milkshake.png",
     "sellValue": 1,
-    "description": "It's Berry flavoured"
+    "description": "1x Milk and 1x Berry"
   },
   {
     "name": "Idea: Mountain Amulet",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Mountain_Amulet.png",
     "sellValue": 1,
-    "description": "It grounds you"
+    "description": "2x Gold Bar, 1x Magic Dust, 1x Stone and 1x Smithy"
   },
   {
     "name": "Idea: Offspring",
@@ -2896,42 +2896,42 @@
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Omelette.png",
     "sellValue": 1,
-    "description": "Pépin would be proud"
+    "description": "2x Egg and 1x Campfire"
   },
   {
     "name": "Idea: Pickaxe",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Pickaxe.png",
     "sellValue": 1,
-    "description": "A stick with two pointy ends"
+    "description": "1x Iron Bar, 1x Stick and 1x Flint"
   },
   {
     "name": "Idea: Plank",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Plank.png",
     "sellValue": 1,
-    "description": "A strong building material"
+    "description": "3x Wood and 1x Villager"
   },
   {
     "name": "Idea: Quarry",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Quarry.png",
     "sellValue": 1,
-    "description": "An unlimited resource of Stone"
+    "description": "3x Stone, 1x Wood and 1x Villager"
   },
   {
     "name": "Idea: Resource Chest",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Resource_Chest.png",
     "sellValue": 1,
-    "description": "A Chest for storing Resources"
+    "description": "2x Plank, 1x Iron Bar and 1x Flint"
   },
   {
     "name": "Idea: Resource Magnet",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Resource_Magnet.png",
     "sellValue": 1,
-    "description": "This card magically pulls cards of the same kind towards it"
+    "description": "1x Gold Bar, 1x Magic Dust and 1x Villager"
   },
   {
     "name": "Idea: Road Builder",
@@ -2945,203 +2945,203 @@
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Rope.png",
     "sellValue": 1,
-    "description": "Long and fibrous"
+    "description": "2x Cotton and 1x Villager"
   },
   {
     "name": "Idea: Rowboat",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Rowboat.png",
     "sellValue": 1,
-    "description": "A rowboat to cross to a desert island."
+    "description": "1x Iron Bar and 1x Plank"
   },
   {
     "name": "Idea: Sacred Key",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sacred_Key.png",
     "sellValue": 1,
-    "description": "Forged with Glass and Gold. Used for opening the Sacred Chest."
+    "description": "3x Gold Bar, 3x Glass and 1x Smelter"
   },
   {
     "name": "Idea: Sail",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sail.png",
     "sellValue": 1,
-    "description": "Used for making boats"
+    "description": "1x Fabric, 1x Rope and 1x Villager"
   },
   {
     "name": "Idea: Sand Quarry",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sand_Quarry.png",
     "sellValue": 1,
-    "description": "An unlimited resource of Sand"
+    "description": "1x Sand, 1x Flint, 1x Wood and 1x Villager"
   },
   {
     "name": "Idea: Sandstone",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sandstone.png",
     "sellValue": 1,
-    "description": "An alternative to Stone. Can be used for anything Stone is needed for."
+    "description": "2x Sand and 1x Villager"
   },
   {
     "name": "Idea: Sawmill",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sawmill.png",
     "sellValue": 1,
-    "description": "Quickly turns Wood into Planks"
+    "description": "1x Plank, 1x Stone, 1x Iron Bar and 1x Villager"
   },
   {
     "name": "Idea: Seafood Stew",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Seafood_Stew.png",
     "sellValue": 1,
-    "description": "Delicious Island Stew"
+    "description": "1x Raw Crab Meat, 1x Raw Fish, 1x Chili Pepper and 1x Campfire"
   },
   {
     "name": "Idea: Shed",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Shed.png",
     "sellValue": 1,
-    "description": "Increases your Card cap by 4"
+    "description": "1x Stone, 1x Wood, 1x Stick and 1x Villager"
   },
   {
     "name": "Idea: Shell Chest",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Shell_Chest.png",
     "sellValue": 1,
-    "description": "A chest with that can hold Shells"
+    "description": "1x Shell and 2x Wood"
   },
   {
     "name": "Idea: Slingshot",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Slingshot.png",
     "sellValue": 1,
-    "description": "Very inaccurately hurl rocks at enemies"
+    "description": "2x Stick and 1x Stone"
   },
   {
     "name": "Idea: Sloop",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sloop.png",
     "sellValue": 1,
-    "description": "Can carry 10 cards. Needs a Villager to start sailing. Can't carry buildings"
+    "description": "1x Sail, 2x Plank and 1x Villager"
   },
   {
     "name": "Idea: Smelter",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Smelter.png",
     "sellValue": 1,
-    "description": "Processes various materials by smelting them"
+    "description": "2x Flint, 2x Brick, 1x Plank and 1x Villager"
   },
   {
     "name": "Idea: Spear",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Spear.png",
     "sellValue": 1,
-    "description": "Stick with a pointy end"
+    "description": "1x Wood and 2x Stick"
   },
   {
     "name": "Idea: Spiked Plank",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Spiked_Plank.png",
     "sellValue": 1,
-    "description": "For tough construction workers"
+    "description": "1x Plank and 1x Flint"
   },
   {
     "name": "Idea: Stable Portal",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stable_Portal.png",
     "sellValue": 1,
-    "description": "A permanent portal to The Dark Forest. Can move 7 Cards. Time for revenge"
+    "description": "2x Brick, 2x Magic Dust and 1x Villager"
   },
   {
     "name": "Idea: Stew",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stew.png",
     "sellValue": 1,
-    "description": "A hearty meal"
+    "description": "1x Raw Meat, 1x Carrot, 1x Onion, 1x Potato and 1x Campfire"
   },
   {
     "name": "Idea: Stick",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stick.png",
     "sellValue": 1,
-    "description": "What's brown and sticky?"
+    "description": "1x Wood and 1x Villager"
   },
   {
     "name": "Idea: Stove",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Stove.png",
     "sellValue": 1,
-    "description": "Allows you to cook faster than with a Campfire"
+    "description": "1x Flint, 1x Brick, 1x Iron Bar and 1x Villager"
   },
   {
     "name": "Idea: Sushi",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sushi.png",
     "sellValue": 1,
-    "description": "A delicious treat"
+    "description": "1x Raw Fish and 1x Seaweed"
   },
   {
     "name": "Idea: Sword",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Sword.png",
     "sellValue": 1,
-    "description": "An Iron Bar with a pointy end"
+    "description": "1x Iron Bar and 2x Stick"
   },
   {
     "name": "Idea: Tamago Sushi",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Tamago_Sushi.png",
     "sellValue": 1,
-    "description": "Egg flavored sushi"
+    "description": "1x Omelette and 1x Seaweed"
   },
   {
     "name": "Idea: Temple",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Temple.png",
     "sellValue": 1,
-    "description": "An important place of worship. It needs a [[Golden Goblet"
+    "description": "5x Plank, 5x Brick, 3x Iron Bar and 3x Villager"
   },
   {
     "name": "Idea: Throwing Stars",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Throwing_Stars.png",
     "sellValue": 1,
-    "description": "Fast and accurate, ninjas love them"
+    "description": "3x Iron Bar and 1x Smithy"
   },
   {
     "name": "Idea: University",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_University.png",
     "sellValue": 1,
-    "description": "A place of wisdom. You've discovered all their Ideas."
+    "description": "4x Brick and 1x Mage"
   },
   {
     "name": "Idea: Warehouse",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Warehouse.png",
     "sellValue": 1,
-    "description": "Increases your Card Cap by 14"
+    "description": "1x Iron Bar, 1x Stone and 1x Villager"
   },
   {
     "name": "Idea: Wishing Well",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wishing_Well.png",
     "sellValue": 1,
-    "description": "It gives you a wish for every 100 coins."
+    "description": "2x Brick, 1x Bottle of Water, 2x Magic Dust and 1x Villager"
   },
   {
     "name": "Idea: Wizard Robe",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wizard_Robe.png",
     "sellValue": 1,
-    "description": "It's like a magical snuggie"
+    "description": "1x Fabric, 1x Rope and 1x Smithy"
   },
   {
     "name": "Idea: Wooden Shield",
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Wooden_Shield.png",
     "sellValue": 1,
-    "description": "A basic defense against hard blows"
+    "description": "1x Plank and 1x Stick"
   },
   {
     "name": "Rumor: Combat",
@@ -3204,7 +3204,7 @@
     "type": "IDEA",
     "iconPath": "/Image/card/idea/Idea:_Smithy.png",
     "sellValue": 1,
-    "description": "A building used for creating better weapons"
+    "description": "2x Iron Bar, 2x Brick and 1x Villager"
   },
   {
     "name": "Coin",
