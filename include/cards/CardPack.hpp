@@ -1,0 +1,54 @@
+//
+// Created by m0938 on 2026/3/20.
+//
+
+#ifndef STACKLANDS_CARDPACK_HPP
+#define STACKLANDS_CARDPACK_HPP
+
+#pragma once
+#include "cards/Card.hpp"
+#include "data/CardData.hpp"
+#include <vector>
+#include <memory>
+
+class CardPack : public Card {
+public:
+    CardPack(float x, float y, const std::string& name, int sellValue,
+             const std::string& iconPath, float scale, int totalCards,
+             std::vector<CardSpawnData> contents);
+
+    virtual ~CardPack() = default;
+
+    // 抽一張卡
+    std::shared_ptr<CardSpawnData> SpawnNext();
+
+    // 檢查卡包是否已經空了
+    bool IsEmpty() const { return m_CardsRemaining <= 0; }
+
+    // 此卡包是否已被開過至少一張（用於統計第幾個被開的卡包）
+    bool HasBeenOpened() const { return m_HasBeenOpened; }
+    void MarkOpened()          { m_HasBeenOpened = true; }
+
+    // ── 存檔 / 讀檔 ────────────────────────────────────────────
+    int                          GetCardsRemaining() const { return m_CardsRemaining; }
+    const std::vector<CardSpawnData>& GetContentPool() const { return m_ContentPool; }
+    // 給讀檔用：覆寫剩餘張數與剩餘卡池
+    void RestoreState(int remaining, const std::vector<CardSpawnData>& pool);
+
+    virtual bool OnStacked(std::shared_ptr<Card> cardAbove) override;
+    virtual std::vector<std::shared_ptr<Util::GameObject>> GetGameObjects() override;
+    virtual void UpdateVisualPositions() override;
+
+    virtual void SetScale(float scale) override;
+    virtual void StartDragging(glm::vec2 mousePos) override;
+    virtual void StopDragging() override;
+
+
+protected:
+    int m_CardsRemaining;
+    std::vector<CardSpawnData> m_ContentPool; // 內容配方
+    std::shared_ptr<Util::GameObject> m_CountText; // 卡片剩餘數
+    bool m_HasBeenOpened = false;
+};
+
+#endif //STACKLANDS_CARDPACK_HPP

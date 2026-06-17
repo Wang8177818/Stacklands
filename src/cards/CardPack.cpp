@@ -1,0 +1,114 @@
+//
+// Created by m0938 on 2026/3/20.
+//
+
+#include "cards/CardPack.hpp"
+#include "Util/Text.hpp"
+#include <algorithm>
+#include <random>
+
+static std::mt19937 s_PackRng{ std::random_device{}() };
+
+CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
+                   const std::string& iconPath, float scale, int totalCards,
+                   std::vector<CardSpawnData> contents)
+    : Card(x, y, name, sellValue, CardType::PACK, scale),
+      m_CardsRemaining(totalCards), m_ContentPool(contents)
+{
+    glm::vec2 card_scale = {m_Scale, m_Scale};
+    SetBackgroundImage(iconPath);
+
+    m_CountText = std::make_shared<Util::GameObject>();
+
+    int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
+    m_CountText->SetDrawable(std::make_shared<Util::Text>(
+        FONT_REGULAR, fontSize, std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
+    m_CountText->SetZIndex(m_Background->GetZIndex() + 2);
+    m_CountText->m_Transform.scale = card_scale;
+
+    UpdateVisualPositions();
+}
+
+void CardPack::RestoreState(int remaining, const std::vector<CardSpawnData>& pool) {
+    m_CardsRemaining = remaining;
+    m_ContentPool    = pool;
+    if (m_CountText) {
+        int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
+        m_CountText->SetDrawable(std::make_shared<Util::Text>(
+            FONT_REGULAR, fontSize,
+            std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
+    }
+}
+
+std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
+    if (m_CardsRemaining <= 0 || m_ContentPool.empty()) return nullptr;
+    m_CardsRemaining--;
+
+    // 隨機抽一個（不重複）：swap-and-pop
+    std::uniform_int_distribution<std::size_t> dist(0, m_ContentPool.size() - 1);
+    const std::size_t idx = dist(s_PackRng);
+    auto dataToSpawn = std::make_shared<CardSpawnData>(m_ContentPool[idx]);
+    if (idx != m_ContentPool.size() - 1)
+        std::swap(m_ContentPool[idx], m_ContentPool.back());
+    m_ContentPool.pop_back();
+
+    if (m_CountText) {
+        int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
+        m_CountText->SetDrawable(std::make_shared<Util::Text>(
+            FONT_REGULAR, fontSize,
+            std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
+    }
+
+    // 回傳一份資料配方
+    return dataToSpawn;
+}
+
+void CardPack::UpdateVisualPositions() {
+    // 基礎排版
+    Card::UpdateVisualPositions();
+
+    if (m_CountText) {
+        float countOffsetX = m_Width * -0.7f;
+        float countOffsetY = m_Height * 0.7f;
+        m_CountText->m_Transform.translation = glm::vec2(m_X + countOffsetX ,m_Y + countOffsetY);
+    }
+
+    if (m_NameText){
+        m_NameText->SetVisible(false);
+    }
+}
+
+std::vector<std::shared_ptr<Util::GameObject>> CardPack::GetGameObjects() {
+    std::vector<std::shared_ptr<Util::GameObject>> objs = Card::GetGameObjects();
+    if (m_CountText) objs.push_back(m_CountText);
+    return objs;
+}
+
+bool CardPack::OnStacked(std::shared_ptr<Card> /*cardAbove*/) {
+    return false;
+}
+
+void CardPack::StartDragging(glm::vec2 mousePos) {
+    Card::StartDragging(mousePos);
+
+    if (m_CountText) {
+        m_CountText->SetZIndex(GameConstants::Z_DRAG_EXTRA);
+    }
+}
+
+void CardPack::StopDragging() {
+    Card::StopDragging();
+
+    if (m_CountText) {
+        m_CountText->SetZIndex(m_Background->GetZIndex() + 1);
+    }
+}
+
+void CardPack::SetScale(float scale) {
+    Card::SetScale(scale);
+
+    // 數量文字只更新 transform 縮放，不重建紋理（避免縮放卡頓）
+    if (m_CountText) {
+        m_CountText->m_Transform.scale = {m_Scale, m_Scale};
+    }
+}

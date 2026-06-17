@@ -1,0 +1,231 @@
+//
+// Created by m0938 on 2026/3/20.
+//
+
+#ifndef STACKLANDS_CARDMANAGER_HPP
+#define STACKLANDS_CARDMANAGER_HPP
+
+#pragma once
+#include <vector>
+#include <memory>
+#include <chrono>
+#include <random>
+#include <glm/glm.hpp>
+#include "cards/Card.hpp"
+#include "data/CardData.hpp"
+#include "Util/Renderer.hpp"
+#include "cards/CoinCard.hpp"
+#include  "cards/ResourceCard.hpp"
+#include "nlohmann/json.hpp"
+#include "core/RecipeManager.hpp"
+#include  "cards/BuildingCard.hpp"
+#include  "cards/CharacterCard.hpp"
+#include  "cards/StructureCard.hpp"
+#include  "cards/FoodCard.hpp"
+#include  "ui/TimeBar.hpp"
+#include  "cards/MonsterCard.hpp"
+#include  "cards/CoinChest.hpp"
+#include  "cards/Hotpot.hpp"
+#include  "cards/ResourceChest.hpp"
+#include "data/ISpawnListener.hpp"
+#include "core/TaskScheduler.hpp"
+using json = nlohmann::json;
+
+class CardManager : public ISpawnListener {
+public:
+    // ISpawnListener 介面：動物卡觸發特殊能力時呼叫
+    void OnSpawn(const std::string& name, float x, float y, float scale) override;
+    // 建構子：需要接收 App 的 Renderer 才能把卡片畫在畫面上
+    CardManager(Util::Renderer& renderer);
+
+    // 每一幀的更新邏輯 (取代原本 App::Update 裡一大堆的卡片邏輯)
+    void Update(glm::vec2 mousePos);
+
+    // 把卡片加入管理清單，並同時交給 Renderer 渲染
+    void AddCard(std::shared_ptr<Card> card);
+    void RemoveCard(std::shared_ptr<Card> target);
+    void ClearAllCards();
+
+    // json
+    void LoadCardDatabase(const std::string& filePath);
+    void LoadPackDatabase(const std::string& filePath);
+    void LoadProfessionRecipes(const std::string& filePath);
+    void LoadCraftingRecipes(const std::string& filePath);
+
+    std::shared_ptr<Card> SpawnCardByName(const std::string& name, float scale, float x = 0.0f, float y = 0.0f);
+    void SpawnPackByName(const std::string& packName, float scale, float x = 0.0f, float y = 0.0f);
+    // 卡片工廠
+    std::shared_ptr<Card> CreateCardFromData(float x, float y, const CardSpawnData& data);
+
+    // 取得所有卡片
+    std::vector<std::shared_ptr<Card>> GetAllCards();
+
+    // 是否正在拖曳卡片
+    bool isDraggingCard();
+
+    // 嘗試將新生成的卡牌直接疊到附近同名卡牌上（位置直接對齊，避免推擠）
+    void TryAutoStack(const std::shared_ptr<Card>& newCard);
+
+    // 取得資料庫中所有卡片名稱（供作弊選單使用）
+    std::vector<std::string> GetAllCardNames() const;
+    // 給作弊選單分類：回傳 (name, type) 配對，按名稱排序
+    std::vector<std::pair<std::string, CardType>> GetAllCardEntries() const;
+
+    // 嘗試將新生成的卡牌自動疊加到附近同名卡牌上
+    void TryAutoStack(const std::shared_ptr<Card>& newCard);
+
+    // 同步當前縮放倍率（由 App 每幀呼叫）
+    void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
+
+    // 同步戰鬥場地世界座標（Pan / Zoom 時由 EventManager 呼叫）
+    void MoveCombatArenas(glm::vec2 delta)               { m_Tasks.MoveCombatArenas(delta); }
+    void ScaleCombatArenas(float ratio, glm::vec2 pivot) { m_Tasks.ScaleCombatArenas(ratio, pivot); }
+
+    // 清除所有浮動文字（Game Over 時呼叫）
+    void ClearFloatingText() { m_Tasks.GetFloatingText().Clear(); }
+
+    // 設定遊戲場地邊界（供卡片位置約束使用）
+    void SetFieldBounds(const std::shared_ptr<Util::GameObject>& field) { m_Field = field; }
+
+    // 取得場上角色卡數量
+    int GetCharacterCount() const {
+        int count = 0;
+        for (auto& card : m_Cards)
+            if (card->GetType() == CardType::CHARACTER) count++;
+        return count;
+    }
+
+    // 取得當前場上卡片數量（排除 SellSlot 等 INTERACT 類型）
+    int GetCardCount() const {
+        int count = 0;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::INTERACT) continue;
+            if (card->GetType() == CardType::COIN)     continue;
+            ++count;
+            if (card->GetType() == CardType::BUILDING &&
+                card->GetName() == "Resource Chest") {
+                count += std::static_pointer_cast<ResourceChest>(card)->GetStored();
+            }
+        }
+        return count;
+    }
+
+    // 取得卡片持有上限
+    int  GetMaxCardCount() const { return m_MaxCardCount; }
+    bool IsCardFull()      const { return GetCardCount() >= m_MaxCardCount; }
+
+    // 月底結算：扣除人物的食物消耗
+    void OnMonthEnd();
+
+    // 開始新遊戲時呼叫：重置統計（如「第二包保底村民」的計數）
+    void ResetNewGameState() {
+        m_PacksOpenedThisGame    = 0;
+        m_VillagerGuaranteeArmed = true;
+        m_OverflowWarningActive  = false;
+    }
+
+    // ── 卡片超量警告 ───────────────────────────────────────────
+    // 月底結算時若卡片數 > 上限會被點亮，直到玩家賣到不超量為止
+    bool IsCardOverflowWarning() const { return m_OverflowWarningActive; }
+    // 每幀由 App 呼叫：若已賣到不超量則自動關閉警告
+    void ClearOverflowWarningIfResolved() {
+        if (m_OverflowWarningActive && GetCardCount() <= m_MaxCardCount)
+            m_OverflowWarningActive = false;
+    }
+    // 依當前卡片數立即評估是否超量（讀檔後呼叫）
+    void ArmOverflowWarningIfOver() {
+        m_OverflowWarningActive = (GetCardCount() > m_MaxCardCount);
+    }
+
+    // ── 存檔 / 讀檔 ────────────────────────────────────────────
+    // 把當前所有非 INTERACT 卡片 + maxCardCount 序列化為 JSON
+    nlohmann::json ToJson() const;
+    // 清空現有卡（保留 INTERACT 卡如 SellSlot/BlankSlot），依 JSON 重建
+    void LoadFromJson(const nlohmann::json& j, float spawnScale);
+    // 對外暴露上限的 setter（讀檔用）
+    void SetMaxCardCount(int n) { m_MaxCardCount = n; }
+
+    // 取得場上所有人物卡每月需消耗的食物總數
+    int GetNeededFoodCount() const {
+        int total = 0;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::CHARACTER)
+                total += std::static_pointer_cast<CharacterCard>(card)->GetFoodConsumption();
+        }
+        return total;
+    }
+
+    // 取得場上所有食物卡提供的食物總量（含 Hotpot 內儲存的）
+    int GetTotalFoodSupply() const {
+        int total = 0;
+        for (auto& card : m_Cards) {
+            if (card->GetType() == CardType::FOOD) {
+                total += std::static_pointer_cast<FoodCard>(card)->GetNutritionValue();
+            } else if (card->GetType() == CardType::BUILDING &&
+                       card->GetName() == "Hotpot") {
+                total += std::static_pointer_cast<Hotpot>(card)->GetStored();
+            }
+        }
+        return total;
+    }
+
+    // 取得金幣數量（場上的 Coin + Coin Chest 內儲存的）
+    int GetCoinCount() {
+        int count = 0;
+        for (auto& card : GetAllCards()) {
+            if (card->GetType() == CardType::COIN) {
+                ++count;
+            } else if (card->GetType() == CardType::BUILDING &&
+                       card->GetName() == "Coin Chest") {
+                count += std::static_pointer_cast<CoinChest>(card)->GetStored();
+            }
+        }
+        return count;
+    }
+
+private:
+    Util::Renderer& m_Renderer; // 參考到 App 的 Renderer
+
+    int m_MaxCardCount = 50; // 預設上限
+
+    std::vector<std::shared_ptr<Card>> m_Cards;
+    std::shared_ptr<Card> m_DraggingCard = nullptr;
+
+    std::mt19937 m_RandomGenerator;
+    RecipeManager m_RecipeManager;
+    TaskScheduler m_Tasks;
+
+    // 將原本在 App 裡的 static 變數變成 Manager 的私人變數
+    glm::vec2 m_ClickStartPos = {0, 0};
+    std::chrono::time_point<std::chrono::steady_clock> m_LastClickTime;
+    std::shared_ptr<Card> m_LastClickedCard = nullptr;
+
+    float m_ZoomRatio = 1.0f; // 當前累積縮放倍率，用於卡包開出卡片時套用正確大小
+
+    // 新遊戲統計：第二個被開的卡包，其第一張卡保底為村民
+    int  m_PacksOpenedThisGame   = 0;
+    bool m_VillagerGuaranteeArmed = false; // 新遊戲時設 true，發過就 false
+
+    // 月底結算發現卡片超量時點亮的警告旗標
+    bool m_OverflowWarningActive = false;
+
+    // 遊戲場地 GameObject（用於計算邊界）
+    std::shared_ptr<Util::GameObject> m_Field;
+
+    // 將卡片位置約束在場地範圍內
+    void ClampCardToField(const std::shared_ptr<Card>& card);
+
+    // 卡牌與卡包的資料庫字典
+    std::unordered_map<std::string, CardSpawnData> m_CardDatabase;
+
+    struct PackTemplate {
+        std::string name;
+        int sellValue;
+        std::string iconPath;
+        int totalCards;
+        std::vector<std::string> pool;
+    };
+    std::unordered_map<std::string, PackTemplate> m_PackDatabase;
+};
+
+#endif //STACKLANDS_CARDMANAGER_HPP

@@ -25,24 +25,7 @@
       "PowerShell($ninja = Get-ChildItem \"C:\\\\Users\\\\m0938\" -Recurse -Filter \"ninja.exe\" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName; Write-Output \"ninja: $ninja\")",
       "Bash(cmake --build cmake-build-debug)",
       "Bash(\"C:\\\\PROGRA~1\\\\JETBRA~1\\\\CLION2~1.4\\\\bin\\\\mingw\\\\bin\\\\g++.exe\" --version)",
-      "Bash(git mv:*)",
-      "Bash(gh pr:*)",
-      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI:/c/Users/m0938/AppData/Local/GitHub CLI\")",
-      "Bash(gh --version)",
-      "Bash(powershell.exe -Command \"Get-Command gh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
-      "Bash(powershell.exe -Command \"where.exe gh\")",
-      "Bash(powershell.exe -Command \"Get-ChildItem -Path 'C:\\\\Program Files','C:\\\\Program Files \\(x86\\)','C:\\\\Users\\\\m0938\\\\AppData\\\\Local' -Recurse -Filter 'gh.exe' -ErrorAction SilentlyContinue | Select-Object -First 3 -ExpandProperty FullName\")",
-      "Bash(powershell.exe -Command 'winget list GitHub.cli 2>$null; scoop which gh 2>$null')",
-      "WebFetch(domain:github.com)",
-      "Bash(git fetch:*)",
-      "WebFetch(domain:api.github.com)",
-      "Bash(git merge:*)",
-      "Bash(python:*)",
-      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); names=set\\(d['name'] for d in data\\); print\\('\\\\n'.join\\(sorted\\(names\\)\\)\\)\")",
-      "Bash(git checkout:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)"
-      "Bash(\"C:\\\\PROGRA~1\\\\JETBRA~1\\\\CLION2~1.4\\\\bin\\\\mingw\\\\bin\\\\g++.exe\" --version)"
+      "Bash(git mv:*)"
     ]
   }
 }
