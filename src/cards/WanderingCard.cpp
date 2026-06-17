@@ -33,6 +33,12 @@ void WanderingCard::MoveBy(glm::vec2 delta) {
     m_TargetY += delta.y;
 }
 
+void WanderingCard::SetPosition(float x, float y) {
+    Card::SetPosition(x, y);
+    m_TargetX = x;
+    m_TargetY = y;
+}
+
 void WanderingCard::ScaleAroundPivot(float ratio, glm::vec2 pivot) {
     Card::ScaleAroundPivot(ratio, pivot);
     m_TargetX = pivot.x + (m_TargetX - pivot.x) * ratio;

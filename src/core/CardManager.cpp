@@ -838,6 +838,9 @@ void CardManager::TryAutoStack(const std::shared_ptr<Card>& newCard) {
     // 檢查是否允許疊加
     if (!topCard->OnStacked(newCard)) return;
 
+    // 直接將新卡位置對齊到頂端卡片，避免 MoveBy 路徑上的推擠碰撞
+    newCard->SetPosition(topCard->GetX(), topCard->GetY());
+
     // 建立疊加連結
     topCard->SetCardAbove(newCard);
     newCard->SetCardBelow(topCard);

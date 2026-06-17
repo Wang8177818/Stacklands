@@ -71,9 +71,6 @@ public:
     // 給作弊選單分類：回傳 (name, type) 配對，按名稱排序
     std::vector<std::pair<std::string, CardType>> GetAllCardEntries() const;
 
-    // 嘗試將新生成的卡牌自動疊加到附近同名卡牌上
-    void TryAutoStack(const std::shared_ptr<Card>& newCard);
-
     // 同步當前縮放倍率（由 App 每幀呼叫）
     void SetZoomRatio(float ratio) { m_ZoomRatio = ratio; }
 

@@ -36,6 +36,7 @@ public:
     void StartDragging(glm::vec2 mousePos)              override;
     // 視角平移/縮放時同步目標
     void MoveBy(glm::vec2 delta)                        override;
+    void SetPosition(float x, float y)                  override;
     void ScaleAroundPivot(float ratio, glm::vec2 pivot) override;
 
     void SetInCombat(bool v) { m_InCombat = v; }

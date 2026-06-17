@@ -132,6 +132,13 @@ public:
 
     virtual void SetScale(float scale);
 
+    // 直接設定位置（瞬移），不經過 MoveBy 的路徑，避免碰撞
+    virtual void SetPosition(float x, float y) {
+        m_X = x;
+        m_Y = y;
+        UpdateVisualPositions();
+    }
+
     // EventManager 用：直接移動邏輯座標
     virtual void MoveBy(glm::vec2 delta) {
         m_X += delta.x;
