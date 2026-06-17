@@ -66,6 +66,9 @@ public:
     // 此卡牌是否允許被疊到其他卡上（false = 不可堆疊到任何卡）
     virtual bool CanStackOnto() { return true; }
 
+    // 此卡牌是否「黏住」自身所在的整個堆疊（不受推擠移動，如 Magic Glue）
+    virtual bool IsSticky() const { return false; }
+
     // 此卡牌是否可被玩家拖動
     virtual bool CanDrag() const { return true; }
 
@@ -82,7 +85,7 @@ public:
     virtual float GetHitChance()    const { return 0.6f; }
     virtual int   GetHealth()       const { return 0; }
 
-    // 暈眩 / 特效狀態介面（CombatCard 覆寫）
+// 暈眩 / 特效狀態介面（CombatCard 覆寫）
     virtual bool  IsStunned()                    const { return false; }
     virtual void  ApplyStun(float /*ms*/)              {}
     virtual void  UpdateStun(float /*ms*/)             {}

@@ -5,6 +5,7 @@
 #include "cards/Card.hpp"
 #include "data/CardData.hpp"
 #include "data/EffectData.hpp"
+#include <algorithm>
 #include <array>
 #include <vector>
 
@@ -24,6 +25,21 @@ public:
     float GetHitChance()   const override { return m_CombatHitChance; }
     int   GetHealth()      const override { return m_CurrentHealth; }
     int   GetMaxHealth()   const          { return m_CombatHealth; }
+
+    // 給存檔回復用：直接設定 current HP（不過 Invul / 結算）
+    void  SetCurrentHealth(int hp);
+
+    // ── 狀態計時器 getter / setter（存檔用，毫秒）────────────────────
+    float GetStunTimerMs()          const { return m_StunTimerMs;        }
+    float GetBleedTimerMs()         const { return m_BleedTimerMs;       }
+    float GetPoisonTimerMs()        const { return m_PoisonTimerMs;      }
+    float GetInvulnerableTimerMs()  const { return m_InvulnerableTimerMs;}
+    float GetFrenzyTimerMs()        const { return m_FrenzyTimerMs;      }
+    void  SetStunTimerMs(float v)         { m_StunTimerMs        = std::max(0.0f, v); }
+    void  SetBleedTimerMs(float v)        { m_BleedTimerMs       = std::max(0.0f, v); }
+    void  SetPoisonTimerMs(float v)       { m_PoisonTimerMs      = std::max(0.0f, v); }
+    void  SetInvulnerableTimerMs(float v) { m_InvulnerableTimerMs= std::max(0.0f, v); }
+    void  SetFrenzyTimerMs(float v)       { m_FrenzyTimerMs      = std::max(0.0f, v); }
 
     int   GetBaseAttack()  const { return m_BaseAttack; }
     int   GetBaseHealth()  const { return m_BaseHealth; }

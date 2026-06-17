@@ -59,7 +59,7 @@ void UIManager::AddButtonToRenderer(std::shared_ptr<MenuButton> btn) {
 }
 
 // ─────────────────────────────────────────────────────────────
-void UIManager::InitMenu() {
+void UIManager::InitMenu(int saveMonth) {
     // ── 視窗尺寸 ──────────────────────────────────────────
     auto instance   = Core::Context::GetInstance();
     float winW      = instance->GetWindowWidth();
@@ -86,7 +86,13 @@ void UIManager::InitMenu() {
     m_Renderer.AddChild(m_Pause.image);
 
     // ── 選單按鈕 ──────────────────────────────────────────
+    // 「繼續遊戲(N月)」如果有存檔則放在「開始新遊戲」上方
     m_Menu.btnStart    = std::make_shared<MenuButton>(-562, -80,  20, 100, 20, "開始新遊戲", true, 5);
+    if (saveMonth > 0) {
+        const std::string label = "繼續遊戲(" + std::to_string(saveMonth) + "月)";
+        m_Menu.btnLoadGame = std::make_shared<MenuButton>(-547, -40, 20, 110, 20,
+                                                         label, true, 6);
+    }
     m_Menu.btnExit     = std::make_shared<MenuButton>(-572, -315, 20,  80, 20, "離開遊戲",   true, 4);
     m_Menu.btnOptions  = std::make_shared<MenuButton>(-592, -200, 20,  40, 20, "選項",       true, 2);
     m_Menu.btnCardWiki = std::make_shared<MenuButton>(-572, -160, 20,  80, 20, "卡片百科",   true, 4);
@@ -99,6 +105,7 @@ void UIManager::InitMenu() {
     m_Pause.btnReturnToMenu->HideAll();
 
     AddButtonToRenderer(m_Menu.btnStart);
+    if (m_Menu.btnLoadGame) AddButtonToRenderer(m_Menu.btnLoadGame);
     AddButtonToRenderer(m_Menu.btnExit);
     AddButtonToRenderer(m_Menu.btnOptions);
     AddButtonToRenderer(m_Menu.btnCardWiki);
@@ -110,6 +117,7 @@ void UIManager::InitMenu() {
 // ─────────────────────────────────────────────────────────────
 UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
     bool isStartHover    = m_Menu.btnStart   ->UpdateHover(mousePos);
+    bool isLoadHover     = m_Menu.btnLoadGame ? m_Menu.btnLoadGame->UpdateHover(mousePos) : false;
     bool isExitHover     = m_Menu.btnExit    ->UpdateHover(mousePos);
     bool isOptionsHover  = m_Menu.btnOptions ->UpdateHover(mousePos);
     bool isCardWikiHover = m_Menu.btnCardWiki->UpdateHover(mousePos);
@@ -117,6 +125,7 @@ UIManager::MenuEvent UIManager::UpdateMenu(glm::vec2 mousePos) {
 
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         if (isStartHover)    return MenuEvent::START_GAME;
+        if (isLoadHover)     return MenuEvent::LOAD_GAME;
         if (isExitHover)     return MenuEvent::EXIT;
         if (isOptionsHover)  return MenuEvent::OPTIONS;
         if (isCardWikiHover) return MenuEvent::CARD_WIKI;
@@ -141,6 +150,7 @@ void UIManager::TransitionToGame() {
     // ── 隱藏選單 ──────────────────────────────────────────
     m_Menu.panel->SetVisible(false);
     m_Menu.btnStart   ->HideAll();
+    if (m_Menu.btnLoadGame) m_Menu.btnLoadGame->HideAll();
     m_Menu.btnExit    ->HideAll();
     m_Menu.btnOptions ->HideAll();
     m_Menu.btnCardWiki->HideAll();
@@ -285,6 +295,112 @@ void UIManager::TransitionToGame() {
     m_HUD.descText->SetZIndex(100);
     m_HUD.descText->SetVisible(false);
     m_Renderer.AddChild(m_HUD.descText);
+
+    // ── 卡片超量警告（敘述欄最底部，紅色）────────────────────
+    m_HUD.descWarning = std::make_shared<Util::GameObject>();
+    {
+        auto initDrawable = std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjhbd.ttc", 26, " ", Util::Color(200, 40, 40));
+        m_HUD.descWarning->SetDrawable(initDrawable);
+        m_HUD.descWarning->SetPivot({-initDrawable->GetSize().x / 2.f, 0.f});
+    }
+    m_HUD.descWarning->m_Transform.translation = glm::vec2(-630, -315);
+    m_HUD.descWarning->m_Transform.scale = {0.5f, 0.5f};
+    m_HUD.descWarning->SetZIndex(100);
+    m_HUD.descWarning->SetVisible(false);
+    m_Renderer.AddChild(m_HUD.descWarning);
+}
+
+// ─────────────────────────────────────────────────────────────
+void UIManager::ShowGameOver(int monthsPlayed) {
+    if (!m_GameOver.initialized) {
+        // 用敘述欄的圖當底板（descriptionBar.png 333x284，置中放大）
+        m_GameOver.panel = std::make_shared<BackgroundImage>();
+        m_GameOver.panel->SetDrawable(std::make_shared<Util::Image>(
+            RESOURCE_DIR"/Image/background/descriptionBar.png"));
+        m_GameOver.panel->m_Transform.translation = glm::vec2(0, 0);
+        m_GameOver.panel->m_Transform.scale       = {1.5f, 1.5f};
+        m_GameOver.panel->SetZIndex(90);
+        m_Renderer.AddChild(m_GameOver.panel);
+
+        // 標題「Game Over」（黑）
+        m_GameOver.title = std::make_shared<Util::GameObject>();
+        m_GameOver.title->SetDrawable(std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjhbd.ttc", 60, "Game Over",
+            Util::Color(0, 0, 0)));
+        m_GameOver.title->m_Transform.translation = glm::vec2(0, 100);
+        m_GameOver.title->SetZIndex(91);
+        m_Renderer.AddChild(m_GameOver.title);
+
+        // 副標題「遊玩 N 月」（黑，稍後刷新內容）
+        m_GameOver.subtitle = std::make_shared<Util::GameObject>();
+        m_GameOver.subtitle->SetDrawable(std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjhbd.ttc", 32, " ",
+            Util::Color(0, 0, 0)));
+        m_GameOver.subtitle->m_Transform.translation = glm::vec2(0, 30);
+        m_GameOver.subtitle->SetZIndex(91);
+        m_Renderer.AddChild(m_GameOver.subtitle);
+
+        // 返回選單按鈕（置中）
+        m_GameOver.btnReturn = std::make_shared<MenuButton>(
+            0, -80, 28, 200, 40, "返回選單", true, 4);
+        // MenuButton 文字版本的 darkBg 寫死在 x=-470；置中時把 darkBg 拉回按鈕位置
+        auto btnObjs = m_GameOver.btnReturn->GetGameObjects();
+        if (!btnObjs.empty()) {
+            btnObjs[0]->m_Transform.translation = glm::vec2(0, -80); // darkBg
+        }
+        AddButtonToRenderer(m_GameOver.btnReturn);
+        m_GameOver.initialized = true;
+    }
+
+    // 更新月份文字
+    std::string subtitleStr = "遊玩 " + std::to_string(monthsPlayed) + " 月";
+    m_GameOver.subtitle->SetDrawable(std::make_shared<Util::Text>(
+        RESOURCE_DIR"/Font/msjhbd.ttc", 32, subtitleStr,
+        Util::Color(0, 0, 0)));
+
+    // 隱藏遊戲中的敘述欄（避免兩個底圖重疊）
+    if (m_HUD.descBar)     m_HUD.descBar->SetVisible(false);
+    if (m_HUD.descName)    m_HUD.descName->SetVisible(false);
+    if (m_HUD.descText)    m_HUD.descText->SetVisible(false);
+    if (m_HUD.descWarning) m_HUD.descWarning->SetVisible(false);
+
+    m_GameOver.panel->SetVisible(true);
+    m_GameOver.title->SetVisible(true);
+    m_GameOver.subtitle->SetVisible(true);
+    m_GameOver.btnReturn->ShowAll();
+}
+
+void UIManager::HideGameOver() {
+    if (!m_GameOver.initialized) return;
+    m_GameOver.panel->SetVisible(false);
+    m_GameOver.title->SetVisible(false);
+    m_GameOver.subtitle->SetVisible(false);
+    m_GameOver.btnReturn->HideAll();
+}
+
+bool UIManager::UpdateGameOver(glm::vec2 mousePos) {
+    if (!m_GameOver.initialized || !m_GameOver.btnReturn) return false;
+    const bool hover = m_GameOver.btnReturn->UpdateHover(mousePos);
+    return hover && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB);
+}
+
+void UIManager::ClearLoadGameButton() {
+    if (m_Menu.btnLoadGame) {
+        m_Menu.btnLoadGame->HideAll();
+        m_Menu.btnLoadGame = nullptr;
+    }
+}
+
+void UIManager::RefreshLoadGameButton(int month) {
+    // 舊按鈕（如果有）藏起來；shared_ptr 在 Renderer 裡仍留著（無 RemoveChild API
+    // 對 MenuButton 內部 3 個 GameObject），但已不可見
+    if (m_Menu.btnLoadGame) m_Menu.btnLoadGame->HideAll();
+
+    const std::string label = "繼續遊戲(" + std::to_string(month) + "月)";
+    m_Menu.btnLoadGame = std::make_shared<MenuButton>(
+        -557, -40, 20, 110, 20, label, true, 6);
+    AddButtonToRenderer(m_Menu.btnLoadGame);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -305,6 +421,7 @@ void UIManager::TransitionToMenu() {
     if (m_HUD.foodCount)   m_HUD.foodCount->SetVisible(false);
     if (m_HUD.descName)    m_HUD.descName->SetVisible(false);
     if (m_HUD.descText)    m_HUD.descText->SetVisible(false);
+    if (m_HUD.descWarning) m_HUD.descWarning->SetVisible(false);
     if (m_HUD.playButton)  m_HUD.playButton->HideAll();
     if (m_Pause.image)     m_Pause.image->SetVisible(false);
     if (m_Pause.btnContinue)     m_Pause.btnContinue->HideAll();
@@ -316,6 +433,7 @@ void UIManager::TransitionToMenu() {
     // ── 顯示選單 UI ──────────────────────────────────────
     m_Menu.panel->SetVisible(true);
     m_Menu.btnStart   ->ShowAll();
+    if (m_Menu.btnLoadGame) m_Menu.btnLoadGame->ShowAll();
     m_Menu.btnExit    ->ShowAll();
     m_Menu.btnOptions ->ShowAll();
     m_Menu.btnCardWiki->ShowAll();
@@ -385,4 +503,24 @@ void UIManager::UpdateDescriptionText(const std::string& text) {
     m_HUD.descText->SetDrawable(drawable);
     // 左對齊：pivot.x = -textWidth/2
     m_HUD.descText->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
+}
+
+// ─────────────────────────────────────────────────────────────
+void UIManager::SetCardOverflowWarning(bool show, int overflowCount) {
+    if (!m_HUD.descWarning) return;
+    if (!show) {
+        m_HUD.descWarning->SetVisible(false);
+        return;
+    }
+    // 張數變化時才重建紋理（避免每幀重建 SDL 文字）
+    if (overflowCount != m_LastOverflowCount) {
+        m_LastOverflowCount = overflowCount;
+        const std::string warnText =
+            "卡片超過上限！\n請賣出 " + std::to_string(overflowCount) + " 張卡片";
+        auto drawable = std::make_shared<Util::Text>(
+            RESOURCE_DIR"/Font/msjhbd.ttc", 26, warnText, Util::Color(200, 40, 40));
+        m_HUD.descWarning->SetDrawable(drawable);
+        m_HUD.descWarning->SetPivot({-drawable->GetSize().x / 2.f, 0.f});
+    }
+    m_HUD.descWarning->SetVisible(true);
 }

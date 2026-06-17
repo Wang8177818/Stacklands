@@ -27,6 +27,7 @@ public:
         std::string spawnName;
         float spawnX = 0, spawnY = 0, spawnScale = 0.05f;
         float timeLeftMs = 10000.0f;
+        float totalMs    = 10000.0f; // 用於存檔還原讀條進度
         std::unique_ptr<TimeBar> bar;
     };
 
@@ -60,6 +61,19 @@ public:
 
     void AddGather(PendingGather pg);
     void AddCraft(PendingCraft  pc);
+
+    // 清空所有延遲任務（返回選單 / Game Over 用）
+    // 會析構各任務內的 TimeBar / CombatArena，自動從 Renderer 移除
+    void ClearAll() {
+        m_Gathers.clear();
+        m_Combats.clear();
+        m_Crafts.clear();
+    }
+
+    // ── 存檔用 access ────────────────────────────────────────────────
+    const std::vector<PendingGather>& GetGathers() const { return m_Gathers; }
+    const std::vector<PendingCombat>& GetCombats() const { return m_Combats; }
+    const std::vector<PendingCraft>&  GetCrafts()  const { return m_Crafts;  }
 
     // 若目標已有戰鬥則加入，否則新建；回傳是否成功（false 表示戰鬥員已在其他戰鬥中）
     bool JoinOrCreateCombat(const std::shared_ptr<Card>& target,

@@ -20,35 +20,46 @@ set(SRC_FILES
 
 set(INCLUDE_FILES
     core/App.hpp
+    data/GameConstants.hpp
+    data/ISpawnListener.hpp
+    cards/Card.hpp
+    data/CardData.hpp
+    cards/CardPack.hpp
+    core/CardFactory.hpp
+    cards/CombatCard.hpp
+    cards/WanderingCard.hpp
     cards/AnimalCard.hpp
+    cards/MonsterCard.hpp
+    cards/CharacterCard.hpp
+    cards/BuildingCard.hpp
+    cards/StructureCard.hpp
+    cards/WarehouseCard.hpp
+    cards/ResourceCard.hpp
+    cards/FoodCard.hpp
+    cards/CoinCard.hpp
+    cards/IdeaCard.hpp
+    cards/LocationCard.hpp
+    cards/EquipmentCard.hpp
+    cards/Sellslot.hpp
     combat/CombatArena.hpp
     combat/AttackResolver.hpp
-    ui/BackgroundImage.hpp
-    ui/Button.hpp
-    cards/Card.hpp
-    cards/CombatCard.hpp
     data/EffectData.hpp
-    cards/WanderingCard.hpp
-    core/CardFactory.hpp
-    cards/CharacterCard.hpp
-    data/CardData.hpp
     core/CardManager.hpp
-    cards/CardPack.hpp
-    cards/CoinCard.hpp
-    data/GameConstants.hpp
-    cards/IdeaCard.hpp
-    data/ISpawnListener.hpp
-    cards/LocationCard.hpp
-    ui/CheatMenu.hpp
-    combat/FloatingTextManager.hpp
-    core/TaskScheduler.hpp
-    cards/MonsterCard.hpp
-    cards/ResourceCard.hpp
-    ui/UIManager.hpp
     core/EventManager.hpp
     core/RecipeManager.hpp
+    core/TaskScheduler.hpp
+    ui/UIManager.hpp
+    ui/CheatMenu.hpp
+    combat/FloatingTextManager.hpp
+    ui/BackgroundImage.hpp
+    ui/Button.hpp
     ui/TimeBar.hpp
     cards/BlankSlot.hpp
+    cards/MagicGlue.hpp
+    cards/CoinChest.hpp
+    cards/Hotpot.hpp
+    cards/ResourceChest.hpp
+    nlohmann/json.hpp
 )
 
 set(TEST_FILES

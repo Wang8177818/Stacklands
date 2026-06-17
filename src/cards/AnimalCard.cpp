@@ -40,7 +40,8 @@ void AnimalCard::Update() {
 }
 
 void AnimalCard::ProcessSpecialAbility() {
-    if      (m_AbilityName == "produce_egg")  m_Listener->OnSpawn("Egg",  m_X, m_Y);
-    else if (m_AbilityName == "produce_milk") m_Listener->OnSpawn("Milk", m_X, m_Y);
-    else if (m_AbilityName == "produce_poop") m_Listener->OnSpawn("Poop", m_X, m_Y);
+    // 用自身 scale 讓產出物與動物同大小（含當前鏡頭縮放）
+    if      (m_AbilityName == "produce_egg")  m_Listener->OnSpawn("Egg",  m_X, m_Y, m_Scale);
+    else if (m_AbilityName == "produce_milk") m_Listener->OnSpawn("Milk", m_X, m_Y, m_Scale);
+    else if (m_AbilityName == "produce_poop") m_Listener->OnSpawn("Poop", m_X, m_Y, m_Scale);
 }

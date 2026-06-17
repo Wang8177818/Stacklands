@@ -94,6 +94,14 @@ void CombatCard::TakeDamage(int dmg) {
         RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), HealthTextColor());
 }
 
+void CombatCard::SetCurrentHealth(int hp) {
+    if (hp < 0) hp = 0;
+    if (hp > m_CombatHealth) hp = m_CombatHealth;
+    m_CurrentHealth = hp;
+    if (m_HealthText)
+        RebuildLabelText(m_HealthText, std::to_string(m_CurrentHealth), HealthTextColor());
+}
+
 void CombatCard::RecalculateStats() {
     int   totalAtk = m_BaseAttack;
     int   totalHp  = m_BaseHealth;

@@ -29,6 +29,17 @@ CardPack::CardPack(float x, float y, const std::string& name, int sellValue,
     UpdateVisualPositions();
 }
 
+void CardPack::RestoreState(int remaining, const std::vector<CardSpawnData>& pool) {
+    m_CardsRemaining = remaining;
+    m_ContentPool    = pool;
+    if (m_CountText) {
+        int fontSize = std::max(1, static_cast<int>(GameConstants::PACK_FONT_SCALE * m_Scale));
+        m_CountText->SetDrawable(std::make_shared<Util::Text>(
+            FONT_REGULAR, fontSize,
+            std::to_string(m_CardsRemaining), Util::Color(1, 1, 1)));
+    }
+}
+
 std::shared_ptr<CardSpawnData> CardPack::SpawnNext() {
     if (m_CardsRemaining <= 0 || m_ContentPool.empty()) return nullptr;
     m_CardsRemaining--;

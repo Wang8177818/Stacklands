@@ -31,6 +31,14 @@ public:
 
     int GetNutritionValue() const { return m_NutritionValue; }
 
+    // 直接設定剩餘 nutrition（給存檔回復用）
+    void SetNutritionValue(int v) {
+        m_NutritionValue = std::max(0, v);
+        if (m_NutritionText)
+            RebuildLabelText(m_NutritionText, std::to_string(m_NutritionValue),
+                             Util::Color(255, 160, 60));
+    }
+
     // 扣除 nutrition；回傳實際扣掉的量（可能 < amount，因為不會扣到負）。
     // 扣至 0 後卡片應由 CardManager 移除。
     int ConsumeNutrition(int amount) {

@@ -22,6 +22,9 @@
 #include <limits>
 
 #include "cards/WarehouseCard.hpp"
+#include "cards/CoinChest.hpp"
+#include "cards/Hotpot.hpp"
+#include "cards/ResourceChest.hpp"
 #include "cards/LocationCard.hpp"
 
 #include "Util/Logger.hpp"
@@ -284,31 +287,53 @@ void CardManager::OnMonthEnd() {
             return a->GetFoodConsumption() < b->GetFoodConsumption();
         });
 
-    // 2. 收集所有食物卡（用 m_Cards 順序）
+    // 2. 收集所有食物卡與 Hotpot（用 m_Cards 順序；FOOD 卡先吃完才輪 Hotpot）
     std::vector<std::shared_ptr<FoodCard>> foods;
-    for (auto& c : m_Cards)
-        if (c->GetType() == CardType::FOOD)
+    std::vector<std::shared_ptr<Hotpot>>   hotpots;
+    for (auto& c : m_Cards) {
+        if (c->GetType() == CardType::FOOD) {
             foods.push_back(std::static_pointer_cast<FoodCard>(c));
+        } else if (c->GetType() == CardType::BUILDING &&
+                   c->GetName() == "Hotpot") {
+            hotpots.push_back(std::static_pointer_cast<Hotpot>(c));
+        }
+    }
 
-    // 3. 依優先順序餵食：每人從食物池逐單位扣 nutrition
+    // 3. 依優先順序餵食：先吃完 FOOD 卡，再從 Hotpot 扣
     std::vector<std::shared_ptr<CharacterCard>> starved;
     std::size_t foodIdx = 0;
+    std::size_t potIdx  = 0;
     int totalConsumed = 0;
     for (auto& chr : chars) {
         int need = chr->GetFoodConsumption();
+        // (a) 先消耗 FOOD 卡
         while (need > 0 && foodIdx < foods.size()) {
             int taken = foods[foodIdx]->ConsumeNutrition(need);
             need          -= taken;
             totalConsumed += taken;
             if (foods[foodIdx]->GetNutritionValue() == 0) ++foodIdx;
         }
+        // (b) FOOD 卡耗盡才動 Hotpot 內存
+        while (need > 0 && potIdx < hotpots.size()) {
+            if (hotpots[potIdx]->GetStored() <= 0) { ++potIdx; continue; }
+            int taken = hotpots[potIdx]->Withdraw(need);
+            need          -= taken;
+            totalConsumed += taken;
+            if (hotpots[potIdx]->GetStored() == 0) ++potIdx;
+        }
         if (need > 0) starved.push_back(chr);
     }
 
-    // 4. 把扣到 0 的食物卡實際移除
+    // 4. 把扣到 0 的食物卡實際移除（先切斷堆疊鏈，否則仍會被相鄰卡的
+    //    CardAbove / CardBelow 持有 → CheckCrafting 仍能匹配到已消失的食物，
+    //    讓 PendingCraft / PendingGather 的進度條繼續跑）
     int removedFoods = 0;
     for (auto& f : foods) {
         if (f->GetNutritionValue() == 0) {
+            if (auto below = f->GetCardBelow()) below->SetCardAbove(nullptr);
+            if (auto above = f->GetCardAbove()) above->SetCardBelow(nullptr);
+            f->SetCardBelow(nullptr);
+            f->SetCardAbove(nullptr);
             RemoveCard(f);
             ++removedFoods;
         }
@@ -336,6 +361,391 @@ void CardManager::OnMonthEnd() {
         LOG_INFO("月底結算：消耗 {} nutrition、移除 {} 張空食物卡",
                  totalConsumed, removedFoods);
     }
+
+    // 結算後若卡片超過上限，點亮警告（提醒玩家賣卡），直到賣到不超量
+    if (GetCardCount() > m_MaxCardCount) {
+        m_OverflowWarningActive = true;
+        LOG_WARN("月底結算：卡片 {} 張超過上限 {} 張", GetCardCount(), m_MaxCardCount);
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// 存檔：把場上所有非 INTERACT 卡序列化為 JSON
+//   - 每張卡分配一個 index（在 cards array 中的位置）
+//   - 用 above_idx 表示 CardAbove 鏈（-1 = 鏈尾）
+//   - 部分型別把多餘 state 寫進子物件 "state"
+// ─────────────────────────────────────────────────────────────
+nlohmann::json CardManager::ToJson() const {
+    using nlohmann::json;
+    // 1. 收集所有要存的卡（排除 INTERACT、排除疊在 INTERACT 上的 Coin —
+    //    BlankSlot 上的硬幣由 App 另存避免重複）
+    std::vector<std::shared_ptr<Card>> savable;
+    for (auto& c : m_Cards) {
+        if (c->GetType() == CardType::INTERACT) continue;
+        if (c->GetType() == CardType::COIN) {
+            // 找鏈最下方：若鏈底接到 INTERACT 卡，整鏈跳過
+            auto bottom = c;
+            while (bottom->GetCardBelow()) bottom = bottom->GetCardBelow();
+            if (bottom->GetType() == CardType::INTERACT) continue;
+        }
+        savable.push_back(c);
+    }
+    // index 對應表
+    std::unordered_map<Card*, int> idx;
+    for (std::size_t i = 0; i < savable.size(); ++i) idx[savable[i].get()] = static_cast<int>(i);
+
+    json cards = json::array();
+    for (auto& c : savable) {
+        json e;
+        e["name"]  = c->GetName();
+        e["type"]  = static_cast<int>(c->GetType());
+        e["x"]     = c->GetX();
+        e["y"]     = c->GetY();
+        e["scale"] = c->GetScale();
+        // above index（若鏈中下一張也在 savable 內）
+        auto above = c->GetCardAbove();
+        if (above && idx.count(above.get()))
+            e["above"] = idx[above.get()];
+        else
+            e["above"] = -1;
+
+        // 型別專屬 state
+        json st = json::object();
+        if (c->GetType() == CardType::FOOD) {
+            st["nutrition"] = std::static_pointer_cast<FoodCard>(c)->GetNutritionValue();
+        } else if (c->GetType() == CardType::STRUCTURE) {
+            st["resourceCount"] = std::static_pointer_cast<StructureCard>(c)->GetResourceCount();
+        } else if (c->GetType() == CardType::CHARACTER ||
+                   c->GetType() == CardType::ANIMAL ||
+                   c->GetType() == CardType::MONSTER) {
+            auto cc = std::dynamic_pointer_cast<CombatCard>(c);
+            if (cc) {
+                st["health"] = cc->GetHealth();
+                // 狀態效果計時器（只存非 0 的）
+                json effects = json::object();
+                if (cc->GetStunTimerMs()         > 0) effects["stun"]    = cc->GetStunTimerMs();
+                if (cc->GetBleedTimerMs()        > 0) effects["bleed"]   = cc->GetBleedTimerMs();
+                if (cc->GetPoisonTimerMs()       > 0) effects["poison"]  = cc->GetPoisonTimerMs();
+                if (cc->GetInvulnerableTimerMs() > 0) effects["invul"]   = cc->GetInvulnerableTimerMs();
+                if (cc->GetFrenzyTimerMs()       > 0) effects["frenzy"]  = cc->GetFrenzyTimerMs();
+                if (!effects.empty()) st["effects"] = effects;
+
+                // 角色才存裝備（動物 / 怪物無裝備）
+                if (c->GetType() == CardType::CHARACTER) {
+                    json eq = json::array();
+                    bool hasAny = false;
+                    for (const auto& e : cc->GetAllEquipData()) {
+                        if (e.name.empty()) {
+                            eq.push_back(std::string{});
+                        } else {
+                            eq.push_back(e.name);
+                            hasAny = true;
+                        }
+                    }
+                    if (hasAny) st["equips"] = eq;
+                }
+                // 動物存特殊能力冷卻
+                if (c->GetType() == CardType::ANIMAL) {
+                    auto ac = std::static_pointer_cast<AnimalCard>(c);
+                    const float t = ac->GetAbilityTimer();
+                    if (t > 0) st["abilityTimer"] = t;
+                }
+            }
+        } else if (c->GetType() == CardType::BUILDING) {
+            const std::string& n = c->GetName();
+            if (n == "Coin Chest") {
+                st["stored"] = std::static_pointer_cast<CoinChest>(c)->GetStored();
+            } else if (n == "Hotpot") {
+                st["stored"] = std::static_pointer_cast<Hotpot>(c)->GetStored();
+            } else if (n == "Resource Chest") {
+                auto rc = std::static_pointer_cast<ResourceChest>(c);
+                st["stored"]     = rc->GetStored();
+                st["storedName"] = rc->GetStoredName();
+            }
+        } else if (c->GetType() == CardType::PACK) {
+            auto pk = std::static_pointer_cast<CardPack>(c);
+            st["remaining"] = pk->GetCardsRemaining();
+            json poolNames = json::array();
+            for (const auto& d : pk->GetContentPool()) poolNames.push_back(d.name);
+            st["pool"] = poolNames;
+        }
+        if (!st.empty()) e["state"] = st;
+
+        cards.push_back(e);
+    }
+
+    // ── 進行中的延遲任務 ────────────────────────────────────────
+    auto lookupIdx = [&](const std::shared_ptr<Card>& c) -> int {
+        if (!c) return -1;
+        auto it = idx.find(c.get());
+        return it != idx.end() ? it->second : -1;
+    };
+
+    json pendingGathers = json::array();
+    for (const auto& g : m_Tasks.GetGathers()) {
+        int ci = lookupIdx(g.character.lock());
+        int si = lookupIdx(g.structure.lock());
+        if (ci < 0 || si < 0) continue; // 缺一邊就跳過
+        pendingGathers.push_back({
+            {"char", ci}, {"struct", si},
+            {"exhausted", g.exhausted},
+            {"spawnName", g.spawnName},
+            {"spawnX", g.spawnX}, {"spawnY", g.spawnY}, {"spawnScale", g.spawnScale},
+            {"timeLeftMs", g.timeLeftMs}, {"totalMs", g.totalMs}
+        });
+    }
+
+    json pendingCrafts = json::array();
+    for (const auto& c : m_Tasks.GetCrafts()) {
+        int bi = lookupIdx(c.stackBottom.lock());
+        if (bi < 0) continue;
+        json allIdx = json::array();
+        for (const auto& w : c.allCards) {
+            int i = lookupIdx(w.lock());
+            if (i >= 0) allIdx.push_back(i);
+        }
+        pendingCrafts.push_back({
+            {"bottom", bi},
+            {"all", allIdx},
+            {"outputName", c.outputName},
+            {"spawnX", c.spawnX}, {"spawnY", c.spawnY}, {"spawnScale", c.spawnScale},
+            {"timeLeftMs", c.timeLeftMs}, {"totalMs", c.totalMs}
+        });
+    }
+
+    json pendingCombats = json::array();
+    for (const auto& cb : m_Tasks.GetCombats()) {
+        int ti = lookupIdx(cb.target.lock());
+        if (ti < 0) continue;
+        json fighters = json::array();
+        for (const auto& f : cb.fighters) {
+            int fi = lookupIdx(f.fighter.lock());
+            if (fi >= 0) fighters.push_back({{"f", fi}, {"timer", f.timer}});
+        }
+        if (fighters.empty()) continue;
+        pendingCombats.push_back({
+            {"target", ti},
+            {"fighters", fighters},
+            {"targetTimer", cb.targetTimer}
+        });
+    }
+
+    json root;
+    root["maxCardCount"]   = m_MaxCardCount;
+    root["cards"]          = cards;
+    root["pendingGathers"] = pendingGathers;
+    root["pendingCrafts"]  = pendingCrafts;
+    root["pendingCombats"] = pendingCombats;
+    return root;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 讀檔：清空現有可變卡（保留 INTERACT slots）後依 JSON 重建
+// ─────────────────────────────────────────────────────────────
+void CardManager::LoadFromJson(const nlohmann::json& j, float spawnScale) {
+    using nlohmann::json;
+    // 1. 移除所有非 INTERACT 卡
+    std::vector<std::shared_ptr<Card>> toRemove;
+    for (auto& c : m_Cards)
+        if (c->GetType() != CardType::INTERACT) toRemove.push_back(c);
+    for (auto& c : toRemove) RemoveCard(c);
+
+    // 2. 重置 maxCardCount（Warehouse 重建時會再 +14）
+    m_MaxCardCount = 50;
+
+    // 3. 重建卡片（先建立全部，之後再串鏈）
+    std::vector<std::shared_ptr<Card>> rebuilt;
+    if (!j.contains("cards") || !j["cards"].is_array()) return;
+    const auto& arr = j["cards"];
+    rebuilt.reserve(arr.size());
+
+    for (const auto& e : arr) {
+        const std::string name = e.value("name", std::string{});
+        const int   typeInt = e.value("type", static_cast<int>(CardType::BASIC));
+        const auto  type    = static_cast<CardType>(typeInt);
+        const float x  = e.value("x", 0.0f);
+        const float y  = e.value("y", 0.0f);
+        const float s  = e.value("scale", spawnScale);
+
+        std::shared_ptr<Card> card;
+        if (type == CardType::PACK) {
+            // 卡包要用 SpawnPackByName（PackDatabase 才有 totalCards / pool）
+            SpawnPackByName(name, s, x, y);
+            // SpawnPackByName 把卡包加到 m_Cards 最後一張
+            if (!m_Cards.empty()) card = m_Cards.back();
+        } else {
+            card = SpawnCardByName(name, s, x, y);
+        }
+        rebuilt.push_back(card);
+
+        if (!card) continue;
+        if (!e.contains("state")) continue;
+        const auto& st = e["state"];
+
+        if (card->GetType() == CardType::FOOD && st.contains("nutrition")) {
+            std::static_pointer_cast<FoodCard>(card)->SetNutritionValue(st["nutrition"].get<int>());
+        } else if (card->GetType() == CardType::STRUCTURE && st.contains("resourceCount")) {
+            std::static_pointer_cast<StructureCard>(card)->SetResourceCount(st["resourceCount"].get<int>());
+        } else if (card->GetType() == CardType::CHARACTER ||
+                   card->GetType() == CardType::ANIMAL ||
+                   card->GetType() == CardType::MONSTER) {
+            auto cc = std::dynamic_pointer_cast<CombatCard>(card);
+            if (cc && st.contains("health")) cc->SetCurrentHealth(st["health"].get<int>());
+            // 角色裝備還原：依名稱查 m_CardDatabase 取 bonus
+            if (cc && card->GetType() == CardType::CHARACTER && st.contains("equips")) {
+                const auto& eq = st["equips"];
+                for (std::size_t i = 0; i < eq.size() && i < 4; ++i) {
+                    const std::string eqName = eq[i].is_string() ? eq[i].get<std::string>() : "";
+                    if (eqName.empty()) continue;
+                    auto it = m_CardDatabase.find(eqName);
+                    if (it == m_CardDatabase.end()) continue;
+                    const CardSpawnData& d = it->second;
+                    cc->StoreEquipment(static_cast<EquipSlot>(i), eqName,
+                                       d.attack, d.health, d.defense,
+                                       d.attackSpeed, d.hitChance);
+                }
+                if (st.contains("health")) cc->SetCurrentHealth(st["health"].get<int>());
+            }
+            // 狀態效果還原
+            if (cc && st.contains("effects")) {
+                const auto& eff = st["effects"];
+                if (eff.contains("stun"))   cc->SetStunTimerMs(eff["stun"].get<float>());
+                if (eff.contains("bleed"))  cc->SetBleedTimerMs(eff["bleed"].get<float>());
+                if (eff.contains("poison")) cc->SetPoisonTimerMs(eff["poison"].get<float>());
+                if (eff.contains("invul"))  cc->SetInvulnerableTimerMs(eff["invul"].get<float>());
+                if (eff.contains("frenzy")) cc->SetFrenzyTimerMs(eff["frenzy"].get<float>());
+            }
+            // 動物冷卻還原
+            if (card->GetType() == CardType::ANIMAL && st.contains("abilityTimer")) {
+                std::static_pointer_cast<AnimalCard>(card)
+                    ->SetAbilityTimer(st["abilityTimer"].get<float>());
+            }
+        } else if (card->GetType() == CardType::BUILDING) {
+            const std::string& n = card->GetName();
+            if (n == "Coin Chest" && st.contains("stored")) {
+                std::static_pointer_cast<CoinChest>(card)->Deposit(st["stored"].get<int>());
+            } else if (n == "Hotpot" && st.contains("stored")) {
+                std::static_pointer_cast<Hotpot>(card)->Deposit(st["stored"].get<int>());
+            } else if (n == "Resource Chest" && st.contains("stored") && st.contains("storedName")) {
+                const std::string sn = st["storedName"].get<std::string>();
+                const int cnt = st["stored"].get<int>();
+                std::string icon;
+                if (!sn.empty()) {
+                    auto it = m_CardDatabase.find(sn);
+                    if (it != m_CardDatabase.end()) icon = it->second.iconPath;
+                }
+                std::static_pointer_cast<ResourceChest>(card)->RestoreState(sn, cnt, icon);
+            }
+        } else if (card->GetType() == CardType::PACK &&
+                   st.contains("remaining") && st.contains("pool")) {
+            auto pk = std::static_pointer_cast<CardPack>(card);
+            std::vector<CardSpawnData> pool;
+            for (const auto& pname : st["pool"]) {
+                if (!pname.is_string()) continue;
+                auto it = m_CardDatabase.find(pname.get<std::string>());
+                if (it == m_CardDatabase.end()) continue;
+                CardSpawnData d = it->second;
+                d.scale = s;
+                pool.push_back(d);
+            }
+            pk->RestoreState(st["remaining"].get<int>(), pool);
+        }
+    }
+
+    // 4. 串鏈：用 above index
+    for (std::size_t i = 0; i < arr.size() && i < rebuilt.size(); ++i) {
+        int aboveIdx = arr[i].value("above", -1);
+        if (aboveIdx < 0 || aboveIdx >= static_cast<int>(rebuilt.size())) continue;
+        if (!rebuilt[i] || !rebuilt[aboveIdx]) continue;
+        rebuilt[i]->SetCardAbove(rebuilt[aboveIdx]);
+        rebuilt[aboveIdx]->SetCardBelow(rebuilt[i]);
+    }
+
+    // 5. 套用 JSON 內的 maxCardCount（覆蓋 Warehouse 重建時的累加）
+    if (j.contains("maxCardCount")) m_MaxCardCount = j["maxCardCount"].get<int>();
+
+    // 6. 還原進行中的延遲任務（gathers / crafts / combats）
+    auto getCard = [&](int i) -> std::shared_ptr<Card> {
+        if (i < 0 || i >= static_cast<int>(rebuilt.size())) return nullptr;
+        return rebuilt[i];
+    };
+
+    // 共用：建立讀條（以 anchor 卡片座標為基準）
+    auto makeBar = [&](const std::shared_ptr<Card>& anchor,
+                       float durationMs, float elapsedMs) {
+        if (!anchor) return std::unique_ptr<TimeBar>{};
+        const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * anchor->GetScale();
+        auto bar = std::make_unique<TimeBar>(
+            m_Renderer,
+            glm::vec2{anchor->GetX(), anchor->GetY() + barOffsetY},
+            glm::vec2{GameConstants::CRAFT_BAR_BLACK_W, GameConstants::CRAFT_BAR_BLACK_H},
+            glm::vec2{GameConstants::CRAFT_BAR_WHITE_W, GameConstants::CRAFT_BAR_WHITE_H},
+            durationMs / 1000.0f,
+            GameConstants::CRAFT_BAR_Z);
+        bar->Start();
+        if (elapsedMs > 0) bar->Update(elapsedMs); // 將白條推到當前進度
+        return bar;
+    };
+
+    if (j.contains("pendingGathers")) {
+        for (const auto& g : j["pendingGathers"]) {
+            auto ch = getCard(g.value("char",   -1));
+            auto st = getCard(g.value("struct", -1));
+            if (!ch || !st) continue;
+            TaskScheduler::PendingGather pg;
+            pg.character  = ch;
+            pg.structure  = st;
+            pg.exhausted  = g.value("exhausted", false);
+            pg.spawnName  = g.value("spawnName", std::string{});
+            pg.spawnX     = g.value("spawnX", 0.0f);
+            pg.spawnY     = g.value("spawnY", 0.0f);
+            pg.spawnScale = g.value("spawnScale", spawnScale);
+            pg.totalMs    = g.value("totalMs",    10000.0f);
+            pg.timeLeftMs = g.value("timeLeftMs", pg.totalMs);
+            pg.bar = makeBar(st, pg.totalMs, pg.totalMs - pg.timeLeftMs);
+            // 重連堆疊鏈：角色疊在結構上方
+            st->SetCardAbove(ch);
+            ch->SetCardBelow(st);
+            m_Tasks.AddGather(std::move(pg));
+        }
+    }
+
+    if (j.contains("pendingCrafts")) {
+        for (const auto& c : j["pendingCrafts"]) {
+            auto bottom = getCard(c.value("bottom", -1));
+            if (!bottom) continue;
+            TaskScheduler::PendingCraft pc;
+            pc.stackBottom = bottom;
+            if (c.contains("all")) {
+                for (const auto& i : c["all"]) {
+                    auto cc = getCard(i.is_number_integer() ? i.get<int>() : -1);
+                    if (cc) pc.allCards.push_back(cc);
+                }
+            }
+            pc.outputName = c.value("outputName", std::string{});
+            pc.spawnX     = c.value("spawnX",     0.0f);
+            pc.spawnY     = c.value("spawnY",     0.0f);
+            pc.spawnScale = c.value("spawnScale", spawnScale);
+            pc.totalMs    = c.value("totalMs",    10000.0f);
+            pc.timeLeftMs = c.value("timeLeftMs", pc.totalMs);
+            pc.bar = makeBar(bottom, pc.totalMs, pc.totalMs - pc.timeLeftMs);
+            m_Tasks.AddCraft(std::move(pc));
+        }
+    }
+
+    if (j.contains("pendingCombats")) {
+        // 用 JoinOrCreateCombat 重啟戰鬥（無法保留 timer，已 reset）
+        for (const auto& cb : j["pendingCombats"]) {
+            auto target = getCard(cb.value("target", -1));
+            if (!target) continue;
+            if (cb.contains("fighters")) {
+                for (const auto& f : cb["fighters"]) {
+                    auto fighter = getCard(f.value("f", -1));
+                    if (fighter) m_Tasks.JoinOrCreateCombat(target, fighter);
+                }
+            }
+        }
+    }
 }
 
 void CardManager::RemoveCard(std::shared_ptr<Card> target) {
@@ -361,11 +771,14 @@ void CardManager::ClearAllCards() {
     }
     m_Cards.clear();
     m_DraggingCard = nullptr;
+    // 同步清掉延遲任務（合成 / 採集 / 戰鬥），避免讀條與場地殘留
+    m_Tasks.ClearAll();
 }
 
-void CardManager::OnSpawn(const std::string& name, float x, float y) {
+void CardManager::OnSpawn(const std::string& name, float x, float y, float scale) {
     std::uniform_real_distribution<float> off(-50.0f, 50.0f);
-    auto card = SpawnCardByName(name, m_ZoomRatio * 0.05f,
+    // scale 已是產出者的顯示縮放（含 zoom），直接沿用以維持大小一致
+    auto card = SpawnCardByName(name, scale,
                                 x + off(m_RandomGenerator),
                                 y + off(m_RandomGenerator));
     TryAutoStack(card);
@@ -378,6 +791,16 @@ std::vector<std::string> CardManager::GetAllCardNames() const {
         names.push_back(pair.first);
     std::sort(names.begin(), names.end());
     return names;
+}
+
+std::vector<std::pair<std::string, CardType>> CardManager::GetAllCardEntries() const {
+    std::vector<std::pair<std::string, CardType>> entries;
+    entries.reserve(m_CardDatabase.size());
+    for (const auto& pair : m_CardDatabase)
+        entries.emplace_back(pair.first, pair.second.type);
+    std::sort(entries.begin(), entries.end(),
+        [](const auto& a, const auto& b) { return a.first < b.first; });
+    return entries;
 }
 
 void CardManager::TryAutoStack(const std::shared_ptr<Card>& newCard) {
@@ -437,6 +860,15 @@ static bool InSameStack(const std::shared_ptr<Card>& a, const std::shared_ptr<Ca
     return false;
 }
 
+// 判斷一張卡所在的整個堆疊裡是否有 sticky 卡（如 Magic Glue）
+static bool StackHasSticky(const std::shared_ptr<Card>& c) {
+    auto cur = c;
+    while (cur) { if (cur->IsSticky()) return true; cur = cur->GetCardAbove(); }
+    cur = c->GetCardBelow();
+    while (cur) { if (cur->IsSticky()) return true; cur = cur->GetCardBelow(); }
+    return false;
+}
+
 void CardManager::Update(glm::vec2 mousePos) {
     // 1. 清理空卡包
     m_Cards.erase(std::remove_if(m_Cards.begin(), m_Cards.end(),
@@ -478,45 +910,40 @@ void CardManager::Update(glm::vec2 mousePos) {
         }
     }
 
-    // 2.5 讓怪物朝最近的角色移動，並在重疊時主動觸發戰鬥
-    {
-        // 收集所有角色卡
-        std::vector<std::shared_ptr<Card>> characters;
-        for (auto& card : m_Cards) {
-            if (card->GetType() == CardType::CHARACTER)
-                characters.push_back(card);
+    // 2.5 怪物主動追擊最近的角色，接觸後開戰
+    for (auto& card : m_Cards) {
+        if (card->GetType() != CardType::MONSTER) continue;
+        auto monster = std::static_pointer_cast<MonsterCard>(card);
+
+        // 戰鬥中 / 拖曳中 / 堆疊中 / 無碰撞箱 → 不主動行動
+        if (monster->IsInCombat() || monster == m_DraggingCard ||
+            monster->GetCardBelow() || monster->GetCardAbove() ||
+            !monster->IsHitboxActive()) {
+            monster->ClearSeekTarget();
+            continue;
         }
 
-        for (auto& card : m_Cards) {
-            if (card->GetType() != CardType::MONSTER) continue;
-            auto monster = std::static_pointer_cast<MonsterCard>(card);
+        // 找最近且可被攻擊的角色（排除拖曳中、已在戰鬥中即碰撞箱關閉者）
+        std::shared_ptr<Card> nearest;
+        float bestDist2 = 0.0f;
+        for (auto& other : m_Cards) {
+            if (other->GetType() != CardType::CHARACTER) continue;
+            if (other == m_DraggingCard || !other->IsHitboxActive()) continue;
+            float dx = other->GetX() - monster->GetX();
+            float dy = other->GetY() - monster->GetY();
+            float d2 = dx * dx + dy * dy;
+            if (!nearest || d2 < bestDist2) { nearest = other; bestDist2 = d2; }
+        }
 
-            if (monster->IsInCombat()) continue;
+        // 場上沒有角色才隨機漫遊，否則持續主動追擊（不再受偵測範圍限制）
+        if (!nearest) { monster->ClearSeekTarget(); continue; }
 
-            if (characters.empty()) {
-                monster->ClearChaseTarget();
-                continue;
-            }
-
-            // 找最近的角色
-            float bestDist = std::numeric_limits<float>::max();
-            std::shared_ptr<Card> nearest = nullptr;
-            for (auto& ch : characters) {
-                float dx = ch->GetX() - monster->GetX();
-                float dy = ch->GetY() - monster->GetY();
-                float dist = dx * dx + dy * dy;
-                if (dist < bestDist) {
-                    bestDist = dist;
-                    nearest = ch;
-                }
-            }
-
-            monster->SetChaseTarget(nearest->GetX(), nearest->GetY());
-
-            // 怪物與角色重疊時主動觸發戰鬥
-            if (monster->IsOverlapping(nearest)) {
-                m_Tasks.JoinOrCreateCombat(monster, nearest);
-            }
+        // 接觸（重疊）即開戰，否則持續靠近
+        if (monster->IsOverlapping(nearest)) {
+            monster->ClearSeekTarget();
+            m_Tasks.JoinOrCreateCombat(monster, nearest);
+        } else {
+            monster->SetSeekTarget(nearest->GetX(), nearest->GetY());
         }
     }
 
@@ -535,6 +962,159 @@ void CardManager::Update(glm::vec2 mousePos) {
         m_Tasks.UpdateGathers(dtMs);
         m_Tasks.UpdateCombats(dtMs, m_DraggingCard);
         m_Tasks.UpdateCrafts(dtMs);
+    }
+
+    // 2.5 Coin Chest：吸收疊在上方的硬幣
+    // 先收集要移除的硬幣，遍歷結束後才呼叫 RemoveCard（避免在 range-for m_Cards 時 erase 而 UB）
+    {
+        std::vector<std::shared_ptr<Card>> coinsToRemove;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Coin Chest") continue;
+            auto chest = std::static_pointer_cast<CoinChest>(card);
+            if (chest->IsFull()) continue;
+
+            // 從 chest 往上掃，把直接相連的 Coin 一張一張吸收（先記住，最後才 unlink/remove）
+            std::vector<std::shared_ptr<Card>> toAbsorb;
+            for (auto cur = chest->GetCardAbove();
+                 cur && cur->GetType() == CardType::COIN && !chest->IsFull();
+                 cur = cur->GetCardAbove()) {
+                if (chest->Deposit(1) > 0) toAbsorb.push_back(cur);
+                else break;
+            }
+            for (auto& c : toAbsorb) {
+                auto below = c->GetCardBelow();
+                auto above = c->GetCardAbove();
+                if (below) below->SetCardAbove(above);
+                if (above) above->SetCardBelow(below);
+                c->SetCardBelow(nullptr);
+                c->SetCardAbove(nullptr);
+                coinsToRemove.push_back(c);
+            }
+        }
+        // 安全在迴圈外做實際移除
+        for (auto& c : coinsToRemove) RemoveCard(c);
+    }
+
+    // 2.54 Resource Chest：吸收疊在上方的同類型 RESOURCE 卡（最多 100 張）
+    {
+        std::vector<std::shared_ptr<Card>> resourcesToRemove;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Resource Chest") continue;
+            auto chest = std::static_pointer_cast<ResourceChest>(card);
+            if (chest->IsFull()) continue;
+
+            std::vector<std::shared_ptr<Card>> toAbsorb;
+            for (auto cur = chest->GetCardAbove(); cur; cur = cur->GetCardAbove()) {
+                if (cur->GetType() != CardType::RESOURCE) break;
+                if (!chest->CanAccept(cur->GetName())) break;
+                // 從資料庫查 iconPath；查不到就不存
+                auto it = m_CardDatabase.find(cur->GetName());
+                if (it == m_CardDatabase.end()) break;
+                if (!chest->Deposit(cur->GetName(), it->second.iconPath)) break;
+                toAbsorb.push_back(cur);
+            }
+            for (auto& c : toAbsorb) {
+                auto below = c->GetCardBelow();
+                auto above = c->GetCardAbove();
+                if (below) below->SetCardAbove(above);
+                if (above) above->SetCardBelow(below);
+                c->SetCardBelow(nullptr);
+                c->SetCardAbove(nullptr);
+                resourcesToRemove.push_back(c);
+            }
+        }
+        for (auto& c : resourcesToRemove) RemoveCard(c);
+    }
+
+    // 2.55 Hotpot：吸收疊在上方的 Food（依各自 nutritionValue）
+    {
+        std::vector<std::shared_ptr<Card>> foodsToRemove;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Hotpot") continue;
+            auto pot = std::static_pointer_cast<Hotpot>(card);
+
+            std::vector<std::shared_ptr<Card>> toAbsorb;
+            for (auto cur = pot->GetCardAbove();
+                 cur && cur->GetType() == CardType::FOOD;
+                 cur = cur->GetCardAbove()) {
+                auto food = std::static_pointer_cast<FoodCard>(cur);
+                pot->Deposit(food->GetNutritionValue());
+                toAbsorb.push_back(cur);
+            }
+            for (auto& c : toAbsorb) {
+                auto below = c->GetCardBelow();
+                auto above = c->GetCardAbove();
+                if (below) below->SetCardAbove(above);
+                if (above) above->SetCardBelow(below);
+                c->SetCardBelow(nullptr);
+                c->SetCardAbove(nullptr);
+                foodsToRemove.push_back(c);
+            }
+        }
+        for (auto& c : foodsToRemove) RemoveCard(c);
+    }
+
+    // 2.6 Coin Chest：右鍵點擊吐出 WITHDRAW_AMOUNT 枚硬幣
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_RB)) {
+        std::shared_ptr<CoinChest> targetChest;
+        float chestX = 0.f, chestY = 0.f, chestS = 1.f;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Coin Chest") continue;
+            if (!card->IsMouseHovering(mousePos)) continue;
+            targetChest = std::static_pointer_cast<CoinChest>(card);
+            chestX = card->GetX();
+            chestY = card->GetY();
+            chestS = card->GetScale();
+            break;
+        }
+        // 找到後再 spawn（SpawnCardByName 會 push_back m_Cards，會讓上方 range-for 失效）
+        // 吐出的硬幣串成一堆疊，避免散落
+        if (targetChest) {
+            const int give = targetChest->Withdraw(CoinChest::WITHDRAW_AMOUNT);
+            if (give > 0) {
+                auto topCoin = SpawnCardByName("Coin", chestS, chestX, chestY - 80.f);
+                for (int i = 1; i < give; ++i) {
+                    auto newCoin = SpawnCardByName("Coin", chestS, chestX, chestY - 80.f);
+                    topCoin->SetCardAbove(newCoin);
+                    newCoin->SetCardBelow(topCoin);
+                    topCoin = newCoin;
+                }
+            }
+        }
+
+        // 2.65 Resource Chest：右鍵取出 WITHDRAW_AMOUNT 張同類資源（堆疊呈現）
+        std::shared_ptr<ResourceChest> rcChest;
+        std::string rcName;
+        float rcX = 0.f, rcY = 0.f, rcS = 1.f;
+        for (auto& card : m_Cards) {
+            if (card->GetType() != CardType::BUILDING) continue;
+            if (card->GetName() != "Resource Chest") continue;
+            if (!card->IsMouseHovering(mousePos)) continue;
+            auto chest = std::static_pointer_cast<ResourceChest>(card);
+            if (chest->IsEmpty()) break; // 空 chest 不做事
+            rcChest = chest;
+            rcName  = chest->GetStoredName();
+            rcX     = card->GetX();
+            rcY     = card->GetY();
+            rcS     = card->GetScale();
+            break;
+        }
+        if (rcChest && !rcName.empty()) {
+            const int give = rcChest->Withdraw(ResourceChest::WITHDRAW_AMOUNT);
+            if (give > 0) {
+                auto top = SpawnCardByName(rcName, rcS, rcX, rcY - 80.f);
+                for (int i = 1; i < give; ++i) {
+                    auto next = SpawnCardByName(rcName, rcS, rcX, rcY - 80.f);
+                    top->SetCardAbove(next);
+                    next->SetCardBelow(top);
+                    top = next;
+                }
+            }
+        }
     }
 
     // 3. 按下左鍵：抓取
@@ -576,8 +1156,23 @@ void CardManager::Update(glm::vec2 mousePos) {
                 if (m_DraggingCard->GetType() == CardType::PACK) {
                     auto pack = std::static_pointer_cast<CardPack>(m_DraggingCard);
                     if (!pack->IsEmpty()) {
+                        const bool firstOpen = !pack->HasBeenOpened();
+                        pack->MarkOpened();
                         auto dataToSpawn = pack->SpawnNext();
                         if (dataToSpawn) {
+                            // 新遊戲保底：第二個被「首次開」的卡包，第一張卡覆寫為村民
+                            if (firstOpen) {
+                                ++m_PacksOpenedThisGame;
+                                if (m_VillagerGuaranteeArmed && m_PacksOpenedThisGame == 2) {
+                                    auto it = m_CardDatabase.find("Villager");
+                                    if (it != m_CardDatabase.end()) {
+                                        const float keepScale = dataToSpawn->scale;
+                                        *dataToSpawn = it->second;
+                                        dataToSpawn->scale = keepScale;
+                                    }
+                                    m_VillagerGuaranteeArmed = false;
+                                }
+                            }
                             std::uniform_real_distribution<float> distOffset(-60.0f, 60.0f);
                             float spawnX = m_DraggingCard->GetX() + distOffset(m_RandomGenerator);
                             float spawnY = m_DraggingCard->GetY() - 80.0f + distOffset(m_RandomGenerator);
@@ -754,6 +1349,7 @@ void CardManager::Update(glm::vec2 mousePos) {
                         pg.spawnY     = targetCard->GetY();
                         pg.spawnScale = m_DraggingCard->GetScale();
                         pg.timeLeftMs = gatherTimeMs;
+                        pg.totalMs    = gatherTimeMs;
 
                         const float gatherSec  = gatherTimeMs / 1000.0f;
                         const float barOffsetY = GameConstants::CRAFT_BAR_OFFSET_Y * targetCard->GetScale();
@@ -850,16 +1446,30 @@ void CardManager::Update(glm::vec2 mousePos) {
 
             if (overlapX <= 0 || overlapY <= 0) continue;
 
+            // 堆疊中含 Magic Glue（sticky）→ 該邊不被推；對側吸收整段重疊量
+            const bool aSticky = StackHasSticky(cardA);
+            const bool bSticky = StackHasSticky(cardB);
+            if (aSticky && bSticky) continue; // 兩邊都黏住，不動
+
             if (overlapX <= overlapY) {
-                float push = overlapX * 0.5f;
-                cardA->MoveBy({dx >= 0.f ?  push : -push, 0.f});
-                cardB->MoveBy({dx >= 0.f ? -push :  push, 0.f});
+                const float pushA = aSticky ? 0.f : (bSticky ? overlapX : overlapX * 0.5f);
+                const float pushB = bSticky ? 0.f : (aSticky ? overlapX : overlapX * 0.5f);
+                cardA->MoveBy({dx >= 0.f ?  pushA : -pushA, 0.f});
+                cardB->MoveBy({dx >= 0.f ? -pushB :  pushB, 0.f});
             } else {
-                float push = overlapY * 0.5f;
-                cardA->MoveBy({0.f, dy >= 0.f ?  push : -push});
-                cardB->MoveBy({0.f, dy >= 0.f ? -push :  push});
+                const float pushA = aSticky ? 0.f : (bSticky ? overlapY : overlapY * 0.5f);
+                const float pushB = bSticky ? 0.f : (aSticky ? overlapY : overlapY * 0.5f);
+                cardA->MoveBy({0.f, dy >= 0.f ?  pushA : -pushA});
+                cardB->MoveBy({0.f, dy >= 0.f ? -pushB :  pushB});
             }
         }
+    }
+
+    // 推擠後再次約束邊界，避免被推出場地
+    for (auto& card : m_Cards) {
+        if (card == m_DraggingCard) continue;
+        if (card->GetType() == CardType::INTERACT) continue;
+        ClampCardToField(card);
     }
 }
 

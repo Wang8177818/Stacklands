@@ -42,9 +42,10 @@ void TaskScheduler::UpdateGathers(float dtMs) {
         if (it->timeLeftMs <= 0.0f) {
             if (!it->spawnName.empty()) {
                 std::uniform_real_distribution<float> off(-60.f, 60.f);
-                m_SpawnFn(it->spawnName, it->spawnScale,
-                          it->spawnX + off(m_Rng),
-                          it->spawnY + off(m_Rng));
+                // 用「當下」結構卡的座標/scale 生成，避免採集途中 pan/zoom 導致大小不一致
+                m_SpawnFn(it->spawnName, st->GetScale(),
+                          st->GetX() + off(m_Rng),
+                          st->GetY() + off(m_Rng));
             }
 
             ch = it->character.lock();
@@ -514,8 +515,12 @@ void TaskScheduler::UpdateCrafts(float dtMs) {
             float sx = bottom->GetX(), sy = bottom->GetY(), ss = bottom->GetScale();
             std::vector<std::shared_ptr<Card>> toDelete;
             for (auto cur = bottom; cur; cur = cur->GetCardAbove()) {
-                if (cur->GetType() != CardType::CHARACTER && cur->GetType() != CardType::BUILDING)
-                    toDelete.push_back(cur);
+                // 一般情況：CHARACTER / BUILDING 保留當「合成工具」
+                // 例外：Baby 雖然是 CHARACTER，但會被消耗（Baby + House → Villager 等）
+                const bool keep =
+                    (cur->GetType() == CardType::CHARACTER || cur->GetType() == CardType::BUILDING) &&
+                    cur->GetName() != "Baby";
+                if (!keep) toDelete.push_back(cur);
             }
             for (auto cur = bottom; cur; ) {
                 auto next = cur->GetCardAbove();
