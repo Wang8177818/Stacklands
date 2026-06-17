@@ -172,6 +172,8 @@ void App::Update() {
         float spawnScale = basic_scale * m_EventManager->GetZoomRatio();
         // 生成一Coin作為堆疊底部
         auto topCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);
+        // 嘗試將第一枚硬幣直接疊到附近已有的同名堆疊上
+        m_CardManager->TryAutoStack(topCoin);
         for (int i = 1; i < sellPrice; i++) {
             auto newCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);
             topCoin->SetCardAbove(newCoin);
@@ -204,13 +206,17 @@ void App::Update() {
         // 生卡包（位置稍微往下方，避免又疊回 slot 上）
         m_CardManager->SpawnPackByName(slot->GetName(), spawnScale, sx, sy - 200.f);
 
-        // 找零：超付的部分以單顆 Coin 退回（在卡包旁邊散開）
+        // 找零：超付的部分以堆疊退回，嘗試疊到附近已有的硬幣上
         const int refund = coinCount - price;
-        std::uniform_real_distribution<float> off(-120.f, 120.f);
-        for (int i = 0; i < refund; ++i) {
-            m_CardManager->SpawnCardByName("Coin", spawnScale,
-                                           sx + off(s_AppRng),
-                                           sy - 400.f + off(s_AppRng));
+        if (refund > 0) {
+            auto topCoin = m_CardManager->SpawnCardByName("Coin", spawnScale, sx, sy - 400.f);
+            m_CardManager->TryAutoStack(topCoin);
+            for (int i = 1; i < refund; ++i) {
+                auto newCoin = m_CardManager->SpawnCardByName("Coin", spawnScale);
+                topCoin->SetCardAbove(newCoin);
+                newCoin->SetCardBelow(topCoin);
+                topCoin = newCoin;
+            }
         }
     }
 

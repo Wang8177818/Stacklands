@@ -60,6 +60,9 @@ public:
     // 是否正在拖曳卡片
     bool isDraggingCard();
 
+    // 嘗試將新生成的卡牌直接疊到附近同名卡牌上（位置直接對齊，避免推擠）
+    void TryAutoStack(const std::shared_ptr<Card>& newCard);
+
     // 取得資料庫中所有卡片名稱（供作弊選單使用）
     std::vector<std::string> GetAllCardNames() const;
 

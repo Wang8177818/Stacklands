@@ -240,7 +240,8 @@ CardManager::CardManager(Util::Renderer& renderer)
     : m_Renderer(renderer),
       m_Tasks(renderer, m_RandomGenerator, m_RecipeManager,
               [this](const std::string& name, float scale, float x, float y) {
-                  SpawnCardByName(name, scale, x, y);
+                  auto card = SpawnCardByName(name, scale, x, y);
+                  TryAutoStack(card);
               },
               [this](std::shared_ptr<Card> card) {
                   RemoveCard(card);
@@ -364,9 +365,10 @@ void CardManager::ClearAllCards() {
 
 void CardManager::OnSpawn(const std::string& name, float x, float y) {
     std::uniform_real_distribution<float> off(-50.0f, 50.0f);
-    SpawnCardByName(name, m_ZoomRatio * 0.05f,
-                    x + off(m_RandomGenerator),
-                    y + off(m_RandomGenerator));
+    auto card = SpawnCardByName(name, m_ZoomRatio * 0.05f,
+                                x + off(m_RandomGenerator),
+                                y + off(m_RandomGenerator));
+    TryAutoStack(card);
 }
 
 std::vector<std::string> CardManager::GetAllCardNames() const {
@@ -376,6 +378,52 @@ std::vector<std::string> CardManager::GetAllCardNames() const {
         names.push_back(pair.first);
     std::sort(names.begin(), names.end());
     return names;
+}
+
+void CardManager::TryAutoStack(const std::shared_ptr<Card>& newCard) {
+    if (!newCard) return;
+    if (!newCard->CanStackOnto()) return;
+
+    constexpr float SEARCH_RADIUS_SQ = 200.0f * 200.0f;
+
+    std::shared_ptr<Card> bestTarget = nullptr;
+    float bestDist = SEARCH_RADIUS_SQ;
+
+    for (auto& card : m_Cards) {
+        if (card == newCard) continue;
+        if (card->GetType() == CardType::INTERACT) continue;
+        if (!card->IsHitboxActive()) continue;
+        if (card->GetName() != newCard->GetName()) continue;
+
+        float dx = card->GetX() - newCard->GetX();
+        float dy = card->GetY() - newCard->GetY();
+        float distSq = dx * dx + dy * dy;
+
+        if (distSq < bestDist) {
+            bestDist = distSq;
+            bestTarget = card;
+        }
+    }
+
+    if (!bestTarget) return;
+
+    // 找到目標堆疊的最頂端
+    auto topCard = bestTarget;
+    while (topCard->GetCardAbove()) topCard = topCard->GetCardAbove();
+
+    // 檢查是否允許疊加
+    if (!topCard->OnStacked(newCard)) return;
+
+    // 直接將新卡位置對齊到頂端卡片，避免推擠
+    float dx = topCard->GetX() - newCard->GetX();
+    float dy = topCard->GetY() - newCard->GetY();
+    if (dx != 0.f || dy != 0.f) {
+        newCard->MoveBy({dx, dy});
+    }
+
+    // 建立疊加連結
+    topCard->SetCardAbove(newCard);
+    newCard->SetCardBelow(topCard);
 }
 
 std::shared_ptr<Card> CardManager::CreateCardFromData(float x, float y, const CardSpawnData& data) {
@@ -428,9 +476,10 @@ void CardManager::Update(glm::vec2 mousePos) {
             std::string drop = animal->RollDrop();
             if (!drop.empty()) {
                 std::uniform_real_distribution<float> off(-60.0f, 60.0f);
-                SpawnCardByName(drop, card->GetScale(),
-                                card->GetX() + off(m_RandomGenerator),
-                                card->GetY() + off(m_RandomGenerator));
+                auto dropCard = SpawnCardByName(drop, card->GetScale(),
+                                                card->GetX() + off(m_RandomGenerator),
+                                                card->GetY() + off(m_RandomGenerator));
+                TryAutoStack(dropCard);
             }
             RemoveCard(card);
         }
