@@ -104,8 +104,13 @@ void RecipeManager::LoadCraftingRecipes(const std::string& filePath) {
 // ─────────────────────────────────────────────────────────────
 std::string RecipeManager::CheckCrafting(std::shared_ptr<Card> stackBottom, float& outTime) const {
     std::vector<std::string> stackNames;
-    for (auto cur = stackBottom; cur; cur = cur->GetCardAbove())
-        stackNames.push_back(cur->GetName());
+    for (auto cur = stackBottom; cur; cur = cur->GetCardAbove()) {
+        // 所有 CHARACTER 類型的卡片（村民及各職業）都視為 "Villager" 來匹配合成配方
+        if (cur->GetType() == CardType::CHARACTER)
+            stackNames.push_back("Villager");
+        else
+            stackNames.push_back(cur->GetName());
+    }
     std::sort(stackNames.begin(), stackNames.end());
 
     for (const auto& recipe : m_CraftingRecipes) {
