@@ -57,6 +57,7 @@ Stacklands（堆疊大陸）是一款結合 **卡牌堆疊** 與 **生存經營*
 - Week 15 :
 	- [X] FInal Boss Fight
 - Week 16 :
-	- [ ] 通關畫面
-	- [ ] 讀檔存檔
+	- [X] 通關畫面
+	- [X] 讀檔存檔
 - Week 17 : 測試&改善
+    - [X] FinalCheck
