@@ -31,8 +31,7 @@ CombatArena::CombatArena(Util::Renderer& renderer,
 }
 
 CombatArena::~CombatArena() {
-    m_Bg->SetVisible(false);
-    m_Bg->m_Transform.translation = {-9999.0f, -9999.0f};
+    m_Renderer.RemoveChild(m_Bg);
 }
 
 void CombatArena::ComputeLayout() {
